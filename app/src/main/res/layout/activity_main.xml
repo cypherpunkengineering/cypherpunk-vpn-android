@@ -29,7 +29,6 @@
             android:textAppearance="?android:textAppearanceLarge"
             tools:text="disconnected" />
 
-
         <Spinner
             android:id="@+id/location_spinner"
             android:layout_width="wrap_content"
@@ -38,13 +37,14 @@
             android:layout_centerHorizontal="true"
             android:layout_marginTop="28dp" />
 
-        <TextView
+        <com.cypherpunk.android.vpn.widget.TypefaceTextView
             android:id="@+id/ip"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/location_spinner"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="19dp"
+            android:textAppearance="?android:textAppearanceLarge"
             tools:text="113.29.228.157" />
 
     </RelativeLayout>
