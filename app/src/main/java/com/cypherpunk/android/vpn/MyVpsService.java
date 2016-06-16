@@ -1,4 +1,4 @@
-package com.uphyca.cypherpunkvpn;
+package com.cypherpunk.android.vpn;
 
 import android.net.VpnService;
 
