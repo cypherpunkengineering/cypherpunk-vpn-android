@@ -5,3 +5,8 @@ build:
         name: build
         code: |
           gradle -PdisablePreDex --project-cache-dir=$WERCKER_CACHE_DIR build
+  after-steps:
+    - slack-notifier:
+        url: $SLACK_URL
+        channel: dev
+        username: wercker
