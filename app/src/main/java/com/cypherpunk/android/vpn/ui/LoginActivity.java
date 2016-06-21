@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.view.ViewCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.KeyEvent;
@@ -123,11 +124,14 @@ public class LoginActivity extends AppCompatActivity
                         android.R.layout.simple_dropdown_item_1line, emailAddressCollection);
 
         binding.email.setAdapter(adapter);
-        if (!emailAddressCollection.isEmpty()) {
-            String mail = emailAddressCollection.get(0);
-            binding.email.setText(mail);
-            binding.email.setSelection(mail.length());
-        }
+        binding.email.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean hasFocus) {
+                if (hasFocus & ViewCompat.isAttachedToWindow(view)) {
+                    binding.email.showDropDown();
+                }
+            }
+        });
     }
 
     @Override
