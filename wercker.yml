@@ -1,0 +1,17 @@
+box: uphyca/android
+build:
+  steps:
+    - script:
+        name: build
+        code: |
+          gradle -PdisablePreDex --project-cache-dir=$WERCKER_CACHE_DIR build
+  after-steps:
+    - script:
+        name: install curl
+        code: |
+            apt-get update -y
+            apt-get install -y curl
+    - slack-notifier:
+        url: $SLACK_URL
+        channel: dev
+        username: wercker
