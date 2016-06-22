@@ -59,6 +59,31 @@ public class LoginActivity extends AppCompatActivity
         });
     }
 
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
+                                           @NonNull int[] grantResults) {
+        EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this);
+    }
+
+    @Override
+    public void onPermissionsGranted(int requestCode, List<String> perms) {
+        populateAutoComplete();
+    }
+
+    @Override
+    public void onPermissionsDenied(int requestCode, List<String> perms) {
+        // permissions have been denied.
+    }
+
+    private void mayRequestContacts() {
+        if (EasyPermissions.hasPermissions(this, Manifest.permission.GET_ACCOUNTS)) {
+            populateAutoComplete();
+        } else {
+            EasyPermissions.requestPermissions(this, getString(R.string.permission_rationale),
+                    REQUEST_GET_ACCOUNTS, Manifest.permission.GET_ACCOUNTS);
+        }
+    }
+
     private void populateAutoComplete() {
         ArrayList<String> mailList = new ArrayList<>();
         Account[] accounts = AccountManager.get(this).getAccounts();
@@ -72,19 +97,25 @@ public class LoginActivity extends AppCompatActivity
         addEmailsToAutoComplete(mailList);
     }
 
-    private void mayRequestContacts() {
-        if (EasyPermissions.hasPermissions(this, Manifest.permission.GET_ACCOUNTS)) {
-            populateAutoComplete();
-        } else {
-            EasyPermissions.requestPermissions(this, getString(R.string.permission_rationale),
-                    REQUEST_GET_ACCOUNTS, Manifest.permission.GET_ACCOUNTS);
-        }
+    private void addEmailsToAutoComplete(List<String> emailAddressCollection) {
+        ArrayAdapter<String> adapter =
+                new ArrayAdapter<>(LoginActivity.this,
+                        android.R.layout.simple_dropdown_item_1line, emailAddressCollection);
+
+        binding.email.setAdapter(adapter);
+        binding.email.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean hasFocus) {
+                showAccounts();
+            }
+        });
+        showAccounts();
     }
 
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
-                                           @NonNull int[] grantResults) {
-        EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this);
+    private void showAccounts() {
+        if (binding.email.hasFocus() & ViewCompat.isAttachedToWindow(binding.email)) {
+            binding.email.showDropDown();
+        }
     }
 
     private void attemptLogin() {
@@ -116,31 +147,5 @@ public class LoginActivity extends AppCompatActivity
             finish();
             startActivity(new Intent(this, MainActivity.class));
         }
-    }
-
-    private void addEmailsToAutoComplete(List<String> emailAddressCollection) {
-        ArrayAdapter<String> adapter =
-                new ArrayAdapter<>(LoginActivity.this,
-                        android.R.layout.simple_dropdown_item_1line, emailAddressCollection);
-
-        binding.email.setAdapter(adapter);
-        binding.email.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View view, boolean hasFocus) {
-                if (hasFocus & ViewCompat.isAttachedToWindow(view)) {
-                    binding.email.showDropDown();
-                }
-            }
-        });
-    }
-
-    @Override
-    public void onPermissionsGranted(int requestCode, List<String> perms) {
-        populateAutoComplete();
-    }
-
-    @Override
-    public void onPermissionsDenied(int requestCode, List<String> perms) {
-        // permissions have been denied.
     }
 }
