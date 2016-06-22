@@ -5,6 +5,8 @@ import android.graphics.Typeface;
 import android.util.AttributeSet;
 import android.widget.TextView;
 
+import com.cypherpunk.android.vpn.FontUtil;
+
 /**
  * Dosis-Regular font TextView
  */
@@ -20,7 +22,7 @@ public class TypefaceTextView extends TextView {
 
     public TypefaceTextView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        Typeface tf = Typeface.createFromAsset(context.getAssets(), "fonts/Dosis-Regular.otf");
+        Typeface tf = FontUtil.get(context);
         setTypeface(tf);
     }
 }
