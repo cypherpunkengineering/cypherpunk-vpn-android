@@ -13,5 +13,5 @@ build:
             apt-get install -y curl
     - slack-notifier:
         url: $SLACK_URL
-        channel: dev
+        channel: dev-notifications
         username: wercker
