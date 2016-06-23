@@ -9,11 +9,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
-import android.text.Spannable;
-import android.text.SpannableString;
-import android.text.style.TypefaceSpan;
 import android.view.MenuItem;
-import android.widget.ArrayAdapter;
 import android.widget.CompoundButton;
 
 import com.cypherpunk.android.vpn.MyVpsService;
@@ -22,8 +18,6 @@ import com.cypherpunk.android.vpn.databinding.ActivityMainBinding;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
-
-    private static final String[] servers = {"United State", "United Kingdom", "Canada", "Germany", "Japan"};
 
     private ActivityMainBinding binding;
 
@@ -35,10 +29,7 @@ public class MainActivity extends AppCompatActivity
         setSupportActionBar(binding.toolbar);
         ActionBar actionBar = getSupportActionBar();
         assert actionBar != null;
-        actionBar.setIcon(R.drawable.app_icon);
         actionBar.setDisplayShowTitleEnabled(false);
-
-        binding.locationSpinner.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, servers));
 
         binding.connectionSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -53,6 +44,7 @@ public class MainActivity extends AppCompatActivity
                 }
 
                 binding.ip.setText(isChecked ? "113.29.228.157" : "");
+                binding.status.setText(isChecked ? "CONNECTED" : "DISCONNECTED");
             }
         });
 
