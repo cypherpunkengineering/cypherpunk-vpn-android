@@ -38,7 +38,8 @@ public class LoginActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_login);
 
-        mayRequestContacts();
+// Contacts permissions
+//        mayRequestContacts();
 
         binding.password.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
