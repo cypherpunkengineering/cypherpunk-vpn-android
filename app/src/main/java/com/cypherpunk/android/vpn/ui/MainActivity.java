@@ -15,6 +15,7 @@ import android.widget.CompoundButton;
 import com.cypherpunk.android.vpn.MyVpsService;
 import com.cypherpunk.android.vpn.R;
 import com.cypherpunk.android.vpn.databinding.ActivityMainBinding;
+import com.cypherpunk.android.vpn.ui.settings.SettingsActivity;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -68,6 +69,11 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_setting:
+                startActivity(new Intent(this, SettingsActivity.class));
+                break;
+        }
         return false;
     }
 }
