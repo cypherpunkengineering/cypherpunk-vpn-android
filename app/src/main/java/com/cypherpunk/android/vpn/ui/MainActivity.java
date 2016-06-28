@@ -10,6 +10,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.CompoundButton;
 
 import com.cypherpunk.android.vpn.MyVpsService;
@@ -44,8 +45,7 @@ public class MainActivity extends AppCompatActivity
                     }
                 }
 
-                binding.ip.setText(isChecked ? "113.29.228.157" : "");
-                binding.status.setText(isChecked ? "CONNECTED" : "DISCONNECTED");
+                binding.ip.setVisibility(isChecked ? View.VISIBLE : View.GONE);
             }
         });
 

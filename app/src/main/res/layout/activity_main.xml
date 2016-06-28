@@ -7,58 +7,93 @@
         android:id="@+id/drawer_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="#000000"
         android:fitsSystemWindows="true"
+        tools:context=".ui.MainActivity"
         tools:openDrawer="close">
 
-        <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-            xmlns:tools="http://schemas.android.com/tools"
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/main_oval" />
+
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            tools:context=".ui.MainActivity">
+            android:background="@drawable/key_bg_repeat">
 
             <android.support.v7.widget.Toolbar
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
-                android:layout_height="?android:actionBarSize"
-                app:logo="@drawable/app_icon">
+                android:layout_height="?android:actionBarSize">
 
-                <com.cypherpunk.android.vpn.widget.TypefaceTextView
-                    android:id="@+id/title"
-                    style="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/app_name" />
+                <!--<com.cypherpunk.android.vpn.widget.TypefaceTextView-->
+                <!--android:id="@+id/title"-->
+                <!--style="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:text="@string/app_name" />-->
 
             </android.support.v7.widget.Toolbar>
+
+            <com.cypherpunk.android.vpn.widget.TypefaceTextView
+                android:id="@+id/app_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="138dp"
+                android:text="@string/app_name"
+                android:textAppearance="?android:textAppearanceLarge"
+                android:textSize="41sp" />
+
+            <com.cypherpunk.android.vpn.widget.TypefaceTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/app_name"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="11dp"
+                android:text="@string/title_sub_text"
+                android:textAppearance="?android:textAppearanceLarge"
+                android:textSize="16sp" />
+
+            <ImageView
+                android:id="@+id/icon"
+                android:layout_width="46dp"
+                android:layout_height="88dp"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:src="@drawable/app_icon"
+                tools:ignore="ContentDescription" />
 
             <android.support.v7.widget.SwitchCompat
                 android:id="@+id/connection_switch"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentTop="true"
+                android:layout_below="@id/icon"
                 android:layout_centerHorizontal="true"
-                android:layout_marginTop="117dp" />
-
-            <com.cypherpunk.android.vpn.widget.TypefaceTextView
-                android:id="@+id/status"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/connection_switch"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="20dp"
-                android:textAppearance="?android:textAppearanceLarge"
-                android:text="DISCONNECTED" />
+                android:layout_marginTop="40dp" />
 
             <com.cypherpunk.android.vpn.widget.TypefaceTextView
                 android:id="@+id/ip"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_below="@id/connection_switch"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="19dp"
-                android:layout_below="@id/status"
+                android:drawableLeft="@drawable/lock"
+                android:drawablePadding="13dp"
+                android:text="181.41.211.60"
                 android:textAppearance="?android:textAppearanceLarge"
-                tools:text="113.29.228.157" />
+                android:visibility="invisible"
+                tools:ignore="RtlHardcoded" />
 
+            <ImageView
+                android:layout_width="22dp"
+                android:layout_height="31.4dp"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="26dp"
+                android:background="@drawable/pin" />
         </RelativeLayout>
 
         <android.support.design.widget.NavigationView
