@@ -41,6 +41,7 @@ public class LoginActivity extends AppCompatActivity
 // Contacts permissions
 //        mayRequestContacts();
 
+        binding.email.requestFocus();
         binding.password.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
