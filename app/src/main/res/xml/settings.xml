@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory android:title="Simple Settings">
+
+        <Preference
+            android:key="mode_setting"
+            android:summary="Max speed"
+            android:title="Mode setting" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="Networks Settings">
+
+        <Preference android:title="Manage Trusted Networks" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="Advanced Settings">
+
+        <SwitchPreference
+            android:enabled="false"
+            android:key="cypherpunk"
+            android:title="Cypherpunk mode" />
+
+        <SwitchPreference
+            android:enabled="false"
+            android:key="protect_on_device_startup"
+            android:title="Protect on device startup" />
+
+        <SwitchPreference
+            android:enabled="false"
+            android:key="protect_on_untrusted_networks"
+            android:title="Protect on untrusted networks" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="Crypto Settings">
+
+        <Preference
+            android:enabled="false"
+            android:key="encryption"
+            android:summary="AES-128"
+            android:title="Encryption" />
+
+        <Preference
+            android:enabled="false"
+            android:key="authentication"
+            android:summary="SHA-1"
+            android:title="Authentication" />
+
+        <Preference
+            android:enabled="false"
+            android:key="handshake"
+            android:summary="RSA-2048"
+            android:title="Handshake" />
+    </PreferenceCategory>
+
+</PreferenceScreen>
