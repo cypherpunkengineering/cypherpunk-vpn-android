@@ -7,6 +7,12 @@
     <string name="action_sign_in">Sign in</string>
     <string name="error_field_required">This field is required</string>
     <string name="sign_in">Sign In</string>
+    <string name="button_sign_in">sign In</string>
+
+    <!-- sign up-->
+    <string name="sign_up">Sign Up</string>
+    <string name="sign_up_button">Sign Up</string>
+    <string name="send_email_button">Send Email</string>
 
     <!-- setting -->
     <string name="title_activity_settings">Settings</string>

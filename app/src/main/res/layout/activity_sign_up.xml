@@ -7,7 +7,7 @@
         android:background="@drawable/tutorial_background"
         android:gravity="center_horizontal"
         android:orientation="vertical"
-        tools:context=".ui.LoginActivity">
+        tools:context=".ui.SignUpActivity">
 
         <com.cypherpunk.android.vpn.widget.TypefaceTextView
             android:id="@+id/title"
@@ -37,7 +37,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
-                    android:text="@string/sign_in"
+                    android:text="@string/sign_up"
                     android:textColor="#ffffff"
                     android:textSize="16sp" />
 
@@ -57,35 +57,19 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="@string/prompt_email"
-                        android:imeOptions="actionNext"
+                        android:imeOptions="actionDone"
                         android:inputType="textEmailAddress"
                         android:maxLines="1"
                         android:singleLine="true" />
 
                 </android.support.design.widget.TextInputLayout>
 
-                <android.support.design.widget.TextInputLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <EditText
-                        android:id="@+id/password"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="@string/prompt_password"
-                        android:imeOptions="actionDone"
-                        android:inputType="textPassword"
-                        android:maxLines="1"
-                        android:singleLine="true" />
-
-                </android.support.design.widget.TextInputLayout>
-
                 <Button
-                    android:id="@+id/email_sign_in_button"
+                    android:id="@+id/send_email_button"
                     android:layout_width="match_parent"
                     android:layout_height="48dp"
                     android:layout_marginTop="16dp"
-                    android:text="@string/button_sign_in" />
+                    android:text="@string/send_email_button" />
 
             </LinearLayout>
 
