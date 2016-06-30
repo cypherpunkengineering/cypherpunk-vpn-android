@@ -4,6 +4,7 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@drawable/tutorial_background"
         android:gravity="center_horizontal"
         android:orientation="vertical"
         tools:context=".ui.LoginActivity">
@@ -14,6 +15,7 @@
             android:layout_width="wrap_content"
             android:layout_height="?android:actionBarSize"
             android:layout_gravity="center"
+            android:layout_marginTop="48dp"
             android:drawableLeft="@drawable/app_icon"
             android:gravity="center_vertical"
             android:text="@string/app_name"
@@ -42,9 +44,9 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="@string/prompt_email"
+                        android:imeOptions="actionNext"
                         android:inputType="textEmailAddress"
                         android:maxLines="1"
-                        android:imeOptions="actionNext"
                         android:singleLine="true" />
 
                 </android.support.design.widget.TextInputLayout>
@@ -69,7 +71,7 @@
                     android:id="@+id/email_sign_in_button"
                     style="?android:textAppearanceMedium"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="48dp"
                     android:layout_marginTop="16dp"
                     android:text="@string/action_sign_in"
                     android:textStyle="bold" />

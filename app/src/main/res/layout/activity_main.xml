@@ -7,20 +7,14 @@
         android:id="@+id/drawer_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#000000"
+        android:background="@drawable/main_background"
         android:fitsSystemWindows="true"
         tools:context=".ui.MainActivity"
         tools:openDrawer="close">
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/main_oval" />
-
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@drawable/key_bg_repeat">
+            android:layout_height="match_parent">
 
             <android.support.v7.widget.Toolbar
                 android:id="@+id/toolbar"
