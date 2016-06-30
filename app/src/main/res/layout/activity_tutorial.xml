@@ -31,7 +31,7 @@
         <TextView
             android:id="@+id/prev_button"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="48dp"
             android:layout_alignParentBottom="true"
             android:layout_alignParentLeft="true"
             android:layout_marginBottom="38dp"
@@ -40,7 +40,9 @@
             android:clickable="true"
             android:drawableLeft="@drawable/arrow_back"
             android:drawablePadding="8dp"
-            android:padding="8dp"
+            android:gravity="center_vertical"
+            android:paddingLeft="8dp"
+            android:paddingRight="8dp"
             android:text="@string/tutorial_prev"
             android:textColor="#ffffff"
             android:textSize="18sp"
@@ -51,7 +53,7 @@
         <TextView
             android:id="@+id/next_button"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="48dp"
             android:layout_alignParentBottom="true"
             android:layout_alignParentRight="true"
             android:layout_marginBottom="38dp"
@@ -60,7 +62,9 @@
             android:clickable="true"
             android:drawablePadding="8dp"
             android:drawableRight="@drawable/arrow_forward"
-            android:padding="8dp"
+            android:gravity="center_vertical"
+            android:paddingLeft="8dp"
+            android:paddingRight="8dp"
             android:text="@string/tutorial_next"
             android:textColor="#ffffff"
             android:textSize="18sp"
@@ -69,10 +73,11 @@
         <com.cypherpunk.android.vpn.widget.PageIndicator
             android:id="@+id/indicator"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignBaseline="@id/next_button"
+            android:layout_height="48dp"
             android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true" />
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="38dp"
+            android:gravity="center_vertical" />
 
     </RelativeLayout>
 
