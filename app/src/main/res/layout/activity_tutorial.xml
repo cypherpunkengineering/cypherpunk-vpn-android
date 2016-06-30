@@ -1,5 +1,4 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
     <RelativeLayout
@@ -67,18 +66,13 @@
             android:textSize="18sp"
             tools:ignore="RelativeOverlap,RtlHardcoded" />
 
-        <com.viewpagerindicator.CirclePageIndicator
+        <com.cypherpunk.android.vpn.widget.PageIndicator
             android:id="@+id/indicator"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignBaseline="@id/next_button"
             android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
-            app:fillColor="#ffffff"
-            app:pageColor="#979797"
-            app:radius="4dp"
-            app:snap="true"
-            app:strokeWidth="0dp" />
+            android:layout_centerHorizontal="true" />
 
     </RelativeLayout>
 

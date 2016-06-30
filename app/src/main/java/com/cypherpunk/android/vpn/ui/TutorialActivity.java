@@ -51,7 +51,7 @@ public class TutorialActivity extends AppCompatActivity {
                 });
         binding.pager.setAdapter(adapter);
         binding.indicator.setViewPager(binding.pager);
-        binding.indicator.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
+        binding.pager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
             @Override
             public void onPageSelected(int position) {
                 super.onPageSelected(position);

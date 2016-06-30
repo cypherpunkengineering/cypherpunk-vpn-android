@@ -41,5 +41,4 @@ dependencies {
     compile 'com.android.support:appcompat-v7:24.0.0'
     compile 'com.android.support:design:24.0.0'
     compile 'pub.devrel:easypermissions:0.1.7'
-    compile "fr.avianey.com.viewpagerindicator:library:2.4.1@aar"
 }
