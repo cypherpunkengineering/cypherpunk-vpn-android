@@ -46,7 +46,7 @@ public class TutorialActivity extends AppCompatActivity {
 
                     @Override
                     public void onCreateAccountButtonClick() {
-                        // TODO: Sign up screen
+                        startActivity(new Intent(TutorialActivity.this, SignUpActivity.class));
                     }
                 });
         binding.pager.setAdapter(adapter);

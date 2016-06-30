@@ -8,6 +8,7 @@ import android.databinding.DataBindingUtil;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.app.TaskStackBuilder;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
@@ -151,8 +152,11 @@ public class LoginActivity extends AppCompatActivity
             focusView.requestFocus();
         } else {
             // success
+            Intent intent = new Intent(this, MainActivity.class);
+            TaskStackBuilder builder = TaskStackBuilder.create(this);
+            builder.addNextIntent(intent);
+            builder.startActivities();
             finish();
-            startActivity(new Intent(this, MainActivity.class));
         }
     }
 }
