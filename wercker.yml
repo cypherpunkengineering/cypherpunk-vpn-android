@@ -15,3 +15,9 @@ build:
         url: $SLACK_URL
         channel: dev-notifications
         username: wercker
+deploy:
+    steps:
+        - script:
+            name: Upload apk to DeployGate
+            code: |
+              curl -F file=@app/build/outputs/apk/app-debug.apk -F token="$DEPLOYGATE_API_KEY" https://deploygate.com/api/users/uphyca/apps
