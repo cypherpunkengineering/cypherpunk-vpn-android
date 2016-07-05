@@ -20,7 +20,7 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import com.cypherpunk.android.vpn.R;
-import com.cypherpunk.android.vpn.databinding.ActivityLoginBinding;
+import com.cypherpunk.android.vpn.databinding.ActivitySignInBinding;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,17 +28,17 @@ import java.util.List;
 import pub.devrel.easypermissions.EasyPermissions;
 
 
-public class LoginActivity extends AppCompatActivity
+public class SignInActivity extends AppCompatActivity
         implements EasyPermissions.PermissionCallbacks {
 
     private static final int REQUEST_GET_ACCOUNTS = 0;
 
-    private ActivityLoginBinding binding;
+    private ActivitySignInBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_login);
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_sign_in);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             getWindow().getDecorView().setSystemUiVisibility(
@@ -52,17 +52,17 @@ public class LoginActivity extends AppCompatActivity
             @Override
             public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
                 if (id == EditorInfo.IME_ACTION_DONE) {
-                    attemptLogin();
+                    attemptSignIn();
                     return true;
                 }
                 return false;
             }
         });
 
-        binding.emailSignInButton.setOnClickListener(new OnClickListener() {
+        binding.signInButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                attemptLogin();
+                attemptSignIn();
             }
         });
     }
@@ -107,7 +107,7 @@ public class LoginActivity extends AppCompatActivity
 
     private void addEmailsToAutoComplete(List<String> emailAddressCollection) {
         ArrayAdapter<String> adapter =
-                new ArrayAdapter<>(LoginActivity.this,
+                new ArrayAdapter<>(SignInActivity.this,
                         android.R.layout.simple_dropdown_item_1line, emailAddressCollection);
 
         binding.email.setAdapter(adapter);
@@ -126,7 +126,7 @@ public class LoginActivity extends AppCompatActivity
         }
     }
 
-    private void attemptLogin() {
+    private void attemptSignIn() {
         binding.email.setError(null);
         binding.password.setError(null);
 

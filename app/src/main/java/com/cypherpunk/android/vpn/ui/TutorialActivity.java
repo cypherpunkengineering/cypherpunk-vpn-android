@@ -41,7 +41,7 @@ public class TutorialActivity extends AppCompatActivity {
                 new TutorialPagerAdapter.TutorialListener() {
                     @Override
                     public void onSignInButtonClick() {
-                        startActivity(new Intent(TutorialActivity.this, LoginActivity.class));
+                        startActivity(new Intent(TutorialActivity.this, SignInActivity.class));
                     }
 
                     @Override
