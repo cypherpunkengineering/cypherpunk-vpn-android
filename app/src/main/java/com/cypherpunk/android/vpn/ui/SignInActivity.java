@@ -59,7 +59,7 @@ public class SignInActivity extends AppCompatActivity
             }
         });
 
-        binding.emailSignInButton.setOnClickListener(new OnClickListener() {
+        binding.signInButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
                 attemptSignIn();
