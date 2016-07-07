@@ -14,12 +14,10 @@ import android.widget.ListView;
 
 import com.cypherpunk.android.vpn.R;
 
+public class SelectCityActivity extends AppCompatActivity {
 
-public class SelectRegionActivity extends AppCompatActivity {
-
-    public static String EXTRA_AREA = "area";
-    private static String[] AREA = {"US", "Europe", "Asia", "Australia", "South America", "USA"};
-    private static final int REQUEST_SELECT_REGION = 1;
+    private static String[] CITY = {"London", "Turkey", "Switzerland", "Sweden", "Singapore"};
+    public static String EXTRA_CITY = "city";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -28,37 +26,26 @@ public class SelectRegionActivity extends AppCompatActivity {
 
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
-            actionBar.setHomeAsUpIndicator(R.drawable.close);
+            String area = getIntent().getStringExtra(SelectRegionActivity.EXTRA_AREA);
+            actionBar.setTitle(area);
         }
 
         final ListView listView = new ListView(this);
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, R.layout.list_item_area);
-        adapter.addAll(AREA);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, R.layout.list_item_city);
+        adapter.addAll(CITY);
         listView.setAdapter(adapter);
         listView.setChoiceMode(AbsListView.CHOICE_MODE_SINGLE);
         setContentView(listView);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Intent intent = new Intent(SelectRegionActivity.this, SelectCityActivity.class);
-                intent.putExtra(EXTRA_AREA, AREA[listView.getCheckedItemPosition()]);
-                startActivityForResult(intent, REQUEST_SELECT_REGION);
+                Intent intent = new Intent();
+                intent.putExtra(EXTRA_CITY, CITY[listView.getCheckedItemPosition()]);
+                setResult(RESULT_OK, intent);
+                finish();
             }
         });
         listView.setItemChecked(0, true);
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == RESULT_OK) {
-            switch (requestCode) {
-                case REQUEST_SELECT_REGION:
-                    setResult(RESULT_OK, data);
-                    finish();
-                    break;
-            }
-        }
     }
 
     @Override

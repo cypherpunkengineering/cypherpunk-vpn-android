@@ -46,6 +46,9 @@
             android:name=".ui.region.SelectRegionActivity"
             android:label="@string/title_activity_select_region"
             android:theme="@style/AppTheme" />
+        <activity
+            android:name=".ui.region.SelectCityActivity"
+            android:theme="@style/AppTheme" />
     </application>
 
 </manifest>
