@@ -36,4 +36,7 @@
     <string name="tutorial_sign_in1">Do you have account already?</string>
     <string name="tutorial_sign_in2">"  Sign In"</string>    <!-- need space -->
 
+    <!-- select region -->
+    <string name="title_activity_select_region">Select region</string>
+
 </resources>

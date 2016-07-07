@@ -42,7 +42,10 @@
             android:name=".ui.settings.SettingsActivity"
             android:label="@string/title_activity_settings"
             android:theme="@style/AppTheme" />
-
+        <activity
+            android:name=".ui.region.SelectRegionActivity"
+            android:label="@string/title_activity_select_region"
+            android:theme="@style/AppTheme" />
     </application>
 
 </manifest>

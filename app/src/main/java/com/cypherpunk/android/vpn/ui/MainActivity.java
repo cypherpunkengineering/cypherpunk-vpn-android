@@ -16,6 +16,7 @@ import android.widget.CompoundButton;
 import com.cypherpunk.android.vpn.MyVpsService;
 import com.cypherpunk.android.vpn.R;
 import com.cypherpunk.android.vpn.databinding.ActivityMainBinding;
+import com.cypherpunk.android.vpn.ui.region.SelectRegionActivity;
 import com.cypherpunk.android.vpn.ui.settings.SettingsActivity;
 
 public class MainActivity extends AppCompatActivity
@@ -57,6 +58,12 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+        binding.pin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(MainActivity.this, SelectRegionActivity.class));
+            }
+        });
     }
 
     @Override

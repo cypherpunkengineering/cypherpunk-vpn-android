@@ -59,13 +59,26 @@
                 android:src="@drawable/app_icon"
                 tools:ignore="ContentDescription" />
 
-            <android.support.v7.widget.SwitchCompat
-                android:id="@+id/connection_switch"
+            <com.cypherpunk.android.vpn.widget.TypefaceTextView
+                android:id="@+id/region"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/icon"
                 android:layout_centerHorizontal="true"
-                android:layout_marginTop="40dp" />
+                android:layout_marginTop="19dp"
+                android:drawablePadding="13dp"
+                android:text="USA WEST"
+                android:textAppearance="?android:textAppearanceLarge"
+                android:textSize="28sp"
+                tools:ignore="RtlHardcoded" />
+
+            <android.support.v7.widget.SwitchCompat
+                android:id="@+id/connection_switch"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/region"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="16dp" />
 
             <com.cypherpunk.android.vpn.widget.TypefaceTextView
                 android:id="@+id/ip"
@@ -82,12 +95,16 @@
                 tools:ignore="RtlHardcoded" />
 
             <ImageView
-                android:layout_width="22dp"
-                android:layout_height="31.4dp"
+                android:id="@+id/pin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
                 android:layout_centerHorizontal="true"
-                android:layout_marginBottom="26dp"
-                android:background="@drawable/pin" />
+                android:layout_marginBottom="12dp"
+                android:background="?attr/selectableItemBackground"
+                android:clickable="true"
+                android:padding="16dp"
+                android:src="@drawable/pin" />
         </RelativeLayout>
 
         <android.support.design.widget.NavigationView
