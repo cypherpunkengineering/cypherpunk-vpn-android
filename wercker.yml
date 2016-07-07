@@ -20,4 +20,6 @@ deploy:
         - script:
             name: Upload apk to DeployGate
             code: |
+              apt-get update -y
+              apt-get install -y curl
               curl -F file=@app/build/outputs/apk/app-debug.apk -F token="$DEPLOYGATE_API_KEY" https://deploygate.com/api/users/uphyca/apps
