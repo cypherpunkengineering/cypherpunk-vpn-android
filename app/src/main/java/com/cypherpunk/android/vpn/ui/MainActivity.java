@@ -16,10 +16,14 @@ import android.widget.CompoundButton;
 import com.cypherpunk.android.vpn.MyVpsService;
 import com.cypherpunk.android.vpn.R;
 import com.cypherpunk.android.vpn.databinding.ActivityMainBinding;
+import com.cypherpunk.android.vpn.ui.region.SelectRegionActivity;
 import com.cypherpunk.android.vpn.ui.settings.SettingsActivity;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+
+    private static final int REQUEST_VPN_SERVICE = 0;
+    private static final int REQUEST_SELECT_REGION = 1;
 
     private ActivityMainBinding binding;
 
@@ -41,7 +45,7 @@ public class MainActivity extends AppCompatActivity
                     if (intent != null) {
                         startActivityForResult(intent, 0);
                     } else {
-                        onActivityResult(0, RESULT_OK, null);
+                        onActivityResult(REQUEST_VPN_SERVICE, RESULT_OK, null);
                     }
                 }
 
@@ -57,13 +61,28 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+        binding.pin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivityForResult(new Intent(MainActivity.this, SelectRegionActivity.class), REQUEST_SELECT_REGION);
+            }
+        });
     }
 
     @Override
-    protected void onActivityResult(int request, int result, Intent data) {
-        if (result == RESULT_OK) {
-            Intent intent = new Intent(this, MyVpsService.class);
-            startService(intent);
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK) {
+            switch (requestCode) {
+                case REQUEST_VPN_SERVICE:
+                    Intent intent = new Intent(this, MyVpsService.class);
+                    startService(intent);
+                    break;
+                case REQUEST_SELECT_REGION:
+                    String city = data.getStringExtra("city");
+                    binding.region.setText(city);
+                    break;
+            }
         }
     }
 
