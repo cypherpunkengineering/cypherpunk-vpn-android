@@ -2,5 +2,4 @@
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:drawable="@android:color/black" />
     <item android:drawable="@drawable/main_oval" />
-    <item android:drawable="@drawable/key_bg_repeat" />
 </layer-list>
