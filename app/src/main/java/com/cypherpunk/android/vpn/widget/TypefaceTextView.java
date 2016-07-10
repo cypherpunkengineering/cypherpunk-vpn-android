@@ -22,7 +22,9 @@ public class TypefaceTextView extends TextView {
 
     public TypefaceTextView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        Typeface tf = FontUtil.get(context);
-        setTypeface(tf);
+        if (!isInEditMode()) {
+            Typeface tf = FontUtil.get(context);
+            setTypeface(tf);
+        }
     }
 }
