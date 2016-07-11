@@ -30,10 +30,6 @@ public class KeyTextureView extends TextureView implements TextureView.SurfaceTe
 
         private static final int EXPECTING_RENDERING_FPS = 30;
 
-        public RenderingThread() {
-            super();
-        }
-
         @Override
         public void run() {
             final int timeAlignment = 1000 / EXPECTING_RENDERING_FPS;
@@ -136,10 +132,6 @@ public class KeyTextureView extends TextureView implements TextureView.SurfaceTe
     }
 
     private void drawTile(Canvas canvas) {
-        if (keyItems == null) {
-            return;
-        }
-
         for (KeyItem item : keyItems) {
             if (item == null) {
                 continue;
