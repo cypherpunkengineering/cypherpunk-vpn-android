@@ -78,7 +78,6 @@ public class KeyTextureView extends TextureView implements TextureView.SurfaceTe
 
     @Override
     public void onSurfaceTextureSizeChanged(SurfaceTexture surfaceTexture, int width, int height) {
-
     }
 
     @Override
@@ -101,7 +100,6 @@ public class KeyTextureView extends TextureView implements TextureView.SurfaceTe
 
     @Override
     public void onSurfaceTextureUpdated(SurfaceTexture surfaceTexture) {
-
     }
 
     private void calculateAndDrawTile() {
