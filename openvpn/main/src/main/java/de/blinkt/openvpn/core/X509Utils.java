@@ -9,7 +9,7 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.text.TextUtils;
 
-import de.blinkt.openvpn.R;
+import com.cypherpunk.android.vpn.R;
 import de.blinkt.openvpn.VpnProfile;
 import org.spongycastle.util.io.pem.PemObject;
 import org.spongycastle.util.io.pem.PemReader;

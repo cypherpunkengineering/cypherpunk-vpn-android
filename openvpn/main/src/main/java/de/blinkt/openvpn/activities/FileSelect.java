@@ -29,7 +29,7 @@ import android.os.Environment;
 import android.util.Base64;
 import android.widget.Toast;
 
-import de.blinkt.openvpn.R;
+import com.cypherpunk.android.vpn.R;
 import de.blinkt.openvpn.VpnProfile;
 import de.blinkt.openvpn.fragments.FileSelectionFragment;
 import de.blinkt.openvpn.fragments.InlineFileTab;

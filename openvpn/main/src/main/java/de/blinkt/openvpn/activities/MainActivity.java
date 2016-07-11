@@ -19,13 +19,13 @@ import android.support.v4n.view.ViewPager;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import de.blinkt.openvpn.R;
-import de.blinkt.openvpn.fragments.AboutFragment;
-import de.blinkt.openvpn.fragments.FaqFragment;
+import com.cypherpunk.android.vpn.R;
+//import de.blinkt.openvpn.fragments.AboutFragment;
+//import de.blinkt.openvpn.fragments.FaqFragment;
 import de.blinkt.openvpn.fragments.GeneralSettings;
-import de.blinkt.openvpn.fragments.LogFragment;
+//import de.blinkt.openvpn.fragments.LogFragment;
 import de.blinkt.openvpn.fragments.SendDumpFragment;
-import de.blinkt.openvpn.fragments.VPNProfileList;
+//import de.blinkt.openvpn.fragments.VPNProfileList;
 import de.blinkt.openvpn.views.ScreenSlidePagerAdapter;
 import de.blinkt.openvpn.views.SlidingTabLayout;
 import de.blinkt.openvpn.views.TabBarView;
@@ -54,19 +54,19 @@ public class MainActivity extends BaseActivity {
 
 
 
-        mPagerAdapter.addTab(R.string.vpn_list_title, VPNProfileList.class);
+        //mPagerAdapter.addTab(R.string.vpn_list_title, VPNProfileList.class);
 
         mPagerAdapter.addTab(R.string.generalsettings, GeneralSettings.class);
-        mPagerAdapter.addTab(R.string.faq, FaqFragment.class);
+        //mPagerAdapter.addTab(R.string.faq, FaqFragment.class);
 
         if(SendDumpFragment.getLastestDump(this)!=null) {
             mPagerAdapter.addTab(R.string.crashdump, SendDumpFragment.class);
         }
 
-        if (isDirectToTV())
-            mPagerAdapter.addTab(R.string.openvpn_log, LogFragment.class);
+        //if (isDirectToTV())
+            //mPagerAdapter.addTab(R.string.openvpn_log, LogFragment.class);
 
-        mPagerAdapter.addTab(R.string.about, AboutFragment.class);
+        //mPagerAdapter.addTab(R.string.about, AboutFragment.class);
         mPager.setAdapter(mPagerAdapter);
 
         TabBarView tabs = (TabBarView) findViewById(R.id.sliding_tabs);
@@ -113,8 +113,8 @@ public class MainActivity extends BaseActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId()==R.id.show_log){
-            Intent showLog = new Intent(this, LogWindow.class);
-            startActivity(showLog);
+            //Intent showLog = new Intent(this, LogWindow.class);
+            //startActivity(showLog);
         }
         return super.onOptionsItemSelected(item);
     }

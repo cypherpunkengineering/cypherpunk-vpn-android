@@ -45,7 +45,7 @@ import android.widget.TextView;
 
 import java.util.Locale;
 
-import de.blinkt.openvpn.R;
+import com.cypherpunk.android.vpn.R;
 
 public class PagerSlidingTabStrip extends HorizontalScrollView implements TabBarView {
 

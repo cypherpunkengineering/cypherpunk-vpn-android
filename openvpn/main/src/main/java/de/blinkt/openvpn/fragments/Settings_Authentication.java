@@ -18,7 +18,7 @@ import android.preference.Preference.OnPreferenceClickListener;
 import android.preference.SwitchPreference;
 import android.util.Pair;
 import de.blinkt.openvpn.activities.FileSelect;
-import de.blinkt.openvpn.R;
+import com.cypherpunk.android.vpn.R;
 import de.blinkt.openvpn.core.VpnStatus;
 import de.blinkt.openvpn.views.RemoteCNPreference;
 import de.blinkt.openvpn.VpnProfile;

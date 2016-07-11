@@ -11,6 +11,13 @@ android {
         versionCode 1
         versionName "1.0"
     }
+    sourceSets {
+        main {
+            java.srcDirs += '../openvpn/main/src/main/java'
+            res.srcDirs += '../openvpn/main/src/main/res'
+            assets.srcDirs += '../openvpn/main/src/main/assets'
+        }
+    }
     signingConfigs {
         debug {
             storeFile rootProject.file("certificate/debug.keystore")
@@ -41,4 +48,8 @@ dependencies {
     compile 'com.android.support:appcompat-v7:24.0.0'
     compile 'com.android.support:design:24.0.0'
     compile 'pub.devrel:easypermissions:0.1.7'
+
+    // needed to compile ics-openvpn gui fragments/activities
+    //compile 'com.android.support:cardview-v7:23.3.0'
+    //compile 'com.android.support:recyclerview-v7:23.3.0'
 }

@@ -32,8 +32,8 @@ import android.widget.TextView;
 
 import java.security.cert.X509Certificate;
 
-import de.blinkt.openvpn.R;
-import de.blinkt.openvpn.R.id;
+import com.cypherpunk.android.vpn.R;
+import com.cypherpunk.android.vpn.R.id;
 import de.blinkt.openvpn.VpnProfile;
 import de.blinkt.openvpn.core.ProfileManager;
 import de.blinkt.openvpn.core.X509Utils;

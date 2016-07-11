@@ -28,8 +28,8 @@ import java.util.LinkedList;
 import java.util.Locale;
 import java.util.Vector;
 
-import de.blinkt.openvpn.BuildConfig;
-import de.blinkt.openvpn.R;
+import com.cypherpunk.android.vpn.BuildConfig;
+import com.cypherpunk.android.vpn.R;
 import de.blinkt.openvpn.VpnProfile;
 import de.blinkt.openvpn.core.VpnStatus.ConnectionStatus;
 

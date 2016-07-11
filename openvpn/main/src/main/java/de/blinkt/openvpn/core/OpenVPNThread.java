@@ -24,7 +24,7 @@ import java.util.Map.Entry;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import de.blinkt.openvpn.R;
+import com.cypherpunk.android.vpn.R;
 import de.blinkt.openvpn.core.VpnStatus.ConnectionStatus;
 
 public class OpenVPNThread implements Runnable {

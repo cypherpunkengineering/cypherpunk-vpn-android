@@ -19,7 +19,7 @@ import java.util.PriorityQueue;
 import java.util.TreeSet;
 import java.util.Vector;
 
-import de.blinkt.openvpn.BuildConfig;
+import com.cypherpunk.android.vpn.BuildConfig;
 
 public class NetworkSpace {
 

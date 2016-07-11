@@ -11,7 +11,7 @@ import android.content.*;
 import android.os.IBinder;
 
 import de.blinkt.openvpn.LaunchVPN;
-import de.blinkt.openvpn.R;
+import com.cypherpunk.android.vpn.R;
 import de.blinkt.openvpn.VpnProfile;
 import de.blinkt.openvpn.core.OpenVPNService;
 import de.blinkt.openvpn.core.ProfileManager;

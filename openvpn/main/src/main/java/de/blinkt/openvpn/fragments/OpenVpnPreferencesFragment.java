@@ -7,7 +7,7 @@ package de.blinkt.openvpn.fragments;
 
 import android.os.Bundle;
 import android.preference.PreferenceFragment;
-import de.blinkt.openvpn.R;
+import com.cypherpunk.android.vpn.R;
 import de.blinkt.openvpn.VpnProfile;
 import de.blinkt.openvpn.core.ProfileManager;
 
