@@ -24,7 +24,7 @@ public class KeyTextureView extends TextureView implements TextureView.SurfaceTe
     private Bitmap bitmap;
     private float distanceY;
     private int allTileHeight;
-    private int keyHeight;
+    private int tileHeight;
 
     private final class RenderingThread extends Thread {
 
@@ -117,15 +117,15 @@ public class KeyTextureView extends TextureView implements TextureView.SurfaceTe
         bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.key_bg); //TODO: svg image...
         paint = new Paint();
 
-        keyHeight = bitmap.getHeight();
+        tileHeight = bitmap.getHeight();
         int tileWidth = bitmap.getWidth();
-        int tileRowCount = (int) Math.ceil((double) height / keyHeight) + 1;
+        int tileRowCount = (int) Math.ceil((double) height / tileHeight) + 1;
         int tileColumnCount = (int) Math.ceil((double) width / tileWidth);
-        allTileHeight = tileRowCount * keyHeight;
+        allTileHeight = tileRowCount * tileHeight;
         keyItems = new KeyItem[tileColumnCount * tileRowCount];
 
         for (int i = 0; i < tileRowCount; i++) {
-            int y = i * keyHeight;
+            int y = i * tileHeight;
             int x = 0;
             for (int j = 0; j < tileColumnCount; j++) {
                 KeyItem item = new KeyItem(x, y, j % 2 == 0);
@@ -150,13 +150,13 @@ public class KeyTextureView extends TextureView implements TextureView.SurfaceTe
             if (item.downAnimation) {
                 item.y += distanceY;
                 // タイルが下から画面外にでたら上に移動
-                if (item.y > allTileHeight - keyHeight) {
-                    item.y = -keyHeight;
+                if (item.y > allTileHeight - tileHeight) {
+                    item.y = -tileHeight;
                 }
             } else {
                 item.y -= distanceY;
                 // タイルが上から画面外にでたら下に移動
-                if (item.y < -keyHeight) {
+                if (item.y < -tileHeight) {
                     item.y += allTileHeight;
                 }
             }
