@@ -18,35 +18,24 @@ import com.cypherpunk.android.vpn.R;
 public class KeyTextureView extends TextureView implements TextureView.SurfaceTextureListener {
 
     private static final float SCROLL_DISTANCE_PER_MOVE = 0.2f; //0.2dp
+    private static final int EXPECTING_RENDERING_FPS = 30;
+
     private volatile RenderingThread renderingThread;
-    private KeyItem[] keyItems;
+    private final float distanceY;
     private Paint paint;
     private Bitmap bitmap;
-    private float distanceY;
     private int allTileHeight;
     private int tileHeight;
+    private int tileColumnCount;
+    private int tileWidth;
+    private int tileRowCount;
+    private long startTime;
 
     private final class RenderingThread extends Thread {
-
-        private static final int EXPECTING_RENDERING_FPS = 30;
-
         @Override
         public void run() {
-            final int timeAlignment = 1000 / EXPECTING_RENDERING_FPS;
             while (renderingThread != null) {
-
                 calculateAndDrawTile();
-
-                /*
-                 * EXPECTING_RENDERING_FPS で指定した fps で描画が行われるように、１回の loop の時間を調整する。
-                 * 処理の遅い端末だと描画処理が timeAlignment 以内に収まらず、fps が 半分になってしまう可能性がある。
-                 * EXPECTING_RENDERING_FPS が 60 の場合、timeAlignment は 16 なので、DEBUG_RENDERING_LOOP
-                 * を true にした時に表示される値が 16 前後になっていれば 60fps出ていることになる。
-                 *
-                 * L Preview on Nexus 5 や 4.4.4 on Xperia Z2 の実測では、calculateAndDrawTile() の実行に
-                 * 5-9msec くらいな感じで、 loop １回はほぼ 16msec。
-                 */
-                SystemClock.sleep(timeAlignment - SystemClock.uptimeMillis() % timeAlignment);
             }
         }
     }
@@ -78,7 +67,7 @@ public class KeyTextureView extends TextureView implements TextureView.SurfaceTe
 
     @Override
     public boolean onSurfaceTextureDestroyed(SurfaceTexture surfaceTexture) {
-        final Thread t = renderingThread;
+        Thread t = renderingThread;
         if (t != null) {
             renderingThread = null;
             try {
@@ -99,8 +88,8 @@ public class KeyTextureView extends TextureView implements TextureView.SurfaceTe
     }
 
     private void calculateAndDrawTile() {
-        if (keyItems == null) {
-            setupTile(getWidth(), getHeight());
+        if (bitmap == null) {
+            setupTile();
         }
 
         Canvas canvas = lockCanvas();
@@ -109,61 +98,43 @@ public class KeyTextureView extends TextureView implements TextureView.SurfaceTe
         unlockCanvasAndPost(canvas);
     }
 
-    private void setupTile(int width, int height) {
+    private void setupTile() {
         bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.key_bg); //TODO: svg image...
         paint = new Paint();
-
+        startTime = SystemClock.uptimeMillis();
         tileHeight = bitmap.getHeight();
-        int tileWidth = bitmap.getWidth();
-        int tileRowCount = (int) Math.ceil((double) height / tileHeight) + 1;
-        int tileColumnCount = (int) Math.ceil((double) width / tileWidth);
+        tileWidth = bitmap.getWidth();
+        tileRowCount = (int) Math.ceil((double) getHeight() / tileHeight) + 1;
+        tileColumnCount = (int) Math.ceil((double) getWidth() / tileWidth);
         allTileHeight = tileRowCount * tileHeight;
-        keyItems = new KeyItem[tileColumnCount * tileRowCount];
-
-        for (int i = 0; i < tileRowCount; i++) {
-            int y = i * tileHeight;
-            int x = 0;
-            for (int j = 0; j < tileColumnCount; j++) {
-                KeyItem item = new KeyItem(x, y, j % 2 == 0);
-                keyItems[i * tileColumnCount + j] = item;
-                x += tileWidth;
-            }
-        }
     }
 
     private void drawTile(Canvas canvas) {
-        for (KeyItem item : keyItems) {
-            if (item == null) {
-                continue;
-            }
+        float a = (SystemClock.uptimeMillis() - startTime) / (1000 / EXPECTING_RENDERING_FPS);
+        for (int i = 0; i < tileRowCount; i++) {
+            int x = 0;
+            for (int j = 0; j < tileColumnCount; j++) {
+                float y = i * tileHeight;
+                if (j % 2 == 0) {
+                    y += a * distanceY;
 
-            canvas.drawBitmap(bitmap, item.x, item.y, paint);
+                    // タイルが下から画面外にでたら上に移動
+                    if (y > allTileHeight - tileHeight) {
+                        int b = (int) (y / (allTileHeight - tileHeight));
+                        y -= allTileHeight * b;
+                    }
+                } else {
+                    y += a * -distanceY;
 
-            if (item.downAnimation) {
-                item.y += distanceY;
-                // タイルが下から画面外にでたら上に移動
-                if (item.y > allTileHeight - tileHeight) {
-                    item.y = -tileHeight;
+                    // タイルが上から画面外にでたら下に移動
+                    if (y < -tileHeight) {
+                        int b = (int) (y / -allTileHeight) + 1;
+                        y += allTileHeight * b;
+                    }
                 }
-            } else {
-                item.y -= distanceY;
-                // タイルが上から画面外にでたら下に移動
-                if (item.y < -tileHeight) {
-                    item.y += allTileHeight;
-                }
+                canvas.drawBitmap(bitmap, x, y, paint);
+                x += tileWidth;
             }
-        }
-    }
-
-    private static class KeyItem {
-        public int x;
-        public float y;
-        public boolean downAnimation; //  key image transition direction
-
-        public KeyItem(int x, int y, boolean down) {
-            this.x = x;
-            this.y = y;
-            this.downAnimation = down;
         }
     }
 }
