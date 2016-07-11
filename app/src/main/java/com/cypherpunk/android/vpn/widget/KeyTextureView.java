@@ -110,13 +110,13 @@ public class KeyTextureView extends TextureView implements TextureView.SurfaceTe
     }
 
     private void drawTile(Canvas canvas) {
-        float a = (SystemClock.uptimeMillis() - startTime) / (1000 / EXPECTING_RENDERING_FPS);
+        float time = (SystemClock.uptimeMillis() - startTime) / (1000 / EXPECTING_RENDERING_FPS);
         for (int i = 0; i < tileRowCount; i++) {
             int x = 0;
             for (int j = 0; j < tileColumnCount; j++) {
                 float y = i * tileHeight;
                 if (j % 2 == 0) {
-                    y += a * distanceY;
+                    y += time * distanceY;
 
                     // タイルが下から画面外にでたら上に移動
                     if (y > allTileHeight - tileHeight) {
@@ -124,7 +124,7 @@ public class KeyTextureView extends TextureView implements TextureView.SurfaceTe
                         y -= allTileHeight * b;
                     }
                 } else {
-                    y += a * -distanceY;
+                    y += time * -distanceY;
 
                     // タイルが上から画面外にでたら下に移動
                     if (y < -tileHeight) {
