@@ -116,16 +116,16 @@ public class KeyTextureView extends TextureView implements TextureView.SurfaceTe
 
         int x = 0;
         for (int j = 0; j < tileColumnCount; j++) {
-            boolean direction = j % 2 == 0;
+            boolean down = j % 2 == 0;
             for (int i = 0; i < tileRowCount; i++) {
                 int position = i * tileHeight;
-                if (direction) {
+                if (down) {
                     canvas.drawBitmap(bitmap, x, position + translateY, paint);
                 } else {
                     canvas.drawBitmap(bitmap, x, position - translateY, paint);
                 }
             }
-            if (direction) {
+            if (down) {
                 canvas.drawBitmap(bitmap, x, -(tileHeight - translateY), paint);
             }
             x += tileWidth;
