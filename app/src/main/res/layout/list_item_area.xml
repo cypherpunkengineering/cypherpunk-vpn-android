@@ -10,5 +10,5 @@
     android:paddingLeft="16dp"
     android:paddingRight="16dp"
     android:textColor="@drawable/select_area_text"
-    android:textSize="24sp"
+    android:textSize="21sp"
     tools:text="US" />
