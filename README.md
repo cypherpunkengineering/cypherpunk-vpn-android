@@ -10,7 +10,7 @@ Building:
 
 ```
 git submodule update --init
-cd main
+cd openvpn/main/
 ./misc/build.sh
 cd ..
 ./gradlew build (or just use Android Studio)
