@@ -24,7 +24,6 @@ public class KeyTextureView extends TextureView implements TextureView.SurfaceTe
     private final float distanceY;
     private Paint paint;
     private Bitmap bitmap;
-    private int allTileHeight;
     private int tileHeight;
     private int tileColumnCount;
     private int tileWidth;
@@ -106,35 +105,30 @@ public class KeyTextureView extends TextureView implements TextureView.SurfaceTe
         tileWidth = bitmap.getWidth();
         tileRowCount = (int) Math.ceil((double) getHeight() / tileHeight) + 1;
         tileColumnCount = (int) Math.ceil((double) getWidth() / tileWidth);
-        allTileHeight = tileRowCount * tileHeight;
     }
 
     private void drawTile(Canvas canvas) {
         float time = (SystemClock.uptimeMillis() - startTime) / (1000 / EXPECTING_RENDERING_FPS);
-        for (int i = 0; i < tileRowCount; i++) {
-            int x = 0;
-            for (int j = 0; j < tileColumnCount; j++) {
-                float y = i * tileHeight;
-                if (j % 2 == 0) {
-                    y += time * distanceY;
+        float translateY = time * distanceY;
+        if (translateY > tileHeight) {
+            translateY = (translateY % tileHeight);
+        }
 
-                    // タイルが下から画面外にでたら上に移動
-                    if (y > allTileHeight - tileHeight) {
-                        int b = (int) (y / (allTileHeight - tileHeight));
-                        y -= allTileHeight * b;
-                    }
+        int x = 0;
+        for (int j = 0; j < tileColumnCount; j++) {
+            boolean direction = j % 2 == 0;
+            for (int i = 0; i < tileRowCount; i++) {
+                int position = i * tileHeight;
+                if (direction) {
+                    canvas.drawBitmap(bitmap, x, position + translateY, paint);
                 } else {
-                    y += time * -distanceY;
-
-                    // タイルが上から画面外にでたら下に移動
-                    if (y < -tileHeight) {
-                        int b = (int) (y / -allTileHeight) + 1;
-                        y += allTileHeight * b;
-                    }
+                    canvas.drawBitmap(bitmap, x, position - translateY, paint);
                 }
-                canvas.drawBitmap(bitmap, x, y, paint);
-                x += tileWidth;
             }
+            if (direction) {
+                canvas.drawBitmap(bitmap, x, -(tileHeight - translateY), paint);
+            }
+            x += tileWidth;
         }
     }
 }
