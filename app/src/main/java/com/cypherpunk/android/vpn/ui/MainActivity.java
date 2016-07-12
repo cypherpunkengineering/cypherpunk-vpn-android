@@ -13,7 +13,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.CompoundButton;
 
-import com.cypherpunk.android.vpn.MyVpsService;
+import com.cypherpunk.android.vpn.CypherpunkVPN;
 import com.cypherpunk.android.vpn.R;
 import com.cypherpunk.android.vpn.databinding.ActivityMainBinding;
 import com.cypherpunk.android.vpn.ui.region.SelectRegionActivity;
@@ -22,8 +22,9 @@ import com.cypherpunk.android.vpn.ui.settings.SettingsActivity;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-    private static final int REQUEST_VPN_SERVICE = 0;
-    private static final int REQUEST_SELECT_REGION = 1;
+    private static final int REQUEST_VPN_START = 0;
+    private static final int REQUEST_VPN_STOP = 1;
+    private static final int REQUEST_SELECT_REGION = 2;
 
     private ActivityMainBinding binding;
 
@@ -43,10 +44,14 @@ public class MainActivity extends AppCompatActivity
                 if (isChecked) {
                     Intent intent = VpnService.prepare(MainActivity.this);
                     if (intent != null) {
-                        startActivityForResult(intent, 0);
+                        startActivityForResult(intent, REQUEST_VPN_START);
                     } else {
-                        onActivityResult(REQUEST_VPN_SERVICE, RESULT_OK, null);
+                        onActivityResult(REQUEST_VPN_START, RESULT_OK, null);
                     }
+                }
+                else
+                {
+                    onActivityResult(REQUEST_VPN_STOP, RESULT_OK, null);
                 }
 
                 binding.ip.setVisibility(isChecked ? View.VISIBLE : View.GONE);
@@ -74,9 +79,11 @@ public class MainActivity extends AppCompatActivity
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK) {
             switch (requestCode) {
-                case REQUEST_VPN_SERVICE:
-                    Intent intent = new Intent(this, MyVpsService.class);
-                    startService(intent);
+                case REQUEST_VPN_START:
+                    CypherpunkVPN.start(getApplicationContext(), getBaseContext());
+                    break;
+                case REQUEST_VPN_STOP:
+                    CypherpunkVPN.stop(getApplicationContext(), getBaseContext());
                     break;
                 case REQUEST_SELECT_REGION:
                     String city = data.getStringExtra("city");
@@ -95,4 +102,5 @@ public class MainActivity extends AppCompatActivity
         }
         return false;
     }
+
 }

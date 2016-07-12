@@ -15,7 +15,9 @@ android {
         main {
             java.srcDirs += '../openvpn/main/src/main/java'
             res.srcDirs += '../openvpn/main/src/main/res'
-            assets.srcDirs += '../openvpn/main/src/main/assets'
+            assets.srcDirs += [ '../openvpn/main/src/main/assets', '../openvpn/main/ovpnlibs/assets' ]
+            jniLibs.srcDirs += '../openvpn/main/ovpnlibs/jniLibs'
+            jni.srcDirs = [] // disable automatic ndk-build
         }
     }
     signingConfigs {

@@ -1,0 +1,6 @@
+[submodule "openvpn/main/openssl"]
+	path = openvpn/main/openssl
+	url = ssh://git@github.com/cypherpunkengineering/android-openssl
+[submodule "openvpn/main/openvpn"]
+	path = openvpn/main/openvpn
+	url = ssh://git@github.com/cypherpunkengineering/android-openvpn
