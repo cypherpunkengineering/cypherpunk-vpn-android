@@ -1,10 +1,41 @@
 box: uphyca/android
 build:
   steps:
+    - install-packages:
+        packages: openssh-client git unzip make file
+    - add-ssh-key:
+        keyname: cypherpunkbuilder
+        host: github.com
+    - add-to-known_hosts:
+        hostname: github.com
+        fingerprint: 16:27:ac:a5:76:28:2d:36:63:1b:56:4d:eb:df:a6:48
     - script:
-        name: build
+        name: initialize git submodules
         code: |
-          gradle -PdisablePreDex --project-cache-dir=$WERCKER_CACHE_DIR build
+            git submodule update --init
+    - script:
+        name: install android ndk
+        code: |
+            export ANDROID_NDK_VERSION=r12b
+            wget -q https://dl.google.com/android/repository/android-ndk-${ANDROID_NDK_VERSION}-linux-x86_64.zip
+            unzip android-ndk-${ANDROID_NDK_VERSION}-linux-x86_64.zip
+            export ANDROID_NDK_HOME="${PWD}/android-ndk-${ANDROID_NDK_VERSION}"
+            export PATH=$PATH:${ANDROID_NDK_HOME}
+    - script:
+        name: build native libraries
+        code: |
+            cd openvpn/main/
+            ./misc/build-native.sh
+            cd ../../
+    - script:
+        name: build android app
+        code: |
+            gradle -PdisablePreDex --project-cache-dir=$WERCKER_CACHE_DIR build
+    - script:
+        name: cleanup
+        code: |
+            rm -rf ${ANDROID_NDK_HOME}
+            rm -rf openvpn/main/obj/
   after-steps:
     - script:
         name: install curl
