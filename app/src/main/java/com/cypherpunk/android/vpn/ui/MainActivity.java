@@ -48,9 +48,7 @@ public class MainActivity extends AppCompatActivity
                     } else {
                         onActivityResult(REQUEST_VPN_START, RESULT_OK, null);
                     }
-                }
-                else
-                {
+                } else {
                     onActivityResult(REQUEST_VPN_STOP, RESULT_OK, null);
                 }
 
@@ -81,9 +79,11 @@ public class MainActivity extends AppCompatActivity
             switch (requestCode) {
                 case REQUEST_VPN_START:
                     CypherpunkVPN.start(getApplicationContext(), getBaseContext());
+                    binding.keyTexture.startAnimation();
                     break;
                 case REQUEST_VPN_STOP:
                     CypherpunkVPN.stop(getApplicationContext(), getBaseContext());
+                    binding.keyTexture.stopAnimation();
                     break;
                 case REQUEST_SELECT_REGION:
                     String city = data.getStringExtra("city");
