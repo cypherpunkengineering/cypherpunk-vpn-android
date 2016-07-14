@@ -29,12 +29,16 @@ public class KeyTextureView extends TextureView implements TextureView.SurfaceTe
     private int tileWidth;
     private int tileRowCount;
     private long startTime;
+    private long stopTime;
+    private boolean stop = true;
 
     private final class RenderingThread extends Thread {
         @Override
         public void run() {
             while (renderingThread != null) {
-                calculateAndDrawTile();
+                if (!stop) {
+                    calculateAndDrawTile();
+                }
             }
         }
     }
@@ -56,8 +60,12 @@ public class KeyTextureView extends TextureView implements TextureView.SurfaceTe
 
     @Override
     public void onSurfaceTextureAvailable(SurfaceTexture surfaceTexture, int width, int height) {
-        renderingThread = new RenderingThread();
-        renderingThread.start();
+        startTime = SystemClock.uptimeMillis();
+        stopTime = SystemClock.uptimeMillis();
+        calculateAndDrawTile();
+        if (!stop) {
+            startAnimation();
+        }
     }
 
     @Override
@@ -97,10 +105,23 @@ public class KeyTextureView extends TextureView implements TextureView.SurfaceTe
         unlockCanvasAndPost(canvas);
     }
 
+    public void startAnimation() {
+        if (renderingThread == null) {
+            renderingThread = new RenderingThread();
+            renderingThread.start();
+        }
+        startTime += SystemClock.uptimeMillis() - stopTime;
+        stop = false;
+    }
+
+    public void stopAnimation() {
+        stop = true;
+        stopTime = SystemClock.uptimeMillis();
+    }
+
     private void setupTile() {
         bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.key_bg); //TODO: svg image...
         paint = new Paint();
-        startTime = SystemClock.uptimeMillis();
         tileHeight = bitmap.getHeight();
         tileWidth = bitmap.getWidth();
         tileRowCount = (int) Math.ceil((double) getHeight() / tileHeight) + 1;

@@ -13,6 +13,7 @@
         tools:openDrawer="close">
 
         <com.cypherpunk.android.vpn.widget.KeyTextureView
+            android:id="@+id/key_texture"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 
