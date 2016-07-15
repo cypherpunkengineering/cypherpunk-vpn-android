@@ -9,35 +9,136 @@ import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.SurfaceTexture;
 import android.os.SystemClock;
+import android.support.annotation.IntDef;
 import android.util.AttributeSet;
 import android.view.TextureView;
 
 import com.cypherpunk.android.vpn.R;
 
+import java.lang.annotation.Retention;
+
+import static java.lang.annotation.RetentionPolicy.SOURCE;
+
 
 public class KeyTextureView extends TextureView implements TextureView.SurfaceTextureListener {
 
-    private static final float SCROLL_DISTANCE_PER_MOVE = 0.2f; //0.2dp
-    private static final int EXPECTING_RENDERING_FPS = 30;
+    private static final float SCROLL_DISTANCE_PER_SEC_IN_DP = 6f;
 
     private volatile RenderingThread renderingThread;
-    private final float distanceY;
-    private Paint paint;
-    private Bitmap bitmap;
-    private int tileHeight;
-    private int tileColumnCount;
-    private int tileWidth;
-    private int tileRowCount;
-    private long startTime;
-    private long stopTime;
-    private boolean stop = true;
+    private final float scrollDistancePerSec; // in px
+    private volatile long startTime;
+    private float lastOffset = 0f;
+
+    @Retention(SOURCE)
+    @IntDef({STATE_RUNNING, STATE_STOPPING, STATE_STOPPED})
+    private @interface AnimationState {
+    }
+
+    private static final int STATE_RUNNING = 0;
+    private static final int STATE_STOPPING = 1;
+    private static final int STATE_STOPPED = 2;
+
+    @AnimationState
+    private volatile int animationState = STATE_STOPPED;
+
+    private final Object monitor = new Object(); // for animationState
 
     private final class RenderingThread extends Thread {
+        private Bitmap bitmap;
+        private Paint paint;
+        private int tileHeight;
+        private int tileColumnCount;
+        private int tileWidth;
+        private int tileRowCount;
+
         @Override
         public void run() {
+            if (bitmap == null) {
+                setupTile();
+            }
+
             while (renderingThread != null) {
-                if (!stop) {
-                    calculateAndDrawTile();
+                drawTiles();
+                sleepIfStopped();
+            }
+        }
+
+        private void setupTile() {
+            bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.key_bg); //TODO: svg image...
+            paint = new Paint();
+            tileHeight = bitmap.getHeight();
+            tileWidth = bitmap.getWidth();
+            tileRowCount = (int) Math.ceil((double) getHeight() / tileHeight) + 1;
+            tileColumnCount = (int) Math.ceil((double) getWidth() / tileWidth);
+        }
+
+        private void drawTiles() {
+            Canvas canvas = lockCanvas();
+            canvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR);
+            drawTilesInner(canvas);
+            unlockCanvasAndPost(canvas);
+        }
+
+        private void drawTilesInner(Canvas canvas) {
+            float offset;
+            synchronized (monitor) {
+                switch (animationState) {
+                    case KeyTextureView.STATE_RUNNING:
+                        offset = calculateOffsetFromTime();
+                        break;
+                    case KeyTextureView.STATE_STOPPING:
+                        offset = calculateOffsetFromTime();
+                        final float halfTileHeight = tileHeight * 0.5f;
+                        if (halfTileHeight <= lastOffset && offset < lastOffset) {
+                            // キリの良い所までアニメーションしたので止める
+                            offset = 0f;
+                            animationState = STATE_STOPPED;
+                        }
+                        if (lastOffset < halfTileHeight && (offset < lastOffset || halfTileHeight <= offset)) {
+                            // キリの良い所までアニメーションしたので止める
+                            offset = halfTileHeight;
+                            animationState = STATE_STOPPED;
+                        }
+                        break;
+                    case KeyTextureView.STATE_STOPPED:
+                        offset = lastOffset;
+                        break;
+                    default:
+                        // unknown state
+                        return;
+                }
+            }
+
+            float x = 0;
+            for (int j = 0; j < tileColumnCount; j++) {
+                boolean down = j % 2 == 0;
+                float y = down ? (offset - tileHeight) : -offset;
+
+                for (int i = 0; i < tileRowCount; i++) {
+                    canvas.drawBitmap(bitmap, x, y, paint);
+                    y += tileHeight;
+                }
+                x += tileWidth;
+            }
+            lastOffset = offset;
+        }
+
+        private float calculateOffsetFromTime() {
+            final long elapsedTime = SystemClock.uptimeMillis() - startTime;
+            float offset = elapsedTime * scrollDistancePerSec / 1000;
+            if (offset > tileHeight) {
+                offset = (offset % tileHeight);
+            }
+            return offset;
+        }
+
+        private void sleepIfStopped() {
+            synchronized (monitor) {
+                if (animationState == STATE_STOPPED) {
+                    try {
+                        monitor.wait();
+                    } catch (InterruptedException ignored) {
+                    }
                 }
             }
         }
@@ -53,18 +154,16 @@ public class KeyTextureView extends TextureView implements TextureView.SurfaceTe
 
     public KeyTextureView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        distanceY = getResources().getDisplayMetrics().density * SCROLL_DISTANCE_PER_MOVE;
+        scrollDistancePerSec = getResources().getDisplayMetrics().density * SCROLL_DISTANCE_PER_SEC_IN_DP;
         setOpaque(false);
         setSurfaceTextureListener(this);
     }
 
     @Override
     public void onSurfaceTextureAvailable(SurfaceTexture surfaceTexture, int width, int height) {
-        startTime = SystemClock.uptimeMillis();
-        stopTime = SystemClock.uptimeMillis();
-        calculateAndDrawTile();
-        if (!stop) {
-            startAnimation();
+        if (renderingThread == null) {
+            renderingThread = new RenderingThread();
+            renderingThread.start();
         }
     }
 
@@ -77,6 +176,10 @@ public class KeyTextureView extends TextureView implements TextureView.SurfaceTe
         Thread t = renderingThread;
         if (t != null) {
             renderingThread = null;
+
+            synchronized (monitor) {
+                monitor.notifyAll();
+            }
             try {
                 /*
                  * onSurfaceTextureDestroyed が true を返したあとで Texture に操作を行わないようにするため
@@ -94,57 +197,22 @@ public class KeyTextureView extends TextureView implements TextureView.SurfaceTe
     public void onSurfaceTextureUpdated(SurfaceTexture surfaceTexture) {
     }
 
-    private void calculateAndDrawTile() {
-        if (bitmap == null) {
-            setupTile();
-        }
-
-        Canvas canvas = lockCanvas();
-        canvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR);
-        drawTile(canvas);
-        unlockCanvasAndPost(canvas);
-    }
-
     public void startAnimation() {
-        if (renderingThread == null) {
-            renderingThread = new RenderingThread();
-            renderingThread.start();
+        synchronized (monitor) {
+            if (animationState == STATE_STOPPED) {
+                startTime = SystemClock.uptimeMillis() - (long) (lastOffset / scrollDistancePerSec * 1000);
+            }
+            animationState = STATE_RUNNING;
+
+            monitor.notifyAll();
         }
-        startTime += SystemClock.uptimeMillis() - stopTime;
-        stop = false;
     }
 
     public void stopAnimation() {
-        stop = true;
-        stopTime = SystemClock.uptimeMillis();
-    }
-
-    private void setupTile() {
-        bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.key_bg); //TODO: svg image...
-        paint = new Paint();
-        tileHeight = bitmap.getHeight();
-        tileWidth = bitmap.getWidth();
-        tileRowCount = (int) Math.ceil((double) getHeight() / tileHeight) + 1;
-        tileColumnCount = (int) Math.ceil((double) getWidth() / tileWidth);
-    }
-
-    private void drawTile(Canvas canvas) {
-        float time = (SystemClock.uptimeMillis() - startTime) / (1000 / EXPECTING_RENDERING_FPS);
-        float translateY = time * distanceY;
-        if (translateY > tileHeight) {
-            translateY = (translateY % tileHeight);
-        }
-
-        float x = 0;
-        for (int j = 0; j < tileColumnCount; j++) {
-            boolean down = j % 2 == 0;
-            float y = down ? (translateY - tileHeight) : -translateY;
-
-            for (int i = 0; i < tileRowCount; i++) {
-                canvas.drawBitmap(bitmap, x, y, paint);
-                y += tileHeight;
+        synchronized (monitor) {
+            if (animationState == STATE_RUNNING) {
+                animationState = STATE_STOPPING;
             }
-            x += tileWidth;
         }
     }
 }
