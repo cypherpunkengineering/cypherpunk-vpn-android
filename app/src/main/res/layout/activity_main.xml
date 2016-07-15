@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
+    <android.support.v4.widget.DrawerLayout
         android:id="@+id/drawer_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -26,12 +26,17 @@
                 android:layout_width="match_parent"
                 android:layout_height="?android:actionBarSize">
 
-                <!--<com.cypherpunk.android.vpn.widget.TypefaceTextView-->
-                <!--android:id="@+id/title"-->
-                <!--style="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:text="@string/app_name" />-->
+                <com.cypherpunk.android.vpn.widget.TypefaceTextView
+                    android:id="@+id/title"
+                    style="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="?android:actionBarSize"
+                    android:layout_centerHorizontal="true"
+                    android:layout_gravity="center"
+                    android:drawableLeft="@drawable/app_icon"
+                    android:gravity="center_vertical"
+                    android:text="@string/app_name"
+                    tools:ignore="RtlHardcoded" />
 
             </android.support.v7.widget.Toolbar>
 
@@ -40,64 +45,38 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
-                android:layout_marginTop="138dp"
+                android:layout_marginBottom="12dp"
+                android:layout_marginTop="100dp"
                 android:text="@string/app_name"
                 android:textAppearance="?android:textAppearanceLarge"
                 android:textSize="41sp" />
-
-            <com.cypherpunk.android.vpn.widget.TypefaceTextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/app_name"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="11dp"
-                android:text="@string/title_sub_text"
-                android:textAppearance="?android:textAppearanceLarge"
-                android:textSize="16sp" />
 
             <ImageView
                 android:id="@+id/icon"
                 android:layout_width="46dp"
                 android:layout_height="88dp"
+                android:layout_below="@id/app_name"
                 android:layout_centerHorizontal="true"
-                android:layout_centerVertical="true"
                 android:src="@drawable/app_icon"
                 tools:ignore="ContentDescription" />
 
             <com.cypherpunk.android.vpn.widget.TypefaceTextView
-                android:id="@+id/region"
+                android:id="@+id/connection_status"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/icon"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="19dp"
-                android:drawablePadding="13dp"
-                android:text="USA WEST"
-                android:textAppearance="?android:textAppearanceLarge"
-                android:textSize="28sp"
-                tools:ignore="RtlHardcoded" />
+                android:text="@string/status_disconnected"
+                android:textSize="18sp" />
 
             <android.support.v7.widget.SwitchCompat
                 android:id="@+id/connection_switch"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/region"
+                android:layout_below="@id/connection_status"
                 android:layout_centerHorizontal="true"
-                android:layout_marginTop="16dp" />
-
-            <com.cypherpunk.android.vpn.widget.TypefaceTextView
-                android:id="@+id/ip"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/connection_switch"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="19dp"
-                android:drawableLeft="@drawable/lock"
-                android:drawablePadding="13dp"
-                android:text="181.41.211.60"
-                android:textAppearance="?android:textAppearanceLarge"
-                android:visibility="invisible"
-                tools:ignore="RtlHardcoded" />
+                android:layout_marginTop="8dp" />
 
             <ImageView
                 android:id="@+id/pin"
@@ -109,7 +88,21 @@
                 android:background="?attr/selectableItemBackground"
                 android:clickable="true"
                 android:padding="16dp"
-                android:src="@drawable/pin" />
+                android:src="@drawable/pin"
+                tools:ignore="ContentDescription" />
+
+            <com.cypherpunk.android.vpn.widget.TypefaceTextView
+                android:id="@+id/region"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_above="@id/pin"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="19dp"
+                android:drawablePadding="13dp"
+                android:text="USA WEST"
+                android:textAppearance="?android:textAppearanceLarge"
+                android:textSize="28sp"
+                tools:ignore="RtlHardcoded" />
         </RelativeLayout>
 
         <android.support.design.widget.NavigationView

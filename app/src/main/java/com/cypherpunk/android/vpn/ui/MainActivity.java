@@ -19,8 +19,10 @@ import com.cypherpunk.android.vpn.databinding.ActivityMainBinding;
 import com.cypherpunk.android.vpn.ui.region.SelectRegionActivity;
 import com.cypherpunk.android.vpn.ui.settings.SettingsActivity;
 
+import de.blinkt.openvpn.core.VpnStatus;
+
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener, VpnStatus.StateListener {
 
     private static final int REQUEST_VPN_START = 0;
     private static final int REQUEST_VPN_STOP = 1;
@@ -51,8 +53,6 @@ public class MainActivity extends AppCompatActivity
                 } else {
                     onActivityResult(REQUEST_VPN_STOP, RESULT_OK, null);
                 }
-
-                binding.ip.setVisibility(isChecked ? View.VISIBLE : View.GONE);
             }
         });
 
@@ -70,6 +70,8 @@ public class MainActivity extends AppCompatActivity
                 startActivityForResult(new Intent(MainActivity.this, SelectRegionActivity.class), REQUEST_SELECT_REGION);
             }
         });
+
+        VpnStatus.addStateListener(this);
     }
 
     @Override
@@ -79,11 +81,10 @@ public class MainActivity extends AppCompatActivity
             switch (requestCode) {
                 case REQUEST_VPN_START:
                     CypherpunkVPN.start(getApplicationContext(), getBaseContext());
-                    binding.keyTexture.startAnimation();
+                    binding.connectionStatus.setText(R.string.status_connecting);
                     break;
                 case REQUEST_VPN_STOP:
                     CypherpunkVPN.stop(getApplicationContext(), getBaseContext());
-                    binding.keyTexture.stopAnimation();
                     break;
                 case REQUEST_SELECT_REGION:
                     String city = data.getStringExtra("city");
@@ -103,4 +104,35 @@ public class MainActivity extends AppCompatActivity
         return false;
     }
 
+    @Override
+    public void updateState(String state, String logmessage,
+                            int localizedResId, VpnStatus.ConnectionStatus level) {
+        if (level == VpnStatus.ConnectionStatus.LEVEL_CONNECTED) {
+            onVpnConnected();
+        } else if (level == VpnStatus.ConnectionStatus.LEVEL_NOTCONNECTED
+                || level == VpnStatus.ConnectionStatus.LEVEL_NONETWORK) {
+            onVpnDisconnected();
+        }
+    }
+
+    private void onVpnConnected() {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                binding.keyTexture.startAnimation();
+                binding.connectionStatus.setText(R.string.status_connected);
+            }
+        });
+    }
+
+    private void onVpnDisconnected() {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                binding.keyTexture.stopAnimation();
+                binding.connectionStatus.setText(R.string.status_disconnected);
+                binding.connectionSwitch.setChecked(false);
+            }
+        });
+    }
 }
