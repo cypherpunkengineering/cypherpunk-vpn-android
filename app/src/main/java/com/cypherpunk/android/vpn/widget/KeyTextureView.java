@@ -135,19 +135,14 @@ public class KeyTextureView extends TextureView implements TextureView.SurfaceTe
             translateY = (translateY % tileHeight);
         }
 
-        int x = 0;
+        float x = 0;
         for (int j = 0; j < tileColumnCount; j++) {
             boolean down = j % 2 == 0;
+            float y = down ? (translateY - tileHeight) : -translateY;
+
             for (int i = 0; i < tileRowCount; i++) {
-                int position = i * tileHeight;
-                if (down) {
-                    canvas.drawBitmap(bitmap, x, position + translateY, paint);
-                } else {
-                    canvas.drawBitmap(bitmap, x, position - translateY, paint);
-                }
-            }
-            if (down) {
-                canvas.drawBitmap(bitmap, x, -(tileHeight - translateY), paint);
+                canvas.drawBitmap(bitmap, x, y, paint);
+                y += tileHeight;
             }
             x += tileWidth;
         }
