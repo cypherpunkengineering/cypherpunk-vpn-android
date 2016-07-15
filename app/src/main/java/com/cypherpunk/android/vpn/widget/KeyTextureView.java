@@ -8,10 +8,13 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.SurfaceTexture;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.os.SystemClock;
 import android.support.annotation.IntDef;
 import android.util.AttributeSet;
 import android.view.TextureView;
+import android.view.View;
 
 import com.cypherpunk.android.vpn.R;
 
@@ -39,9 +42,9 @@ public class KeyTextureView extends TextureView implements TextureView.SurfaceTe
     private static final int STATE_STOPPED = 2;
 
     @AnimationState
-    private volatile int animationState = STATE_STOPPED;
-
-    private final Object monitor = new Object(); // for animationState
+    // guarded by `stateMonitor`
+    private int animationState = STATE_STOPPED;
+    private final Object stateMonitor = new Object();
 
     private final class RenderingThread extends Thread {
         private Bitmap bitmap;
@@ -57,7 +60,7 @@ public class KeyTextureView extends TextureView implements TextureView.SurfaceTe
                 setupTile();
             }
 
-            while (renderingThread != null) {
+            while (renderingThread == this) {
                 drawTiles();
                 sleepIfStopped();
             }
@@ -81,7 +84,7 @@ public class KeyTextureView extends TextureView implements TextureView.SurfaceTe
 
         private void drawTilesInner(Canvas canvas) {
             float offset;
-            synchronized (monitor) {
+            synchronized (stateMonitor) {
                 switch (animationState) {
                     case KeyTextureView.STATE_RUNNING:
                         offset = calculateOffsetFromTime();
@@ -133,10 +136,10 @@ public class KeyTextureView extends TextureView implements TextureView.SurfaceTe
         }
 
         private void sleepIfStopped() {
-            synchronized (monitor) {
+            synchronized (stateMonitor) {
                 if (animationState == STATE_STOPPED) {
                     try {
-                        monitor.wait();
+                        stateMonitor.wait();
                     } catch (InterruptedException ignored) {
                     }
                 }
@@ -160,6 +163,21 @@ public class KeyTextureView extends TextureView implements TextureView.SurfaceTe
     }
 
     @Override
+    protected Parcelable onSaveInstanceState() {
+        final Parcelable superState = super.onSaveInstanceState();
+        return new SavedState(superState, startTime, lastOffset);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Parcelable state) {
+        final SavedState myState = (SavedState) state;
+        startTime = myState.getStartTime();
+        lastOffset = myState.getLastOffset();
+
+        super.onRestoreInstanceState(myState.getSuperState());
+    }
+
+    @Override
     public void onSurfaceTextureAvailable(SurfaceTexture surfaceTexture, int width, int height) {
         if (renderingThread == null) {
             renderingThread = new RenderingThread();
@@ -177,8 +195,8 @@ public class KeyTextureView extends TextureView implements TextureView.SurfaceTe
         if (t != null) {
             renderingThread = null;
 
-            synchronized (monitor) {
-                monitor.notifyAll();
+            synchronized (stateMonitor) {
+                stateMonitor.notifyAll();
             }
             try {
                 /*
@@ -198,21 +216,64 @@ public class KeyTextureView extends TextureView implements TextureView.SurfaceTe
     }
 
     public void startAnimation() {
-        synchronized (monitor) {
+        synchronized (stateMonitor) {
             if (animationState == STATE_STOPPED) {
                 startTime = SystemClock.uptimeMillis() - (long) (lastOffset / scrollDistancePerSec * 1000);
             }
             animationState = STATE_RUNNING;
 
-            monitor.notifyAll();
+            stateMonitor.notifyAll();
         }
     }
 
     public void stopAnimation() {
-        synchronized (monitor) {
+        synchronized (stateMonitor) {
             if (animationState == STATE_RUNNING) {
                 animationState = STATE_STOPPING;
             }
         }
+    }
+
+    @SuppressWarnings("WeakerAccess")
+    public static class SavedState extends View.BaseSavedState {
+        private long startTime;
+        private float lastOffset;
+
+        public SavedState(Parcel source) {
+            super(source);
+            startTime = source.readLong();
+            lastOffset = source.readFloat();
+        }
+
+        public SavedState(Parcelable superState, long startTime, float lastOffset) {
+            super(superState);
+            this.startTime = startTime;
+            this.lastOffset = lastOffset;
+        }
+
+        @Override
+        public void writeToParcel(Parcel out, int flags) {
+            super.writeToParcel(out, flags);
+            out.writeLong(startTime);
+            out.writeFloat(lastOffset);
+        }
+
+        public long getStartTime() {
+            return startTime;
+        }
+
+        public float getLastOffset() {
+            return lastOffset;
+        }
+
+        public static final Parcelable.Creator CREATOR = new Parcelable.Creator() {
+            public SavedState createFromParcel(Parcel source) {
+                return new SavedState(source);
+            }
+
+            public SavedState[] newArray(int size) {
+                return new SavedState[size];
+            }
+        };
     }
 }
