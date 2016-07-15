@@ -24,11 +24,13 @@
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="action_sign_ont">Sign Out</string>
     <string name="settings">Settings</string>
-    <string name="title_sub_text">The most xxxxxest security</string>
     <string name="action_settings">Settings</string>
     <string name="permission_rationale">"Contacts permissions are needed for providing email
         completions."
     </string>
+    <string name="status_disconnected">DISCONNECTED</string>
+    <string name="status_connecting">CONNECTING…</string>
+    <string name="status_connected">CONNECTED</string>
 
     <!-- tutorial -->
     <string name="tutorial_prev">PREV</string>
