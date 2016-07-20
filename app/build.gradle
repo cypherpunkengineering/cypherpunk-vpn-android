@@ -56,6 +56,8 @@ dependencies {
     compile 'io.reactivex:rxandroid:1.1.0'
     compile 'com.squareup.okhttp3:logging-interceptor:3.4.1'
 
+    compile 'com.deploygate:sdk:3.1'
+
     // needed to compile ics-openvpn gui fragments/activities
     //compile 'com.android.support:cardview-v7:23.3.0'
     //compile 'com.android.support:recyclerview-v7:23.3.0'
