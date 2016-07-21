@@ -149,6 +149,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void signOut() {
+        CypherpunkVPN.stop(getApplicationContext(), getBaseContext());
         UserManager manager = UserManager.getInstance(this);
         manager.clearUser();
         Intent intent = new Intent(this, TutorialActivity.class);
