@@ -109,6 +109,9 @@ public class MainActivity extends AppCompatActivity
             case R.id.action_setting:
                 startActivity(new Intent(this, SettingsActivity.class));
                 break;
+            case R.id.action_sign_out:
+                signOut();
+                break;
         }
         return false;
     }
@@ -143,5 +146,15 @@ public class MainActivity extends AppCompatActivity
                 binding.connectionSwitch.setChecked(false);
             }
         });
+    }
+
+    private void signOut() {
+        UserManager manager = UserManager.getInstance(this);
+        manager.clearUser();
+        Intent intent = new Intent(this, TutorialActivity.class);
+        TaskStackBuilder builder = TaskStackBuilder.create(this);
+        builder.addNextIntent(intent);
+        builder.startActivities();
+        finish();
     }
 }

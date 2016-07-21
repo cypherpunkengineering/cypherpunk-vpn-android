@@ -53,6 +53,11 @@ public class UserManager {
         Hawk.put(PREF_KEY_PASSWORD, password);
     }
 
+    public void clearUser() {
+        getPrefs(context).edit().remove(PREF_KEY_MAIL).apply();
+        Hawk.remove(PREF_KEY_PASSWORD);
+    }
+
     @NonNull
     private SharedPreferences getPrefs(@NonNull Context context) {
         return PreferenceManager.getDefaultSharedPreferences(context);
