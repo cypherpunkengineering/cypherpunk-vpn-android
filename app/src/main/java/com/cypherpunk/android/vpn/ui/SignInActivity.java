@@ -3,6 +3,7 @@ package com.cypherpunk.android.vpn.ui;
 import android.Manifest;
 import android.accounts.Account;
 import android.accounts.AccountManager;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Build;
@@ -18,14 +19,27 @@ import android.view.View.OnClickListener;
 import android.view.inputmethod.EditorInfo;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.cypherpunk.android.vpn.BuildConfig;
 import com.cypherpunk.android.vpn.R;
+import com.cypherpunk.android.vpn.data.api.CypherpunkClient;
+import com.cypherpunk.android.vpn.data.api.UserManager;
+import com.cypherpunk.android.vpn.data.api.model.LoginRequest;
 import com.cypherpunk.android.vpn.databinding.ActivitySignInBinding;
 
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
 
+import okhttp3.ResponseBody;
 import pub.devrel.easypermissions.EasyPermissions;
+import retrofit2.adapter.rxjava.HttpException;
+import rx.SingleSubscriber;
+import rx.Subscription;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
+import rx.subscriptions.Subscriptions;
 
 
 public class SignInActivity extends AppCompatActivity
@@ -34,6 +48,8 @@ public class SignInActivity extends AppCompatActivity
     private static final int REQUEST_GET_ACCOUNTS = 0;
 
     private ActivitySignInBinding binding;
+    private ProgressDialog progressDialog;
+    private Subscription subscription = Subscriptions.empty();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,12 +75,24 @@ public class SignInActivity extends AppCompatActivity
             }
         });
 
+        if (BuildConfig.DEBUG) {
+            binding.email.setText("test@test.test");
+            binding.password.setText("test123");
+        }
         binding.signInButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
                 attemptSignIn();
             }
         });
+
+        progressDialog = new ProgressDialog(this);
+    }
+
+    @Override
+    protected void onDestroy() {
+        subscription.unsubscribe();
+        super.onDestroy();
     }
 
     @Override
@@ -130,8 +158,8 @@ public class SignInActivity extends AppCompatActivity
         binding.email.setError(null);
         binding.password.setError(null);
 
-        String email = binding.email.getText().toString();
-        String password = binding.password.getText().toString();
+        final String email = binding.email.getText().toString();
+        final String password = binding.password.getText().toString();
 
         boolean cancel = false;
         View focusView = null;
@@ -151,12 +179,38 @@ public class SignInActivity extends AppCompatActivity
         if (cancel) {
             focusView.requestFocus();
         } else {
-            // success
-            Intent intent = new Intent(this, MainActivity.class);
-            TaskStackBuilder builder = TaskStackBuilder.create(this);
-            builder.addNextIntent(intent);
-            builder.startActivities();
-            finish();
+            progressDialog.show();
+            subscription = new CypherpunkClient().getApi()
+                    .login(new LoginRequest(email, password))
+                    .subscribeOn(Schedulers.newThread())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(new SingleSubscriber<ResponseBody>() {
+                        @Override
+                        public void onSuccess(ResponseBody value) {
+                            progressDialog.dismiss();
+                            UserManager manager = UserManager.getInstance(SignInActivity.this);
+                            manager.saveMailAddress(email);
+                            manager.savePassword(password);
+                            Intent intent = new Intent(SignInActivity.this, MainActivity.class);
+                            TaskStackBuilder builder = TaskStackBuilder.create(SignInActivity.this);
+                            builder.addNextIntent(intent);
+                            builder.startActivities();
+                            finish();
+                        }
+
+                        @Override
+                        public void onError(Throwable error) {
+                            progressDialog.dismiss();
+                            if (error instanceof UnknownHostException) {
+                                Toast.makeText(SignInActivity.this, R.string.no_internet, Toast.LENGTH_SHORT).show();
+                            } else if (error instanceof HttpException) {
+                                HttpException httpException = (HttpException) error;
+                                if (httpException.code() == 400) {
+                                    Toast.makeText(SignInActivity.this, R.string.invalid_mail_password, Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        }
+                    });
         }
     }
 }

@@ -8,6 +8,8 @@
     <string name="error_field_required">This field is required</string>
     <string name="sign_in">Sign In</string>
     <string name="button_sign_in">sign In</string>
+    <string name="no_internet">Network is unavailable</string>
+    <string name="invalid_mail_password">invalid mail/password</string>
 
     <!-- sign up-->
     <string name="sign_up">Sign Up</string>

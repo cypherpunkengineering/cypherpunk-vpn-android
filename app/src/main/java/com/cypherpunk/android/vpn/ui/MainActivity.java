@@ -5,6 +5,7 @@ import android.databinding.DataBindingUtil;
 import android.net.VpnService;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.TaskStackBuilder;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -15,6 +16,7 @@ import android.widget.CompoundButton;
 
 import com.cypherpunk.android.vpn.CypherpunkVPN;
 import com.cypherpunk.android.vpn.R;
+import com.cypherpunk.android.vpn.data.api.UserManager;
 import com.cypherpunk.android.vpn.databinding.ActivityMainBinding;
 import com.cypherpunk.android.vpn.ui.region.SelectRegionActivity;
 import com.cypherpunk.android.vpn.ui.settings.SettingsActivity;
@@ -35,6 +37,13 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
 
+        if (!UserManager.getInstance(this).isSignedIn()) {
+            Intent intent = new Intent(this, TutorialActivity.class);
+            TaskStackBuilder builder = TaskStackBuilder.create(this);
+            builder.addNextIntent(intent);
+            builder.startActivities();
+            finish();
+        }
         setSupportActionBar(binding.toolbar);
         ActionBar actionBar = getSupportActionBar();
         assert actionBar != null;
