@@ -22,17 +22,18 @@ public class CypherpunkClient {
                     .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
                     .addConverterFactory(MoshiConverterFactory.create())
                     .build();
-            return retrofit.create(CypherpunkService.class);
+            cypherpunkService = retrofit.create(CypherpunkService.class);
+            return cypherpunkService;
         }
         return cypherpunkService;
     }
 
     private OkHttpClient createApiClient() {
         OkHttpClient.Builder builder = new OkHttpClient.Builder();
+        builder.cookieJar(new CookieManager());
         HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
         logging.setLevel(HttpLoggingInterceptor.Level.BODY);
         builder.addInterceptor(logging);
-//        builder.addInterceptor(new AuthInterceptor(""));
         return builder.build();
     }
 
