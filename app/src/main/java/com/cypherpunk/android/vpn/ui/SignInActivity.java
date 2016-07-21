@@ -24,6 +24,7 @@ import android.widget.Toast;
 import com.cypherpunk.android.vpn.BuildConfig;
 import com.cypherpunk.android.vpn.R;
 import com.cypherpunk.android.vpn.data.api.CypherpunkClient;
+import com.cypherpunk.android.vpn.data.api.UserManager;
 import com.cypherpunk.android.vpn.data.api.model.LoginRequest;
 import com.cypherpunk.android.vpn.databinding.ActivitySignInBinding;
 
@@ -157,8 +158,8 @@ public class SignInActivity extends AppCompatActivity
         binding.email.setError(null);
         binding.password.setError(null);
 
-        String email = binding.email.getText().toString();
-        String password = binding.password.getText().toString();
+        final String email = binding.email.getText().toString();
+        final String password = binding.password.getText().toString();
 
         boolean cancel = false;
         View focusView = null;
@@ -187,7 +188,9 @@ public class SignInActivity extends AppCompatActivity
                         @Override
                         public void onSuccess(ResponseBody value) {
                             progressDialog.dismiss();
-                            // TODO: save mail address and password
+                            UserManager manager = UserManager.getInstance(SignInActivity.this);
+                            manager.saveMailAddress(email);
+                            manager.savePassword(password);
                             Intent intent = new Intent(SignInActivity.this, MainActivity.class);
                             TaskStackBuilder builder = TaskStackBuilder.create(SignInActivity.this);
                             builder.addNextIntent(intent);

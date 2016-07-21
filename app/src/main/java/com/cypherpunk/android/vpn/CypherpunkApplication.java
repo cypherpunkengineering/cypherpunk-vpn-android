@@ -3,6 +3,8 @@ package com.cypherpunk.android.vpn;
 import android.app.Application;
 
 import com.deploygate.sdk.DeployGate;
+import com.orhanobut.hawk.Hawk;
+import com.orhanobut.hawk.HawkBuilder;
 
 public class CypherpunkApplication extends Application {
 
@@ -10,5 +12,9 @@ public class CypherpunkApplication extends Application {
     public void onCreate() {
         super.onCreate();
         DeployGate.install(this);
+        Hawk.init(this)
+                .setStorage(HawkBuilder.newSharedPrefStorage(this))
+                .setEncryptionMethod(HawkBuilder.EncryptionMethod.MEDIUM)
+                .build();
     }
 }
