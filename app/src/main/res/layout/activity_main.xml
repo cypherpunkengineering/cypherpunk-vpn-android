@@ -60,15 +60,14 @@
                 android:src="@drawable/app_icon"
                 tools:ignore="ContentDescription" />
 
-            <com.cypherpunk.android.vpn.widget.TypefaceTextView
+            <com.cypherpunk.android.vpn.widget.ConnectionStatusView
                 android:id="@+id/connection_status"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/icon"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="19dp"
-                android:text="@string/status_disconnected"
-                android:textSize="18sp" />
+                app:textSize="@dimen/connection_status_text_size"/>
 
             <android.support.v7.widget.SwitchCompat
                 android:id="@+id/connection_switch"

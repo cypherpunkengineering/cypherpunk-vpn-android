@@ -20,6 +20,7 @@ import com.cypherpunk.android.vpn.data.api.UserManager;
 import com.cypherpunk.android.vpn.databinding.ActivityMainBinding;
 import com.cypherpunk.android.vpn.ui.region.SelectRegionActivity;
 import com.cypherpunk.android.vpn.ui.settings.SettingsActivity;
+import com.cypherpunk.android.vpn.widget.ConnectionStatusView;
 
 import de.blinkt.openvpn.core.VpnStatus;
 
@@ -90,7 +91,7 @@ public class MainActivity extends AppCompatActivity
             switch (requestCode) {
                 case REQUEST_VPN_START:
                     CypherpunkVPN.start(getApplicationContext(), getBaseContext());
-                    binding.connectionStatus.setText(R.string.status_connecting);
+                    binding.connectionStatus.setStatus(ConnectionStatusView.CONNECTING);
                     break;
                 case REQUEST_VPN_STOP:
                     CypherpunkVPN.stop(getApplicationContext(), getBaseContext());
@@ -132,7 +133,7 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void run() {
                 binding.keyTexture.startAnimation();
-                binding.connectionStatus.setText(R.string.status_connected);
+                binding.connectionStatus.setStatus(ConnectionStatusView.CONNECTED);
             }
         });
     }
@@ -142,7 +143,7 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void run() {
                 binding.keyTexture.stopAnimation();
-                binding.connectionStatus.setText(R.string.status_disconnected);
+                binding.connectionStatus.setStatus(ConnectionStatusView.DISCONNECTED);
                 binding.connectionSwitch.setChecked(false);
             }
         });
