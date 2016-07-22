@@ -4,12 +4,10 @@ import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.net.VpnService;
 import android.os.Bundle;
-import android.support.design.widget.NavigationView;
 import android.support.v4.app.TaskStackBuilder;
-import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.CompoundButton;
@@ -24,8 +22,7 @@ import com.cypherpunk.android.vpn.widget.ConnectionStatusView;
 
 import de.blinkt.openvpn.core.VpnStatus;
 
-public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, VpnStatus.StateListener {
+public class MainActivity extends AppCompatActivity implements VpnStatus.StateListener {
 
     private static final int REQUEST_VPN_START = 0;
     private static final int REQUEST_VPN_STOP = 1;
@@ -36,7 +33,6 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
 
         if (!UserManager.getInstance(this).isSignedIn()) {
             Intent intent = new Intent(this, TutorialActivity.class);
@@ -45,6 +41,9 @@ public class MainActivity extends AppCompatActivity
             builder.startActivities();
             finish();
         }
+
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
+
         setSupportActionBar(binding.toolbar);
         ActionBar actionBar = getSupportActionBar();
         assert actionBar != null;
@@ -66,15 +65,7 @@ public class MainActivity extends AppCompatActivity
             }
         });
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, binding.toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.addDrawerListener(toggle);
-        toggle.syncState();
-
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
-        binding.pin.setOnClickListener(new View.OnClickListener() {
+        binding.region.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 startActivityForResult(new Intent(MainActivity.this, SelectRegionActivity.class), REQUEST_SELECT_REGION);
@@ -82,6 +73,25 @@ public class MainActivity extends AppCompatActivity
         });
 
         VpnStatus.addStateListener(this);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_setting:
+                startActivity(new Intent(this, SettingsActivity.class));
+                break;
+            case R.id.action_sign_out:
+                signOut();
+                break;
+        }
+        return false;
     }
 
     @Override
@@ -102,19 +112,6 @@ public class MainActivity extends AppCompatActivity
                     break;
             }
         }
-    }
-
-    @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_setting:
-                startActivity(new Intent(this, SettingsActivity.class));
-                break;
-            case R.id.action_sign_out:
-                signOut();
-                break;
-        }
-        return false;
     }
 
     @Override
