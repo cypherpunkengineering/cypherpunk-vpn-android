@@ -14,16 +14,16 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".ui.SignInActivity"
-            android:theme="@style/AppTheme.NoActionBar.TransparentStatusBar" />
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".ui.SignUpActivity"
-            android:theme="@style/AppTheme.NoActionBar.TransparentStatusBar" />
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".ui.TutorialActivity"
             android:theme="@style/AppTheme.NoActionBar.TransparentStatusBar" />
         <activity
             android:name=".ui.MainActivity"
-            android:theme="@style/AppTheme.NoActionBar.TransparentStatusBar">
+            android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
