@@ -28,7 +28,7 @@
         completions."
     </string>
     <string name="status_disconnected">DISCONNECTED</string>
-    <string name="status_connecting">CONNECTING…</string>
+    <string name="status_connecting">CONNECTING</string>
     <string name="status_connected">CONNECTED</string>
 
     <!-- tutorial -->
