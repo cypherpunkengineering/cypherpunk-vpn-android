@@ -1,8 +1,10 @@
 apply plugin: 'com.android.application'
+apply plugin: 'com.neenbedankt.android-apt'
+apply plugin: 'realm-android'
 
 android {
     compileSdkVersion 24
-    buildToolsVersion '24.0.0'
+    buildToolsVersion '24.0.1'
 
     defaultConfig {
         applicationId "com.cypherpunk.android.vpn"
@@ -55,6 +57,11 @@ dependencies {
     compile 'io.reactivex:rxandroid:1.1.0'
     compile 'com.squareup.okhttp3:logging-interceptor:3.4.1'
     compile 'com.github.orhanobut:hawk:1.21'
+
+    compile 'com.google.dagger:dagger:2.4'
+    apt 'com.google.dagger:dagger-compiler:2.4'
+    apt 'com.google.guava:guava:19.0' // dagger compiler requires Guava
+    provided 'javax.annotation:jsr250-api:1.0'
 
     compile 'com.deploygate:sdk:3.1'
 

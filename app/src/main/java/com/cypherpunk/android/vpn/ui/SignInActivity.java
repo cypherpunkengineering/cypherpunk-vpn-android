@@ -15,13 +15,16 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.cypherpunk.android.vpn.BuildConfig;
+import com.cypherpunk.android.vpn.CypherpunkApplication;
 import com.cypherpunk.android.vpn.R;
-import com.cypherpunk.android.vpn.data.api.CypherpunkClient;
+import com.cypherpunk.android.vpn.data.api.CypherpunkService;
 import com.cypherpunk.android.vpn.data.api.UserManager;
 import com.cypherpunk.android.vpn.data.api.model.LoginRequest;
 import com.cypherpunk.android.vpn.databinding.ActivitySignInBinding;
 
 import java.net.UnknownHostException;
+
+import javax.inject.Inject;
 
 import okhttp3.ResponseBody;
 import retrofit2.adapter.rxjava.HttpException;
@@ -38,9 +41,14 @@ public class SignInActivity extends AppCompatActivity {
     private ProgressDialog progressDialog;
     private Subscription subscription = Subscriptions.empty();
 
+    @Inject
+    CypherpunkService webService;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        ((CypherpunkApplication) getApplication()).getAppComponent().inject(this);
+
         binding = DataBindingUtil.setContentView(this, R.layout.activity_sign_in);
 
         binding.email.requestFocus();
@@ -101,7 +109,7 @@ public class SignInActivity extends AppCompatActivity {
             focusView.requestFocus();
         } else {
             progressDialog.show();
-            subscription = new CypherpunkClient().getApi()
+            subscription = webService
                     .login(new LoginRequest(email, password))
                     .subscribeOn(Schedulers.newThread())
                     .observeOn(AndroidSchedulers.mainThread())
