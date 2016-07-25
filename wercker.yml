@@ -35,7 +35,7 @@ build:
         name: cleanup
         code: |
             rm -rf ${ANDROID_NDK_HOME}
-            rm -rf openvpn/main/obj/
+            rm -rf openvpn
   after-steps:
     - script:
         name: install curl
