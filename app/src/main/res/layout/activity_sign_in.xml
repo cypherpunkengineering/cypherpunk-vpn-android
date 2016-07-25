@@ -21,7 +21,7 @@
                 android:layout_height="?android:actionBarSize"
                 android:layout_centerHorizontal="true"
                 android:layout_gravity="center"
-                android:drawableLeft="@drawable/app_icon"
+                android:drawableLeft="@drawable/app_icon_vector"
                 android:gravity="center_vertical"
                 android:text="@string/app_name"
                 tools:ignore="RtlHardcoded" />
