@@ -19,7 +19,7 @@
             android:name=".ui.SignUpActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".ui.TutorialActivity"
+            android:name=".ui.IntroductionActivity"
             android:theme="@style/AppTheme.NoActionBar.TransparentStatusBar" />
         <activity
             android:name=".ui.MainActivity"

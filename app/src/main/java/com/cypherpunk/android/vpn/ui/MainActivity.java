@@ -35,7 +35,7 @@ public class MainActivity extends AppCompatActivity implements VpnStatus.StateLi
         super.onCreate(savedInstanceState);
 
         if (!UserManager.getInstance(this).isSignedIn()) {
-            Intent intent = new Intent(this, TutorialActivity.class);
+            Intent intent = new Intent(this, IntroductionActivity.class);
             TaskStackBuilder builder = TaskStackBuilder.create(this);
             builder.addNextIntent(intent);
             builder.startActivities();
@@ -150,7 +150,7 @@ public class MainActivity extends AppCompatActivity implements VpnStatus.StateLi
         CypherpunkVPN.stop(getApplicationContext(), getBaseContext());
         UserManager manager = UserManager.getInstance(this);
         manager.clearUser();
-        Intent intent = new Intent(this, TutorialActivity.class);
+        Intent intent = new Intent(this, SignInActivity.class);
         TaskStackBuilder builder = TaskStackBuilder.create(this);
         builder.addNextIntent(intent);
         builder.startActivities();

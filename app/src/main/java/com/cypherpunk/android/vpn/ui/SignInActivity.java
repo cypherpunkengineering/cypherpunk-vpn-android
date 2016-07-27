@@ -5,9 +5,11 @@ import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.v4.app.TaskStackBuilder;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.KeyEvent;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.inputmethod.EditorInfo;
@@ -50,6 +52,12 @@ public class SignInActivity extends AppCompatActivity {
         ((CypherpunkApplication) getApplication()).getAppComponent().inject(this);
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_sign_in);
+
+        setSupportActionBar(binding.toolbar);
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
 
         binding.email.requestFocus();
         binding.password.setOnEditorActionListener(new TextView.OnEditorActionListener() {
@@ -141,5 +149,14 @@ public class SignInActivity extends AppCompatActivity {
                         }
                     });
         }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            finish();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

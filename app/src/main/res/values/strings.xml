@@ -33,13 +33,9 @@
     <string name="ip_original">ORIGINAL</string>
     <string name="ip_current">CURRENT</string>
 
-    <!-- tutorial -->
-    <string name="tutorial_prev">PREV</string>
-    <string name="tutorial_next">NEXT</string>
-    <string name="tutorial_create_account">Create account</string>
-    <string name="tutorial_create_account_text">Now create account and set your privacy</string>
-    <string name="tutorial_sign_in1">Do you have account already?</string>
-    <string name="tutorial_sign_in2">"  Sign In"</string>    <!-- need space -->
+    <!-- introduction -->
+    <string name="introduction_create_account">Create account</string>
+    <string name="introduction_sign_in">Sign in</string>
 
     <!-- select region -->
     <string name="title_activity_select_region">Select region</string>
