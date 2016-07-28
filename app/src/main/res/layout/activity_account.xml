@@ -16,7 +16,6 @@
             android:drawableLeft="@drawable/account_vector"
             android:drawablePadding="8dp"
             android:gravity="center_vertical"
-            android:textColor="#ffffff"
             android:textSize="20sp"
             tools:text="vpntestmax@gmail.com" />
 
@@ -49,7 +48,6 @@
             android:drawablePadding="8dp"
             android:gravity="center"
             android:text="@string/account_logout"
-            android:textColor="#ffffff"
             android:textSize="16sp" />
     </LinearLayout>
 

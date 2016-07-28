@@ -4,29 +4,20 @@
     <!-- sign in-->
     <string name="prompt_email">Email</string>
     <string name="prompt_password">Password</string>
-    <string name="action_sign_in">Sign in</string>
     <string name="error_field_required">This field is required</string>
-    <string name="sign_in">Sign In</string>
     <string name="button_sign_in">sign In</string>
     <string name="no_internet">Network is unavailable</string>
     <string name="invalid_mail_password">invalid mail/password</string>
 
     <!-- sign up-->
-    <string name="sign_up">Sign Up</string>
-    <string name="sign_up_button">Sign Up</string>
     <string name="send_email_button">Send Email</string>
 
     <!-- setting -->
     <string name="title_activity_settings">Settings</string>
 
     <!-- main -->
-    <string name="navigation_drawer_close">Close navigation drawer</string>
-    <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="action_sign_ont">Sign Out</string>
     <string name="action_settings">Settings</string>
-    <string name="permission_rationale">"Contacts permissions are needed for providing email
-        completions."
-    </string>
     <string name="status_disconnected">DISCONNECTED</string>
     <string name="status_connecting">CONNECTING</string>
     <string name="status_connected">CONNECTED</string>
