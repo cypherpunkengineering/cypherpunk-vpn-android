@@ -33,6 +33,11 @@
     <string name="ip_original">ORIGINAL</string>
     <string name="ip_current">CURRENT</string>
 
+    <!-- account -->
+    <string name="title_activity_account">Account</string>
+    <string name="account_logout">Sign out</string>
+    <string name="account_upgrade">Upgrade Account</string>
+
     <!-- introduction -->
     <string name="introduction_create_account">Create account</string>
     <string name="introduction_sign_in">Sign in</string>

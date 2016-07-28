@@ -17,6 +17,7 @@ import com.cypherpunk.android.vpn.CypherpunkVPN;
 import com.cypherpunk.android.vpn.R;
 import com.cypherpunk.android.vpn.data.api.UserManager;
 import com.cypherpunk.android.vpn.databinding.ActivityMainBinding;
+import com.cypherpunk.android.vpn.ui.account.AccountActivity;
 import com.cypherpunk.android.vpn.ui.region.SelectRegionActivity;
 import com.cypherpunk.android.vpn.ui.settings.SettingsActivity;
 import com.cypherpunk.android.vpn.widget.ConnectionStatusView;
@@ -93,8 +94,8 @@ public class MainActivity extends AppCompatActivity implements VpnStatus.StateLi
             case R.id.action_setting:
                 startActivity(new Intent(this, SettingsActivity.class));
                 break;
-            case R.id.action_sign_out:
-                signOut();
+            case R.id.action_account:
+                startActivity(new Intent(this, AccountActivity.class));
                 break;
         }
         return false;
@@ -150,16 +151,5 @@ public class MainActivity extends AppCompatActivity implements VpnStatus.StateLi
                 binding.connectionSwitch.setChecked(false);
             }
         });
-    }
-
-    private void signOut() {
-        CypherpunkVPN.stop(getApplicationContext(), getBaseContext());
-        UserManager manager = UserManager.getInstance(this);
-        manager.clearUser();
-        Intent intent = new Intent(this, IntroductionActivity.class);
-        TaskStackBuilder builder = TaskStackBuilder.create(this);
-        builder.addNextIntent(intent);
-        builder.startActivities();
-        finish();
     }
 }

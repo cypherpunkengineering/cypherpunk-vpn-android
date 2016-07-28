@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:ignore="RtlHardcoded">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <com.cypherpunk.android.vpn.widget.TypefaceTextView
+            android:id="@+id/mail"
+            android:layout_width="wrap_content"
+            android:layout_height="68dp"
+            android:layout_gravity="center"
+            android:drawableLeft="@drawable/account_vector"
+            android:drawablePadding="8dp"
+            android:gravity="center_vertical"
+            android:textColor="#ffffff"
+            android:textSize="20sp"
+            tools:text="vpntestmax@gmail.com" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/divider" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginBottom="24dp"
+            android:layout_marginTop="100dp"
+            android:drawableLeft="@drawable/icon_upgrade"
+            android:drawablePadding="8dp"
+            android:text="@string/account_upgrade" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/divider" />
+
+        <com.cypherpunk.android.vpn.widget.TypefaceTextView
+            android:id="@+id/sign_out_button"
+            android:layout_width="match_parent"
+            android:layout_height="68dp"
+            android:background="?android:attr/selectableItemBackground"
+            android:clickable="true"
+            android:drawablePadding="8dp"
+            android:gravity="center"
+            android:text="@string/account_logout"
+            android:textColor="#ffffff"
+            android:textSize="16sp" />
+    </LinearLayout>
+
+</layout>
