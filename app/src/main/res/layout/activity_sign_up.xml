@@ -22,6 +22,7 @@
                 android:layout_centerHorizontal="true"
                 android:layout_gravity="center"
                 android:drawableLeft="@drawable/app_icon_vector"
+                android:drawablePadding="8dp"
                 android:gravity="center_vertical"
                 android:text="@string/app_name"
                 tools:ignore="RtlHardcoded" />
