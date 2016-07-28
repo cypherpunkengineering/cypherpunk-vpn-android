@@ -3,6 +3,7 @@ package com.cypherpunk.android.vpn.ui;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.net.VpnService;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.TaskStackBuilder;
 import android.support.v7.app.ActionBar;
@@ -35,11 +36,16 @@ public class MainActivity extends AppCompatActivity implements VpnStatus.StateLi
         super.onCreate(savedInstanceState);
 
         if (!UserManager.getInstance(this).isSignedIn()) {
-            Intent intent = new Intent(this, TutorialActivity.class);
+            Intent intent = new Intent(this, IntroductionActivity.class);
             TaskStackBuilder builder = TaskStackBuilder.create(this);
             builder.addNextIntent(intent);
             builder.startActivities();
             finish();
+        }
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            getWindow().getDecorView().setSystemUiVisibility(
+                    View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
         }
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
@@ -150,7 +156,7 @@ public class MainActivity extends AppCompatActivity implements VpnStatus.StateLi
         CypherpunkVPN.stop(getApplicationContext(), getBaseContext());
         UserManager manager = UserManager.getInstance(this);
         manager.clearUser();
-        Intent intent = new Intent(this, TutorialActivity.class);
+        Intent intent = new Intent(this, IntroductionActivity.class);
         TaskStackBuilder builder = TaskStackBuilder.create(this);
         builder.addNextIntent(intent);
         builder.startActivities();
