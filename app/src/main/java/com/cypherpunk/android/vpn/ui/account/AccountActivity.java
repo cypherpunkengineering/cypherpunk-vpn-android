@@ -32,7 +32,10 @@ public class AccountActivity extends AppCompatActivity {
             actionBar.setHomeAsUpIndicator(R.drawable.close_vector);
         }
 
-        binding.logoutButton.setOnClickListener(new View.OnClickListener() {
+        UserManager user = UserManager.getInstance(this);
+        binding.mail.setText(user.getMailAddress());
+
+        binding.signOutButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 signOut();
