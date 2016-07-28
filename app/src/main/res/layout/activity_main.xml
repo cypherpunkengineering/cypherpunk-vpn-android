@@ -110,6 +110,7 @@
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
             android:layout_marginBottom="8dp"
+            android:background="?android:attr/selectableItemBackground"
             android:drawablePadding="13dp"
             android:drawableRight="@drawable/expand_more_vector"
             android:text="USA WEST"
