@@ -2,6 +2,7 @@ package com.cypherpunk.android.vpn.ui.settings;
 
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -32,6 +33,13 @@ public class SettingsActivity extends AppCompatActivity {
         PagerAdapter adapter = new PagerAdapter(getSupportFragmentManager());
         binding.viewPager.setAdapter(adapter);
         binding.tabs.setupWithViewPager(binding.viewPager);
+
+        TabLayout.Tab tab1 = binding.tabs.getTabAt(0);
+        assert tab1 != null;
+        tab1.setCustomView(R.layout.tab_settings);
+        TabLayout.Tab tab2 = binding.tabs.getTabAt(1);
+        assert tab2 != null;
+        tab2.setCustomView(R.layout.tab_settings);
     }
 
     @Override
