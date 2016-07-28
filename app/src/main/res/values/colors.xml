@@ -5,4 +5,5 @@
     <color name="colorAccent">#6ec90a</color>
 
     <color name="divider">#333333</color>
+    <color name="window_background">#1a1a1a</color>
 </resources>
