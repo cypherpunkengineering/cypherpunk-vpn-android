@@ -23,7 +23,7 @@
             android:theme="@style/AppTheme.NoActionBar.TransparentStatusBar" />
         <activity
             android:name=".ui.MainActivity"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:theme="@style/AppTheme.NoActionBar.TransparentStatusBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
