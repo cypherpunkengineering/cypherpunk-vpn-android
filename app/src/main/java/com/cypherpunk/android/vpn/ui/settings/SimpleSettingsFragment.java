@@ -6,12 +6,15 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RadioGroup;
 
 import com.cypherpunk.android.vpn.R;
 import com.cypherpunk.android.vpn.databinding.FragmentSimpleSettingsBinding;
 
 
-public class SimpleSettingsFragment extends Fragment {
+public class SimpleSettingsFragment extends Fragment implements RadioGroup.OnCheckedChangeListener {
+
+    private FragmentSimpleSettingsBinding binding;
 
     @Nullable
     @Override
@@ -23,8 +26,26 @@ public class SimpleSettingsFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        FragmentSimpleSettingsBinding binding = FragmentSimpleSettingsBinding.bind(getView());
+        binding = FragmentSimpleSettingsBinding.bind(getView());
 
+        binding.radioGroup.setOnCheckedChangeListener(this);
         binding.maxSpeedRadioButton.setChecked(true);
+    }
+
+    @Override
+    public void onCheckedChanged(RadioGroup radioGroup, int id) {
+        int selectedModeName = R.string.settings_mode_max_speed;
+        switch (id) {
+            case R.id.max_privacy_radio_button:
+                selectedModeName = R.string.settings_mode_max_privacy;
+                break;
+            case R.id.max_speed_radio_button:
+                selectedModeName = R.string.settings_mode_max_speed;
+                break;
+            case R.id.max_freedom_radio_button:
+                selectedModeName = R.string.settings_mode_max_freedom;
+                break;
+        }
+        binding.selectedModeTitle.setText(selectedModeName);
     }
 }
