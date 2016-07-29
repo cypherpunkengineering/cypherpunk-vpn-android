@@ -12,7 +12,7 @@
             android:id="@+id/radio_group"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
+            android:layout_marginBottom="8dp"
             android:orientation="horizontal">
 
             <com.cypherpunk.android.vpn.widget.TypefaceRadioButton
@@ -22,7 +22,7 @@
                 android:layout_height="108dp"
                 android:button="@null"
                 android:drawableTop="@drawable/settings_privacy_vector"
-                android:text="@string/settings_max_privacy"
+                android:text="@string/settings_mode_max_privacy"
                 android:textSize="14sp"
                 android:theme="@style/AppTheme.RadioButton" />
 
@@ -33,7 +33,7 @@
                 android:layout_height="132dp"
                 android:button="@null"
                 android:drawableTop="@drawable/settings_rocket_vector"
-                android:text="@string/settings_max_speed"
+                android:text="@string/settings_mode_max_speed"
                 android:textSize="14sp"
                 android:theme="@style/AppTheme.RadioButton" />
 
@@ -44,7 +44,7 @@
                 android:layout_height="108dp"
                 android:button="@null"
                 android:drawableTop="@drawable/settings_freedom_vector"
-                android:text="@string/settings_max_freedom"
+                android:text="@string/settings_mode_max_freedom"
                 android:textSize="14sp"
                 android:theme="@style/AppTheme.RadioButton" />
 
@@ -53,7 +53,7 @@
         <com.cypherpunk.android.vpn.widget.TypefaceTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="16sp"
+            android:layout_marginBottom="8dp"
             android:text="@string/mode_description_title"
             android:textSize="22sp" />
 

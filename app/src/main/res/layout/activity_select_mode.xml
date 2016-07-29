@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/tutorial_background"
+        android:fitsSystemWindows="true"
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?android:actionBarSize">
+
+            <com.cypherpunk.android.vpn.widget.TypefaceTextView
+                android:id="@+id/title"
+                style="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"
+                android:layout_width="wrap_content"
+                android:layout_height="?android:actionBarSize"
+                android:layout_centerHorizontal="true"
+                android:layout_gravity="center"
+                android:drawableLeft="@drawable/app_icon_vector"
+                android:drawablePadding="8dp"
+                android:gravity="center_vertical"
+                android:text="@string/app_name"
+                tools:ignore="RtlHardcoded" />
+
+        </android.support.v7.widget.Toolbar>
+
+        <com.cypherpunk.android.vpn.widget.TypefaceTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:layout_marginTop="38dp"
+            android:text="@string/select_mode_title"
+            android:textSize="22sp" />
+
+        <RadioGroup
+            android:id="@+id/radio_group"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:orientation="horizontal">
+
+            <com.cypherpunk.android.vpn.widget.TypefaceRadioButton
+                android:id="@+id/max_privacy_radio_button"
+                style="@style/Widget.AppCompat.Button"
+                android:layout_width="104dp"
+                android:layout_height="108dp"
+                android:button="@null"
+                android:drawableTop="@drawable/settings_privacy_vector"
+                android:text="@string/settings_mode_max_privacy"
+                android:textSize="14sp"
+                android:theme="@style/AppTheme.RadioButton" />
+
+            <com.cypherpunk.android.vpn.widget.TypefaceRadioButton
+                android:id="@+id/max_speed_radio_button"
+                style="@style/Widget.AppCompat.Button"
+                android:layout_width="128dp"
+                android:layout_height="132dp"
+                android:button="@null"
+                android:drawableTop="@drawable/settings_rocket_vector"
+                android:text="@string/settings_mode_max_speed"
+                android:textSize="14sp"
+                android:theme="@style/AppTheme.RadioButton" />
+
+            <com.cypherpunk.android.vpn.widget.TypefaceRadioButton
+                android:id="@+id/max_freedom_radio_button"
+                style="@style/Widget.AppCompat.Button"
+                android:layout_width="104dp"
+                android:layout_height="108dp"
+                android:button="@null"
+                android:drawableTop="@drawable/settings_freedom_vector"
+                android:text="@string/settings_mode_max_freedom"
+                android:textSize="14sp"
+                android:theme="@style/AppTheme.RadioButton" />
+
+        </RadioGroup>
+
+        <com.cypherpunk.android.vpn.widget.TypefaceTextView
+            android:id="@+id/selected_mode_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:textSize="22sp"
+            tools:text="max freedom mode" />
+
+        <com.cypherpunk.android.vpn.widget.TypefaceTextView
+            android:id="@+id/selected_mode_description"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:text="@string/mode_description_text"
+            android:textSize="14sp" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/skip_button"
+                android:layout_width="match_parent"
+                android:layout_height="32dp"
+                android:layout_alignParentBottom="true"
+                android:layout_marginBottom="16dp"
+                android:layout_marginLeft="44dp"
+                android:layout_marginRight="44dp"
+                android:layout_marginTop="8dp"
+                android:background="?android:attr/selectableItemBackground"
+                android:clickable="true"
+                android:gravity="center"
+                android:text="@string/select_mode_skip"
+                android:textAppearance="?android:textAppearanceButton" />
+
+            <Button
+                android:id="@+id/ok_button"
+                style="@style/Widget.Cyherpunk.Button.Colored"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_above="@id/skip_button"
+                android:layout_marginLeft="40dp"
+                android:layout_marginRight="40dp"
+                android:layout_marginTop="16dp"
+                android:text="@string/select_mode_connect" />
+
+        </RelativeLayout>
+
+    </LinearLayout>
+
+</layout>

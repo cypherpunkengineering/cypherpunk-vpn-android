@@ -13,10 +13,10 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".ui.SignInActivity"
+            android:name=".ui.signin.SignInActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".ui.SignUpActivity"
+            android:name=".ui.signin.SignUpActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".ui.IntroductionActivity"
@@ -39,6 +39,9 @@
             </intent-filter>
         </service>
 
+        <activity
+            android:name=".ui.settings.SelectModeActivity"
+            android:theme="@style/AppTheme.NoActionBar.TransparentStatusBar" />
         <activity
             android:name=".ui.settings.SettingsActivity"
             android:label="@string/title_activity_settings"
