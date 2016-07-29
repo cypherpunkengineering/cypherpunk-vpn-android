@@ -23,7 +23,7 @@ import com.cypherpunk.android.vpn.data.api.CypherpunkService;
 import com.cypherpunk.android.vpn.data.api.UserManager;
 import com.cypherpunk.android.vpn.data.api.json.LoginRequest;
 import com.cypherpunk.android.vpn.databinding.ActivitySignInBinding;
-import com.cypherpunk.android.vpn.ui.MainActivity;
+import com.cypherpunk.android.vpn.ui.settings.SelectModeActivity;
 
 import java.net.UnknownHostException;
 
@@ -130,7 +130,7 @@ public class SignInActivity extends AppCompatActivity {
                             UserManager manager = UserManager.getInstance(SignInActivity.this);
                             manager.saveMailAddress(email);
                             manager.savePassword(password);
-                            Intent intent = new Intent(SignInActivity.this, MainActivity.class);
+                            Intent intent = new Intent(SignInActivity.this, SelectModeActivity.class);
                             TaskStackBuilder builder = TaskStackBuilder.create(SignInActivity.this);
                             builder.addNextIntent(intent);
                             builder.startActivities();
