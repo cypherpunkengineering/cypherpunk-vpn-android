@@ -1,4 +1,4 @@
-package com.cypherpunk.android.vpn;
+package com.cypherpunk.android.vpn.utils;
 
 import android.content.Context;
 import android.graphics.Typeface;

@@ -11,7 +11,7 @@
     android:gravity="center_vertical"
     android:paddingLeft="16dp"
     android:paddingRight="16dp"
-    android:textColor="@drawable/select_area_text"
+    android:textColor="@color/select_area_text"
     android:textSize="16sp"
     tools:ignore="RtlHardcoded"
     tools:text="US" />

@@ -1,4 +1,4 @@
-package com.cypherpunk.android.vpn.ui;
+package com.cypherpunk.android.vpn.ui.signin;
 
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
@@ -16,6 +16,7 @@ import android.widget.TextView;
 
 import com.cypherpunk.android.vpn.R;
 import com.cypherpunk.android.vpn.databinding.ActivitySignUpBinding;
+import com.cypherpunk.android.vpn.ui.MainActivity;
 
 
 public class SignUpActivity extends AppCompatActivity {

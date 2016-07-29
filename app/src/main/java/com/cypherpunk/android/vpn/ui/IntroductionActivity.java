@@ -10,6 +10,8 @@ import android.view.View;
 
 import com.cypherpunk.android.vpn.R;
 import com.cypherpunk.android.vpn.databinding.ActivityIntroductionBinding;
+import com.cypherpunk.android.vpn.ui.signin.SignInActivity;
+import com.cypherpunk.android.vpn.ui.signin.SignUpActivity;
 
 
 public class IntroductionActivity extends AppCompatActivity {

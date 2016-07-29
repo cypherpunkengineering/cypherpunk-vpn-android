@@ -1,13 +1,11 @@
 package com.cypherpunk.android.vpn.data.api;
 
-import com.cypherpunk.android.vpn.data.api.model.LoginRequest;
+import com.cypherpunk.android.vpn.data.api.json.LoginRequest;
 
-import okhttp3.Response;
 import okhttp3.ResponseBody;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
-import rx.Observable;
 import rx.Single;
 
 /**
