@@ -30,7 +30,7 @@
             android:layout_gravity="center"
             android:layout_marginBottom="24dp"
             android:layout_marginTop="100dp"
-            android:drawableLeft="@drawable/icon_upgrade"
+            android:drawableLeft="@drawable/upgrade_vector"
             android:drawablePadding="8dp"
             android:text="@string/account_upgrade" />
 

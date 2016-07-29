@@ -5,7 +5,7 @@ import android.graphics.Typeface;
 import android.util.AttributeSet;
 import android.widget.TextView;
 
-import com.cypherpunk.android.vpn.FontUtil;
+import com.cypherpunk.android.vpn.utils.FontUtil;
 
 /**
  * Dosis-Regular font TextView

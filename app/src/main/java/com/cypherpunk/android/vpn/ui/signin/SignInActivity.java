@@ -1,4 +1,4 @@
-package com.cypherpunk.android.vpn.ui;
+package com.cypherpunk.android.vpn.ui.signin;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -21,8 +21,9 @@ import com.cypherpunk.android.vpn.CypherpunkApplication;
 import com.cypherpunk.android.vpn.R;
 import com.cypherpunk.android.vpn.data.api.CypherpunkService;
 import com.cypherpunk.android.vpn.data.api.UserManager;
-import com.cypherpunk.android.vpn.data.api.model.LoginRequest;
+import com.cypherpunk.android.vpn.data.api.json.LoginRequest;
 import com.cypherpunk.android.vpn.databinding.ActivitySignInBinding;
+import com.cypherpunk.android.vpn.ui.MainActivity;
 
 import java.net.UnknownHostException;
 

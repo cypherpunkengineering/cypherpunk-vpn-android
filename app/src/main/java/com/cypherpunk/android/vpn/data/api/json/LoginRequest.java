@@ -1,4 +1,4 @@
-package com.cypherpunk.android.vpn.data.api.model;
+package com.cypherpunk.android.vpn.data.api.json;
 
 
 public class LoginRequest {

@@ -1,7 +1,7 @@
 package com.cypherpunk.android.vpn.dagger;
 
 import com.cypherpunk.android.vpn.ui.MainActivity;
-import com.cypherpunk.android.vpn.ui.SignInActivity;
+import com.cypherpunk.android.vpn.ui.signin.SignInActivity;
 
 import javax.inject.Singleton;
 

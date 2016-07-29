@@ -10,7 +10,7 @@
 
     <item
         android:id="@+id/action_setting"
-        android:icon="@drawable/ic_settings_white_24px_vector"
+        android:icon="@drawable/settings_vector"
         android:title="@string/action_settings"
         app:showAsAction="ifRoom" />
 
