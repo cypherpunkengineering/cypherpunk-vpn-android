@@ -16,6 +16,11 @@
     <string name="title_activity_settings">Settings</string>
     <string name="tab_settings_simple">Simple</string>
     <string name="tab_settings_advanced">Advanced</string>
+    <string name="mode_description_title">max speed &amp; select country mode</string>
+    <string name="mode_description_text">‘Speed and Country’ mode is very high speed because not encrypted.\n Omnicos directe al desirabilite de un nov lingua franca: On refusa continuar payar custosi traductores. At solmen va esser necessi far uniform grammatica, pronunciation e plu sommun paroles.</string>
+    <string name="settings_max_privacy">Max privacy</string>
+    <string name="settings_max_speed">Max speed\nselect country</string>
+    <string name="settings_max_freedom">Max freedom</string>
 
     <!-- main -->
     <string name="action_sign_ont">Sign Out</string>
