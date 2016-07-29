@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:drawable="@drawable/arrow_drop_down_vector" android:state_selected="true" />
-    <item android:drawable="@android:color/transparent" android:state_selected="false" />
+    <item android:state_selected="false">
+        <shape>
+            <size android:width="10dp" android:height="5dp" />
+        </shape>
+    </item>
 </selector>

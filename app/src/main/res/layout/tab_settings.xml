@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
-        android:textColor="@drawable/tab_text_color"
+        android:textColor="@color/tab_text"
         android:textSize="16sp"
         tools:text="Simple" />
 
