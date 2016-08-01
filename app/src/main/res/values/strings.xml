@@ -47,5 +47,8 @@
 
     <!-- select region -->
     <string name="title_activity_select_region">Select region</string>
+    <string name="select_region_list_header_recent">Recently connected</string>
+    <string name="select_region_list_header">Region</string>
+    <string name="select_region_sort_by_distance">Sort by distance</string>
 
 </resources>
