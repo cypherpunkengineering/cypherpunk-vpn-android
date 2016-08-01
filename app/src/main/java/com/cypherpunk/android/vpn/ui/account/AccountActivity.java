@@ -10,11 +10,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.view.View;
 
-import com.cypherpunk.android.vpn.vpn.CypherpunkVPN;
 import com.cypherpunk.android.vpn.R;
 import com.cypherpunk.android.vpn.data.api.UserManager;
 import com.cypherpunk.android.vpn.databinding.ActivityAccountBinding;
 import com.cypherpunk.android.vpn.ui.IntroductionActivity;
+import com.cypherpunk.android.vpn.vpn.CypherpunkVPN;
+import com.cypherpunk.android.vpn.widget.AccountGradeView;
 
 public class AccountActivity extends AppCompatActivity {
 
@@ -35,10 +36,20 @@ public class AccountActivity extends AppCompatActivity {
         UserManager user = UserManager.getInstance(this);
         binding.mail.setText(user.getMailAddress());
 
+        // TODO: set account grade
+        binding.accountGrade.setGrade(AccountGradeView.FREE);
         binding.signOutButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 signOut();
+            }
+        });
+
+        // TODO: sample.
+        binding.upgradeAccountButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                binding.accountGrade.setGrade(AccountGradeView.MONTHLY);
             }
         });
     }
