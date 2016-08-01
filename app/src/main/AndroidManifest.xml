@@ -57,6 +57,10 @@
             android:label="@string/title_activity_select_region"
             android:theme="@style/AppTheme" />
         <activity
+            android:name=".ui.region.SortRegionActivity"
+            android:label="@string/title_activity_sort_region"
+            android:theme="@style/AppTheme" />
+        <activity
             android:name=".ui.region.SelectCityActivity"
             android:theme="@style/AppTheme" />
     </application>

@@ -111,12 +111,14 @@ public class SelectRegionActivity extends AppCompatActivity
     }
 
     private View buildSortByDistanceButton() {
-        View view = LayoutInflater.from(this).inflate(R.layout.list_item_footer_region, listView, false);
+        View view = LayoutInflater.from(this)
+                .inflate(R.layout.list_item_footer_region, listView, false);
         View button = view.findViewById(R.id.sort_button);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // TODO: Sort by distance screen
+                Intent intent = new Intent(SelectRegionActivity.this, SortRegionActivity.class);
+                startActivityForResult(intent, REQUEST_SELECT_REGION);
             }
         });
         return view;
