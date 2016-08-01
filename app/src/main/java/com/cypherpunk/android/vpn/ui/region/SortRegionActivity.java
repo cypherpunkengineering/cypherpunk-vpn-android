@@ -1,5 +1,6 @@
 package com.cypherpunk.android.vpn.ui.region;
 
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -13,24 +14,20 @@ import android.widget.ListView;
 
 import com.cypherpunk.android.vpn.R;
 
-public class SelectCityActivity extends AppCompatActivity
+public class SortRegionActivity extends AppCompatActivity
         implements AdapterView.OnItemClickListener {
 
     private static String[] CITY = {"London, UK", "Paris, France", "Zurich, Swiss", "Amsterdam, Netherlands", "Frankfurt, Germany"};
-    public static String EXTRA_CITY = "city";
 
     private ArrayAdapter<String> adapter;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ActionBar actionBar = getSupportActionBar();
 
-        if (actionBar != null) {
-            actionBar.setDisplayHomeAsUpEnabled(true);
-            String area = getIntent().getStringExtra(SelectRegionActivity.EXTRA_AREA);
-            actionBar.setTitle(area);
-        }
+        ActionBar actionBar = getSupportActionBar();
+        assert actionBar != null;
+        actionBar.setDisplayHomeAsUpEnabled(true);
 
         ListView listView = new ListView(this);
         adapter = new ArrayAdapter<>(this, R.layout.list_item_city);
@@ -53,7 +50,7 @@ public class SelectCityActivity extends AppCompatActivity
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
         Intent intent = new Intent();
-        intent.putExtra(EXTRA_CITY, adapter.getItem(position));
+        intent.putExtra(SelectCityActivity.EXTRA_CITY, adapter.getItem(position));
         setResult(RESULT_OK, intent);
         finish();
     }

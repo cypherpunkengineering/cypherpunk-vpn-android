@@ -70,6 +70,7 @@ dependencies {
     apt 'com.google.dagger:dagger-compiler:2.4'
     apt 'com.google.guava:guava:19.0' // dagger compiler requires Guava
     provided 'javax.annotation:jsr250-api:1.0'
+    compile 'com.commonsware.cwac:merge:1.0.1'
 
     compile 'com.deploygate:sdk:3.1'
 
