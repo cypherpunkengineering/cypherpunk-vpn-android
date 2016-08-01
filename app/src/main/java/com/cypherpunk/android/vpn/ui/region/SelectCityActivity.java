@@ -7,17 +7,19 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.cypherpunk.android.vpn.R;
 
-public class SelectCityActivity extends AppCompatActivity {
+public class SelectCityActivity extends AppCompatActivity
+        implements AdapterView.OnItemClickListener {
 
-    private static String[] CITY = {"London", "Turkey", "Switzerland", "Sweden", "Singapore"};
+    private static String[] CITY = {"London, UK", "Paris, France", "Zurich, Swiss", "Amsterdam, Netherlands", "Frankfurt, Germany"};
     public static String EXTRA_CITY = "city";
+
+    private ArrayAdapter<String> adapter;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -30,22 +32,13 @@ public class SelectCityActivity extends AppCompatActivity {
             actionBar.setTitle(area);
         }
 
-        final ListView listView = new ListView(this);
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, R.layout.list_item_city);
+        ListView listView = new ListView(this);
+        adapter = new ArrayAdapter<>(this, R.layout.list_item_city);
         adapter.addAll(CITY);
+        listView.setDivider(null);
         listView.setAdapter(adapter);
-        listView.setChoiceMode(AbsListView.CHOICE_MODE_SINGLE);
         setContentView(listView);
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Intent intent = new Intent();
-                intent.putExtra(EXTRA_CITY, CITY[listView.getCheckedItemPosition()]);
-                setResult(RESULT_OK, intent);
-                finish();
-            }
-        });
-        listView.setItemChecked(0, true);
+        listView.setOnItemClickListener(this);
     }
 
     @Override
@@ -55,5 +48,13 @@ public class SelectCityActivity extends AppCompatActivity {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
+        Intent intent = new Intent();
+        intent.putExtra(EXTRA_CITY, adapter.getItem(position));
+        setResult(RESULT_OK, intent);
+        finish();
     }
 }
