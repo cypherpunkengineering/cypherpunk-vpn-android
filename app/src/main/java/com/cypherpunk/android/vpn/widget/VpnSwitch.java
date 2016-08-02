@@ -30,6 +30,12 @@ public class VpnSwitch extends SwitchCompat {
 
     public VpnSwitch(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+
+        // エラー回避
+        setClickable(true);
+        setTextOn("");
+        setTextOff("");
+
         setStatus(DISCONNECTED);
     }
 

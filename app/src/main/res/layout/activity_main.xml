@@ -43,13 +43,14 @@
             android:layout_centerVertical="true"
             app:textSize="@dimen/connection_status_text_size" />
 
-        <android.support.v7.widget.SwitchCompat
+        <com.cypherpunk.android.vpn.widget.VpnSwitch
             android:id="@+id/connection_switch"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/connection_status"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="8dp"
+            android:thumb="@drawable/switch_thumb"
             app:switchMinWidth="114dp"
             app:track="@drawable/switch_track" />
 
