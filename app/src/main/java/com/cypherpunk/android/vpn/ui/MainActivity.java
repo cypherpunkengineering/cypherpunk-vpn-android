@@ -13,13 +13,14 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.CompoundButton;
 
-import com.cypherpunk.android.vpn.vpn.CypherpunkVPN;
 import com.cypherpunk.android.vpn.R;
 import com.cypherpunk.android.vpn.data.api.UserManager;
 import com.cypherpunk.android.vpn.databinding.ActivityMainBinding;
 import com.cypherpunk.android.vpn.ui.account.AccountActivity;
+import com.cypherpunk.android.vpn.ui.region.SelectCityActivity;
 import com.cypherpunk.android.vpn.ui.region.SelectRegionActivity;
 import com.cypherpunk.android.vpn.ui.settings.SettingsActivity;
+import com.cypherpunk.android.vpn.vpn.CypherpunkVPN;
 import com.cypherpunk.android.vpn.widget.ConnectionStatusView;
 
 import de.blinkt.openvpn.core.VpnStatus;
@@ -27,8 +28,7 @@ import de.blinkt.openvpn.core.VpnStatus;
 public class MainActivity extends AppCompatActivity implements VpnStatus.StateListener {
 
     private static final int REQUEST_VPN_START = 0;
-    private static final int REQUEST_VPN_STOP = 1;
-    private static final int REQUEST_SELECT_REGION = 2;
+    private static final int REQUEST_SELECT_REGION = 1;
 
     private ActivityMainBinding binding;
 
@@ -60,14 +60,9 @@ public class MainActivity extends AppCompatActivity implements VpnStatus.StateLi
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
-                    Intent intent = VpnService.prepare(MainActivity.this);
-                    if (intent != null) {
-                        startActivityForResult(intent, REQUEST_VPN_START);
-                    } else {
-                        onActivityResult(REQUEST_VPN_START, RESULT_OK, null);
-                    }
+                    startVpn();
                 } else {
-                    onActivityResult(REQUEST_VPN_STOP, RESULT_OK, null);
+                    stopVpn();
                 }
             }
         });
@@ -107,15 +102,14 @@ public class MainActivity extends AppCompatActivity implements VpnStatus.StateLi
         if (resultCode == RESULT_OK) {
             switch (requestCode) {
                 case REQUEST_VPN_START:
-                    CypherpunkVPN.start(getApplicationContext(), getBaseContext());
-                    binding.connectionStatus.setStatus(ConnectionStatusView.CONNECTING);
-                    break;
-                case REQUEST_VPN_STOP:
-                    CypherpunkVPN.stop(getApplicationContext(), getBaseContext());
+                    startVpn();
                     break;
                 case REQUEST_SELECT_REGION:
-                    String city = data.getStringExtra("city");
+                    String city = data.getStringExtra(SelectCityActivity.EXTRA_CITY);
                     binding.region.setText(city);
+                    if (data.getBooleanExtra(SelectCityActivity.EXTRA_CONNECT, false)) {
+                        startVpn();
+                    }
                     break;
             }
         }
@@ -132,12 +126,27 @@ public class MainActivity extends AppCompatActivity implements VpnStatus.StateLi
         }
     }
 
+    private void startVpn() {
+        Intent intent = VpnService.prepare(MainActivity.this);
+        if (intent != null) {
+            startActivityForResult(intent, REQUEST_VPN_START);
+        } else {
+            CypherpunkVPN.start(getApplicationContext(), getBaseContext());
+            binding.connectionStatus.setStatus(ConnectionStatusView.CONNECTING);
+        }
+    }
+
+    private void stopVpn() {
+        CypherpunkVPN.stop(getApplicationContext(), getBaseContext());
+    }
+
     private void onVpnConnected() {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 binding.keyTexture.startAnimation();
                 binding.connectionStatus.setStatus(ConnectionStatusView.CONNECTED);
+                binding.connectionSwitch.setChecked(true);
             }
         });
     }

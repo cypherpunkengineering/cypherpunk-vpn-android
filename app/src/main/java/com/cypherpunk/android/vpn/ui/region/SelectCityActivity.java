@@ -14,12 +14,15 @@ import android.widget.ListView;
 import com.cypherpunk.android.vpn.R;
 
 public class SelectCityActivity extends AppCompatActivity
-        implements AdapterView.OnItemClickListener {
+        implements AdapterView.OnItemClickListener,
+        ConnectConfirmationDialogFragment.ConnectDialogListener {
 
     private static String[] CITY = {"London, UK", "Paris, France", "Zurich, Swiss", "Amsterdam, Netherlands", "Frankfurt, Germany"};
     public static String EXTRA_CITY = "city";
+    public static String EXTRA_CONNECT = "connect";
 
     private ArrayAdapter<String> adapter;
+    private String selectedItem;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -51,9 +54,25 @@ public class SelectCityActivity extends AppCompatActivity
     }
 
     @Override
-    public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
+    public void onItemClick(AdapterView<?> adapterView, View view, final int position, long id) {
+        selectedItem = adapter.getItem(position);
+        ConnectConfirmationDialogFragment dialogFragment = new ConnectConfirmationDialogFragment();
+        dialogFragment.show(getSupportFragmentManager());
+    }
+
+    @Override
+    public void onDialogPositiveButtonClick() {
         Intent intent = new Intent();
-        intent.putExtra(EXTRA_CITY, adapter.getItem(position));
+        intent.putExtra(EXTRA_CITY, selectedItem);
+        intent.putExtra(EXTRA_CONNECT, true);
+        setResult(RESULT_OK, intent);
+        finish();
+    }
+
+    @Override
+    public void onDialogNegativeButtonClick() {
+        Intent intent = new Intent();
+        intent.putExtra(EXTRA_CITY, selectedItem);
         setResult(RESULT_OK, intent);
         finish();
     }
