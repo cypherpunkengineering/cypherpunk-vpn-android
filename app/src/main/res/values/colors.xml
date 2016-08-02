@@ -7,4 +7,6 @@
     <color name="divider">#333333</color>
     <color name="window_background">#1a1a1a</color>
     <color name="account_grade_unchecked">#666666</color>
+    <color name="switch_thumb_connect">#f5d80d</color>
+    <color name="switch_track_connect">@color/colorAccent</color>
 </resources>
