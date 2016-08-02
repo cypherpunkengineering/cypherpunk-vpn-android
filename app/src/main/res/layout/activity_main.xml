@@ -49,7 +49,9 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/connection_status"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="8dp" />
+            android:layout_marginTop="8dp"
+            app:switchMinWidth="114dp"
+            app:track="@drawable/switch_track" />
 
         <LinearLayout
             android:id="@+id/ip_original_container"
