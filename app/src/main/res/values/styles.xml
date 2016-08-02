@@ -28,7 +28,7 @@
         <item name="colorButtonNormal">@color/radio_button</item>
     </style>
 
-    <style name="Widget.Cyherpunk.Button.Colored" parent="Widget.AppCompat.Button.Colored">
+    <style name="Widget.Cypherpunk.Button.Colored" parent="Widget.AppCompat.Button.Colored">
         <item name="android:textAppearance">@style/TextAppearance.Button</item>
     </style>
 
