@@ -18,7 +18,7 @@
 
             <com.cypherpunk.android.vpn.widget.TypefaceRadioButton
                 android:id="@+id/max_privacy_radio_button"
-                style="@style/Widget.AppCompat.Button"
+                style="@style/Widget.Cypherpunk.Button.NoCaps"
                 android:layout_width="104dp"
                 android:layout_height="108dp"
                 android:button="@null"
@@ -29,7 +29,7 @@
 
             <com.cypherpunk.android.vpn.widget.TypefaceRadioButton
                 android:id="@+id/max_speed_radio_button"
-                style="@style/Widget.AppCompat.Button"
+                style="@style/Widget.Cypherpunk.Button.NoCaps"
                 android:layout_width="128dp"
                 android:layout_height="132dp"
                 android:button="@null"
@@ -40,7 +40,7 @@
 
             <com.cypherpunk.android.vpn.widget.TypefaceRadioButton
                 android:id="@+id/max_freedom_radio_button"
-                style="@style/Widget.AppCompat.Button"
+                style="@style/Widget.Cypherpunk.Button.NoCaps"
                 android:layout_width="104dp"
                 android:layout_height="108dp"
                 android:button="@null"

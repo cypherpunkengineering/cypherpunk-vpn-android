@@ -20,7 +20,7 @@
             android:layout_height="match_parent"
             android:orientation="horizontal">
 
-            <RadioButton
+            <com.cypherpunk.android.vpn.widget.TypefaceRadioButton
                 android:id="@+id/free"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -33,7 +33,7 @@
                 android:textSize="20sp"
                 tools:checked="true" />
 
-            <RadioButton
+            <com.cypherpunk.android.vpn.widget.TypefaceRadioButton
                 android:id="@+id/monthly"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -46,7 +46,7 @@
                 android:textColor="@color/radio_account_grade_text"
                 android:textSize="20sp" />
 
-            <RadioButton
+            <com.cypherpunk.android.vpn.widget.TypefaceRadioButton
                 android:id="@+id/yearly"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

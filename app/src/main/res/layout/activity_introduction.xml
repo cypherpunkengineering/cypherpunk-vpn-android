@@ -37,9 +37,9 @@
             android:gravity="center"
             android:text="something introduction of this app." />
 
-        <Button
+        <com.cypherpunk.android.vpn.widget.TypefaceButton
             android:id="@+id/create_account_button"
-            style="@style/Widget.Cyherpunk.Button.Colored"
+            style="@style/Widget.Cypherpunk.Button.Colored"
             android:layout_width="match_parent"
             android:layout_height="48dp"
             android:layout_marginLeft="40dp"
@@ -47,8 +47,9 @@
             android:layout_marginTop="16dp"
             android:text="@string/introduction_create_account" />
 
-        <Button
+        <com.cypherpunk.android.vpn.widget.TypefaceButton
             android:id="@+id/sign_in_button"
+            style="@style/Widget.Cypherpunk.Button.NoCaps"
             android:layout_width="match_parent"
             android:layout_height="48dp"
             android:layout_marginBottom="8dp"

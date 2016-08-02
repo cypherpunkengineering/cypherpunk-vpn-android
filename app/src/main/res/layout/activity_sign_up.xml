@@ -54,11 +54,14 @@
 
             </android.support.design.widget.TextInputLayout>
 
-            <Button
+            <com.cypherpunk.android.vpn.widget.TypefaceButton
                 android:id="@+id/send_email_button"
+                style="@style/Widget.Cypherpunk.Button.NoCaps"
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
                 android:layout_marginTop="8dp"
+                android:drawableLeft="@drawable/mail_vector"
+                android:drawableStart="@drawable/mail_vector"
                 android:text="@string/send_email_button" />
 
         </LinearLayout>
