@@ -19,14 +19,17 @@ import com.cypherpunk.android.vpn.R;
 
 
 public class SelectRegionActivity extends AppCompatActivity
-        implements AdapterView.OnItemClickListener {
+        implements AdapterView.OnItemClickListener,
+        ConnectConfirmationDialogFragment.ConnectDialogListener {
 
     public static String EXTRA_AREA = "area";
     private static String[] AREA = {"Auto select region", "North America", "South America", "Europe", "Asia", "Pacific"};
     private static String[] CONNECTED = {"Tokyo, Japan", "New York, USA"};
     private static final int REQUEST_SELECT_REGION = 1;
+
     private ListView listView;
     private MergeAdapter mergeAdapter;
+    private String selectedItem;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -92,10 +95,9 @@ public class SelectRegionActivity extends AppCompatActivity
         String item = (String) mergeAdapter.getItem(position);
         int itemViewId = mergeAdapter.getView(position, null, adapterView).getId();
         if (itemViewId == R.id.city) {
-            Intent intent = new Intent();
-            intent.putExtra(SelectCityActivity.EXTRA_CITY, item);
-            setResult(RESULT_OK, intent);
-            finish();
+            selectedItem = item;
+            ConnectConfirmationDialogFragment dialogFragment = new ConnectConfirmationDialogFragment();
+            dialogFragment.show(getSupportFragmentManager());
         } else if (itemViewId == R.id.area) {
             Intent intent = new Intent(this, SelectCityActivity.class);
             intent.putExtra(EXTRA_AREA, item);
@@ -122,5 +124,22 @@ public class SelectRegionActivity extends AppCompatActivity
             }
         });
         return view;
+    }
+
+    @Override
+    public void onDialogPositiveButtonClick() {
+        Intent intent = new Intent();
+        intent.putExtra(SelectCityActivity.EXTRA_CITY, selectedItem);
+        intent.putExtra(SelectCityActivity.EXTRA_CONNECT, true);
+        setResult(RESULT_OK, intent);
+        finish();
+    }
+
+    @Override
+    public void onDialogNegativeButtonClick() {
+        Intent intent = new Intent();
+        intent.putExtra(SelectCityActivity.EXTRA_CITY, selectedItem);
+        setResult(RESULT_OK, intent);
+        finish();
     }
 }
