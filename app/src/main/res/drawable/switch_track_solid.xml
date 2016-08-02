@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <shape android:shape="rectangle">
+            <size android:width="114dp" android:height="48dp" />
+            <solid android:color="@color/switch_track" />
+            <corners android:radius="25dp" />
+        </shape>
+    </item>
+</selector>

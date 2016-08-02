@@ -22,6 +22,7 @@ import com.cypherpunk.android.vpn.ui.region.SelectRegionActivity;
 import com.cypherpunk.android.vpn.ui.settings.SettingsActivity;
 import com.cypherpunk.android.vpn.vpn.CypherpunkVPN;
 import com.cypherpunk.android.vpn.widget.ConnectionStatusView;
+import com.cypherpunk.android.vpn.widget.VpnSwitch;
 
 import de.blinkt.openvpn.core.VpnStatus;
 
@@ -133,6 +134,7 @@ public class MainActivity extends AppCompatActivity implements VpnStatus.StateLi
         } else {
             CypherpunkVPN.start(getApplicationContext(), getBaseContext());
             binding.connectionStatus.setStatus(ConnectionStatusView.CONNECTING);
+            binding.connectionSwitch.setStatus(VpnSwitch.CONNECTING);
         }
     }
 
@@ -146,7 +148,7 @@ public class MainActivity extends AppCompatActivity implements VpnStatus.StateLi
             public void run() {
                 binding.keyTexture.startAnimation();
                 binding.connectionStatus.setStatus(ConnectionStatusView.CONNECTED);
-                binding.connectionSwitch.setChecked(true);
+                binding.connectionSwitch.setStatus(VpnSwitch.CONNECTED);
             }
         });
     }
@@ -157,7 +159,7 @@ public class MainActivity extends AppCompatActivity implements VpnStatus.StateLi
             public void run() {
                 binding.keyTexture.stopAnimation();
                 binding.connectionStatus.setStatus(ConnectionStatusView.DISCONNECTED);
-                binding.connectionSwitch.setChecked(false);
+                binding.connectionSwitch.setStatus(VpnSwitch.DISCONNECTED);
             }
         });
     }
