@@ -3,8 +3,9 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <Button
+    <com.cypherpunk.android.vpn.widget.TypefaceButton
         android:id="@+id/sort_button"
+        style="@style/Widget.Cypherpunk.Button.NoCaps"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"

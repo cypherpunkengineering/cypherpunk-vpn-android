@@ -47,7 +47,7 @@
 
             <com.cypherpunk.android.vpn.widget.TypefaceRadioButton
                 android:id="@+id/max_privacy_radio_button"
-                style="@style/Widget.AppCompat.Button"
+                style="@style/Widget.Cypherpunk.Button.NoCaps"
                 android:layout_width="104dp"
                 android:layout_height="108dp"
                 android:button="@null"
@@ -58,7 +58,7 @@
 
             <com.cypherpunk.android.vpn.widget.TypefaceRadioButton
                 android:id="@+id/max_speed_radio_button"
-                style="@style/Widget.AppCompat.Button"
+                style="@style/Widget.Cypherpunk.Button.NoCaps"
                 android:layout_width="128dp"
                 android:layout_height="132dp"
                 android:button="@null"
@@ -69,7 +69,7 @@
 
             <com.cypherpunk.android.vpn.widget.TypefaceRadioButton
                 android:id="@+id/max_freedom_radio_button"
-                style="@style/Widget.AppCompat.Button"
+                style="@style/Widget.Cypherpunk.Button.NoCaps"
                 android:layout_width="104dp"
                 android:layout_height="108dp"
                 android:button="@null"
@@ -101,7 +101,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <TextView
+            <com.cypherpunk.android.vpn.widget.TypefaceTextView
                 android:id="@+id/skip_button"
                 android:layout_width="match_parent"
                 android:layout_height="32dp"
@@ -114,9 +114,9 @@
                 android:clickable="true"
                 android:gravity="center"
                 android:text="@string/select_mode_skip"
-                android:textAppearance="?android:textAppearanceButton" />
+                android:textAppearance="@style/TextAppearance.Button" />
 
-            <Button
+            <com.cypherpunk.android.vpn.widget.TypefaceButton
                 android:id="@+id/ok_button"
                 style="@style/Widget.Cypherpunk.Button.Colored"
                 android:layout_width="match_parent"
