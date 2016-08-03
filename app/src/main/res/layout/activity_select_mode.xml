@@ -114,7 +114,7 @@
                 android:clickable="true"
                 android:gravity="center"
                 android:text="@string/select_mode_skip"
-                android:textAppearance="@style/TextAppearance.Button" />
+                android:textAppearance="@style/TextAppearance.Cypherpunk.Button" />
 
             <com.cypherpunk.android.vpn.widget.TypefaceButton
                 android:id="@+id/ok_button"
