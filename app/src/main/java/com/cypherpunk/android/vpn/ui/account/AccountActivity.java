@@ -15,17 +15,15 @@ import com.cypherpunk.android.vpn.data.api.UserManager;
 import com.cypherpunk.android.vpn.databinding.ActivityAccountBinding;
 import com.cypherpunk.android.vpn.ui.IntroductionActivity;
 import com.cypherpunk.android.vpn.vpn.CypherpunkVPN;
-import com.cypherpunk.android.vpn.widget.AccountGradeView;
 
 public class AccountActivity extends AppCompatActivity {
 
-    private ActivityAccountBinding binding;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_account);
+        ActivityAccountBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_account);
 
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
@@ -37,19 +35,10 @@ public class AccountActivity extends AppCompatActivity {
         binding.mail.setText(user.getMailAddress());
 
         // TODO: set account grade
-        binding.accountGrade.setGrade(AccountGradeView.FREE);
         binding.signOutButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 signOut();
-            }
-        });
-
-        // TODO: sample.
-        binding.upgradeAccountButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                binding.accountGrade.setGrade(AccountGradeView.MONTHLY);
             }
         });
     }

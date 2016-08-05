@@ -38,6 +38,17 @@
         <item name="android:textAppearance">@style/TextAppearance.Cypherpunk.Button</item>
     </style>
 
+    <style name="Widget.Cypherpunk.TextView.AccountMenu" parent="android:Widget.TextView">
+        <item name="android:paddingLeft">16dp</item>
+        <item name="android:paddingRight">16dp</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:height">48dp</item>
+        <item name="android:background">?android:attr/selectableItemBackground</item>
+        <item name="android:clickable">true</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:textColor">@android:color/white</item>
+    </style>
+
     <!-- TextAppearance -->
 
     <style name="TextAppearance.Cypherpunk.Button" parent="Base.TextAppearance.AppCompat.Button">
