@@ -23,7 +23,7 @@ import com.cypherpunk.android.vpn.ui.region.SelectRegionActivity;
 import com.cypherpunk.android.vpn.ui.settings.SettingsActivity;
 import com.cypherpunk.android.vpn.vpn.CypherpunkVPN;
 import com.cypherpunk.android.vpn.widget.ConnectionStatusView;
-import com.cypherpunk.android.vpn.widget.VpnSwitch;
+import com.cypherpunk.android.vpn.widget.VpnButton;
 
 import de.blinkt.openvpn.core.VpnStatus;
 
@@ -58,7 +58,7 @@ public class MainActivity extends AppCompatActivity implements VpnStatus.StateLi
         assert actionBar != null;
         actionBar.setDisplayShowTitleEnabled(false);
 
-        binding.connectionSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        binding.connectionButton.setOnCheckedChangeListener(new VpnButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
@@ -143,7 +143,7 @@ public class MainActivity extends AppCompatActivity implements VpnStatus.StateLi
         } else {
             CypherpunkVPN.start(getApplicationContext(), getBaseContext());
             binding.connectionStatus.setStatus(ConnectionStatusView.CONNECTING);
-            binding.connectionSwitch.setStatus(VpnSwitch.CONNECTING);
+            binding.connectionButton.setStatus(VpnButton.CONNECTING);
         }
     }
 
@@ -157,7 +157,7 @@ public class MainActivity extends AppCompatActivity implements VpnStatus.StateLi
             public void run() {
                 binding.keyTexture.startAnimation();
                 binding.connectionStatus.setStatus(ConnectionStatusView.CONNECTED);
-                binding.connectionSwitch.setStatus(VpnSwitch.CONNECTED);
+                binding.connectionButton.setStatus(VpnButton.CONNECTED);
             }
         });
     }
@@ -168,7 +168,7 @@ public class MainActivity extends AppCompatActivity implements VpnStatus.StateLi
             public void run() {
                 binding.keyTexture.stopAnimation();
                 binding.connectionStatus.setStatus(ConnectionStatusView.DISCONNECTED);
-                binding.connectionSwitch.setStatus(VpnSwitch.DISCONNECTED);
+                binding.connectionButton.setStatus(VpnButton.DISCONNECTED);
             }
         });
     }

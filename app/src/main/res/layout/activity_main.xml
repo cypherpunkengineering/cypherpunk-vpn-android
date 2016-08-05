@@ -28,11 +28,11 @@
                 android:layout_height="?android:actionBarSize"
                 android:layout_centerHorizontal="true"
                 android:layout_gravity="center"
-                android:textColor="#cccccc"
                 android:drawableLeft="@drawable/app_icon_vector"
                 android:drawablePadding="8dp"
                 android:gravity="center_vertical"
-                android:text="@string/app_name" />
+                android:text="@string/app_name"
+                android:textColor="#cccccc" />
 
         </android.support.v7.widget.Toolbar>
 
@@ -50,21 +50,18 @@
             android:layout_alignBottom="@+id/divider_bottom"
             android:layout_below="@id/divider_top" />
 
-        <com.cypherpunk.android.vpn.widget.VpnSwitch
-            android:id="@+id/connection_switch"
+        <com.cypherpunk.android.vpn.widget.VpnButton
+            android:id="@+id/connection_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
-            android:layout_centerVertical="true"
-            android:thumb="@drawable/switch_thumb"
-            app:switchMinWidth="114dp"
-            app:track="@drawable/switch_track" />
+            android:layout_centerVertical="true" />
 
         <com.cypherpunk.android.vpn.widget.ConnectionStatusView
             android:id="@+id/connection_status"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/connection_switch"
+            android:layout_below="@id/connection_button"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="8dp"
             app:textSize="@dimen/connection_status_text_size" />

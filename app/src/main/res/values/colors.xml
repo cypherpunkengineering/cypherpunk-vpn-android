@@ -9,4 +9,7 @@
     <color name="account_grade_unchecked">#666666</color>
     <color name="switch_thumb_connect">#f5d80d</color>
     <color name="switch_track_connect">@color/colorAccent</color>
+    <color name="vpn_button_frame_connected">#996ec909</color>
+    <color name="vpn_button_frame_connecting">#99ff781a</color>
+    <color name="vpn_button_frame_disconnected">#99f11a35</color>
 </resources>
