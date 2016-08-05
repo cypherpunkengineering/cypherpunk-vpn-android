@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/button_frame"
+        android:drawable="@drawable/vpn_button_frame" />
+    <item
+        android:bottom="7dp"
+        android:left="7dp"
+        android:right="7dp"
+        android:top="7dp">
+        <shape android:shape="oval">
+            <stroke
+                android:width="1dp"
+                android:color="#ffffff" />
+        </shape>
+    </item>
+    <item
+        android:bottom="8dp"
+        android:left="8dp"
+        android:right="8dp"
+        android:top="8dp">
+        <shape android:shape="oval">
+            <size
+                android:width="133dp"
+                android:height="133dp" />
+            <gradient
+                android:angle="270"
+                android:endColor="#cacaca"
+                android:startColor="#dddddd" />
+        </shape>
+    </item>
+</layer-list>
