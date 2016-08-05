@@ -2,6 +2,7 @@ package com.cypherpunk.android.vpn.ui;
 
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
+import android.graphics.Paint;
 import android.net.VpnService;
 import android.os.Build;
 import android.os.Bundle;
@@ -69,6 +70,11 @@ public class MainActivity extends AppCompatActivity implements VpnStatus.StateLi
             }
         });
 
+        // TODO: set progress
+        binding.connectingProgress.setProgress(70);
+        binding.connectingCancelButton.setPaintFlags(
+                binding.connectingCancelButton.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
+
         binding.regionContainer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -80,6 +86,14 @@ public class MainActivity extends AppCompatActivity implements VpnStatus.StateLi
             @Override
             public boolean onMenuItemClick(MenuItem item) {
                 return onOptionsItemSelected(item);
+            }
+        });
+
+        binding.connectingCancelButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // cancel
+                stopVpn();
             }
         });
 
@@ -144,6 +158,7 @@ public class MainActivity extends AppCompatActivity implements VpnStatus.StateLi
             CypherpunkVPN.start(getApplicationContext(), getBaseContext());
             binding.connectionStatus.setStatus(ConnectionStatusView.CONNECTING);
             binding.connectionButton.setStatus(VpnButton.CONNECTING);
+            binding.connectingProgressContainer.setVisibility(View.VISIBLE);
         }
     }
 
@@ -158,6 +173,7 @@ public class MainActivity extends AppCompatActivity implements VpnStatus.StateLi
                 binding.keyTexture.startAnimation();
                 binding.connectionStatus.setStatus(ConnectionStatusView.CONNECTED);
                 binding.connectionButton.setStatus(VpnButton.CONNECTED);
+                binding.connectingProgressContainer.setVisibility(View.INVISIBLE);
             }
         });
     }
@@ -169,6 +185,7 @@ public class MainActivity extends AppCompatActivity implements VpnStatus.StateLi
                 binding.keyTexture.stopAnimation();
                 binding.connectionStatus.setStatus(ConnectionStatusView.DISCONNECTED);
                 binding.connectionButton.setStatus(VpnButton.DISCONNECTED);
+                binding.connectingProgressContainer.setVisibility(View.INVISIBLE);
             }
         });
     }
