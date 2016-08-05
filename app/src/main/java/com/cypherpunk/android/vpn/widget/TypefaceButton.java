@@ -4,12 +4,11 @@ import android.content.Context;
 import android.graphics.Typeface;
 import android.support.v7.widget.AppCompatButton;
 import android.util.AttributeSet;
-import android.widget.Button;
 
 import com.cypherpunk.android.vpn.utils.FontUtil;
 
 
-public class TypefaceButton extends Button {
+public class TypefaceButton extends AppCompatButton {
 
     public TypefaceButton(Context context) {
         this(context, null);
