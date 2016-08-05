@@ -37,20 +37,17 @@ build:
             rm -rf ${ANDROID_NDK_HOME}
             rm -rf openvpn
   after-steps:
-    - script:
-        name: install curl
-        code: |
-            apt-get update -y
-            apt-get install -y curl
+    - install-packages:
+        packages: curl
     - slack-notifier:
         url: $SLACK_URL
         channel: dev-notifications
         username: wercker
 deploy:
     steps:
+        - install-packages:
+            packages: curl
         - script:
             name: Upload apk to DeployGate
             code: |
-              apt-get update -y
-              apt-get install -y curl
               curl -F file=@app/build/outputs/apk/app-debug.apk -F token="$DEPLOYGATE_API_KEY" https://deploygate.com/api/users/uphyca/apps
