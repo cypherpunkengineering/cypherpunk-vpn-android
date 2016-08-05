@@ -2,13 +2,13 @@ package com.cypherpunk.android.vpn.widget;
 
 import android.content.Context;
 import android.graphics.Typeface;
+import android.support.v7.widget.AppCompatRadioButton;
 import android.util.AttributeSet;
-import android.widget.RadioButton;
 
 import com.cypherpunk.android.vpn.utils.FontUtil;
 
 
-public class TypefaceRadioButton extends RadioButton {
+public class TypefaceRadioButton extends AppCompatRadioButton {
 
     public TypefaceRadioButton(Context context) {
         this(context, null);
