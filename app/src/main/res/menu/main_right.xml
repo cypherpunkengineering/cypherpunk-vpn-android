@@ -5,13 +5,7 @@
     <item
         android:id="@+id/action_account"
         android:icon="@drawable/account_vector"
-        android:title="@string/action_sign_ont"
+        android:title="@string/action_account"
         app:showAsAction="always" />
-
-    <item
-        android:id="@+id/action_setting"
-        android:icon="@drawable/settings_vector"
-        android:title="@string/action_settings"
-        app:showAsAction="ifRoom" />
 
 </menu>

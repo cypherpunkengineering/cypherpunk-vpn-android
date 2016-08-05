@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.v4.app.TaskStackBuilder;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.ActionMenuView;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -68,10 +69,17 @@ public class MainActivity extends AppCompatActivity implements VpnStatus.StateLi
             }
         });
 
-        binding.region.setOnClickListener(new View.OnClickListener() {
+        binding.regionContainer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 startActivityForResult(new Intent(MainActivity.this, SelectRegionActivity.class), REQUEST_SELECT_REGION);
+            }
+        });
+
+        binding.actionAccount.setOnMenuItemClickListener(new ActionMenuView.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                return onOptionsItemSelected(item);
             }
         });
 
@@ -80,7 +88,8 @@ public class MainActivity extends AppCompatActivity implements VpnStatus.StateLi
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.main, menu);
+        getMenuInflater().inflate(R.menu.main_left, menu);
+        getMenuInflater().inflate(R.menu.main_right, binding.actionAccount.getMenu());
         return true;
     }
 

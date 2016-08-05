@@ -1,16 +1,21 @@
 package com.cypherpunk.android.vpn.widget;
 
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.graphics.Typeface;
 import android.util.AttributeSet;
 import android.widget.TextView;
 
+import com.cypherpunk.android.vpn.R;
 import com.cypherpunk.android.vpn.utils.FontUtil;
 
 /**
- * Dosis-Regular font TextView
+ * Dosis font TextView
  */
 public class TypefaceTextView extends TextView {
+
+    public static final int DOSIS_REGULAR = 0;
+    public static final int DOSIS_SEMI_BOLD = 1;
 
     public TypefaceTextView(Context context) {
         this(context, null);
@@ -22,8 +27,34 @@ public class TypefaceTextView extends TextView {
 
     public TypefaceTextView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+
+        int typeIndex = 0;
+
+        TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.TypefaceTextView);
+        assert a != null;
+        try {
+            typeIndex = a.getInt(R.styleable.TypefaceTextView_fontName, 0);
+        } finally {
+            a.recycle();
+        }
+
         if (!isInEditMode()) {
-            Typeface tf = FontUtil.get(context);
+            setTypefaceDosis(typeIndex);
+        }
+    }
+
+    public void setTypefaceDosis(int typeIndex) {
+        if (isInEditMode()) {
+            return;
+        }
+
+        Typeface tf = null;
+        if (typeIndex == DOSIS_REGULAR) {
+            tf = FontUtil.getDosisRegular(getContext());
+        } else if (typeIndex == DOSIS_SEMI_BOLD) {
+            tf = FontUtil.getDosisSemiBold(getContext());
+        }
+        if (tf != null) {
             setTypeface(tf);
         }
     }
