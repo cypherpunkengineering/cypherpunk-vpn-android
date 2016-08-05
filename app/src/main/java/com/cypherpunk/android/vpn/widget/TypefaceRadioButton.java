@@ -21,7 +21,7 @@ public class TypefaceRadioButton extends RadioButton {
     public TypefaceRadioButton(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         if (!isInEditMode()) {
-            Typeface tf = FontUtil.get(context);
+            Typeface tf = FontUtil.getDosisRegular(context);
             setTypeface(tf);
         }
     }

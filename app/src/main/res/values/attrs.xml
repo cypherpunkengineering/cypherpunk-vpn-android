@@ -3,4 +3,12 @@
     <declare-styleable name="ConnectionStatusView">
         <attr name="textSize" format="dimension" />
     </declare-styleable>
+
+    <declare-styleable name="TypefaceTextView">
+        <attr name="fontName">
+            <enum name="DosisRegular" value="0" />
+            <enum name="DosisSemiBold" value="1" />
+        </attr>
+    </declare-styleable>
+
 </resources>

@@ -6,12 +6,20 @@ import android.graphics.Typeface;
 
 public class FontUtil {
 
-    private static Typeface sTypeface;
+    private static Typeface dosisRegular;
+    private static Typeface dosisSemiBold;
 
-    public static Typeface get(Context context) {
-        if (sTypeface == null) {
-            sTypeface = Typeface.createFromAsset(context.getAssets(), "fonts/Dosis-Regular.otf");
+    public static Typeface getDosisRegular(Context context) {
+        if (dosisRegular == null) {
+            dosisRegular = Typeface.createFromAsset(context.getAssets(), "fonts/Dosis-Regular.otf");
         }
-        return sTypeface;
+        return dosisRegular;
+    }
+
+    public static Typeface getDosisSemiBold(Context context) {
+        if (dosisSemiBold == null) {
+            dosisSemiBold = Typeface.createFromAsset(context.getAssets(), "fonts/Dosis-SemiBold.otf");
+        }
+        return dosisSemiBold;
     }
 }

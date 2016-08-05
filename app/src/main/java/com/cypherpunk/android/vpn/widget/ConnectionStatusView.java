@@ -29,8 +29,8 @@ public class ConnectionStatusView extends LinearLayout {
     public @interface ConnectionStatus {
     }
 
-    private final TextView statusText;
-    private final TextView[] textViews = new TextView[3];
+    private final TypefaceTextView statusText;
+    private final TypefaceTextView[] textViews = new TypefaceTextView[3];
     AnimatorSet animatorSet = new AnimatorSet();
 
     public ConnectionStatusView(Context context) {
@@ -49,11 +49,13 @@ public class ConnectionStatusView extends LinearLayout {
         a.recycle();
 
         statusText = new TypefaceTextView(context);
+        statusText.setTypefaceDosis(TypefaceTextView.DOSIS_SEMI_BOLD);
         statusText.setTextSize(TypedValue.COMPLEX_UNIT_PX, textSize);
         addView(statusText);
         ArrayList<Animator> animators = new ArrayList<>();
         for (int i = 0; i < 3; i++) {
             TypefaceTextView textView = new TypefaceTextView(context);
+            textView.setTypefaceDosis(TypefaceTextView.DOSIS_SEMI_BOLD);
             textView.setTextSize(TypedValue.COMPLEX_UNIT_PX, textSize);
             textView.setText(".");
             textView.setAlpha(0f);
