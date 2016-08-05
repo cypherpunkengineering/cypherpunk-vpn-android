@@ -63,8 +63,40 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/connection_button"
             android:layout_centerHorizontal="true"
+            android:layout_marginBottom="28dp"
             android:layout_marginTop="8dp"
             app:textSize="@dimen/connection_status_text_size" />
+
+        <LinearLayout
+            android:id="@+id/connecting_progress_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/connection_status"
+            android:layout_centerHorizontal="true"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:visibility="gone"
+            tools:visibility="visible">
+
+            <ProgressBar
+                android:id="@+id/connecting_progress"
+                style="?android:attr/progressBarStyleHorizontal"
+                android:layout_width="176dp"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="4dp"
+                android:minHeight="10dp"
+                android:progressDrawable="@drawable/vpn_progress" />
+
+            <com.cypherpunk.android.vpn.widget.TypefaceTextView
+                android:id="@+id/connecting_cancel_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="?android:attr/selectableItemBackground"
+                android:clickable="true"
+                android:padding="8dp"
+                android:text="Cancel" />
+
+        </LinearLayout>
 
         <View
             android:id="@id/divider_bottom"
