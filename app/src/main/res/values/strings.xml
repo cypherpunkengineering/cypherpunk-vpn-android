@@ -50,7 +50,7 @@
     <string name="account_grade_monthly">Monthly</string>
     <string name="account_grade_yearly">Yearly</string>
     <string name="account_logout">Sign out</string>
-    <string name="account_upgrade">Upgrade Account</string>
+    <string name="account_upgrade">Upgrade</string>
     <string name="account_change_email">Change email</string>
     <string name="account_change_password">Change password</string>
     <string name="account_contact_us">Contact us</string>

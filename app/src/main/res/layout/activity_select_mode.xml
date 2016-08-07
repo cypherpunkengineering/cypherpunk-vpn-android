@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
     <LinearLayout
@@ -36,7 +37,8 @@
             android:layout_marginBottom="16dp"
             android:layout_marginTop="38dp"
             android:text="@string/select_mode_title"
-            android:textSize="22sp" />
+            android:textSize="22sp"
+            app:fontName="dosisMedium" />
 
         <RadioGroup
             android:id="@+id/radio_group"
@@ -86,6 +88,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
             android:textSize="22sp"
+            app:fontName="dosisMedium"
             tools:text="max freedom mode" />
 
         <com.cypherpunk.android.vpn.widget.TypefaceTextView
