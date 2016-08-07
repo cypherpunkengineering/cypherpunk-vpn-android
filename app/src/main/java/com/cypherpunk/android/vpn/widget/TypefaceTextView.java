@@ -16,6 +16,7 @@ public class TypefaceTextView extends TextView {
 
     public static final int DOSIS_REGULAR = 0;
     public static final int DOSIS_SEMI_BOLD = 1;
+    public static final int DOSIS_MEDIUM = 2;
 
     public TypefaceTextView(Context context) {
         this(context, null);
@@ -49,10 +50,16 @@ public class TypefaceTextView extends TextView {
         }
 
         Typeface tf = null;
-        if (typeIndex == DOSIS_REGULAR) {
-            tf = FontUtil.getDosisRegular(getContext());
-        } else if (typeIndex == DOSIS_SEMI_BOLD) {
-            tf = FontUtil.getDosisSemiBold(getContext());
+        switch (typeIndex) {
+            case DOSIS_REGULAR:
+                tf = FontUtil.getDosisRegular(getContext());
+                break;
+            case DOSIS_SEMI_BOLD:
+                tf = FontUtil.getDosisSemiBold(getContext());
+                break;
+            case DOSIS_MEDIUM:
+                tf = FontUtil.getDosisMedium(getContext());
+                break;
         }
         if (tf != null) {
             setTypeface(tf);

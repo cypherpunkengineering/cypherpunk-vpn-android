@@ -8,6 +8,7 @@ public class FontUtil {
 
     private static Typeface dosisRegular;
     private static Typeface dosisSemiBold;
+    private static Typeface dosisMedium;
 
     public static Typeface getDosisRegular(Context context) {
         if (dosisRegular == null) {
@@ -21,5 +22,12 @@ public class FontUtil {
             dosisSemiBold = Typeface.createFromAsset(context.getAssets(), "fonts/Dosis-SemiBold.otf");
         }
         return dosisSemiBold;
+    }
+
+    public static Typeface getDosisMedium(Context context) {
+        if (dosisMedium == null) {
+            dosisMedium = Typeface.createFromAsset(context.getAssets(), "fonts/Dosis-Medium.otf");
+        }
+        return dosisMedium;
     }
 }

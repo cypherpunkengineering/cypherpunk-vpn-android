@@ -21,7 +21,7 @@ public class TypefaceButton extends AppCompatButton {
     public TypefaceButton(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         if (!isInEditMode()) {
-            Typeface tf = FontUtil.getDosisRegular(context);
+            Typeface tf = FontUtil.getDosisMedium(context);
             setTypeface(tf);
         }
     }
