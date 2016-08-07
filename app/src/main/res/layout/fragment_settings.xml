@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:paddingTop="16dp">
+
+        <com.cypherpunk.android.vpn.widget.TypefaceTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginStart="16dp"
+            android:text="@string/settings_choose_mode"
+            android:textColor="@color/settings_label"
+            android:textSize="16sp" />
+
+        <RadioGroup
+            android:id="@+id/radio_group"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="24dp"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <com.cypherpunk.android.vpn.widget.TypefaceRadioButton
+                android:id="@+id/max_privacy_radio_button"
+                style="@style/Widget.Cypherpunk.Button.NoCaps"
+                android:layout_width="104dp"
+                android:layout_height="108dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginRight="16dp"
+                android:button="@null"
+                android:drawableTop="@drawable/settings_privacy_vector"
+                android:paddingTop="10dp"
+                android:text="@string/settings_mode_max_privacy"
+                android:textSize="14sp"
+                android:theme="@style/AppTheme.RadioButton" />
+
+            <com.cypherpunk.android.vpn.widget.TypefaceRadioButton
+                android:id="@+id/max_speed_radio_button"
+                style="@style/Widget.Cypherpunk.Button.NoCaps"
+                android:layout_width="104dp"
+                android:layout_height="108dp"
+                android:button="@null"
+                android:drawableTop="@drawable/settings_rocket_vector"
+                android:text="@string/settings_mode_max_speed"
+                android:textSize="14sp"
+                android:theme="@style/AppTheme.RadioButton" />
+
+        </RadioGroup>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginBottom="16dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginStart="16dp"
+            android:orientation="horizontal">
+
+            <com.cypherpunk.android.vpn.widget.TypefaceTextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:text="@string/settings_advanced_settings"
+                android:textColor="@color/settings_label"
+                android:textSize="16sp" />
+
+            <ToggleButton
+                android:id="@+id/advanced_toggle_button"
+                style="@style/Widget.Cypherpunk.Button.NoCaps"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_marginEnd="8dp"
+                android:layout_marginRight="8dp"
+                android:drawableLeft="@drawable/setting_toggle"
+                android:drawableStart="@drawable/setting_toggle"
+                android:textOff="@string/settings_open"
+                android:textOn="@string/settings_close"
+                tools:ignore="RelativeOverlap" />
+
+
+        </RelativeLayout>
+
+    </LinearLayout>
+
+</layout>
