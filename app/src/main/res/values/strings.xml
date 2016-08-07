@@ -25,6 +25,13 @@
     <string name="settings_open">open</string>
     <string name="settings_close">close</string>
 
+    <!-- status -->
+    <string name="status_change_ip_address">Change IP Address</string>
+    <string name="status_connection_status">Connection status</string>
+    <string name="status_bandwidth">Bandwidth</string>
+    <string name="ip_original">ORIGINAL</string>
+    <string name="ip_new">NEW</string>
+
     <!-- select mode -->
     <string name="select_mode_title">Select your Cypherpunk VPN mode</string>
     <string name="select_mode_connect">Connect</string>
@@ -36,8 +43,6 @@
     <string name="status_disconnected">DISCONNECTED</string>
     <string name="status_connecting">CONNECTING</string>
     <string name="status_connected">CONNECTED</string>
-    <string name="ip_original">ORIGINAL</string>
-    <string name="ip_current">CURRENT</string>
 
     <!-- account -->
     <string name="title_activity_account">Account</string>

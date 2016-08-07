@@ -56,4 +56,9 @@
         <item name="android:textAllCaps">false</item>
     </style>
 
+    <style name="TextAppearance.Cypherpunk.SettingLabel" parent="TextAppearance.AppCompat">
+        <item name="android:textColor">@color/settings_label</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
 </resources>

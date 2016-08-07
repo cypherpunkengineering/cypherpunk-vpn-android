@@ -63,7 +63,7 @@ public class SettingsActivity extends AppCompatActivity {
                 case 0:
                     return new SettingsFragment();
                 case 1:
-                    return new AdvancedSettingsFragment();
+                    return new StatusFragment();
                 default:
                     return null;
             }
