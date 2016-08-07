@@ -13,4 +13,6 @@
     <color name="vpn_button_frame_connecting">#99ff781a</color>
     <color name="vpn_button_frame_disconnected">#99f11a35</color>
     <color name="settings_label">#999999</color>
+    <color name="status_region">#cccccc</color>
+    <color name="card_background">#333333</color>
 </resources>
