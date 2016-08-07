@@ -21,7 +21,8 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
                 android:text="@string/status_connection_status"
-                android:textAppearance="@style/TextAppearance.Cypherpunk.SettingLabel" />
+                android:textAppearance="@style/TextAppearance.Cypherpunk.SettingLabel"
+                app:fontName="dosisMedium" />
 
             <com.cypherpunk.android.vpn.widget.TypefaceTextView
                 android:layout_width="wrap_content"
@@ -121,17 +122,19 @@
                 android:layout_gravity="center_horizontal"
                 android:drawableLeft="@drawable/refresh_vector"
                 android:drawablePadding="8dp"
+                android:drawableStart="@drawable/refresh_vector"
                 android:text="@string/status_change_ip_address" />
 
             <com.cypherpunk.android.vpn.widget.TypefaceTextView
+                style="@style/TextAppearance.Cypherpunk.SettingLabel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                style="@style/TextAppearance.Cypherpunk.SettingLabel"
                 android:layout_marginBottom="16dp"
                 android:layout_marginLeft="16dp"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
-                android:text="@string/status_bandwidth" />
+                android:text="@string/status_bandwidth"
+                app:fontName="dosisMedium" />
 
         </LinearLayout>
 
