@@ -75,7 +75,7 @@ public class SettingsActivity extends AppCompatActivity {
                 case 0:
                     return getString(R.string.tab_settings_simple);
                 case 1:
-                    return getString(R.string.tab_settings_advanced);
+                    return getString(R.string.tab_settings_status);
                 default:
                     return null;
             }
