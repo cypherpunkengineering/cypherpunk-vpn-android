@@ -1,6 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
+    <Preference
+        android:key="mode"
+        android:layout="@layout/preference_mode"
+        android:title="mode" />
+
+    <Preference
+        android:key="advanced"
+        android:layout="@layout/preference_advanced"
+        android:title="advanced" />
+
     <PreferenceCategory android:title="Networks Settings">
 
         <Preference android:title="Manage Trusted Networks" />

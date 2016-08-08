@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="16dp"
+    android:orientation="vertical">
+
+    <com.cypherpunk.android.vpn.widget.TypefaceTextView
+        style="@style/TextAppearance.Cypherpunk.SettingLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginStart="16dp"
+        android:text="@string/settings_choose_mode"
+        app:fontName="dosisMedium" />
+
+    <RadioGroup
+        android:id="@+id/radio_group"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="24dp"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <com.cypherpunk.android.vpn.widget.TypefaceRadioButton
+            android:id="@+id/max_privacy_radio_button"
+            style="@style/Widget.Cypherpunk.Button.NoCaps"
+            android:layout_width="104dp"
+            android:layout_height="108dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginRight="16dp"
+            android:button="@null"
+            android:drawableTop="@drawable/settings_privacy_vector"
+            android:paddingTop="10dp"
+            android:text="@string/settings_mode_max_privacy"
+            android:textSize="14sp"
+            android:theme="@style/AppTheme.RadioButton" />
+
+        <com.cypherpunk.android.vpn.widget.TypefaceRadioButton
+            android:id="@+id/max_speed_radio_button"
+            style="@style/Widget.Cypherpunk.Button.NoCaps"
+            android:layout_width="104dp"
+            android:layout_height="108dp"
+            android:button="@null"
+            android:drawableTop="@drawable/settings_rocket_vector"
+            android:text="@string/settings_mode_max_speed"
+            android:textSize="14sp"
+            android:theme="@style/AppTheme.RadioButton" />
+
+    </RadioGroup>
+
+</LinearLayout>
