@@ -1,44 +1,90 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <PreferenceCategory android:title="Networks Settings">
+    <Preference
+        android:key="mode"
+        android:layout="@layout/preference_mode"
+        android:title="mode" />
 
-        <Preference android:title="Manage Trusted Networks" />
+    <Preference
+        android:key="advanced"
+        android:layout="@layout/preference_advanced"
+        android:title="advanced" />
+
+    <PreferenceCategory android:title="xxx settings">
+
+        <SwitchPreference
+            android:key="auto_reconnect"
+            android:title="Auto reconnect" />
+
+        <SwitchPreference
+            android:key="auto_connect_on_boot"
+            android:title="Auto connect on boot" />
+
+        <SwitchPreference
+            android:key="auto_reconnect"
+            android:title="Auto connect vpn to untrusted" />
+
+        <SwitchPreference
+            android:key="auto_connect_on_boot"
+            android:title="Add new Wi-Fi network to trusted network whitelist" />
+
+        <SwitchPreference
+            android:key="trust_cellular_network"
+            android:title="Trust cellular networks" />
+
+        <SwitchPreference
+            android:key="block_local_network"
+            android:title="Block local network" />
+
+        <SwitchPreference
+            android:key="kill_switch"
+            android:title="Kill Switch" />
 
     </PreferenceCategory>
 
-    <PreferenceCategory android:title="Advanced Settings">
+    <PreferenceCategory android:title="xxx settings">
+
+        <Preference
+            android:key="protocol"
+            android:summary="Ikev2"
+            android:title="VPN protocol" />
 
         <SwitchPreference
-            android:key="cypherpunk"
-            android:title="Cypherpunk mode" />
+            android:key="remote_port"
+            android:summary="auto"
+            android:title="Remote Port" />
 
         <SwitchPreference
-            android:key="protect_on_device_startup"
-            android:title="Protect on device startup" />
-
-        <SwitchPreference
-            android:key="protect_on_untrusted_networks"
-            android:title="Protect on untrusted networks" />
-
-    </PreferenceCategory>
-
-    <PreferenceCategory android:title="Crypto Settings">
+            android:key="use_small_packets"
+            android:title="Use small packets" />
 
         <Preference
             android:key="encryption"
-            android:summary="AES-128"
             android:title="Encryption" />
 
         <Preference
-            android:key="authentication"
-            android:summary="SHA-1"
-            android:title="Authentication" />
+            android:key="auto_connect_on_boot"
+            android:summary="authentication"
+            android:title="Per add settings" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="About">
 
         <Preference
-            android:key="handshake"
-            android:summary="RSA-2048"
-            android:title="Handshake" />
+            android:key="encryption"
+            android:title="Terms of service" />
+
+        <Preference
+            android:key="encryption"
+            android:title="Privacy policy" />
+
+        <Preference
+            android:key="verson"
+            android:summary="1.0.0"
+            android:title="Version" />
+
     </PreferenceCategory>
 
 </PreferenceScreen>
