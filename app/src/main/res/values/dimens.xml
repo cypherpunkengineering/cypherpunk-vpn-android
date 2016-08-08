@@ -1,3 +1,4 @@
 <resources>
     <dimen name="connection_status_text_size">25sp</dimen>
+    <dimen name="vpn_button_icon_padding">28dp</dimen>
 </resources>

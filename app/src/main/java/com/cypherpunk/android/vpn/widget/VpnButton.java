@@ -1,7 +1,7 @@
 package com.cypherpunk.android.vpn.widget;
 
 import android.content.Context;
-import android.databinding.DataBindingUtil;
+import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
 import android.support.annotation.IntDef;
@@ -9,18 +9,15 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.content.res.ResourcesCompat;
 import android.support.v4.graphics.drawable.DrawableCompat;
 import android.util.AttributeSet;
-import android.view.LayoutInflater;
 import android.widget.CompoundButton;
-import android.widget.FrameLayout;
 
 import com.cypherpunk.android.vpn.R;
-import com.cypherpunk.android.vpn.databinding.ViewVpnButtonBinding;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
 
-public class VpnButton extends FrameLayout implements CompoundButton.OnCheckedChangeListener {
+public class VpnButton extends CompoundButton implements CompoundButton.OnCheckedChangeListener {
 
     public interface OnCheckedChangeListener {
         void onCheckedChanged(CompoundButton buttonView, boolean isChecked);
@@ -31,11 +28,8 @@ public class VpnButton extends FrameLayout implements CompoundButton.OnCheckedCh
     public static final int CONNECTED = 2;
 
     private OnCheckedChangeListener listener;
-    private ViewVpnButtonBinding binding;
 
-    private Drawable disconnectedIconDrawable;
-    private Drawable connectingIconDrawable;
-    private Drawable connectedIconDrawable;
+    private Drawable icon;
     private Drawable frame;
     private int connectedFrameColor;
     private int connectingFrameColor;
@@ -62,14 +56,13 @@ public class VpnButton extends FrameLayout implements CompoundButton.OnCheckedCh
             return;
         }
 
-        binding = DataBindingUtil.inflate(
-                LayoutInflater.from(context), R.layout.view_vpn_button, this, true);
+        setClickable(true);
+        setBackgroundResource(R.drawable.vpn_button);
+        setPadding(0, 0, 0, getResources().getDimensionPixelSize(R.dimen.vpn_button_icon_padding));
+        setOnCheckedChangeListener(this);
 
         frame = DrawableCompat.wrap(ContextCompat.getDrawable(context, R.drawable.vpn_button_frame));
-
-        disconnectedIconDrawable = ResourcesCompat.getDrawable(getResources(), R.drawable.io_btn_red, null);
-        connectingIconDrawable = ResourcesCompat.getDrawable(getResources(), R.drawable.io_btn_orange, null);
-        connectedIconDrawable = ResourcesCompat.getDrawable(getResources(), R.drawable.io_btn_green, null);
+        icon = ResourcesCompat.getDrawable(getResources(), R.drawable.vpn_button_icon, null);
 
         disconnectedFrameColor = ContextCompat.getColor(context, R.color.vpn_button_frame_disconnected);
         connectingFrameColor = ContextCompat.getColor(context, R.color.vpn_button_frame_connecting);
@@ -77,10 +70,7 @@ public class VpnButton extends FrameLayout implements CompoundButton.OnCheckedCh
 
         setStatus(DISCONNECTED);
 
-        binding.button.setOnCheckedChangeListener(this);
-
         // TODO: pressed color
-        // TODO: [bug] if pressed, icon is gone
     }
 
     @Override
@@ -91,27 +81,37 @@ public class VpnButton extends FrameLayout implements CompoundButton.OnCheckedCh
     }
 
     public void setStatus(@ConnectionStatus int status) {
-        Drawable icon = null;
         switch (status) {
             case DISCONNECTED:
-                icon = disconnectedIconDrawable;
                 DrawableCompat.setTint(frame, disconnectedFrameColor);
                 break;
             case CONNECTING:
-                icon = connectingIconDrawable;
                 DrawableCompat.setTint(frame, connectingFrameColor);
                 break;
             case CONNECTED:
-                icon = connectedIconDrawable;
                 DrawableCompat.setTint(frame, connectedFrameColor);
                 break;
         }
-        binding.icon.setImageDrawable(icon);
-        LayerDrawable background = (LayerDrawable) binding.button.getBackground();
+        icon.setLevel(status);
+        LayerDrawable background = (LayerDrawable) getBackground();
         background.setDrawableByLayerId(R.id.button_frame, frame);
     }
 
     public void setOnCheckedChangeListener(OnCheckedChangeListener listener) {
         this.listener = listener;
+    }
+
+    @Override
+    protected void onDraw(Canvas canvas) {
+        super.onDraw(canvas);
+        // draw io icon
+        if (icon != null) {
+            final int height = icon.getIntrinsicHeight();
+            int y = getHeight() - height - getPaddingBottom();
+            int buttonWidth = icon.getIntrinsicWidth();
+            int buttonLeft = (getWidth() - buttonWidth) / 2;
+            icon.setBounds(buttonLeft, y, buttonLeft + buttonWidth, y + height);
+            icon.draw(canvas);
+        }
     }
 }
