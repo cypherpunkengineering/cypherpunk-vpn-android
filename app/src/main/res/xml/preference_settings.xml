@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory android:title="@string/settings_choose_mode">
+
+        <Preference
+            android:key="mode"
+            android:layout="@layout/preference_mode"
+            android:title="mode" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="Settings">
+
+        <Preference
+            android:key="advanced"
+            android:title="Advanced Settings" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="About">
+
+        <Preference
+            android:key="encryption"
+            android:title="Terms of service" />
+
+        <Preference
+            android:key="encryption"
+            android:title="Privacy policy" />
+
+        <Preference
+            android:key="verson"
+            android:summary="1.0.0"
+            android:title="Version" />
+
+    </PreferenceCategory>
+
+</PreferenceScreen>
