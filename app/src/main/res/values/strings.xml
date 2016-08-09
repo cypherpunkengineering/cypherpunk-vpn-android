@@ -21,9 +21,7 @@
     <string name="settings_mode_max_speed">Max speed</string>
     <string name="settings_mode_max_freedom">Max freedom</string>
     <string name="settings_choose_mode">Help me choose</string>
-    <string name="settings_advanced_settings">Advanced settings</string>
-    <string name="settings_open">open</string>
-    <string name="settings_close">close</string>
+    <string name="title_activity_advanced_settings">Advanced settings</string>
 
     <!-- status -->
     <string name="status_change_ip_address">Change IP Address</string>
