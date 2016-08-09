@@ -10,13 +10,9 @@
 
     </PreferenceCategory>
 
-    <PreferenceCategory android:title="Settings">
-
         <Preference
             android:key="advanced"
-            android:title="Advanced Settings" />
-
-    </PreferenceCategory>
+            android:title="Advanced configuration" />
 
     <PreferenceCategory android:title="About">
 

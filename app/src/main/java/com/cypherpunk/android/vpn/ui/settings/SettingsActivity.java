@@ -73,7 +73,7 @@ public class SettingsActivity extends AppCompatActivity {
         public CharSequence getPageTitle(int position) {
             switch (position) {
                 case 0:
-                    return getString(R.string.tab_settings_settings);
+                    return getString(R.string.tab_settings_mode);
                 case 1:
                     return getString(R.string.tab_settings_status);
                 default:
