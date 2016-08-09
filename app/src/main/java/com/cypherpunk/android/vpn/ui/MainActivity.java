@@ -23,6 +23,7 @@ import com.cypherpunk.android.vpn.ui.region.SelectCityActivity;
 import com.cypherpunk.android.vpn.ui.region.SelectRegionActivity;
 import com.cypherpunk.android.vpn.ui.settings.SettingsActivity;
 import com.cypherpunk.android.vpn.vpn.CypherpunkVPN;
+import com.cypherpunk.android.vpn.vpn.CypherpunkVpnStatus;
 import com.cypherpunk.android.vpn.widget.ConnectionStatusView;
 import com.cypherpunk.android.vpn.widget.VpnButton;
 
@@ -34,6 +35,7 @@ public class MainActivity extends AppCompatActivity implements VpnStatus.StateLi
     private static final int REQUEST_SELECT_REGION = 1;
 
     private ActivityMainBinding binding;
+    private CypherpunkVpnStatus status;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +56,7 @@ public class MainActivity extends AppCompatActivity implements VpnStatus.StateLi
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
 
+        status = CypherpunkVpnStatus.getInstance();
         setSupportActionBar(binding.toolbar);
         ActionBar actionBar = getSupportActionBar();
         assert actionBar != null;
@@ -151,6 +154,9 @@ public class MainActivity extends AppCompatActivity implements VpnStatus.StateLi
     }
 
     private void startVpn() {
+        if (status.isConnected()) {
+            return;
+        }
         Intent intent = VpnService.prepare(MainActivity.this);
         if (intent != null) {
             startActivityForResult(intent, REQUEST_VPN_START);
@@ -163,6 +169,9 @@ public class MainActivity extends AppCompatActivity implements VpnStatus.StateLi
     }
 
     private void stopVpn() {
+        if (status.isDisconnected()) {
+            return;
+        }
         CypherpunkVPN.stop(getApplicationContext(), getBaseContext());
     }
 
