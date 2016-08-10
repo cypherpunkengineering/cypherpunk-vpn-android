@@ -16,9 +16,8 @@ import com.cypherpunk.android.vpn.R;
 import com.cypherpunk.android.vpn.utils.FontUtil;
 
 import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 import java.util.Random;
-
-import static java.lang.annotation.RetentionPolicy.SOURCE;
 
 
 public class BinaryTextureView extends TextureView implements TextureView.SurfaceTextureListener {
@@ -28,19 +27,17 @@ public class BinaryTextureView extends TextureView implements TextureView.Surfac
     private volatile RenderingThread renderingThread;
     private float scrollDistancePerSec;
 
-    @Retention(SOURCE)
-    @IntDef({STATE_RUNNING, STATE_STOPPING, STATE_STOPPED})
-    private @interface AnimationState {
+    public static final int DISCONNECTED = 0;
+    public static final int CONNECTING = 1;
+    public static final int CONNECTED = 2;
+
+    @Retention(RetentionPolicy.SOURCE)
+    @IntDef({DISCONNECTED, CONNECTING, CONNECTED})
+    public @interface ConnectionState {
     }
 
-    private static final int STATE_RUNNING = 0;
-    private static final int STATE_STOPPING = 1;
-    private static final int STATE_STOPPED = 2;
-
-
-    @AnimationState
-    // guarded by `stateMonitor`
-    private int animationState = STATE_STOPPED;
+    @ConnectionState
+    private int connectionState = DISCONNECTED;
     private final Object stateMonitor = new Object();
 
     private final class RenderingThread extends Thread {
@@ -57,7 +54,6 @@ public class BinaryTextureView extends TextureView implements TextureView.Surfac
 
             while (renderingThread == this) {
                 drawTiles();
-                sleepIfStopped();
             }
         }
 
@@ -111,59 +107,26 @@ public class BinaryTextureView extends TextureView implements TextureView.Surfac
 
         private void drawTilesInner(Canvas canvas) {
             synchronized (stateMonitor) {
-                switch (animationState) {
-                    case STATE_RUNNING:
-                        for (KeyItem item : keyItems) {
-                            if (item == null) {
-                                continue;
-                            }
+                for (KeyItem item : keyItems) {
+                    if (item == null) {
+                        continue;
+                    }
 
-                            canvas.drawBitmap(item.encryptedBitmap, item.x, item.y, paint);
+                    canvas.drawBitmap(connectionState == CONNECTED ?
+                            item.encryptedBitmap : item.bitmap, item.x, item.y, paint);
 
-                            if (item.downAnimation) {
-                                item.y += scrollDistancePerSec;
-                                // タイルが下から画面外にでたら上に移動
-                                if (item.y > allTileHeight - tileHeight) {
-                                    item.y = -tileHeight;
-                                }
-                            } else {
-                                item.y -= scrollDistancePerSec;
-                                // タイルが上から画面外にでたら下に移動
-                                if (item.y < -tileHeight) {
-                                    item.y += allTileHeight;
-                                }
-                            }
+                    if (item.downAnimation) {
+                        item.y += scrollDistancePerSec;
+                        // タイルが下から画面外にでたら上に移動
+                        if (item.y > allTileHeight - tileHeight) {
+                            item.y = -tileHeight;
                         }
-                        break;
-                    case STATE_STOPPING:
-                        for (KeyItem item : keyItems) {
-                            if (item == null) {
-                                continue;
-                            }
-
-                            canvas.drawBitmap(item.bitmap, item.x, item.y, paint);
+                    } else {
+                        item.y -= scrollDistancePerSec;
+                        // タイルが上から画面外にでたら下に移動
+                        if (item.y < -tileHeight) {
+                            item.y += allTileHeight;
                         }
-                        animationState = STATE_STOPPED;
-                        break;
-                    case STATE_STOPPED:
-                        for (KeyItem item : keyItems) {
-                            if (item == null) {
-                                continue;
-                            }
-
-                            canvas.drawBitmap(item.bitmap, item.x, item.y, paint);
-                        }
-                        break;
-                }
-            }
-        }
-
-        private void sleepIfStopped() {
-            synchronized (stateMonitor) {
-                if (animationState == STATE_STOPPED) {
-                    try {
-                        stateMonitor.wait();
-                    } catch (InterruptedException ignored) {
                     }
                 }
             }
@@ -223,19 +186,8 @@ public class BinaryTextureView extends TextureView implements TextureView.Surfac
     public void onSurfaceTextureUpdated(SurfaceTexture surfaceTexture) {
     }
 
-    public void startAnimation() {
-        synchronized (stateMonitor) {
-            animationState = STATE_RUNNING;
-            stateMonitor.notifyAll();
-        }
-    }
-
-    public void stopAnimation() {
-        synchronized (stateMonitor) {
-            if (animationState == STATE_RUNNING) {
-                animationState = STATE_STOPPING;
-            }
-        }
+    public void setState(@ConnectionState int state) {
+        connectionState = state;
     }
 
     private static class KeyItem {
