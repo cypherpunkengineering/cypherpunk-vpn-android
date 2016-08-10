@@ -1,9 +1,9 @@
 package com.cypherpunk.android.vpn.ui.settings;
 
 import android.os.Bundle;
-import android.preference.PreferenceFragment;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.preference.PreferenceFragmentCompat;
 import android.view.MenuItem;
 
 import com.cypherpunk.android.vpn.R;
@@ -31,11 +31,10 @@ public class AdvancedSettingsActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public static class AdvancedSettingsFragment extends PreferenceFragment {
+    public static class AdvancedSettingsFragment extends PreferenceFragmentCompat {
 
         @Override
-        public void onCreate(Bundle savedInstanceState) {
-            super.onCreate(savedInstanceState);
+        public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
             addPreferencesFromResource(R.xml.preference_advanced_settings);
         }
     }
