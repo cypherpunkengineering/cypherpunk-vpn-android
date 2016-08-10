@@ -27,18 +27,16 @@ public class BinaryTextureView extends TextureView implements TextureView.Surfac
 
     private volatile RenderingThread renderingThread;
     private float scrollDistancePerSec;
-    private KeyItem[] keyItems;
-    private Paint paint;
-    private int allTileHeight;
-    private int tileHeight;
 
     @Retention(SOURCE)
-    @IntDef({STATE_RUNNING, STATE_STOPPED})
+    @IntDef({STATE_RUNNING, STATE_STOPPING, STATE_STOPPED})
     private @interface AnimationState {
     }
 
     private static final int STATE_RUNNING = 0;
-    private static final int STATE_STOPPED = 1;
+    private static final int STATE_STOPPING = 1;
+    private static final int STATE_STOPPED = 2;
+
 
     @AnimationState
     // guarded by `stateMonitor`
@@ -46,6 +44,10 @@ public class BinaryTextureView extends TextureView implements TextureView.Surfac
     private final Object stateMonitor = new Object();
 
     private final class RenderingThread extends Thread {
+        private KeyItem[] keyItems;
+        private Paint paint;
+        private int allTileHeight;
+        private int tileHeight;
 
         @Override
         public void run() {
@@ -89,8 +91,11 @@ public class BinaryTextureView extends TextureView implements TextureView.Surfac
                 int x = 0;
                 for (int j = 0; j < tileColumnCount; j++) {
                     String text = String.valueOf(random.nextInt(2));
+                    // ASCII code 33-96
+                    char encryptedText = (char) (random.nextInt(63) + 33);
                     int color = ContextCompat.getColor(getContext(), R.color.binary_text_color);
-                    KeyItem item = new KeyItem(x, y, textAsBitmap(text, color), j % 2 == 0);
+                    KeyItem item = new KeyItem(x, y, textAsBitmap(text, color),
+                            textAsBitmap(String.valueOf(encryptedText), color), j % 2 == 0);
                     keyItems[i * tileColumnCount + j] = item;
                     x += tileWidth;
                 }
@@ -100,11 +105,11 @@ public class BinaryTextureView extends TextureView implements TextureView.Surfac
         private void drawTiles() {
             Canvas canvas = lockCanvas();
             canvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR);
-            drawTile(canvas);
+            drawTilesInner(canvas);
             unlockCanvasAndPost(canvas);
         }
 
-        private void drawTile(Canvas canvas) {
+        private void drawTilesInner(Canvas canvas) {
             synchronized (stateMonitor) {
                 switch (animationState) {
                     case STATE_RUNNING:
@@ -113,7 +118,7 @@ public class BinaryTextureView extends TextureView implements TextureView.Surfac
                                 continue;
                             }
 
-                            canvas.drawBitmap(item.bitmap, item.x, item.y, paint);
+                            canvas.drawBitmap(item.encryptedBitmap, item.x, item.y, paint);
 
                             if (item.downAnimation) {
                                 item.y += scrollDistancePerSec;
@@ -129,6 +134,16 @@ public class BinaryTextureView extends TextureView implements TextureView.Surfac
                                 }
                             }
                         }
+                        break;
+                    case STATE_STOPPING:
+                        for (KeyItem item : keyItems) {
+                            if (item == null) {
+                                continue;
+                            }
+
+                            canvas.drawBitmap(item.bitmap, item.x, item.y, paint);
+                        }
+                        animationState = STATE_STOPPED;
                         break;
                     case STATE_STOPPED:
                         for (KeyItem item : keyItems) {
@@ -218,7 +233,7 @@ public class BinaryTextureView extends TextureView implements TextureView.Surfac
     public void stopAnimation() {
         synchronized (stateMonitor) {
             if (animationState == STATE_RUNNING) {
-                animationState = STATE_STOPPED;
+                animationState = STATE_STOPPING;
             }
         }
     }
@@ -227,12 +242,14 @@ public class BinaryTextureView extends TextureView implements TextureView.Surfac
         public int x;
         public float y;
         public Bitmap bitmap;
+        public Bitmap encryptedBitmap;
         public boolean downAnimation; //  key image transition direction
 
-        public KeyItem(int x, int y, Bitmap bitmap, boolean down) {
+        public KeyItem(int x, int y, Bitmap bitmap, Bitmap encryptedBitmap, boolean down) {
             this.x = x;
             this.y = y;
             this.bitmap = bitmap;
+            this.encryptedBitmap = encryptedBitmap;
             this.downAnimation = down;
         }
     }
