@@ -43,7 +43,7 @@
             android:layout_below="@id/toolbar"
             android:background="#333333" />
 
-        <com.cypherpunk.android.vpn.widget.KeyTextureView
+        <com.cypherpunk.android.vpn.widget.BinaryTextureView
             android:id="@+id/key_texture"
             android:layout_width="match_parent"
             android:layout_height="match_parent"

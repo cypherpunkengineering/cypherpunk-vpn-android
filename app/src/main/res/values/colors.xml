@@ -15,4 +15,5 @@
     <color name="settings_label">#999999</color>
     <color name="status_region">#cccccc</color>
     <color name="card_background">#333333</color>
+    <color name="binary_text_color">#80666666</color>
 </resources>
