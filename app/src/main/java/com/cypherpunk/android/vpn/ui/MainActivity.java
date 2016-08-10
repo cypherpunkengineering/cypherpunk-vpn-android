@@ -24,6 +24,7 @@ import com.cypherpunk.android.vpn.ui.region.SelectRegionActivity;
 import com.cypherpunk.android.vpn.ui.settings.SettingsActivity;
 import com.cypherpunk.android.vpn.vpn.CypherpunkVPN;
 import com.cypherpunk.android.vpn.vpn.CypherpunkVpnStatus;
+import com.cypherpunk.android.vpn.widget.BinaryTextureView;
 import com.cypherpunk.android.vpn.widget.ConnectionStatusView;
 import com.cypherpunk.android.vpn.widget.VpnButton;
 
@@ -162,6 +163,7 @@ public class MainActivity extends AppCompatActivity implements VpnStatus.StateLi
             startActivityForResult(intent, REQUEST_VPN_START);
         } else {
             CypherpunkVPN.start(getApplicationContext(), getBaseContext());
+            binding.keyTexture.setState(BinaryTextureView.CONNECTING);
             binding.connectionStatus.setStatus(ConnectionStatusView.CONNECTING);
             binding.connectionButton.setStatus(VpnButton.CONNECTING);
             binding.connectingProgressContainer.setVisibility(View.VISIBLE);
@@ -179,7 +181,7 @@ public class MainActivity extends AppCompatActivity implements VpnStatus.StateLi
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                binding.keyTexture.startAnimation();
+                binding.keyTexture.setState(BinaryTextureView.CONNECTED);
                 binding.connectionStatus.setStatus(ConnectionStatusView.CONNECTED);
                 binding.connectionButton.setStatus(VpnButton.CONNECTED);
                 binding.connectingProgressContainer.setVisibility(View.INVISIBLE);
@@ -191,8 +193,7 @@ public class MainActivity extends AppCompatActivity implements VpnStatus.StateLi
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                binding.keyTexture.stopAnimation();
-                binding.connectionStatus.setStatus(ConnectionStatusView.DISCONNECTED);
+                binding.keyTexture.setState(BinaryTextureView.DISCONNECTED);
                 binding.connectionButton.setStatus(VpnButton.DISCONNECTED);
                 binding.connectingProgressContainer.setVisibility(View.INVISIBLE);
             }
