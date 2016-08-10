@@ -3,18 +3,24 @@ package com.cypherpunk.android.vpn.widget;
 
 import android.content.Context;
 import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
 import android.graphics.Matrix;
-import android.graphics.drawable.Drawable;
-import android.support.v4.content.res.ResourcesCompat;
+import android.graphics.Paint;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
-import android.view.ViewGroup;
-import android.widget.FrameLayout;
-import android.widget.ImageView;
+import android.view.View;
 
 import com.cypherpunk.android.vpn.R;
 
-public class WorldMapView extends FrameLayout {
+public class WorldMapView extends View {
+
+    private final Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
+
+    private Bitmap bitmap;
+    private Matrix matrix;
+    private float scale;
 
     public WorldMapView(Context context) {
         this(context, null);
@@ -26,25 +32,30 @@ public class WorldMapView extends FrameLayout {
 
     public WorldMapView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-
-        ImageView mapImageView = new ImageView(context);
-        Drawable drawable = ResourcesCompat.getDrawable(getResources(), R.drawable.map_wh, null);
-        mapImageView.setImageDrawable(drawable);
+        bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.map_wh);
 
         DisplayMetrics dm = Resources.getSystem().getDisplayMetrics();
-
-        assert drawable != null;
-        int imageWidth = drawable.getIntrinsicWidth();
-        int imageHeight = drawable.getIntrinsicHeight();
-
+        int imageWidth = bitmap.getWidth();
         int viewWidth = dm.widthPixels - (getResources().getDimensionPixelOffset(R.dimen.world_map_margin) * 2);
 
-        float a = (float) viewWidth / imageWidth;
-        Matrix matrix = new Matrix();
-        matrix.postScale(a, a);
+        scale = (float) viewWidth / imageWidth;
+        matrix = new Matrix();
+        matrix.postScale(scale, scale);
+        matrix.postTranslate(getResources().getDimension(R.dimen.world_map_margin), 0);
+    }
 
-        mapImageView.setLayoutParams(new ViewGroup.LayoutParams(dm.widthPixels, (int) (imageHeight * a)));
+    @Override
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+        DisplayMetrics dm = Resources.getSystem().getDisplayMetrics();
+        setMeasuredDimension(dm.widthPixels, (int) (bitmap.getHeight() * scale));
+    }
 
-        addView(mapImageView);
+    @Override
+    protected void onDraw(Canvas canvas) {
+        super.onDraw(canvas);
+        canvas.save();
+        canvas.drawBitmap(bitmap, matrix, paint);
+        canvas.restore();
     }
 }
