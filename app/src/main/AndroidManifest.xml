@@ -16,15 +16,19 @@
         tools:replace="android:allowBackup">
         <activity
             android:name=".ui.signin.SignInActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".ui.signin.SignUpActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".ui.IntroductionActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar.TransparentStatusBar" />
         <activity
             android:name=".ui.MainActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar.TransparentStatusBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -43,29 +47,36 @@
 
         <activity
             android:name=".ui.settings.SelectModeActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar.TransparentStatusBar" />
         <activity
             android:name=".ui.settings.SettingsActivity"
             android:label="@string/title_activity_settings"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
         <activity
             android:name=".ui.settings.AdvancedSettingsActivity"
             android:label="@string/title_activity_advanced_settings"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
         <activity
             android:name=".ui.account.AccountActivity"
             android:label="@string/title_activity_account"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
         <activity
             android:name=".ui.region.SelectRegionActivity"
             android:label="@string/title_activity_select_region"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
         <activity
             android:name=".ui.region.SortRegionActivity"
             android:label="@string/title_activity_sort_region"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
         <activity
             android:name=".ui.region.SelectCityActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
     </application>
 
