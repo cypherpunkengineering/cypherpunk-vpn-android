@@ -25,5 +25,7 @@ public class StatusFragment extends Fragment {
 
         FragmentStatusBinding binding = FragmentStatusBinding.bind(getView());
 
+        binding.map.setOriginalPosition(305, 56);
+        binding.map.setNewPosition(20, 59);
     }
 }
