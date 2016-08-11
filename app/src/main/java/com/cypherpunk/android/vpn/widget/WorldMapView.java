@@ -26,9 +26,11 @@ public class WorldMapView extends View {
     private Bitmap mapBitmap;
     private Bitmap originalPositionBitmap;
     private Bitmap currentPositionBitmap;
-    private Matrix matrix;
-    private Matrix originalPositionMatrix;
-    private Matrix currentPositionMatrix;
+    private Matrix mapMatrix;
+
+    private float[] originalPositionMatrix1 = new float[2];
+    private float[] currentPositionMatrix1 = new float[2];
+
     private float scale;
 
     public WorldMapView(Context context) {
@@ -46,19 +48,43 @@ public class WorldMapView extends View {
         int viewWidth = dm.widthPixels - (getResources().getDimensionPixelOffset(R.dimen.world_map_margin) * 2);
 
         scale = (float) viewWidth / mapBitmap.getWidth();
-        matrix = new Matrix();
-        matrix.postScale(scale, scale);
-        matrix.postTranslate(getResources().getDimension(R.dimen.world_map_margin), 0);
+        mapMatrix = new Matrix();
+        mapMatrix.postScale(scale, scale);
+        mapMatrix.postTranslate(getResources().getDimension(R.dimen.world_map_margin), 0);
 
         originalPositionBitmap = getBitmap(R.drawable.map_original_position);
         currentPositionBitmap = getBitmap(R.drawable.map_current_potision_big);
-        originalPositionMatrix = new Matrix();
-        currentPositionMatrix = new Matrix();
 
         linePaint.setColor(ContextCompat.getColor(context, R.color.colorAccent));
+        linePaint.setStrokeWidth(4);
 
         setOriginalPosition(305, 56);
         setCurrentPosition(20, 59);
+    }
+
+    @Override
+    protected void onDraw(Canvas canvas) {
+        super.onDraw(canvas);
+        canvas.save();
+
+        // map
+        canvas.drawBitmap(mapBitmap, mapMatrix, paint);
+
+        // line
+        canvas.drawLine(originalPositionMatrix1[0], originalPositionMatrix1[1],
+                currentPositionMatrix1[0], currentPositionMatrix1[1], linePaint);
+
+        // original position
+        canvas.drawBitmap(originalPositionBitmap,
+                originalPositionMatrix1[0] - originalPositionBitmap.getWidth() / 2,
+                originalPositionMatrix1[1] - originalPositionBitmap.getHeight() / 2, paint);
+
+        // current position
+        canvas.drawBitmap(currentPositionBitmap,
+                currentPositionMatrix1[0] - currentPositionBitmap.getWidth() / 2,
+                currentPositionMatrix1[1] - currentPositionBitmap.getHeight() / 2, paint);
+
+        canvas.restore();
     }
 
     @Override
@@ -68,50 +94,27 @@ public class WorldMapView extends View {
         setMeasuredDimension(dm.widthPixels, (int) (mapBitmap.getHeight() * scale));
     }
 
-    @Override
-    protected void onDraw(Canvas canvas) {
-        super.onDraw(canvas);
-        canvas.save();
-
-        // map
-        canvas.drawBitmap(mapBitmap, matrix, paint);
-
-        // original position
-        canvas.drawBitmap(originalPositionBitmap, originalPositionMatrix, paint);
-
-        // current position
-        canvas.drawBitmap(currentPositionBitmap, currentPositionMatrix, paint);
-
-        // line
-        canvas.drawLine(0, 0, 10, 20, linePaint);
-
-        canvas.restore();
-    }
-
     public void setOriginalPosition(int x, int y) {
-        originalPositionMatrix.reset();
         DisplayMetrics dm = Resources.getSystem().getDisplayMetrics();
         float dx = (x * dm.density);
         float dy = (y * dm.density);
-        originalPositionMatrix.postTranslate(
-                dx * scale + getResources().getDimension(R.dimen.world_map_margin) - originalPositionBitmap.getWidth() / 2,
-                dy * scale - originalPositionBitmap.getHeight() / 2);
+        originalPositionMatrix1[0] = dx * scale + getResources().getDimension(R.dimen.world_map_margin);
+        originalPositionMatrix1[1] = dy * scale;
     }
 
     public void setCurrentPosition(int x, int y) {
-        currentPositionMatrix.reset();
         DisplayMetrics dm = Resources.getSystem().getDisplayMetrics();
         float dx = (x * dm.density);
         float dy = (y * dm.density);
-        currentPositionMatrix.postTranslate(
-                dx * scale + getResources().getDimension(R.dimen.world_map_margin) - currentPositionBitmap.getWidth() / 2,
-                dy * scale - currentPositionBitmap.getHeight() / 2);
+        currentPositionMatrix1[0] = dx * scale + getResources().getDimension(R.dimen.world_map_margin);
+        currentPositionMatrix1[1] = dy * scale;
     }
 
     private Bitmap getBitmap(@DrawableRes int resId) {
         Drawable drawable = ResourcesCompat.getDrawable(getResources(), resId, null);
         Canvas canvas = new Canvas();
-        Bitmap bitmap = Bitmap.createBitmap(drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
+        Bitmap bitmap = Bitmap.createBitmap(
+                drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
         canvas.setBitmap(bitmap);
         drawable.setBounds(0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight());
         drawable.draw(canvas);
