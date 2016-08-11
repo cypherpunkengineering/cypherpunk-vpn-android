@@ -54,7 +54,7 @@ public class WorldMapView extends View {
         newPositionBitmap = getBitmap(R.drawable.map_current_potision_big);
 
         linePaint.setColor(ContextCompat.getColor(context, R.color.colorAccent));
-        linePaint.setStrokeWidth(4);
+        linePaint.setStrokeWidth(5);
     }
 
     @Override
