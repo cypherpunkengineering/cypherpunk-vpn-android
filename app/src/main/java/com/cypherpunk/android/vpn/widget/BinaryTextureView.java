@@ -17,6 +17,7 @@ import com.cypherpunk.android.vpn.utils.FontUtil;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
+import java.util.ArrayList;
 import java.util.Random;
 
 
@@ -30,6 +31,7 @@ public class BinaryTextureView extends TextureView implements TextureView.Surfac
     public static final int DISCONNECTED = 0;
     public static final int CONNECTING = 1;
     public static final int CONNECTED = 2;
+    private static ArrayList<String> strings = new ArrayList<>();
 
     @Retention(RetentionPolicy.SOURCE)
     @IntDef({DISCONNECTED, CONNECTING, CONNECTED})
@@ -63,9 +65,10 @@ public class BinaryTextureView extends TextureView implements TextureView.Surfac
             paint.setColor(color);
             paint.setTypeface(FontUtil.getDosisRegular(getContext()));
             paint.setTextAlign(Paint.Align.CENTER);
-            float baseline = -paint.ascent();
+            Paint.FontMetrics fontMetrics = paint.getFontMetrics();
             int width = (int) getResources().getDimension(R.dimen.binary_text_width); // round
             int height = (int) getResources().getDimension(R.dimen.binary_text_height);
+            float baseline = (height / 2) - (fontMetrics.ascent + fontMetrics.descent) / 2;
             Bitmap image = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
             Canvas canvas = new Canvas(image);
             canvas.drawText(text, width / 2, baseline, paint);
@@ -82,15 +85,26 @@ public class BinaryTextureView extends TextureView implements TextureView.Surfac
             allTileHeight = tileRowCount * tileHeight;
             keyItems = new KeyItem[tileColumnCount * tileRowCount];
 
+            ArrayList<Integer> stringColumnNumbers = new ArrayList<>();
+            for (int i = 0; i < strings.size(); i++) {
+                stringColumnNumbers.add(random.nextInt(tileColumnCount));
+            }
             for (int i = 0; i < tileRowCount; i++) {
                 int y = i * tileHeight;
                 int x = 0;
                 for (int j = 0; j < tileColumnCount; j++) {
-                    String text = String.valueOf(random.nextInt(2));
-                    // ASCII code 33-96
-                    char encryptedText = (char) (random.nextInt(63) + 33);
-                    int color = ContextCompat.getColor(getContext(), R.color.binary_text_color);
-                    KeyItem item = new KeyItem(x, y, textAsBitmap(text, color),
+                    String character;
+                    String text = strings.get(0);
+                    int color;
+                    if (stringColumnNumbers.contains(j) && i < text.length()) {
+                        character = text.substring(i, i + 1);
+                        color = ContextCompat.getColor(getContext(), R.color.binary_text_disconnected);
+                    } else {
+                        character = String.valueOf(random.nextInt(2));
+                        color = ContextCompat.getColor(getContext(), R.color.binary_text_color);
+                    }
+                    String encryptedText = String.valueOf((char) (random.nextInt(63) + 33));
+                    KeyItem item = new KeyItem(x, y, textAsBitmap(character, color),
                             textAsBitmap(String.valueOf(encryptedText), color), j % 2 == 0);
                     keyItems[i * tileColumnCount + j] = item;
                     x += tileWidth;
@@ -188,6 +202,10 @@ public class BinaryTextureView extends TextureView implements TextureView.Surfac
 
     public void setState(@ConnectionState int state) {
         connectionState = state;
+    }
+
+    public void setStrings(ArrayList<String> strings) {
+        BinaryTextureView.strings = strings;
     }
 
     private static class KeyItem {
