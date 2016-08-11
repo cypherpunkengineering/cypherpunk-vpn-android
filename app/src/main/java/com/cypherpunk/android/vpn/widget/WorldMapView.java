@@ -22,16 +22,14 @@ public class WorldMapView extends View {
 
     private final Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
     private final Paint linePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-
+    private float[] originalPositionMatrix = new float[2]; // x, y
+    private float[] newPositionMatrix = new float[2]; // x, y
     private Bitmap mapBitmap;
     private Bitmap originalPositionBitmap;
-    private Bitmap currentPositionBitmap;
+    private Bitmap newPositionBitmap;
     private Matrix mapMatrix;
-
-    private float[] originalPositionMatrix1 = new float[2];
-    private float[] currentPositionMatrix1 = new float[2];
-
     private float scale;
+    private boolean isNewPositionVisible;
 
     public WorldMapView(Context context) {
         this(context, null);
@@ -53,13 +51,10 @@ public class WorldMapView extends View {
         mapMatrix.postTranslate(getResources().getDimension(R.dimen.world_map_margin), 0);
 
         originalPositionBitmap = getBitmap(R.drawable.map_original_position);
-        currentPositionBitmap = getBitmap(R.drawable.map_current_potision_big);
+        newPositionBitmap = getBitmap(R.drawable.map_current_potision_big);
 
         linePaint.setColor(ContextCompat.getColor(context, R.color.colorAccent));
         linePaint.setStrokeWidth(4);
-
-        setOriginalPosition(305, 56);
-        setCurrentPosition(20, 59);
     }
 
     @Override
@@ -70,19 +65,21 @@ public class WorldMapView extends View {
         // map
         canvas.drawBitmap(mapBitmap, mapMatrix, paint);
 
-        // line
-        canvas.drawLine(originalPositionMatrix1[0], originalPositionMatrix1[1],
-                currentPositionMatrix1[0], currentPositionMatrix1[1], linePaint);
+        if (isNewPositionVisible) {
+            // line
+            canvas.drawLine(originalPositionMatrix[0], originalPositionMatrix[1],
+                    newPositionMatrix[0], newPositionMatrix[1], linePaint);
+
+            // new position
+            canvas.drawBitmap(newPositionBitmap,
+                    newPositionMatrix[0] - newPositionBitmap.getWidth() / 2,
+                    newPositionMatrix[1] - newPositionBitmap.getHeight() / 2, paint);
+        }
 
         // original position
         canvas.drawBitmap(originalPositionBitmap,
-                originalPositionMatrix1[0] - originalPositionBitmap.getWidth() / 2,
-                originalPositionMatrix1[1] - originalPositionBitmap.getHeight() / 2, paint);
-
-        // current position
-        canvas.drawBitmap(currentPositionBitmap,
-                currentPositionMatrix1[0] - currentPositionBitmap.getWidth() / 2,
-                currentPositionMatrix1[1] - currentPositionBitmap.getHeight() / 2, paint);
+                originalPositionMatrix[0] - originalPositionBitmap.getWidth() / 2,
+                originalPositionMatrix[1] - originalPositionBitmap.getHeight() / 2, paint);
 
         canvas.restore();
     }
@@ -94,24 +91,49 @@ public class WorldMapView extends View {
         setMeasuredDimension(dm.widthPixels, (int) (mapBitmap.getHeight() * scale));
     }
 
+    /**
+     * original position
+     *
+     * @param x pixel x
+     * @param y pixel y
+     */
     public void setOriginalPosition(int x, int y) {
         DisplayMetrics dm = Resources.getSystem().getDisplayMetrics();
         float dx = (x * dm.density);
         float dy = (y * dm.density);
-        originalPositionMatrix1[0] = dx * scale + getResources().getDimension(R.dimen.world_map_margin);
-        originalPositionMatrix1[1] = dy * scale;
+        originalPositionMatrix[0] = dx * scale + getResources().getDimension(R.dimen.world_map_margin);
+        originalPositionMatrix[1] = dy * scale;
+        invalidate();
     }
 
-    public void setCurrentPosition(int x, int y) {
+    /**
+     * new position
+     *
+     * @param x pixel x
+     * @param y pixel y
+     */
+    public void setNewPosition(int x, int y) {
         DisplayMetrics dm = Resources.getSystem().getDisplayMetrics();
         float dx = (x * dm.density);
         float dy = (y * dm.density);
-        currentPositionMatrix1[0] = dx * scale + getResources().getDimension(R.dimen.world_map_margin);
-        currentPositionMatrix1[1] = dy * scale;
+        newPositionMatrix[0] = dx * scale + getResources().getDimension(R.dimen.world_map_margin);
+        newPositionMatrix[1] = dy * scale;
+        setNewPositionVisibility(true);
+    }
+
+    /**
+     * new position and line visibility
+     *
+     * @param visible true visible
+     */
+    public void setNewPositionVisibility(boolean visible) {
+        isNewPositionVisible = visible;
+        invalidate();
     }
 
     private Bitmap getBitmap(@DrawableRes int resId) {
         Drawable drawable = ResourcesCompat.getDrawable(getResources(), resId, null);
+        assert drawable != null;
         Canvas canvas = new Canvas();
         Bitmap bitmap = Bitmap.createBitmap(
                 drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
