@@ -75,7 +75,7 @@ public class BinaryTextureView extends TextureView implements TextureView.Surfac
             }
         }
 
-        private Bitmap textAsBitmap(String text, int color) {
+        private Bitmap charAsBitmap(char ch, int color) {
             paintForText.setColor(color);
             Paint.FontMetrics fontMetrics = paintForText.getFontMetrics();
             int width = (int) getResources().getDimension(R.dimen.binary_text_width); // round
@@ -84,7 +84,7 @@ public class BinaryTextureView extends TextureView implements TextureView.Surfac
             Bitmap image = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
             Canvas canvas = new Canvas(image);
             canvas.drawColor(bgColor);
-            canvas.drawText(text, width / 2, baseline, paintForText);
+            canvas.drawText(new char[] {ch}, 0, 1, width / 2, baseline, paintForText);
             return image;
         }
 
@@ -105,19 +105,18 @@ public class BinaryTextureView extends TextureView implements TextureView.Surfac
                 int y = i * tileHeight;
                 int x = 0;
                 for (int j = 0; j < tileColumnCount; j++) {
-                    String character;
+                    char character;
                     String text = strings.get(0);
                     int color;
                     if (stringColumnNumbers.contains(j) && i < text.length()) {
-                        character = text.substring(i, i + 1);
+                        character = text.charAt(i);
                         color = ContextCompat.getColor(getContext(), R.color.binary_text_disconnected);
                     } else {
-                        character = String.valueOf(random.nextInt(2));
+                        character = (char) ('0' + random.nextInt(2)); // '0' or '1'
                         color = ContextCompat.getColor(getContext(), R.color.binary_text_color);
                     }
-                    String encryptedText = String.valueOf((char) (random.nextInt(63) + 33));
-                    KeyItem item = new KeyItem(x, y, textAsBitmap(character, color),
-                            textAsBitmap(encryptedText, color), j % 2 == 0);
+                    KeyItem item = new KeyItem(x, y, charAsBitmap(character, color),
+                            charAsBitmap(nextRandomChar(random), color), j % 2 == 0);
                     keyItems[i * tileColumnCount + j] = item;
                     x += tileWidth;
                 }
@@ -155,6 +154,12 @@ public class BinaryTextureView extends TextureView implements TextureView.Surfac
                     }
                 }
             }
+        }
+
+        private char nextRandomChar(Random r) {
+            final char randomCharFrom = '!'; // 0x21
+            final char randomCharTo = '`'; // 0x60
+            return (char) (randomCharFrom + r.nextInt(randomCharTo - randomCharFrom + 1));
         }
     }
 
