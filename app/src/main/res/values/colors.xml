@@ -16,4 +16,5 @@
     <color name="status_region">#cccccc</color>
     <color name="card_background">#333333</color>
     <color name="binary_text_color">#80666666</color>
+    <color name="binary_text_disconnected">#f11a35</color>
 </resources>
