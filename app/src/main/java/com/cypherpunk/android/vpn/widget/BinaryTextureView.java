@@ -1,12 +1,13 @@
 package com.cypherpunk.android.vpn.widget;
 
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.PorterDuff;
 import android.graphics.SurfaceTexture;
+import android.support.annotation.ColorInt;
 import android.support.annotation.IntDef;
 import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
@@ -24,10 +25,14 @@ import java.util.Random;
 public class BinaryTextureView extends TextureView implements TextureView.SurfaceTextureListener {
 
     private static final float SCROLL_DISTANCE_PER_SEC_IN_DP = 0.2f;
+    @ColorInt
+    private static final int DEFAULT_BACKGROUND_COLOR = Color.BLACK;
 
     private volatile RenderingThread renderingThread;
     private float scrollDistancePerSec;
     private ArrayList<String> strings = new ArrayList<>();
+    @ColorInt
+    private int bgColor;
 
     public static final int DISCONNECTED = 0;
     public static final int CONNECTING = 1;
@@ -78,8 +83,7 @@ public class BinaryTextureView extends TextureView implements TextureView.Surfac
             float baseline = (height / 2) - (fontMetrics.ascent + fontMetrics.descent) / 2;
             Bitmap image = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
             Canvas canvas = new Canvas(image);
-            // TODO 背景色をカスタムattributeから取得する
-            canvas.drawColor(Color.BLACK);
+            canvas.drawColor(bgColor);
             canvas.drawText(text, width / 2, baseline, paintForText);
             return image;
         }
@@ -167,6 +171,11 @@ public class BinaryTextureView extends TextureView implements TextureView.Surfac
         scrollDistancePerSec = getResources().getDisplayMetrics().density * SCROLL_DISTANCE_PER_SEC_IN_DP;
         setOpaque(true);
         setSurfaceTextureListener(this);
+
+        final TypedArray customAttrs = context.obtainStyledAttributes(attrs, R.styleable.BinaryTextureView,
+                defStyleAttr, 0);
+        bgColor = customAttrs.getColor(R.styleable.BinaryTextureView_backgroundColor, DEFAULT_BACKGROUND_COLOR);
+        customAttrs.recycle();
     }
 
     @Override
