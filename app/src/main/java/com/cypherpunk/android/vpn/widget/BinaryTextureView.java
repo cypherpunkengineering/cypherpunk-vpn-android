@@ -27,11 +27,11 @@ public class BinaryTextureView extends TextureView implements TextureView.Surfac
 
     private volatile RenderingThread renderingThread;
     private float scrollDistancePerSec;
+    private ArrayList<String> strings = new ArrayList<>();
 
     public static final int DISCONNECTED = 0;
     public static final int CONNECTING = 1;
     public static final int CONNECTED = 2;
-    private static ArrayList<String> strings = new ArrayList<>();
 
     @Retention(RetentionPolicy.SOURCE)
     @IntDef({DISCONNECTED, CONNECTING, CONNECTED})
@@ -45,8 +45,19 @@ public class BinaryTextureView extends TextureView implements TextureView.Surfac
     private final class RenderingThread extends Thread {
         private KeyItem[] keyItems;
         private Paint paint;
+        private Paint paintForText;
+
         private int allTileHeight;
         private int tileHeight;
+
+        RenderingThread() {
+            paint = new Paint();
+
+            paintForText = new Paint(Paint.ANTI_ALIAS_FLAG);
+            paintForText.setTextSize(getResources().getDimension(R.dimen.binary_text));
+            paintForText.setTypeface(FontUtil.getDosisRegular(getContext()));
+            paintForText.setTextAlign(Paint.Align.CENTER);
+        }
 
         @Override
         public void run() {
@@ -60,24 +71,21 @@ public class BinaryTextureView extends TextureView implements TextureView.Surfac
         }
 
         private Bitmap textAsBitmap(String text, int color) {
-            Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
-            paint.setTextSize(getResources().getDimension(R.dimen.binary_text));
-            paint.setColor(color);
-            paint.setTypeface(FontUtil.getDosisRegular(getContext()));
-            paint.setTextAlign(Paint.Align.CENTER);
-            Paint.FontMetrics fontMetrics = paint.getFontMetrics();
+            paintForText.setColor(color);
+            Paint.FontMetrics fontMetrics = paintForText.getFontMetrics();
             int width = (int) getResources().getDimension(R.dimen.binary_text_width); // round
             int height = (int) getResources().getDimension(R.dimen.binary_text_height);
             float baseline = (height / 2) - (fontMetrics.ascent + fontMetrics.descent) / 2;
             Bitmap image = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
             Canvas canvas = new Canvas(image);
-            canvas.drawText(text, width / 2, baseline, paint);
+            // TODO 背景色をカスタムattributeから取得する
+            canvas.drawColor(Color.BLACK);
+            canvas.drawText(text, width / 2, baseline, paintForText);
             return image;
         }
 
         private void setupTile() {
             Random random = new Random();
-            paint = new Paint();
             tileHeight = getResources().getDimensionPixelOffset(R.dimen.binary_text_height);
             int tileWidth = getResources().getDimensionPixelOffset(R.dimen.binary_text_width);
             int tileRowCount = (int) Math.ceil((double) getHeight() / tileHeight) + 1;
@@ -105,7 +113,7 @@ public class BinaryTextureView extends TextureView implements TextureView.Surfac
                     }
                     String encryptedText = String.valueOf((char) (random.nextInt(63) + 33));
                     KeyItem item = new KeyItem(x, y, textAsBitmap(character, color),
-                            textAsBitmap(String.valueOf(encryptedText), color), j % 2 == 0);
+                            textAsBitmap(encryptedText, color), j % 2 == 0);
                     keyItems[i * tileColumnCount + j] = item;
                     x += tileWidth;
                 }
@@ -114,7 +122,6 @@ public class BinaryTextureView extends TextureView implements TextureView.Surfac
 
         private void drawTiles() {
             Canvas canvas = lockCanvas();
-            canvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR);
             drawTilesInner(canvas);
             unlockCanvasAndPost(canvas);
         }
@@ -158,7 +165,7 @@ public class BinaryTextureView extends TextureView implements TextureView.Surfac
     public BinaryTextureView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         scrollDistancePerSec = getResources().getDisplayMetrics().density * SCROLL_DISTANCE_PER_SEC_IN_DP;
-        setOpaque(false);
+        setOpaque(true);
         setSurfaceTextureListener(this);
     }
 
@@ -205,7 +212,7 @@ public class BinaryTextureView extends TextureView implements TextureView.Surfac
     }
 
     public void setStrings(ArrayList<String> strings) {
-        BinaryTextureView.strings = strings;
+        this.strings = strings;
     }
 
     private static class KeyItem {
