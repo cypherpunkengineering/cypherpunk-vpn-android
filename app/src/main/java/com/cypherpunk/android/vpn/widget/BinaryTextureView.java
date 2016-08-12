@@ -84,7 +84,7 @@ public class BinaryTextureView extends TextureView implements TextureView.Surfac
             Bitmap image = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
             Canvas canvas = new Canvas(image);
             canvas.drawColor(bgColor);
-            canvas.drawText(new char[] {ch}, 0, 1, width / 2, baseline, paintForText);
+            canvas.drawText(new char[]{ch}, 0, 1, width / 2, baseline, paintForText);
             return image;
         }
 
@@ -101,22 +101,38 @@ public class BinaryTextureView extends TextureView implements TextureView.Surfac
             for (int i = 0; i < strings.size(); i++) {
                 stringColumnNumbers.add(random.nextInt(tileColumnCount));
             }
+
+            // prepare Bitmaps for normal color
+            final int normalTextColor = ContextCompat.getColor(getContext(), R.color.binary_text_color);
+            final Bitmap[] binaryBitmaps = {charAsBitmap('0', normalTextColor), charAsBitmap('1', normalTextColor)};
+            final char randomCharFrom = '!'; // 0x21
+            final char randomCharTo = '`'; // 0x60
+            final Bitmap[] randomBitmaps = new Bitmap[randomCharTo - randomCharFrom + 1];
+            for (int i = 0; i < randomBitmaps.length; i++) {
+                randomBitmaps[i] = charAsBitmap((char) (randomCharFrom + i), normalTextColor);
+            }
+
+            // generate initial tile states
             for (int i = 0; i < tileRowCount; i++) {
                 int y = i * tileHeight;
                 int x = 0;
                 for (int j = 0; j < tileColumnCount; j++) {
-                    char character;
                     String text = strings.get(0);
-                    int color;
+                    final char character;
+                    final Bitmap plainTextBitmap, randomBitmap;
+                    final int randomCharIndex = random.nextInt(randomBitmaps.length);
                     if (stringColumnNumbers.contains(j) && i < text.length()) {
                         character = text.charAt(i);
-                        color = ContextCompat.getColor(getContext(), R.color.binary_text_disconnected);
+                        final int color = ContextCompat.getColor(getContext(), R.color.binary_text_disconnected);
+                        plainTextBitmap = charAsBitmap(character, color);
+                        randomBitmap = charAsBitmap((char) (randomCharFrom + randomCharIndex), color);
                     } else {
-                        character = (char) ('0' + random.nextInt(2)); // '0' or '1'
-                        color = ContextCompat.getColor(getContext(), R.color.binary_text_color);
+                        // use prepared Bitmaps to avoid to generate same Bitmaps many times
+                        final int binaryCharIndex = random.nextInt(binaryBitmaps.length);
+                        plainTextBitmap = binaryBitmaps[binaryCharIndex];
+                        randomBitmap = randomBitmaps[randomCharIndex];
                     }
-                    KeyItem item = new KeyItem(x, y, charAsBitmap(character, color),
-                            charAsBitmap(nextRandomChar(random), color), j % 2 == 0);
+                    KeyItem item = new KeyItem(x, y, plainTextBitmap, randomBitmap, j % 2 == 0);
                     keyItems[i * tileColumnCount + j] = item;
                     x += tileWidth;
                 }
@@ -154,12 +170,6 @@ public class BinaryTextureView extends TextureView implements TextureView.Surfac
                     }
                 }
             }
-        }
-
-        private char nextRandomChar(Random r) {
-            final char randomCharFrom = '!'; // 0x21
-            final char randomCharTo = '`'; // 0x60
-            return (char) (randomCharFrom + r.nextInt(randomCharTo - randomCharFrom + 1));
         }
     }
 
