@@ -24,12 +24,11 @@ import java.util.Random;
 
 public class BinaryTextureView extends TextureView implements TextureView.SurfaceTextureListener {
 
-    private static final float SCROLL_DISTANCE_PER_SEC_IN_DP = 0.2f;
+    private static final float SCROLL_DISTANCE_PER_SEC_IN_DP = 6f;
     @ColorInt
     private static final int DEFAULT_BACKGROUND_COLOR = Color.BLACK;
 
     private volatile RenderingThread renderingThread;
-    private float scrollDistancePerSec;
     private ArrayList<String> strings = new ArrayList<>();
     @ColorInt
     private int bgColor;
@@ -55,6 +54,9 @@ public class BinaryTextureView extends TextureView implements TextureView.Surfac
         private int allTileHeight;
         private int tileHeight;
 
+        private float scrollDistancePerMilliSec;
+        private long baseTime;
+
         RenderingThread() {
             paint = new Paint();
 
@@ -62,12 +64,15 @@ public class BinaryTextureView extends TextureView implements TextureView.Surfac
             paintForText.setTextSize(getResources().getDimension(R.dimen.binary_text));
             paintForText.setTypeface(FontUtil.getDosisRegular(getContext()));
             paintForText.setTextAlign(Paint.Align.CENTER);
+
+            scrollDistancePerMilliSec = getResources().getDisplayMetrics().density * SCROLL_DISTANCE_PER_SEC_IN_DP / 1000;
         }
 
         @Override
         public void run() {
             if (keyItems == null) {
                 setupTile();
+                baseTime = SystemClock.uptimeMillis();
             }
 
             while (renderingThread == this) {
@@ -152,22 +157,21 @@ public class BinaryTextureView extends TextureView implements TextureView.Surfac
                         continue;
                     }
 
-                    canvas.drawBitmap(connectionState == CONNECTED ?
-                            item.encryptedBitmap : item.bitmap, item.x, item.y, paint);
+                    final long elapsedTime = SystemClock.uptimeMillis() - baseTime;
+                    final float distance = elapsedTime * scrollDistancePerMilliSec;
+
+                    final float y;
 
                     if (item.downAnimation) {
-                        item.y += scrollDistancePerSec;
-                        // タイルが下から画面外にでたら上に移動
-                        if (item.y > allTileHeight - tileHeight) {
-                            item.y = -tileHeight;
-                        }
+                        // tileHeightひとつ分上が基準位置
+                        y = ((item.y + distance + tileHeight) % allTileHeight) - tileHeight;
                     } else {
-                        item.y -= scrollDistancePerSec;
-                        // タイルが上から画面外にでたら下に移動
-                        if (item.y < -tileHeight) {
-                            item.y += allTileHeight;
-                        }
+                        // tileHeightひとつ分上が基準位置なのは同じだが、全体をallTileHeight分ずらして常に負数になるように調整してから計算する
+                        y = ((item.y - distance + tileHeight - allTileHeight) % allTileHeight) - tileHeight + allTileHeight;
                     }
+
+                    canvas.drawBitmap(connectionState == CONNECTED ?
+                            item.encryptedBitmap : item.bitmap, item.x, y, paint);
                 }
             }
         }
@@ -183,7 +187,6 @@ public class BinaryTextureView extends TextureView implements TextureView.Surfac
 
     public BinaryTextureView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        scrollDistancePerSec = getResources().getDisplayMetrics().density * SCROLL_DISTANCE_PER_SEC_IN_DP;
         setOpaque(true);
         setSurfaceTextureListener(this);
 
@@ -239,12 +242,13 @@ public class BinaryTextureView extends TextureView implements TextureView.Surfac
         this.strings = strings;
     }
 
+    @SuppressWarnings("WeakerAccess")
     private static class KeyItem {
-        public int x;
-        public float y;
-        public Bitmap bitmap;
-        public Bitmap encryptedBitmap;
-        public boolean downAnimation; //  key image transition direction
+        public final int x;
+        public final float y;
+        public final Bitmap bitmap;
+        public final Bitmap encryptedBitmap;
+        public final boolean downAnimation; //  key image transition direction
 
         public KeyItem(int x, int y, Bitmap bitmap, Bitmap encryptedBitmap, boolean down) {
             this.x = x;
