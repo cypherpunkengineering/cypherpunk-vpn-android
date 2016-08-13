@@ -205,8 +205,8 @@ public class MainActivity extends AppCompatActivity implements VpnStatus.StateLi
 
     private void setBinaryStrings() {
         ArrayList<String> strings = new ArrayList<>();
-//        strings.add(Build.BRAND);
-//        strings.add(Build.MANUFACTURER);
+        strings.add(Build.BRAND);
+        strings.add(Build.MANUFACTURER);
         strings.add(Build.MODEL);
         binding.keyTexture.setStrings(strings);
     }
