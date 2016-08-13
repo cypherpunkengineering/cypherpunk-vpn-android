@@ -6,7 +6,6 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@android:color/black"
         tools:ignore="RtlHardcoded">
 
         <android.support.v7.widget.Toolbar
@@ -48,7 +47,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_alignBottom="@+id/divider_bottom"
-            android:layout_below="@id/divider_top" />
+            android:layout_below="@id/divider_top"
+            app:backgroundColor="@android:color/black"/>
 
         <com.cypherpunk.android.vpn.widget.VpnButton
             android:id="@+id/connection_button"
