@@ -123,15 +123,22 @@ public class BinaryTextureView extends TextureView implements TextureView.Surfac
                 int y = i * tileHeight;
                 int x = 0;
                 for (int j = 0; j < tileColumnCount; j++) {
-                    String text = strings.get(0);
                     final char character;
                     final Bitmap plainTextBitmap, randomBitmap;
                     final int randomCharIndex = random.nextInt(randomBitmaps.length);
-                    if (stringColumnNumbers.contains(j) && i < text.length()) {
-                        character = text.charAt(i);
-                        final int color = ContextCompat.getColor(getContext(), R.color.binary_text_disconnected);
-                        plainTextBitmap = charAsBitmap(character, color);
-                        randomBitmap = charAsBitmap((char) (randomCharFrom + randomCharIndex), color);
+                    if (stringColumnNumbers.contains(j)) {
+                        String text = strings.get(stringColumnNumbers.indexOf(j));
+                        if (i < text.length()) {
+                            character = text.charAt(i);
+                            final int color = ContextCompat.getColor(getContext(), R.color.binary_text_disconnected);
+                            plainTextBitmap = charAsBitmap(character, color);
+                            randomBitmap = charAsBitmap((char) (randomCharFrom + randomCharIndex), color);
+                        } else {
+                            // use prepared Bitmaps to avoid to generate same Bitmaps many times
+                            final int binaryCharIndex = random.nextInt(binaryBitmaps.length);
+                            plainTextBitmap = binaryBitmaps[binaryCharIndex];
+                            randomBitmap = randomBitmaps[randomCharIndex];
+                        }
                     } else {
                         // use prepared Bitmaps to avoid to generate same Bitmaps many times
                         final int binaryCharIndex = random.nextInt(binaryBitmaps.length);
