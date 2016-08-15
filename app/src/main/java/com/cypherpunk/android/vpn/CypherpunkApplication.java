@@ -8,6 +8,9 @@ import com.deploygate.sdk.DeployGate;
 import com.orhanobut.hawk.Hawk;
 import com.orhanobut.hawk.HawkBuilder;
 
+import de.blinkt.openvpn.core.PRNGFixes;
+import de.blinkt.openvpn.core.VpnStatus;
+
 public class CypherpunkApplication extends Application {
 
     public static CypherpunkApplication instance;
@@ -18,6 +21,8 @@ public class CypherpunkApplication extends Application {
     public void onCreate() {
         super.onCreate();
         instance = this;
+        PRNGFixes.apply();
+        VpnStatus.initLogCache(getApplicationContext().getCacheDir());
 
         appComponent = DaggerAppComponent.create();
 
