@@ -85,7 +85,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="4dp"
                 android:minHeight="10dp"
-                android:progressDrawable="@drawable/vpn_progress" />
+                android:progressDrawable="@drawable/vpn_progress"
+                android:visibility="invisible" />
 
             <com.cypherpunk.android.vpn.widget.TypefaceTextView
                 android:id="@+id/connecting_cancel_button"
