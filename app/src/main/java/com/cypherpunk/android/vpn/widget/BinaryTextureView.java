@@ -130,7 +130,7 @@ public class BinaryTextureView extends TextureView implements TextureView.Surfac
                         String text = strings.get(stringColumnNumbers.indexOf(j));
                         if (i < text.length()) {
                             character = text.charAt(i);
-                            final int color = ContextCompat.getColor(getContext(), R.color.binary_text_disconnected);
+                            final int color = ContextCompat.getColor(getContext(), R.color.binary_text_connected);
                             plainTextBitmap = charAsBitmap(character, color);
                             randomBitmap = charAsBitmap((char) (randomCharFrom + randomCharIndex), color);
                         } else {
