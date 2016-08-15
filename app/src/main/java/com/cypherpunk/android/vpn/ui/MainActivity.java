@@ -169,7 +169,7 @@ public class MainActivity extends AppCompatActivity implements VpnStatus.StateLi
             binding.keyTexture.setState(BinaryTextureView.CONNECTING);
             binding.connectionStatus.setStatus(ConnectionStatusView.CONNECTING);
             binding.connectionButton.setStatus(VpnButton.CONNECTING);
-            binding.connectingProgressContainer.setVisibility(View.VISIBLE);
+            //binding.connectingProgressContainer.setVisibility(View.VISIBLE);
         }
     }
 
