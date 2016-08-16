@@ -28,8 +28,7 @@ public class UpgradePlanActivity extends AppCompatActivity {
         binding.yearlyPlan.setPlan("Yearly", "12 months of unlimited data.", "$ 99.99");
 
         binding.monthlyPlan.setChecked(true);
-        binding.freePlan.setChecked(false);
-
+        binding.freePlan.setEnabled(false);
     }
 
     @Override
