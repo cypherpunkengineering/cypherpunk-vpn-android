@@ -34,6 +34,15 @@ public class BinaryTextureView extends TextureView implements TextureView.Surfac
     @ColorInt
     private int bgColor;
 
+    @ColorInt
+    private int disconnectColor;
+
+    @ColorInt
+    private int connectingColor;
+
+    @ColorInt
+    private int connectedColor;
+
     public static final int DISCONNECTED = 0;
     public static final int CONNECTING = 1;
     public static final int CONNECTED = 2;
@@ -126,26 +135,28 @@ public class BinaryTextureView extends TextureView implements TextureView.Surfac
                     final char character;
                     final Bitmap plainTextBitmap, randomBitmap;
                     final int randomCharIndex = random.nextInt(randomBitmaps.length);
+                    KeyItem item;
                     if (stringColumnNumbers.contains(j)) {
                         String text = strings.get(stringColumnNumbers.indexOf(j));
                         if (i < text.length()) {
                             character = text.charAt(i);
-                            final int color = ContextCompat.getColor(getContext(), R.color.binary_text_connected);
-                            plainTextBitmap = charAsBitmap(character, color);
-                            randomBitmap = charAsBitmap((char) (randomCharFrom + randomCharIndex), color);
+                            char ch = (char) (randomCharFrom + randomCharIndex);
+                            item = new KeyItem(x, y, j % 2 == 0, charAsBitmap(character, disconnectColor),
+                                    charAsBitmap(character, connectingColor), charAsBitmap(ch, connectedColor));
                         } else {
                             // use prepared Bitmaps to avoid to generate same Bitmaps many times
                             final int binaryCharIndex = random.nextInt(binaryBitmaps.length);
                             plainTextBitmap = binaryBitmaps[binaryCharIndex];
                             randomBitmap = randomBitmaps[randomCharIndex];
+                            item = new KeyItem(x, y, j % 2 == 0, plainTextBitmap, randomBitmap);
                         }
                     } else {
                         // use prepared Bitmaps to avoid to generate same Bitmaps many times
                         final int binaryCharIndex = random.nextInt(binaryBitmaps.length);
                         plainTextBitmap = binaryBitmaps[binaryCharIndex];
                         randomBitmap = randomBitmaps[randomCharIndex];
+                        item = new KeyItem(x, y, j % 2 == 0, plainTextBitmap, randomBitmap);
                     }
-                    KeyItem item = new KeyItem(x, y, plainTextBitmap, randomBitmap, j % 2 == 0);
                     keyItems[i * tileColumnCount + j] = item;
                     x += tileWidth;
                 }
@@ -177,9 +188,24 @@ public class BinaryTextureView extends TextureView implements TextureView.Surfac
                         // tileHeightひとつ分上が基準位置なのは同じだが、全体をallTileHeight分ずらして常に負数になるように調整してから計算する
                         y = ((item.y - distance + tileHeight - allTileHeight) % allTileHeight) - tileHeight + allTileHeight;
                     }
-
-                    canvas.drawBitmap(connectionState == CONNECTED ?
-                            item.encryptedBitmap : item.bitmap, item.x, y, paint);
+                    if (item.bitmap != null) {
+                        canvas.drawBitmap(connectionState == CONNECTED ?
+                                item.encryptedBitmap : item.bitmap, item.x, y, paint);
+                    } else {
+                        Bitmap bitmap = null;
+                        switch (connectionState) {
+                            case DISCONNECTED:
+                                bitmap = item.disconnectedBitmap;
+                                break;
+                            case CONNECTING:
+                                bitmap = item.connectingBitmap;
+                                break;
+                            case CONNECTED:
+                                bitmap = item.connectedEncryptedBitmap;
+                                break;
+                        }
+                        canvas.drawBitmap(bitmap, item.x, y, paint);
+                    }
                 }
             }
         }
@@ -201,6 +227,9 @@ public class BinaryTextureView extends TextureView implements TextureView.Surfac
         final TypedArray customAttrs = context.obtainStyledAttributes(attrs, R.styleable.BinaryTextureView,
                 defStyleAttr, 0);
         bgColor = customAttrs.getColor(R.styleable.BinaryTextureView_backgroundColor, DEFAULT_BACKGROUND_COLOR);
+        disconnectColor = ContextCompat.getColor(getContext(), R.color.binary_text_disconnected);
+        connectingColor = ContextCompat.getColor(getContext(), R.color.binary_text_connecting);
+        connectedColor = ContextCompat.getColor(getContext(), R.color.binary_text_connected);
         customAttrs.recycle();
     }
 
@@ -254,16 +283,33 @@ public class BinaryTextureView extends TextureView implements TextureView.Surfac
     private static class KeyItem {
         public final int x;
         public final float y;
+        public final boolean downAnimation; //  key image transition direction
         public final Bitmap bitmap;
         public final Bitmap encryptedBitmap;
-        public final boolean downAnimation; //  key image transition direction
+        public final Bitmap disconnectedBitmap;
+        public final Bitmap connectingBitmap;
+        public final Bitmap connectedEncryptedBitmap;
 
-        public KeyItem(int x, int y, Bitmap bitmap, Bitmap encryptedBitmap, boolean down) {
+        public KeyItem(int x, int y, boolean down, Bitmap bitmap, Bitmap encryptedBitmap) {
             this.x = x;
             this.y = y;
+            this.downAnimation = down;
             this.bitmap = bitmap;
             this.encryptedBitmap = encryptedBitmap;
+            this.disconnectedBitmap = null;
+            this.connectingBitmap = null;
+            this.connectedEncryptedBitmap = null;
+        }
+
+        public KeyItem(int x, int y, boolean down, Bitmap disconnectedBitmap, Bitmap connectingBitmap, Bitmap connectedEncryptedBitmap) {
+            this.x = x;
+            this.y = y;
             this.downAnimation = down;
+            this.bitmap = null;
+            this.encryptedBitmap = null;
+            this.disconnectedBitmap = disconnectedBitmap;
+            this.connectingBitmap = connectingBitmap;
+            this.connectedEncryptedBitmap = connectedEncryptedBitmap;
         }
     }
 }
