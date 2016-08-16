@@ -276,7 +276,9 @@ public class BinaryTextureView extends TextureView implements TextureView.Surfac
     }
 
     public void setStrings(ArrayList<String> strings) {
-        this.strings = strings;
+        for (String string : strings) {
+            this.strings.add(string.toUpperCase());
+        }
     }
 
     @SuppressWarnings("WeakerAccess")
