@@ -95,7 +95,7 @@ public class SelectRegionActivity extends AppCompatActivity
         int itemViewId = mergeAdapter.getView(position, null, adapterView).getId();
         if (itemViewId == R.id.city) {
             selectedItem = item;
-            ConnectConfirmationDialogFragment dialogFragment = new ConnectConfirmationDialogFragment();
+            ConnectConfirmationDialogFragment dialogFragment = ConnectConfirmationDialogFragment.newInstance(selectedItem);
             dialogFragment.show(getSupportFragmentManager());
         } else if (itemViewId == R.id.area) {
             Intent intent = new Intent(this, SelectCityActivity.class);
