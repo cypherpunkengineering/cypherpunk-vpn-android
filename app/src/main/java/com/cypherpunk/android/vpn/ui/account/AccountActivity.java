@@ -28,7 +28,6 @@ public class AccountActivity extends AppCompatActivity {
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
-            actionBar.setHomeAsUpIndicator(R.drawable.arrow_left_vector);
         }
 
         UserManager user = UserManager.getInstance(this);

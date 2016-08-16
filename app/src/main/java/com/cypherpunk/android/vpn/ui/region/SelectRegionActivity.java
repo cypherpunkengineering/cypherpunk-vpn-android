@@ -38,7 +38,6 @@ public class SelectRegionActivity extends AppCompatActivity
 
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
-            actionBar.setHomeAsUpIndicator(R.drawable.arrow_left_vector);
         }
 
         listView = new ListView(this);
