@@ -34,6 +34,13 @@ public class AccountActivity extends AppCompatActivity {
         binding.mail.setText(user.getMailAddress());
 
         // TODO: set account grade
+        binding.upgradeAccountButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(AccountActivity.this, UpgradePlanActivity.class
+                ));
+            }
+        });
         binding.signOutButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

@@ -55,6 +55,9 @@
     <string name="account_review">Write a review / Rate us</string>
     <string name="account_tutorial">Quick Tutorial</string>
 
+    <!-- upgrade plan -->
+    <string name="title_activity_upgrade_plan">Upgrade plan</string>
+
     <!-- introduction -->
     <string name="introduction_create_account">Create account</string>
     <string name="introduction_sign_in">Sign in</string>
