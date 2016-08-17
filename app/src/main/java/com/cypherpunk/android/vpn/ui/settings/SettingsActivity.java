@@ -62,7 +62,7 @@ public class SettingsActivity extends AppCompatActivity {
                 case 0:
                     return new SettingsFragment();
                 case 1:
-                    return new StatusFragment();
+                    return new AdvancedSettingsFragment();
                 default:
                     return null;
             }
@@ -72,9 +72,9 @@ public class SettingsActivity extends AppCompatActivity {
         public CharSequence getPageTitle(int position) {
             switch (position) {
                 case 0:
-                    return getString(R.string.tab_settings_mode);
+                    return getString(R.string.tab_settings_account);
                 case 1:
-                    return getString(R.string.tab_settings_status);
+                    return getString(R.string.tab_settings_advanced_settings);
                 default:
                     return null;
             }

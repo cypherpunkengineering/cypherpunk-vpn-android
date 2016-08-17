@@ -1,33 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <PreferenceCategory android:title="@string/settings_choose_mode">
+
+    <Preference
+        android:key="mode"
+        android:layout="@layout/preference_account"
+        android:title="mode" />
+
+    <Preference
+        android:key="plan"
+        android:summary="Renews On 02/02/2016"
+        android:title="Monthly Premium" />
+
+    <Preference
+        android:key="upgrade"
+        android:title="Upgrade" />
+
+    <PreferenceCategory android:title="Account Details">
 
         <Preference
-            android:key="mode"
-            android:layout="@layout/preference_mode"
-            android:title="mode" />
+            android:key="Email"
+            android:summary="wiz@wiz.biz"
+            android:title="Email" />
+
+        <Preference
+            android:key="Password"
+            android:title="Password" />
 
     </PreferenceCategory>
 
-        <Preference
-            android:key="advanced"
-            android:title="Advanced configuration" />
-
-    <PreferenceCategory android:title="About">
+    <PreferenceCategory android:title="More">
 
         <Preference
-            android:key="encryption"
-            android:title="Terms of service" />
+            android:key="Contact_us"
+            android:title="Contact us" />
 
         <Preference
-            android:key="encryption"
-            android:title="Privacy policy" />
-
-        <Preference
-            android:key="verson"
-            android:summary="1.0.0"
-            android:title="Version" />
+            android:key="log_out"
+            android:title="Log out" />
 
     </PreferenceCategory>
 
