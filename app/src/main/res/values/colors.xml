@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="colorPrimary">@android:color/transparent</color>
-    <color name="colorPrimaryDark">#1a000000</color>
+    <color name="colorPrimaryDark">#26000000</color>
     <color name="colorAccent">#aff067</color>
 
     <color name="divider">#333333</color>

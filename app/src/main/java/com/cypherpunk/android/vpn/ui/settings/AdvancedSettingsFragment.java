@@ -5,11 +5,10 @@ import android.support.v7.preference.PreferenceFragmentCompat;
 
 import com.cypherpunk.android.vpn.R;
 
-
-public class SettingsFragment extends PreferenceFragmentCompat {
+public class AdvancedSettingsFragment extends PreferenceFragmentCompat {
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
-        addPreferencesFromResource(R.xml.preference_settings);
+        addPreferencesFromResource(R.xml.preference_advanced_settings);
     }
 }
