@@ -217,7 +217,7 @@ public class BinaryTextureView extends TextureView implements TextureView.Surfac
 
     public BinaryTextureView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        setOpaque(true);
+        setOpaque(false);
         setSurfaceTextureListener(this);
 
         disconnectColor = ContextCompat.getColor(getContext(), R.color.binary_text_disconnected);
