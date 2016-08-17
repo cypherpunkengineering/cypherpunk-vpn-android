@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#26ffffff">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:orientation="vertical">
+
+            <com.cypherpunk.android.vpn.widget.WorldMapView
+                android:id="@+id/map"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <com.cypherpunk.android.vpn.widget.TypefaceTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="16dp"
+                android:drawableLeft="@drawable/time_vector"
+                android:drawablePadding="16dp"
+                android:drawableStart="@drawable/time_vector"
+                android:text="00:14:25"
+                android:textSize="18sp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:layout_marginLeft="24dp"
+                android:layout_marginRight="24dp"
+                android:background="@color/card_background"
+                android:gravity="center_horizontal"
+                android:orientation="vertical"
+                android:paddingBottom="16dp"
+                android:paddingTop="16dp">
+
+                <com.cypherpunk.android.vpn.widget.TypefaceTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:text="@string/ip_original"
+                    android:textSize="18sp"
+                    app:fontName="DosisSemiBold" />
+
+                <com.cypherpunk.android.vpn.widget.TypefaceTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:text="181.41.221.60"
+                    android:textColor="#4a90e2"
+                    android:textSize="31sp" />
+
+                <com.cypherpunk.android.vpn.widget.TypefaceTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:drawableLeft="@drawable/national_flag_placeholder"
+                    android:drawablePadding="16dp"
+                    android:drawableStart="@drawable/national_flag_placeholder"
+                    android:text="Tokyo, Japan"
+                    android:textSize="18sp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:layout_marginLeft="24dp"
+                android:layout_marginRight="24dp"
+                android:background="@color/card_background"
+                android:gravity="center_horizontal"
+                android:orientation="vertical"
+                android:paddingBottom="16dp"
+                android:paddingTop="16dp">
+
+                <com.cypherpunk.android.vpn.widget.TypefaceTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:text="@string/ip_new"
+                    android:textSize="18sp"
+                    app:fontName="DosisSemiBold" />
+
+                <com.cypherpunk.android.vpn.widget.TypefaceTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:text="25.102.5.31"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="31sp" />
+
+                <com.cypherpunk.android.vpn.widget.TypefaceTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:drawableLeft="@drawable/national_flag_placeholder"
+                    android:drawablePadding="16dp"
+                    android:drawableStart="@drawable/national_flag_placeholder"
+                    android:text="San Fransisco, USA"
+                    android:textSize="18sp" />
+
+            </LinearLayout>
+
+            <com.cypherpunk.android.vpn.widget.TypefaceButton
+                style="@style/Widget.Cypherpunk.Button.NoCaps"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:drawableLeft="@drawable/refresh_vector"
+                android:drawablePadding="8dp"
+                android:drawableStart="@drawable/refresh_vector"
+                android:text="@string/status_change_ip_address" />
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</layout>

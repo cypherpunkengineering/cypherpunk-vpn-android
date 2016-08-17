@@ -55,8 +55,8 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
         <activity
-            android:name=".ui.settings.AdvancedSettingsActivity"
-            android:label="@string/title_activity_advanced_settings"
+            android:name=".ui.status.StatusActivity"
+            android:label="@string/title_activity_status"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
         <activity

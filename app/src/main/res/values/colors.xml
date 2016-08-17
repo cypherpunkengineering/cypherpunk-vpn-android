@@ -14,7 +14,7 @@
     <color name="vpn_button_frame_disconnected">#99f11a35</color>
     <color name="settings_label">#999999</color>
     <color name="status_region">#cccccc</color>
-    <color name="card_background">#333333</color>
+    <color name="card_background">#26ffffff</color>
     <color name="binary_text_color">#23ffffff</color>
     <color name="binary_text_disconnected">#f11b35</color>
     <color name="binary_text_connecting">#ff781b</color>
