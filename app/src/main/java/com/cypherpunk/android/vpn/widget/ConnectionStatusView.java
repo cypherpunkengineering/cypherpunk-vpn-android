@@ -5,7 +5,9 @@ import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.support.annotation.ColorInt;
 import android.support.annotation.IntDef;
+import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.widget.LinearLayout;
@@ -33,6 +35,12 @@ public class ConnectionStatusView extends LinearLayout {
     private final TypefaceTextView[] textViews = new TypefaceTextView[3];
     AnimatorSet animatorSet = new AnimatorSet();
 
+    @ColorInt
+    private final int notConnectedColor;
+
+    @ColorInt
+    private final int connectedColor;
+
     public ConnectionStatusView(Context context) {
         this(context, null);
     }
@@ -47,6 +55,9 @@ public class ConnectionStatusView extends LinearLayout {
         float textSize = a.getDimension(R.styleable.ConnectionStatusView_textSize,
                 getResources().getDimension(R.dimen.connection_status_text_size));
         a.recycle();
+
+        notConnectedColor = ContextCompat.getColor(context, R.color.vpn_state_not_connected);
+        connectedColor = ContextCompat.getColor(context, R.color.vpn_state_connected);
 
         statusText = new TypefaceTextView(context);
         statusText.setTypefaceDosis(TypefaceTextView.DOSIS_SEMI_BOLD);
@@ -97,8 +108,11 @@ public class ConnectionStatusView extends LinearLayout {
     }
 
     public void setStatus(@ConnectionStatus int status) {
+        statusText.setTextColor(status == CONNECTED ? connectedColor : notConnectedColor);
         for (TextView textView : textViews) {
             textView.setVisibility(status == CONNECTING ? VISIBLE : GONE);
+            textView.setTextColor(status == CONNECTED ? connectedColor : notConnectedColor);
+
         }
         switch (status) {
             case DISCONNECTED:
