@@ -4,7 +4,7 @@
 
     <item
         android:id="@+id/action_account"
-        android:icon="@drawable/account_vector"
+        android:icon="@drawable/information_vector"
         android:title="@string/action_account"
         app:showAsAction="always" />
 

@@ -1,11 +1,11 @@
 package com.cypherpunk.android.vpn.widget;
 
 import android.content.Context;
-import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.PorterDuff;
 import android.graphics.SurfaceTexture;
 import android.os.SystemClock;
 import android.support.annotation.ColorInt;
@@ -26,13 +26,9 @@ import java.util.Random;
 public class BinaryTextureView extends TextureView implements TextureView.SurfaceTextureListener {
 
     private static final float SCROLL_DISTANCE_PER_SEC_IN_DP = 6f;
-    @ColorInt
-    private static final int DEFAULT_BACKGROUND_COLOR = Color.BLACK;
 
     private volatile RenderingThread renderingThread;
     private ArrayList<String> strings = new ArrayList<>();
-    @ColorInt
-    private int bgColor;
 
     @ColorInt
     private int disconnectColor;
@@ -98,7 +94,6 @@ public class BinaryTextureView extends TextureView implements TextureView.Surfac
             float baseline = (height / 2) - (fontMetrics.ascent + fontMetrics.descent) / 2;
             Bitmap image = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
             Canvas canvas = new Canvas(image);
-            canvas.drawColor(bgColor);
             canvas.drawText(new char[]{ch}, 0, 1, width / 2, baseline, paintForText);
             return image;
         }
@@ -165,6 +160,7 @@ public class BinaryTextureView extends TextureView implements TextureView.Surfac
 
         private void drawTiles() {
             Canvas canvas = lockCanvas();
+            canvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR);
             drawTilesInner(canvas);
             unlockCanvasAndPost(canvas);
         }
@@ -224,13 +220,9 @@ public class BinaryTextureView extends TextureView implements TextureView.Surfac
         setOpaque(true);
         setSurfaceTextureListener(this);
 
-        final TypedArray customAttrs = context.obtainStyledAttributes(attrs, R.styleable.BinaryTextureView,
-                defStyleAttr, 0);
-        bgColor = customAttrs.getColor(R.styleable.BinaryTextureView_backgroundColor, DEFAULT_BACKGROUND_COLOR);
         disconnectColor = ContextCompat.getColor(getContext(), R.color.binary_text_disconnected);
         connectingColor = ContextCompat.getColor(getContext(), R.color.binary_text_connecting);
         connectedColor = ContextCompat.getColor(getContext(), R.color.binary_text_connected);
-        customAttrs.recycle();
     }
 
     @Override

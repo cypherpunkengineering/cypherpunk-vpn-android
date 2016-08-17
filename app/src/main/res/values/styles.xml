@@ -49,6 +49,15 @@
         <item name="android:textColor">@android:color/white</item>
     </style>
 
+    <style name="SelectableItemIndigoTheme">
+        <item name="colorControlHighlight">#1a000000</item>
+    </style>
+
+    <style name="SelectableItemIndigoBackground">
+        <item name="android:theme">@style/SelectableItemIndigoTheme</item>
+        <item name="android:background">?attr/selectableItemBackground</item>
+    </style>
+
     <!-- TextAppearance -->
 
     <style name="TextAppearance.Cypherpunk.Button" parent="Base.TextAppearance.AppCompat.Button">
