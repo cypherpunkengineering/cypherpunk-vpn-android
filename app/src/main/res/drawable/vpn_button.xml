@@ -16,17 +16,8 @@
     </item>
     <item
         android:bottom="8dp"
+        android:drawable="@drawable/bpn_button_gradient"
         android:left="8dp"
         android:right="8dp"
-        android:top="8dp">
-        <shape android:shape="oval">
-            <size
-                android:width="133dp"
-                android:height="133dp" />
-            <gradient
-                android:angle="270"
-                android:endColor="#cacaca"
-                android:startColor="#dddddd" />
-        </shape>
-    </item>
+        android:top="8dp" />
 </layer-list>

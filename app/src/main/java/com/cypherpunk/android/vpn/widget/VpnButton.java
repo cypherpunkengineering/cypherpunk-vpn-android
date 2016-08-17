@@ -69,8 +69,6 @@ public class VpnButton extends CompoundButton implements CompoundButton.OnChecke
         connectedFrameColor = ContextCompat.getColor(context, R.color.vpn_button_frame_connected);
 
         setStatus(DISCONNECTED);
-
-        // TODO: pressed color
     }
 
     @Override
