@@ -41,6 +41,7 @@
     <string name="status_disconnected">DISCONNECTED</string>
     <string name="status_connecting">CONNECTING</string>
     <string name="status_connected">CONNECTED</string>
+    <string name="vpn_cancel">Cancel</string>
 
     <!-- account -->
     <string name="title_activity_account">Account</string>

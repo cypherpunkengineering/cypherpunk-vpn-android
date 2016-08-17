@@ -77,7 +77,6 @@ public class MainActivity extends AppCompatActivity implements VpnStatus.StateLi
         });
 
         // TODO: set progress
-        binding.connectingProgress.setProgress(70);
         binding.connectingCancelButton.setPaintFlags(
                 binding.connectingCancelButton.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
 
@@ -169,7 +168,7 @@ public class MainActivity extends AppCompatActivity implements VpnStatus.StateLi
             binding.keyTexture.setState(BinaryTextureView.CONNECTING);
             binding.connectionStatus.setStatus(ConnectionStatusView.CONNECTING);
             binding.connectionButton.setStatus(VpnButton.CONNECTING);
-            binding.connectingProgressContainer.setVisibility(View.VISIBLE);
+            binding.connectingCancelButton.setVisibility(View.VISIBLE);
         }
     }
 
@@ -187,7 +186,7 @@ public class MainActivity extends AppCompatActivity implements VpnStatus.StateLi
                 binding.keyTexture.setState(BinaryTextureView.CONNECTED);
                 binding.connectionStatus.setStatus(ConnectionStatusView.CONNECTED);
                 binding.connectionButton.setStatus(VpnButton.CONNECTED);
-                binding.connectingProgressContainer.setVisibility(View.INVISIBLE);
+                binding.connectingCancelButton.setVisibility(View.INVISIBLE);
             }
         });
     }
@@ -197,8 +196,9 @@ public class MainActivity extends AppCompatActivity implements VpnStatus.StateLi
             @Override
             public void run() {
                 binding.keyTexture.setState(BinaryTextureView.DISCONNECTED);
+                binding.connectionStatus.setStatus(ConnectionStatusView.DISCONNECTED);
                 binding.connectionButton.setStatus(VpnButton.DISCONNECTED);
-                binding.connectingProgressContainer.setVisibility(View.INVISIBLE);
+                binding.connectingCancelButton.setVisibility(View.INVISIBLE);
             }
         });
     }
