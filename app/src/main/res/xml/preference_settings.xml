@@ -19,7 +19,7 @@
     <PreferenceCategory android:title="Account Details">
 
         <Preference
-            android:key="Email"
+            android:key="email"
             android:summary="wiz@wiz.biz"
             android:title="Email" />
 

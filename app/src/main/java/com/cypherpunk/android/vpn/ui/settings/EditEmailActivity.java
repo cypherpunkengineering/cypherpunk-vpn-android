@@ -8,26 +8,28 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.cypherpunk.android.vpn.R;
-import com.cypherpunk.android.vpn.databinding.ActivityContactBinding;
+import com.cypherpunk.android.vpn.databinding.ActivityEditEmailBinding;
 
-public class ContactActivity extends AppCompatActivity {
+public class EditEmailActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        ActivityContactBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_contact);
+        ActivityEditEmailBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_edit_email);
         ActionBar actionBar = getSupportActionBar();
 
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
 
+        binding.email.requestFocus();
+
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.contact, menu);
+        getMenuInflater().inflate(R.menu.edit_profile, menu);
         return true;
     }
 
@@ -37,7 +39,7 @@ public class ContactActivity extends AppCompatActivity {
             case android.R.id.home:
                 finish();
                 return true;
-            case R.id.action_send:
+            case R.id.action_done:
                 return true;
         }
         return super.onOptionsItemSelected(item);

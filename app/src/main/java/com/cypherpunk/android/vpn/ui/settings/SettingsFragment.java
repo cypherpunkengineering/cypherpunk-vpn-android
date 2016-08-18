@@ -42,6 +42,14 @@ public class SettingsFragment extends PreferenceFragmentCompat {
                 return true;
             }
         });
+
+        findPreference("email").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                startActivity(new Intent(getActivity(), EditEmailActivity.class));
+                return true;
+            }
+        });
     }
 
     private void signOut() {

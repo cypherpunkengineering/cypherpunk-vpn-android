@@ -24,6 +24,8 @@
     <string name="title_activity_advanced_settings">Advanced settings</string>
     <string name="contact_us_hint">Please describe the issues you are having…</string>
     <string name="action_send">send</string>
+    <string name="action_done">done</string>
+    <string name="title_activity_edit_email">Update Email</string>
 
     <!-- status -->
     <string name="title_activity_status">Connection status</string>
@@ -76,5 +78,7 @@
     <string name="select_region_connect_dialog_positive">CONNECT</string>
     <string name="select_region_connect_negative">Not now</string>
     <string name="title_activity_contact">Contact us</string>
+    <string name="email_hint">New Email</string>
+    <string name="confirm_hint">Confirm</string>
 
 </resources>
