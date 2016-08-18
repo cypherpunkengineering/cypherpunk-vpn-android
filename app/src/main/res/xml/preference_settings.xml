@@ -32,7 +32,7 @@
     <PreferenceCategory android:title="More">
 
         <Preference
-            android:key="Contact_us"
+            android:key="contact_us"
             android:title="Contact us" />
 
         <Preference

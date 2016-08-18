@@ -60,6 +60,11 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
         <activity
+            android:name=".ui.settings.ContactActivity"
+            android:label="@string/title_activity_contact"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme" />
+        <activity
             android:name=".ui.account.AccountActivity"
             android:label="@string/title_activity_account"
             android:screenOrientation="portrait"

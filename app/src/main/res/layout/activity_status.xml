@@ -5,7 +5,7 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#1affffff">
+        android:background="@color/background">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -112,12 +112,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="40dp"
-                android:textAppearance="@style/TextAppearance.Cypherpunk.Button"
                 android:layout_marginRight="40dp"
                 android:drawableLeft="@drawable/refresh_vector"
                 android:drawablePadding="8dp"
                 android:drawableStart="@drawable/refresh_vector"
-                android:text="@string/status_change_ip_address" />
+                android:text="@string/status_change_ip_address"
+                android:textAppearance="@style/TextAppearance.Cypherpunk.Button" />
 
         </LinearLayout>
 
