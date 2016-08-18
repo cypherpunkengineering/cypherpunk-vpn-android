@@ -41,7 +41,7 @@ public class WorldMapView extends View {
 
     public WorldMapView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        mapBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.map_wh);
+        mapBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.map_bk);
         DisplayMetrics dm = Resources.getSystem().getDisplayMetrics();
         int viewWidth = dm.widthPixels - (getResources().getDimensionPixelOffset(R.dimen.world_map_margin) * 2);
 
