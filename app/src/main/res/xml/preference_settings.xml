@@ -24,7 +24,7 @@
             android:title="Email" />
 
         <Preference
-            android:key="Password"
+            android:key="password"
             android:title="Password" />
 
     </PreferenceCategory>

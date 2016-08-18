@@ -50,6 +50,14 @@ public class SettingsFragment extends PreferenceFragmentCompat {
                 return true;
             }
         });
+
+        findPreference("password").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                startActivity(new Intent(getActivity(), EditPasswordActivity.class));
+                return true;
+            }
+        });
     }
 
     private void signOut() {
