@@ -24,6 +24,7 @@
     <string name="title_activity_advanced_settings">Advanced settings</string>
 
     <!-- status -->
+    <string name="title_activity_status">Connection status</string>
     <string name="status_change_ip_address">Change IP Address</string>
     <string name="status_connection_status">Connection status</string>
     <string name="status_bandwidth">Bandwidth</string>
