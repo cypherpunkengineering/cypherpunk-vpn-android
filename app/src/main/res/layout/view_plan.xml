@@ -7,6 +7,7 @@
         android:layout_width="match_parent"
         android:layout_height="76dp"
         android:background="@drawable/plan_background"
+        android:clickable="true"
         android:duplicateParentState="true"
         android:orientation="vertical">
 
@@ -26,28 +27,13 @@
             android:id="@+id/plan"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="14dp"
+            android:layout_centerVertical="true"
             android:layout_toEndOf="@id/check"
             android:layout_toRightOf="@id/check"
             android:duplicateParentState="true"
-            android:textColor="@color/plan_text"
             android:textSize="20sp"
             app:fontName="dosisMedium"
-            tools:text="Monthly" />
-
-        <com.cypherpunk.android.vpn.widget.TypefaceTextView
-            android:id="@+id/plan_description"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_marginBottom="14dp"
-            android:layout_toEndOf="@id/check"
-            android:layout_toRightOf="@id/check"
-            android:duplicateParentState="true"
-            android:textColor="@color/plan_text"
-            android:textSize="16sp"
-            app:fontName="DosisRegular"
-            tools:text="30days of limited data." />
+            tools:text="6 MONTHS" />
 
         <com.cypherpunk.android.vpn.widget.TypefaceTextView
             android:id="@+id/price"
@@ -55,14 +41,28 @@
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
             android:layout_marginRight="20dp"
+            android:layout_marginTop="16dp"
             android:duplicateParentState="true"
-            android:textColor="@color/plan_text"
             android:textSize="20sp"
             app:fontName="DosisRegular"
             tools:ignore="RtlHardcoded"
             tools:text="$ 9.99" />
+
+        <com.cypherpunk.android.vpn.widget.TypefaceTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginBottom="16dp"
+            android:layout_marginRight="20dp"
+            android:duplicateParentState="true"
+            android:text="@string/plan_per_month"
+            android:textSize="14sp"
+            app:fontName="DosisRegular"
+            tools:ignore="RtlHardcoded" />
 
     </RelativeLayout>
 

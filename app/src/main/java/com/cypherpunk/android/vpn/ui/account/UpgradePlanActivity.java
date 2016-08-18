@@ -23,12 +23,10 @@ public class UpgradePlanActivity extends AppCompatActivity {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
 
-        binding.freePlan.setPlan("Free", "Limited access or something.", "$ 0");
-        binding.monthlyPlan.setPlan("Monthly", "30days of limited data.", "$ 9.99");
-        binding.yearlyPlan.setPlan("Yearly", "12 months of unlimited data.", "$ 99.99");
+        binding.monthlyPlan.setPlan("6 MONTHS", "$ 8.33");
+        binding.yearlyPlan.setPlan("12 MONTHS", "$ 6.67");
 
         binding.monthlyPlan.setChecked(true);
-        binding.freePlan.setEnabled(false);
     }
 
     @Override

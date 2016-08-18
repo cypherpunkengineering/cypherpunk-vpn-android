@@ -60,9 +60,8 @@ public class PlanView extends RelativeLayout implements Checkable {
         return drawableState;
     }
 
-    public void setPlan(@NonNull String planName, @NonNull String description, @NonNull String price) {
+    public void setPlan(@NonNull String planName, @NonNull String price) {
         binding.plan.setText(planName);
-        binding.planDescription.setText(description);
         binding.price.setText(price);
     }
 }

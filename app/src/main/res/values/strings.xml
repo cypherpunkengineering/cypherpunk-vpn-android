@@ -69,6 +69,7 @@
 
     <!-- upgrade plan -->
     <string name="title_activity_upgrade_plan">Upgrade plan</string>
+    <string name="plan_per_month">per month</string>
 
     <!-- introduction -->
     <string name="introduction_create_account">Create account</string>
