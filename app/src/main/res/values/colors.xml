@@ -15,10 +15,12 @@
     <color name="settings_label">#999999</color>
     <color name="status_region">#cccccc</color>
     <color name="card_background">#26ffffff</color>
+    <color name="background">#26ffffff</color>
     <color name="binary_text_color">#23ffffff</color>
     <color name="binary_text_disconnected">#f11b35</color>
     <color name="binary_text_connecting">#ff781b</color>
     <color name="binary_text_connected">#aff067</color>
     <color name="vpn_state_not_connected">#cccccc</color>
     <color name="vpn_state_connected">#71d900</color>
+    <color name="edit_text_hint">#80ffffff</color>
 </resources>
