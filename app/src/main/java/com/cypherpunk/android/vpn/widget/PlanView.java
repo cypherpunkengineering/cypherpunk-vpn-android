@@ -60,8 +60,14 @@ public class PlanView extends RelativeLayout implements Checkable {
         return drawableState;
     }
 
-    public void setPlan(@NonNull String planName, @NonNull String price) {
+    /**
+     * @param planName     plan name
+     * @param price        price
+     * @param badgeVisible best value badge visibility
+     */
+    public void setPlan(@NonNull String planName, @NonNull String price, boolean badgeVisible) {
         binding.plan.setText(planName);
         binding.price.setText(price);
+        binding.badge.setVisibility(badgeVisible ? VISIBLE : INVISIBLE);
     }
 }

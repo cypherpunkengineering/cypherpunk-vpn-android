@@ -23,8 +23,8 @@ public class UpgradePlanActivity extends AppCompatActivity {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
 
-        binding.monthlyPlan.setPlan("6 MONTHS", "$ 8.33");
-        binding.yearlyPlan.setPlan("12 MONTHS", "$ 6.67");
+        binding.monthlyPlan.setPlan("6 MONTHS", "$ 8.33", false);
+        binding.yearlyPlan.setPlan("12 MONTHS", "$ 6.67", true);
 
         binding.monthlyPlan.setChecked(true);
     }

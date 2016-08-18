@@ -36,6 +36,24 @@
             tools:text="6 MONTHS" />
 
         <com.cypherpunk.android.vpn.widget.TypefaceTextView
+            android:id="@+id/badge"
+            android:layout_width="78dp"
+            android:layout_height="20dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="8dp"
+            android:layout_toEndOf="@id/plan"
+            android:layout_toRightOf="@id/plan"
+            android:background="@drawable/best_value_badge"
+            android:gravity="center"
+            android:text="@string/plan_best_value"
+            android:textSize="12sp"
+            android:visibility="invisible"
+            app:fontName="DosisSemiBold"
+            tools:ignore="RtlHardcoded"
+            tools:visibility="visible" />
+
+
+        <com.cypherpunk.android.vpn.widget.TypefaceTextView
             android:id="@+id/price"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -45,7 +63,7 @@
             android:layout_marginTop="16dp"
             android:duplicateParentState="true"
             android:textSize="20sp"
-            app:fontName="DosisRegular"
+            app:fontName="dosisMedium"
             tools:ignore="RtlHardcoded"
             tools:text="$ 9.99" />
 
