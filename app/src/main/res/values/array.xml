@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="protocol">
+        <item>Automatic</item>
+        <item>OpenVPN UDP</item>
+        <item>OpenVPN TCP</item>
+        <item>Cisco IPsec</item>
+        <item>IKEv1</item>
+        <item>IKEv2</item>
+    </string-array>
+
+    <string-array name="protocol_value">
+        <item>automatic</item>
+        <item>open_vpn_udp</item>
+        <item>open_vpn_tcp</item>
+        <item>cisco_ipsec</item>
+        <item>ikev1</item>
+        <item>ikev2</item>
+    </string-array>
+
+    <string-array name="remote_port">
+        <item>Automatic</item>
+        <item>1194</item>
+        <item>8080</item>
+        <item>9210</item>
+        <item>53</item>
+    </string-array>
+
+    <string-array name="remote_port_value">
+        <item>automatic</item>
+        <item>1194</item>
+        <item>8080</item>
+        <item>9210</item>
+        <item>53</item>
+    </string-array>
+
+    <string-array name="firewall">
+        <item>Automatic</item>
+        <item>Always on</item>
+        <item>Off</item>
+    </string-array>
+
+    <string-array name="firewall_value">
+        <item>automatic</item>
+        <item>always_on</item>
+        <item>off</item>
+    </string-array>
+
+    <string-array name="encryption">
+        <item>Automatic</item>
+        <item>None</item>
+        <item>Strong</item>
+        <item>Stealth</item>
+    </string-array>
+
+    <string-array name="encryption_value">
+        <item>automatic</item>
+        <item>none</item>
+        <item>strong</item>
+        <item>stealth</item>
+    </string-array>
+</resources>

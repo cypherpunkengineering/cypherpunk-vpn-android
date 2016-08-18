@@ -1,62 +1,59 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <PreferenceCategory android:title="xxx settings">
+    <PreferenceCategory android:title="Network">
 
-        <SwitchPreferenceCompat
-            android:key="auto_reconnect"
-            android:title="Auto reconnect" />
+        <ListPreference
+            android:entries="@array/protocol"
+            android:entryValues="@array/protocol_value"
+            android:key="protocol"
+            android:title="protocol" />
 
-        <SwitchPreferenceCompat
-            android:key="auto_connect_on_boot"
-            android:title="Auto connect on boot" />
+        <ListPreference
+            android:entries="@array/remote_port"
+            android:entryValues="@array/remote_port_value"
+            android:key="remote_port"
+            android:title="Remote port" />
 
-        <SwitchPreferenceCompat
-            android:key="auto_reconnect"
-            android:title="Auto connect vpn to untrusted" />
+        <EditTextPreference
+            android:key="local_port"
+            android:title="Local port" />
 
-        <SwitchPreferenceCompat
-            android:key="auto_connect_on_boot"
-            android:title="Add new Wi-Fi network to trusted network whitelist" />
+        <ListPreference
+            android:entries="@array/firewall"
+            android:entryValues="@array/firewall_value"
+            android:key="firewall"
+            android:title="Firewall" />
 
-        <SwitchPreferenceCompat
-            android:key="trust_cellular_network"
-            android:title="Trust cellular networks" />
+        <SwitchPreferenceCompat android:title="Request port forwarding" />
 
-        <SwitchPreferenceCompat
-            android:key="block_local_network"
-            android:title="Block local network" />
-
-        <SwitchPreferenceCompat
-            android:key="kill_switch"
-            android:title="Kill Switch" />
+        <SwitchPreferenceCompat android:title="Use small packets" />
 
     </PreferenceCategory>
 
-    <PreferenceCategory android:title="xxx settings">
+    <PreferenceCategory android:title="Encryption">
 
-        <Preference
-            android:key="protocol"
-            android:summary="Ikev2"
-            android:title="VPN protocol" />
-
-        <SwitchPreferenceCompat
-            android:key="remote_port"
-            android:summary="auto"
-            android:title="Remote Port" />
-
-        <SwitchPreferenceCompat
-            android:key="use_small_packets"
-            android:title="Use small packets" />
-
-        <Preference
+        <ListPreference
+            android:entries="@array/encryption"
+            android:entryValues="@array/encryption_value"
             android:key="encryption"
-            android:title="Encryption" />
+            android:title="Encryption level" />
 
-        <Preference
-            android:key="auto_connect_on_boot"
-            android:summary="authentication"
-            android:title="Per add settings" />
+        <Preference android:title="Cipher" />
+
+        <Preference android:title="Authentication" />
+
+        <Preference android:title="Key" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="Autostart">
+
+        <SwitchPreferenceCompat android:title="Auto-connect on launch" />
+
+        <SwitchPreferenceCompat android:title="Start application on boot" />
+
+        <Preference android:title="Per application setting" />
 
     </PreferenceCategory>
 
