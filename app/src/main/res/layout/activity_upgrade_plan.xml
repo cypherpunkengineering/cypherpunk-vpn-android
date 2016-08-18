@@ -4,22 +4,11 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@color/background"
         android:orientation="vertical"
-        android:paddingLeft="26dp"
-        android:paddingRight="26dp"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
         android:paddingTop="16dp">
-
-        <com.cypherpunk.android.vpn.widget.TypefaceTextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            android:text="Omnicos directe al desirabilite de un nov lingua franca: On refusa continuar payar custosi traductores. At solmen va esser necessi far uniform grammatica, pronunciation e plu sommun paroles." />
-
-        <com.cypherpunk.android.vpn.widget.PlanView
-            android:id="@+id/free_plan"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp" />
 
         <com.cypherpunk.android.vpn.widget.PlanView
             android:id="@+id/monthly_plan"
@@ -31,6 +20,7 @@
             android:id="@+id/yearly_plan"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
+
     </LinearLayout>
 
 </layout>
