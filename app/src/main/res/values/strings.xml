@@ -14,7 +14,9 @@
     <string name="sign_in_password_hint">Password</string>
     <string name="sign_in_no_account">Don’t have an account yet?</string>
     <string name="sign_in_sign_up">SIGN UP</string>
+
     <!-- sign up-->
+    <string name="title_activity_sign_up">Sign up</string>
     <string name="send_email_button">Send Email</string>
 
     <!-- setting -->
@@ -79,7 +81,11 @@
 
     <!-- introduction -->
     <string name="introduction_create_account">Create account</string>
-    <string name="introduction_sign_in">Sign in</string>
+    <string name="introduction_exist_account">Have an account already?</string>
+    <string name="introduction_sign_in">SIGN IN</string>
+    <string name="introduction_start_free_now">Start Free Now</string>
+    <string name="introduction_sign_up">Sign up for 7-day Free Premium Trial</string>
+    <string name="introduction_premium">Get a Premium plan</string>
 
     <!-- select region -->
     <string name="title_activity_select_region">Select region</string>

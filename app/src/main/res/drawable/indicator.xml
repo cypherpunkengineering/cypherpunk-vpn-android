@@ -14,7 +14,7 @@
         <layer-list>
             <item android:left="3dp" android:right="3dp">
                 <shape android:shape="oval">
-                    <solid android:color="#929292" />
+                    <solid android:color="#4dd7d7d7" />
                     <size android:width="8dp" android:height="8dp" />
                 </shape>
             </item>
