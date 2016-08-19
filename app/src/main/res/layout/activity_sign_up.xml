@@ -4,65 +4,79 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#000000"
         android:gravity="center_horizontal"
         android:orientation="vertical"
         tools:context=".ui.SignUpActivity">
 
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar"
+        <View
             android:layout_width="match_parent"
-            android:layout_height="?android:actionBarSize">
-
-            <com.cypherpunk.android.vpn.widget.TypefaceTextView
-                android:id="@+id/title"
-                style="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"
-                android:layout_width="wrap_content"
-                android:layout_height="?android:actionBarSize"
-                android:layout_centerHorizontal="true"
-                android:layout_gravity="center"
-                android:drawableLeft="@drawable/app_icon_vector"
-                android:drawablePadding="8dp"
-                android:gravity="center_vertical"
-                android:text="@string/app_name"
-                tools:ignore="RtlHardcoded" />
-
-        </android.support.v7.widget.Toolbar>
+            android:layout_height="1dp"
+            android:background="#ffffff" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="50dp"
+            android:layout_marginTop="16dp"
             android:orientation="vertical"
             android:paddingLeft="28dp"
             android:paddingRight="28dp">
 
+            <com.cypherpunk.android.vpn.widget.TypefaceTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="Sign up and start your 7 day
+\nFree Premium Trial now!"
+                android:textSize="18sp" />
+
             <android.support.design.widget.TextInputLayout
+                style="@style/Widget.Cypherpunk.TextInputLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="24dp">
+                android:layout_marginTop="16dp"
+                android:theme="@style/TextInputLayoutControl">
 
-                <AutoCompleteTextView
+                <android.support.design.widget.TextInputEditText
                     android:id="@+id/email"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="@string/prompt_email"
-                    android:imeOptions="actionDone"
+                    android:hint="@string/sign_up_email_hint"
+                    android:imeOptions="actionNext"
                     android:inputType="textEmailAddress"
                     android:maxLines="1"
-                    android:singleLine="true" />
+                    android:singleLine="true"
+                    android:theme="@style/EditTextColorControl" />
+
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                style="@style/Widget.Cypherpunk.TextInputLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:theme="@style/TextInputLayoutControl">
+
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/password"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/sign_up_password_hint"
+                    android:imeOptions="actionDone"
+                    android:inputType="textPassword"
+                    android:maxLines="1"
+                    android:singleLine="true"
+                    android:theme="@style/EditTextColorControl" />
 
             </android.support.design.widget.TextInputLayout>
 
             <com.cypherpunk.android.vpn.widget.TypefaceButton
-                android:id="@+id/send_email_button"
-                style="@style/Widget.Cypherpunk.Button.NoCaps"
+                android:id="@+id/sign_up_button"
+                style="@style/Widget.AppCompat.Button.Colored"
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
                 android:layout_marginTop="8dp"
-                android:drawableLeft="@drawable/mail_vector"
-                android:drawableStart="@drawable/mail_vector"
-                android:text="@string/send_email_button" />
+                android:text="@string/button_sign_up"
+                android:textSize="18sp"
+                android:theme="@style/TransparentButton" />
 
         </LinearLayout>
 
