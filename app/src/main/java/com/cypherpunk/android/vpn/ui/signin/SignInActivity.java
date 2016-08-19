@@ -3,6 +3,7 @@ package com.cypherpunk.android.vpn.ui.signin;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
+import android.graphics.Paint;
 import android.os.Bundle;
 import android.support.v4.app.TaskStackBuilder;
 import android.support.v7.app.ActionBar;
@@ -54,11 +55,9 @@ public class SignInActivity extends AppCompatActivity {
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_sign_in);
 
-        setSupportActionBar(binding.toolbar);
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
-            actionBar.setDisplayShowTitleEnabled(false);
         }
 
         binding.email.requestFocus();
@@ -83,6 +82,15 @@ public class SignInActivity extends AppCompatActivity {
                 attemptSignIn();
             }
         });
+        binding.moveSignUpButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(SignInActivity.this, SignUpActivity.class));
+            }
+        });
+
+        binding.forgotPasswordButton.setPaintFlags(
+                binding.forgotPasswordButton.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
 
         progressDialog = new ProgressDialog(this);
     }

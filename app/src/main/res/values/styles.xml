@@ -28,6 +28,20 @@
         <item name="colorButtonNormal">@color/radio_button</item>
     </style>
 
+    <style name="EditTextColorControl">
+        <item name="colorControlNormal">@color/input_layout_control_normal</item>
+        <item name="colorControlActivated">@color/input_layout_control_normal</item>
+        <item name="colorControlHighlight">@color/input_layout_control_normal</item>
+    </style>
+
+    <style name="TextInputLayoutControl">
+        <item name="colorAccent">@color/input_layout_control_normal</item>
+    </style>
+
+    <style name="TransparentButton">
+        <item name="colorAccent">#33ffffff</item>
+    </style>
+
     <!-- widget -->
 
     <style name="Widget.Cypherpunk.Button.Colored" parent="Widget.AppCompat.Button.Colored">
@@ -56,6 +70,7 @@
 
     <style name="Widget.Cypherpunk.TextInputLayout" parent="Widget.Design.TextInputLayout">
         <item name="android:textColorHint">@color/edit_text_hint</item>
+        <item name="android:textColor">@color/edit_text_hint</item>
     </style>
 
     <style name="SelectableItemIndigoTheme">

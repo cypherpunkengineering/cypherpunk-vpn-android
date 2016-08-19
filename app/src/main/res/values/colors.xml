@@ -23,4 +23,5 @@
     <color name="vpn_state_not_connected">#cccccc</color>
     <color name="vpn_state_connected">#71d900</color>
     <color name="edit_text_hint">#80ffffff</color>
+    <color name="input_layout_control_normal">#f8cf1c</color>
 </resources>
