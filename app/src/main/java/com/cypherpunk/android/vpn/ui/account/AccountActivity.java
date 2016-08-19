@@ -13,7 +13,7 @@ import android.view.View;
 import com.cypherpunk.android.vpn.R;
 import com.cypherpunk.android.vpn.data.api.UserManager;
 import com.cypherpunk.android.vpn.databinding.ActivityAccountBinding;
-import com.cypherpunk.android.vpn.ui.IntroductionActivity;
+import com.cypherpunk.android.vpn.ui.setup.IntroductionActivity;
 import com.cypherpunk.android.vpn.vpn.CypherpunkVPN;
 
 public class AccountActivity extends AppCompatActivity {
