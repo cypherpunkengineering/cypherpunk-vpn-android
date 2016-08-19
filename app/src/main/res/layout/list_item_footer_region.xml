@@ -5,7 +5,7 @@
 
     <com.cypherpunk.android.vpn.widget.TypefaceButton
         android:id="@+id/sort_button"
-        style="@style/Widget.Cypherpunk.Button.NoCaps"
+        style="@style/Widget.Cypherpunk.TransparentButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
