@@ -87,6 +87,10 @@
     <string name="introduction_sign_up">Sign up for 7-day Free Premium Trial</string>
     <string name="introduction_premium">Get a Premium plan</string>
 
+    <!-- tutorial -->
+    <string name="tutorial_skip">SKIP</string>
+    <string name="tutorial_finish">USE CYPHERPUNK NOW</string>
+
     <!-- select region -->
     <string name="title_activity_select_region">Select region</string>
     <string name="select_region_list_header_recent">Recently connected</string>

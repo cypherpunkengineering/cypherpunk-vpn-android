@@ -1,4 +1,4 @@
-package com.cypherpunk.android.vpn.ui;
+package com.cypherpunk.android.vpn.ui.setup;
 
 import android.content.Context;
 import android.content.Intent;
