@@ -36,7 +36,7 @@
         <ListPreference
             android:entries="@array/encryption"
             android:entryValues="@array/encryption_value"
-            android:key="encryption"
+            android:key="encryption_level"
             android:title="Encryption level" />
 
         <Preference android:title="Cipher" />
