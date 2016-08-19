@@ -37,40 +37,36 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginBottom="8dp" />
+            android:layout_marginBottom="16dp" />
 
         <com.cypherpunk.android.vpn.widget.TypefaceButton
             android:id="@+id/create_account_button"
-            style="@style/Widget.Cypherpunk.Button.Colored"
+            style="@style/Widget.Cypherpunk.TransparentButton"
             android:layout_width="match_parent"
-            android:layout_height="48dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
             android:layout_marginLeft="28dp"
             android:layout_marginRight="28dp"
-            android:text="@string/introduction_start_free_now"
-            android:textSize="18sp"
-            android:theme="@style/TransparentButton" />
+            android:text="@string/introduction_start_free_now" />
 
         <com.cypherpunk.android.vpn.widget.TypefaceButton
             android:id="@+id/sign_in_button"
-            style="@style/Widget.Cypherpunk.Button.Colored"
+            style="@style/Widget.Cypherpunk.TransparentButton"
             android:layout_width="match_parent"
-            android:layout_height="48dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
             android:layout_marginLeft="28dp"
             android:layout_marginRight="28dp"
-            android:text="@string/introduction_sign_up"
-            android:textAppearance="@style/TextAppearance.Cypherpunk.Button"
-            android:textSize="18sp"
-            android:theme="@style/TransparentButton" />
+            android:text="@string/introduction_sign_up" />
 
         <com.cypherpunk.android.vpn.widget.TypefaceButton
-            style="@style/Widget.Cypherpunk.Button.Colored"
+            style="@style/Widget.Cypherpunk.TransparentButton"
             android:layout_width="match_parent"
-            android:layout_height="48dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
             android:layout_marginLeft="28dp"
             android:layout_marginRight="28dp"
-            android:text="@string/introduction_premium"
-            android:textSize="18sp"
-            android:theme="@style/TransparentButton" />
+            android:text="@string/introduction_premium" />
 
         <RelativeLayout
             android:id="@+id/move_sign_in_button"

@@ -71,7 +71,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="12dp"
+                android:layout_marginBottom="18dp"
                 android:layout_marginLeft="24dp"
                 android:layout_marginRight="24dp"
                 android:background="@color/card_background"
@@ -108,16 +108,18 @@
             </LinearLayout>
 
             <com.cypherpunk.android.vpn.widget.TypefaceButton
-                style="@style/Widget.Cypherpunk.Button.NoCaps"
-                android:layout_width="match_parent"
+                style="@style/Widget.Cypherpunk.TransparentDarkButton"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:layout_marginLeft="40dp"
                 android:layout_marginRight="40dp"
                 android:drawableLeft="@drawable/refresh_vector"
                 android:drawablePadding="8dp"
                 android:drawableStart="@drawable/refresh_vector"
-                android:text="@string/status_change_ip_address"
-                android:textAppearance="@style/TextAppearance.Cypherpunk.Button" />
+                android:paddingLeft="32dp"
+                android:paddingRight="32dp"
+                android:text="@string/status_change_ip_address" />
 
         </LinearLayout>
 

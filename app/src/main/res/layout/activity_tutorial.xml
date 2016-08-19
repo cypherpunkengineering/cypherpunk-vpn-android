@@ -59,16 +59,14 @@
 
             <com.cypherpunk.android.vpn.widget.TypefaceButton
                 android:id="@+id/tutorial_finish_button"
-                style="@style/Widget.AppCompat.Button.Colored"
+                style="@style/Widget.Cypherpunk.TransparentButton"
                 android:layout_width="match_parent"
-                android:layout_height="48dp"
+                android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"
                 android:layout_marginLeft="32dp"
                 android:layout_marginRight="32dp"
                 android:layout_marginTop="8dp"
                 android:text="@string/tutorial_finish"
-                android:textSize="18sp"
-                android:theme="@style/TransparentButton"
                 android:visibility="gone" />
 
         </FrameLayout>
