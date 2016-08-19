@@ -8,7 +8,12 @@
     <string name="button_sign_in">Sign In</string>
     <string name="no_internet">Network is unavailable</string>
     <string name="invalid_mail_password">invalid mail/password</string>
-
+    <string name="sign_in_forgot_password">Forgot password?</string>
+    <string name="title_activity_sign_in">Sign in</string>
+    <string name="sign_in_email_hint">Username/Email</string>
+    <string name="sign_in_password_hint">Password</string>
+    <string name="sign_in_no_account">Don’t have an account yet?</string>
+    <string name="sign_in_sign_up">SIGN UP</string>
     <!-- sign up-->
     <string name="send_email_button">Send Email</string>
 
@@ -85,5 +90,8 @@
     <string name="select_region_connect_dialog_message">Do you connect now?</string>
     <string name="select_region_connect_dialog_positive">CONNECT</string>
     <string name="select_region_connect_negative">Not now</string>
+    <string name="sign_up_password_hint">Password</string>
+    <string name="sign_up_email_hint">Email</string>
+    <string name="button_sign_up">Sign Up</string>
 
 </resources>
