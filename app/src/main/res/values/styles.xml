@@ -52,11 +52,6 @@
         <item name="android:textAppearance">@style/TextAppearance.Cypherpunk.Button</item>
     </style>
 
-    <style name="Widget.Cypherpunk.Button.Transparent" parent="Widget.Cypherpunk.Button.Colored">
-        <item name="android:theme">@style/SelectableItemIndigoTheme</item>
-        <item name="android:background">?attr/selectableItemBackground</item>
-    </style>
-
     <style name="Widget.Cypherpunk.TextView.AccountMenu" parent="android:Widget.TextView">
         <item name="android:paddingLeft">16dp</item>
         <item name="android:paddingRight">16dp</item>

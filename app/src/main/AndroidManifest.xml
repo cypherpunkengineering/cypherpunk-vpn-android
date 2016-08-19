@@ -22,11 +22,12 @@
         <activity
             android:name=".ui.signin.SignUpActivity"
             android:screenOrientation="portrait"
+            android:label="@string/title_activity_sign_up"
             android:theme="@style/AppTheme" />
         <activity
             android:name=".ui.IntroductionActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar.TransparentStatusBar" />
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".ui.MainActivity"
             android:screenOrientation="portrait"
