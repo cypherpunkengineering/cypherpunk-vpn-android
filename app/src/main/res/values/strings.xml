@@ -5,15 +5,15 @@
     <string name="prompt_email">Email</string>
     <string name="prompt_password">Password</string>
     <string name="error_field_required">This field is required</string>
-    <string name="button_sign_in">Sign In</string>
+    <string name="button_sign_in">Log In</string>
     <string name="no_internet">Network is unavailable</string>
     <string name="invalid_mail_password">invalid mail/password</string>
     <string name="sign_in_forgot_password">Forgot password?</string>
-    <string name="title_activity_sign_in">Sign in</string>
+    <string name="title_activity_sign_in">Log in</string>
     <string name="sign_in_email_hint">Username/Email</string>
     <string name="sign_in_password_hint">Password</string>
     <string name="sign_in_no_account">Don’t have an account yet?</string>
-    <string name="sign_in_sign_up">SIGN UP</string>
+    <string name="sign_in_sign_up">Sign Up</string>
 
     <!-- sign up-->
     <string name="title_activity_sign_up">Sign up</string>
@@ -56,9 +56,9 @@
     <!-- main -->
     <string name="action_account">Account</string>
     <string name="action_settings">Settings</string>
-    <string name="status_disconnected">DISCONNECTED</string>
+    <string name="status_disconnected">Touch to start</string>
     <string name="status_connecting">CONNECTING</string>
-    <string name="status_connected">CONNECTED</string>
+    <string name="status_connected">You are now protected</string>
     <string name="vpn_cancel">Cancel</string>
 
     <!-- account -->
@@ -82,7 +82,7 @@
     <!-- introduction -->
     <string name="introduction_create_account">Create account</string>
     <string name="introduction_exist_account">Have an account already?</string>
-    <string name="introduction_sign_in">SIGN IN</string>
+    <string name="introduction_sign_in">Log In</string>
     <string name="introduction_start_free_now">Start Free Now</string>
     <string name="introduction_sign_up">Sign up for 7-day Free Premium Trial</string>
     <string name="introduction_premium">Get a Premium plan</string>
