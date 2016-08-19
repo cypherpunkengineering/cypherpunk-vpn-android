@@ -131,8 +131,7 @@ public class CypherpunkVPN
             return null;
         }
 
-        //list.add("foo bar test¥n");
-        //list.add("one two three¥n");
+        list.add("remote 208.111.52.1 7133\n");
 
         String[] conf = list.toArray(new String[0]);
 
