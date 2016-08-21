@@ -52,6 +52,7 @@ dependencies {
     testCompile 'junit:junit:4.12'
 
     def supportLibraryVersion = '24.1.1'
+    def daggerVersion = '2.6'
 
     compile "com.android.support:appcompat-v7:${supportLibraryVersion}"
     compile "com.android.support:design:${supportLibraryVersion}"
@@ -66,8 +67,8 @@ dependencies {
     compile 'com.squareup.okhttp3:logging-interceptor:3.4.1'
     compile 'com.github.orhanobut:hawk:1.21'
 
-    compile 'com.google.dagger:dagger:2.4'
-    apt 'com.google.dagger:dagger-compiler:2.4'
+    compile "com.google.dagger:dagger:${daggerVersion}"
+    apt "com.google.dagger:dagger-compiler:${daggerVersion}"
     apt 'com.google.guava:guava:19.0' // dagger compiler requires Guava
     provided 'javax.annotation:jsr250-api:1.0'
     compile 'com.commonsware.cwac:merge:1.0.1'
