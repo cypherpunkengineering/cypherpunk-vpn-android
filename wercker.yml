@@ -34,6 +34,7 @@ build:
     - script:
         name: cleanup
         code: |
+            rm -rf .git
             rm -rf ${ANDROID_NDK_HOME}
             rm -rf openvpn
   after-steps:
