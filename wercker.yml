@@ -30,7 +30,7 @@ build:
     - script:
         name: build android app
         code: |
-            gradle -PdisablePreDex --project-cache-dir=$WERCKER_CACHE_DIR build
+            ./gradlew -PdisablePreDex --project-cache-dir=$WERCKER_CACHE_DIR build
     - script:
         name: cleanup
         code: |
