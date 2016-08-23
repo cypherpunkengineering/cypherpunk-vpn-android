@@ -5,7 +5,7 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/background">
+        android:background="@color/background_dark">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -18,18 +18,37 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 
-            <com.cypherpunk.android.vpn.widget.TypefaceTextView
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
                 android:layout_marginBottom="16dp"
-                android:drawableLeft="@drawable/time_vector"
-                android:drawablePadding="16dp"
-                android:drawableStart="@drawable/time_vector"
-                android:text="00:14:25"
-                android:textSize="18sp" />
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <com.cypherpunk.android.vpn.widget.TypefaceTextView
+                    android:id="@+id/state"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:text="Connected"
+                    android:textSize="16sp" />
+
+                <com.cypherpunk.android.vpn.widget.TypefaceTextView
+                    android:id="@+id/time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginLeft="16dp"
+                    android:drawableLeft="@drawable/time_vector"
+                    android:drawablePadding="8dp"
+                    android:drawableStart="@drawable/time_vector"
+                    android:text="00:14:25"
+                    android:textSize="16sp" />
+
+            </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/original_container"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"
@@ -54,7 +73,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="4dp"
                     android:text="181.41.221.60"
-                    android:textColor="#d84d5e"
+                    android:textColor="@color/status_disconnected"
                     android:textSize="28sp" />
 
                 <com.cypherpunk.android.vpn.widget.TypefaceTextView
@@ -63,12 +82,13 @@
                     android:drawableLeft="@drawable/national_flag_placeholder"
                     android:drawablePadding="16dp"
                     android:drawableStart="@drawable/national_flag_placeholder"
-                    android:text="Tokyo, Japan"
+                    android:text="Japan"
                     android:textSize="16sp" />
 
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/new_container"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="18dp"
@@ -93,7 +113,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="4dp"
                     android:text="25.102.5.31"
-                    android:textColor="#6ec90a"
+                    android:textColor="@color/status_connected"
                     android:textSize="28sp" />
 
                 <com.cypherpunk.android.vpn.widget.TypefaceTextView
@@ -102,12 +122,13 @@
                     android:drawableLeft="@drawable/national_flag_placeholder"
                     android:drawablePadding="16dp"
                     android:drawableStart="@drawable/national_flag_placeholder"
-                    android:text="San Fransisco, USA"
+                    android:text="USA WEST"
                     android:textSize="16sp" />
 
             </LinearLayout>
 
             <com.cypherpunk.android.vpn.widget.TypefaceButton
+                android:id="@+id/change_ip_button"
                 style="@style/Widget.Cypherpunk.TransparentDarkButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -119,7 +140,8 @@
                 android:drawableStart="@drawable/refresh_vector"
                 android:paddingLeft="32dp"
                 android:paddingRight="32dp"
-                android:text="@string/status_change_ip_address" />
+                android:text="@string/status_change_ip_address"
+                android:textSize="16sp" />
 
         </LinearLayout>
 
