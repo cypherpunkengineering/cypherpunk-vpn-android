@@ -39,6 +39,7 @@ public class SelectRegionActivity extends AppCompatActivity
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
+        overridePendingTransition(R.anim.region_anim_in, R.anim.region_no_anim);
 
         listView = new ListView(this);
         mergeAdapter = new MergeAdapter();
@@ -102,6 +103,12 @@ public class SelectRegionActivity extends AppCompatActivity
             intent.putExtra(EXTRA_AREA, item);
             startActivityForResult(intent, REQUEST_SELECT_REGION);
         }
+    }
+
+    @Override
+    public void finish() {
+        super.finish();
+        overridePendingTransition(0, R.anim.region_anim_out);
     }
 
     private View buildHeader(@StringRes int text) {
