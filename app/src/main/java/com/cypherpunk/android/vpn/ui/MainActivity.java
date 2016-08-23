@@ -18,6 +18,7 @@ import android.widget.CompoundButton;
 import com.cypherpunk.android.vpn.R;
 import com.cypherpunk.android.vpn.data.api.UserManager;
 import com.cypherpunk.android.vpn.databinding.ActivityMainBinding;
+import com.cypherpunk.android.vpn.ui.region.LocationsActivity;
 import com.cypherpunk.android.vpn.ui.region.SelectCityActivity;
 import com.cypherpunk.android.vpn.ui.region.SelectRegionActivity;
 import com.cypherpunk.android.vpn.ui.settings.SettingsActivity;
@@ -84,7 +85,7 @@ public class MainActivity extends AppCompatActivity implements VpnStatus.StateLi
         binding.regionContainer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivityForResult(new Intent(MainActivity.this, SelectRegionActivity.class), REQUEST_SELECT_REGION);
+                startActivityForResult(new Intent(MainActivity.this, LocationsActivity.class), REQUEST_SELECT_REGION);
             }
         });
 

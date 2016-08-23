@@ -1,6 +1,8 @@
 package com.cypherpunk.android.vpn.ui.region;
 
+import android.content.Context;
 import android.content.Intent;
+import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
@@ -9,6 +11,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
@@ -16,15 +19,14 @@ import android.widget.TextView;
 
 import com.commonsware.cwac.merge.MergeAdapter;
 import com.cypherpunk.android.vpn.R;
+import com.cypherpunk.android.vpn.databinding.ListItemLocationBinding;
 
-
-public class SelectRegionActivity extends AppCompatActivity
+public class LocationsActivity extends AppCompatActivity
         implements AdapterView.OnItemClickListener,
         ConnectConfirmationDialogFragment.ConnectDialogListener {
 
-    public static String EXTRA_AREA = "area";
-    private static String[] AREA = {"Auto select region", "North America", "South America", "Europe", "Asia", "Pacific"};
-    private static String[] CONNECTED = {"Tokyo, Japan", "New York, USA"};
+    private static String[] AREA = {"Hong Kong", "USA East", "USA West", "USA Central", "Brazil", "Canada"};
+    private static String[] RECOMMENDED = {"Tokyo 1", "Tokyo 2", "Honolulu"};
     private static final int REQUEST_SELECT_REGION = 1;
 
     private ListView listView;
@@ -42,25 +44,20 @@ public class SelectRegionActivity extends AppCompatActivity
         overridePendingTransition(R.anim.region_anim_in, R.anim.region_no_anim);
 
         listView = new ListView(this);
+        listView.setBackgroundResource(R.color.background);
         mergeAdapter = new MergeAdapter();
-        LayoutInflater inflater = LayoutInflater.from(this);
 
         // recently connected
         mergeAdapter.addView(buildHeader(R.string.location_recommended));
-        ArrayAdapter<String> cityAdapter = new ArrayAdapter<>(this, R.layout.list_item_city);
-        cityAdapter.addAll(CONNECTED);
+        ArrayAdapter<String> cityAdapter = new LocationAdapter(this);
+        cityAdapter.addAll(RECOMMENDED);
         mergeAdapter.addAdapter(cityAdapter);
-        mergeAdapter.addView(inflater.inflate(R.layout.divider, listView, false));
 
         // region
         mergeAdapter.addView(buildHeader(R.string.location_all_locations));
-        ArrayAdapter<String> regionAdapter = new ArrayAdapter<>(this, R.layout.list_item_area);
+        ArrayAdapter<String> regionAdapter = new LocationAdapter(this);
         regionAdapter.addAll(AREA);
         mergeAdapter.addAdapter(regionAdapter);
-        mergeAdapter.addView(inflater.inflate(R.layout.divider, listView, false));
-
-        // sort by distance
-        mergeAdapter.addView(buildSortByDistanceButton());
 
         listView.setAdapter(mergeAdapter);
         listView.setDivider(null);
@@ -92,17 +89,9 @@ public class SelectRegionActivity extends AppCompatActivity
 
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
-        String item = (String) mergeAdapter.getItem(position);
-        int itemViewId = mergeAdapter.getView(position, null, adapterView).getId();
-        if (itemViewId == R.id.city) {
-            selectedItem = item;
-            ConnectConfirmationDialogFragment dialogFragment = ConnectConfirmationDialogFragment.newInstance(selectedItem);
-            dialogFragment.show(getSupportFragmentManager());
-        } else if (itemViewId == R.id.area) {
-            Intent intent = new Intent(this, SelectCityActivity.class);
-            intent.putExtra(EXTRA_AREA, item);
-            startActivityForResult(intent, REQUEST_SELECT_REGION);
-        }
+        selectedItem = (String) mergeAdapter.getItem(position);
+        ConnectConfirmationDialogFragment dialogFragment = ConnectConfirmationDialogFragment.newInstance(selectedItem);
+        dialogFragment.show(getSupportFragmentManager());
     }
 
     @Override
@@ -116,20 +105,6 @@ public class SelectRegionActivity extends AppCompatActivity
                 .inflate(R.layout.list_item_header_region_select, listView, false);
         textView.setText(text);
         return textView;
-    }
-
-    private View buildSortByDistanceButton() {
-        View view = LayoutInflater.from(this)
-                .inflate(R.layout.list_item_footer_region, listView, false);
-        View button = view.findViewById(R.id.sort_button);
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(SelectRegionActivity.this, SortRegionActivity.class);
-                startActivityForResult(intent, REQUEST_SELECT_REGION);
-            }
-        });
-        return view;
     }
 
     @Override
@@ -147,5 +122,31 @@ public class SelectRegionActivity extends AppCompatActivity
         intent.putExtra(SelectCityActivity.EXTRA_CITY, selectedItem);
         setResult(RESULT_OK, intent);
         finish();
+    }
+
+    private class LocationAdapter extends ArrayAdapter<String> {
+
+        private LayoutInflater inflater;
+
+        public LocationAdapter(Context context) {
+            super(context, 0);
+            this.inflater = LayoutInflater.from(context);
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            String item = getItem(position);
+            ListItemLocationBinding binding;
+            if (convertView == null) {
+                binding = DataBindingUtil.inflate(inflater, R.layout.list_item_location, parent, false);
+                convertView = binding.getRoot();
+                convertView.setTag(binding);
+            } else {
+                binding = (ListItemLocationBinding) convertView.getTag();
+            }
+            binding.location.setText(item);
+
+            return convertView;
+        }
     }
 }

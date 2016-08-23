@@ -7,7 +7,7 @@
     android:gravity="bottom"
     android:paddingLeft="16dp"
     android:paddingRight="16dp"
-    android:textColor="#cccccc"
-    android:textSize="14sp"
+    android:textColor="#aff067"
+    android:textSize="16sp"
     app:fontName="dosisMedium"
     tools:text="Recently connected" />
