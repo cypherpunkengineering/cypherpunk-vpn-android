@@ -14,6 +14,9 @@
     <string name="sign_in_password_hint">Password</string>
     <string name="sign_in_no_account">Don’t have an account yet?</string>
     <string name="sign_in_sign_up">Sign Up</string>
+    <string name="sign_up_password_hint">Password</string>
+    <string name="sign_up_email_hint">Email</string>
+    <string name="button_sign_up">Sign Up</string>
 
     <!-- sign up-->
     <string name="title_activity_sign_up">Sign up</string>
@@ -100,8 +103,6 @@
     <string name="select_region_connect_dialog_message">Do you connect now?</string>
     <string name="select_region_connect_dialog_positive">CONNECT</string>
     <string name="select_region_connect_negative">Not now</string>
-    <string name="sign_up_password_hint">Password</string>
-    <string name="sign_up_email_hint">Email</string>
-    <string name="button_sign_up">Sign Up</string>
+    <string name="title_activity_locations">Locations</string>
 
 </resources>

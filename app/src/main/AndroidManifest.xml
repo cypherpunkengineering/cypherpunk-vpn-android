@@ -91,6 +91,10 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
         <activity
+            android:name=".ui.region.LocationsActivity"
+            android:label="@string/title_activity_locations"
+            android:screenOrientation="portrait"/>
+        <activity
             android:name=".ui.region.SelectRegionActivity"
             android:label="@string/title_activity_select_region"
             android:screenOrientation="portrait"
