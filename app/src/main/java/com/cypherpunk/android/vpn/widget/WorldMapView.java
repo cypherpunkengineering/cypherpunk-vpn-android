@@ -53,7 +53,7 @@ public class WorldMapView extends View {
         originalPositionBitmap = getBitmap(R.drawable.map_original_position);
         newPositionBitmap = getBitmap(R.drawable.map_current_potision_big);
 
-        linePaint.setColor(ContextCompat.getColor(context, R.color.colorAccent));
+        linePaint.setColor(ContextCompat.getColor(context, R.color.world_map_line));
         linePaint.setStrokeWidth(5);
     }
 
@@ -118,7 +118,7 @@ public class WorldMapView extends View {
         float dy = (y * dm.density);
         newPositionMatrix[0] = dx * scale + getResources().getDimension(R.dimen.world_map_margin);
         newPositionMatrix[1] = dy * scale;
-        setNewPositionVisibility(true);
+        setNewPositionVisibility(x == 0 && y == 0);
     }
 
     /**
