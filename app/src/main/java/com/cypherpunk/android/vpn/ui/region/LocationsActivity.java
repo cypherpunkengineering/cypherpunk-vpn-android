@@ -45,13 +45,13 @@ public class LocationsActivity extends AppCompatActivity
         mergeAdapter = new MergeAdapter();
 
         // recently connected
-        mergeAdapter.addView(buildHeader(R.string.select_region_list_header_recent));
+        mergeAdapter.addView(buildHeader(R.string.location_recommended));
         ArrayAdapter<String> cityAdapter = new ArrayAdapter<>(this, R.layout.list_item_city);
         cityAdapter.addAll(RECOMMENDED);
         mergeAdapter.addAdapter(cityAdapter);
 
         // region
-        mergeAdapter.addView(buildHeader(R.string.select_region_list_header));
+        mergeAdapter.addView(buildHeader(R.string.location_all_locations));
         ArrayAdapter<String> regionAdapter = new ArrayAdapter<>(this, R.layout.list_item_city);
         regionAdapter.addAll(AREA);
         mergeAdapter.addAdapter(regionAdapter);

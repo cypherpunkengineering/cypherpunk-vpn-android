@@ -46,14 +46,14 @@ public class SelectRegionActivity extends AppCompatActivity
         LayoutInflater inflater = LayoutInflater.from(this);
 
         // recently connected
-        mergeAdapter.addView(buildHeader(R.string.select_region_list_header_recent));
+        mergeAdapter.addView(buildHeader(R.string.location_recommended));
         ArrayAdapter<String> cityAdapter = new ArrayAdapter<>(this, R.layout.list_item_city);
         cityAdapter.addAll(CONNECTED);
         mergeAdapter.addAdapter(cityAdapter);
         mergeAdapter.addView(inflater.inflate(R.layout.divider, listView, false));
 
         // region
-        mergeAdapter.addView(buildHeader(R.string.select_region_list_header));
+        mergeAdapter.addView(buildHeader(R.string.location_all_locations));
         ArrayAdapter<String> regionAdapter = new ArrayAdapter<>(this, R.layout.list_item_area);
         regionAdapter.addAll(AREA);
         mergeAdapter.addAdapter(regionAdapter);
