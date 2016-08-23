@@ -11,6 +11,7 @@
         <item name="android:textColorSecondary">@android:color/white</item>
         <item name="android:windowBackground">@drawable/main_indigo_gradation</item>
         <item name="preferenceTheme">@style/PreferenceThemeOverlay.v14.Material</item>
+        <item name="android:windowAnimationStyle">@style/Animation.Activity.Alpha</item>
     </style>
 
     <style name="AppTheme.NoActionBar">
@@ -40,6 +41,13 @@
 
     <style name="TransparentButton">
         <item name="colorAccent">#33ffffff</item>
+    </style>
+
+    <style name="Animation.Activity.Alpha" parent="android:Animation.Activity">
+        <item name="android:activityOpenEnterAnimation">@anim/alpha_enter</item>
+        <item name="android:activityOpenExitAnimation">@anim/alpha_exit</item>
+        <item name="android:activityCloseEnterAnimation">@anim/alpha_enter</item>
+        <item name="android:activityCloseExitAnimation">@anim/alpha_exit</item>
     </style>
 
     <!-- widget -->
