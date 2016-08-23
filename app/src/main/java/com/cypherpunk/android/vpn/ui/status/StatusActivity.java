@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.view.MenuItem;
 import android.view.View;
 
@@ -27,6 +28,12 @@ public class StatusActivity extends AppCompatActivity implements VpnStatus.State
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_status);
         status = CypherpunkVpnStatus.getInstance();
+
+        // TODO:
+        String originalIp = getIntent().getStringExtra("original_ip");
+        if (!TextUtils.isEmpty(originalIp)) {
+            binding.originalIp.setText(originalIp);
+        }
 
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {

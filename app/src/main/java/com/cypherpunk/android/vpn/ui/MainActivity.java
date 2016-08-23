@@ -15,12 +15,14 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.CompoundButton;
 
+import com.cypherpunk.android.vpn.CypherpunkApplication;
 import com.cypherpunk.android.vpn.R;
+import com.cypherpunk.android.vpn.data.api.JsonipService;
 import com.cypherpunk.android.vpn.data.api.UserManager;
+import com.cypherpunk.android.vpn.data.api.json.JsonipResult;
 import com.cypherpunk.android.vpn.databinding.ActivityMainBinding;
 import com.cypherpunk.android.vpn.ui.region.LocationsActivity;
 import com.cypherpunk.android.vpn.ui.region.SelectCityActivity;
-import com.cypherpunk.android.vpn.ui.region.SelectRegionActivity;
 import com.cypherpunk.android.vpn.ui.settings.SettingsActivity;
 import com.cypherpunk.android.vpn.ui.setup.IntroductionActivity;
 import com.cypherpunk.android.vpn.ui.status.StatusActivity;
@@ -32,7 +34,14 @@ import com.cypherpunk.android.vpn.widget.VpnButton;
 
 import java.util.ArrayList;
 
+import javax.inject.Inject;
+
 import de.blinkt.openvpn.core.VpnStatus;
+import rx.SingleSubscriber;
+import rx.Subscription;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
+import rx.subscriptions.Subscriptions;
 
 public class MainActivity extends AppCompatActivity implements VpnStatus.StateListener {
 
@@ -41,6 +50,11 @@ public class MainActivity extends AppCompatActivity implements VpnStatus.StateLi
 
     private ActivityMainBinding binding;
     private CypherpunkVpnStatus status;
+    private Subscription subscription = Subscriptions.empty();
+    private String originalIp; //TODO:
+
+    @Inject
+    JsonipService webService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +67,8 @@ public class MainActivity extends AppCompatActivity implements VpnStatus.StateLi
             builder.startActivities();
             finish();
         }
+
+        ((CypherpunkApplication) getApplication()).getAppComponent().inject(this);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             getWindow().getDecorView().setSystemUiVisibility(
@@ -106,6 +122,8 @@ public class MainActivity extends AppCompatActivity implements VpnStatus.StateLi
 
         VpnStatus.addStateListener(this);
         setBinaryStrings();
+
+        getIpAddress();
     }
 
     @Override
@@ -122,7 +140,9 @@ public class MainActivity extends AppCompatActivity implements VpnStatus.StateLi
                 startActivity(new Intent(this, SettingsActivity.class));
                 break;
             case R.id.action_account:
-                startActivity(new Intent(this, StatusActivity.class));
+                Intent intent = new Intent(this, StatusActivity.class);
+                intent.putExtra("original_ip", originalIp);
+                startActivity(intent);
                 break;
         }
         return false;
@@ -145,6 +165,12 @@ public class MainActivity extends AppCompatActivity implements VpnStatus.StateLi
                     break;
             }
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        subscription.unsubscribe();
+        super.onDestroy();
     }
 
     @Override
@@ -211,5 +237,23 @@ public class MainActivity extends AppCompatActivity implements VpnStatus.StateLi
         strings.add(Build.MANUFACTURER);
         strings.add(Build.MODEL);
         binding.keyTexture.setStrings(strings);
+    }
+
+    private void getIpAddress() {
+        subscription = webService
+                .getIpAddress()
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new SingleSubscriber<JsonipResult>() {
+                    @Override
+                    public void onSuccess(JsonipResult ip) {
+                        originalIp = ip.getIp();
+                    }
+
+                    @Override
+                    public void onError(Throwable error) {
+                        error.printStackTrace();
+                    }
+                });
     }
 }
