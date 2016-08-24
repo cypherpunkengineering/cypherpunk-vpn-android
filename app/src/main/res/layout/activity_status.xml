@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -74,7 +75,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="4dp"
                     android:textColor="@color/status_disconnected"
-                    android:textSize="28sp" />
+                    android:textSize="28sp"
+                    tools:text="181.41.221.60" />
 
                 <com.cypherpunk.android.vpn.widget.TypefaceTextView
                     android:layout_width="wrap_content"
@@ -109,11 +111,13 @@
                     app:fontName="DosisSemiBold" />
 
                 <com.cypherpunk.android.vpn.widget.TypefaceTextView
+                    android:id="@+id/new_ip"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="4dp"
                     android:textColor="@color/status_connected"
-                    android:textSize="28sp" />
+                    android:textSize="28sp"
+                    tools:text="25.102.5.31" />
 
                 <com.cypherpunk.android.vpn.widget.TypefaceTextView
                     android:layout_width="wrap_content"
