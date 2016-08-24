@@ -10,6 +10,7 @@ import android.support.v4.app.TaskStackBuilder;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.ActionMenuView;
+import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -21,6 +22,7 @@ import com.cypherpunk.android.vpn.data.api.JsonipService;
 import com.cypherpunk.android.vpn.data.api.UserManager;
 import com.cypherpunk.android.vpn.data.api.json.JsonipResult;
 import com.cypherpunk.android.vpn.databinding.ActivityMainBinding;
+import com.cypherpunk.android.vpn.model.IpStatus;
 import com.cypherpunk.android.vpn.ui.region.LocationsActivity;
 import com.cypherpunk.android.vpn.ui.region.SelectCityActivity;
 import com.cypherpunk.android.vpn.ui.settings.SettingsActivity;
@@ -47,11 +49,12 @@ public class MainActivity extends AppCompatActivity implements VpnStatus.StateLi
 
     private static final int REQUEST_VPN_START = 0;
     private static final int REQUEST_SELECT_REGION = 1;
+    private static final int REQUEST_STATUS = 2;
 
     private ActivityMainBinding binding;
     private CypherpunkVpnStatus status;
     private Subscription subscription = Subscriptions.empty();
-    private String originalIp; //TODO:
+    private IpStatus ipStatus = new IpStatus();
 
     @Inject
     JsonipService webService;
@@ -121,8 +124,6 @@ public class MainActivity extends AppCompatActivity implements VpnStatus.StateLi
 
         VpnStatus.addStateListener(this);
         setBinaryStrings();
-
-        getIpAddress();
     }
 
     @Override
@@ -139,9 +140,7 @@ public class MainActivity extends AppCompatActivity implements VpnStatus.StateLi
                 startActivity(new Intent(this, SettingsActivity.class));
                 break;
             case R.id.action_status:
-                Intent intent = new Intent(this, StatusActivity.class);
-                intent.putExtra("original_ip", originalIp);
-                startActivity(intent);
+                startActivityForResult(StatusActivity.createIntent(this, ipStatus), REQUEST_STATUS);
                 break;
         }
         return false;
@@ -155,6 +154,9 @@ public class MainActivity extends AppCompatActivity implements VpnStatus.StateLi
                 case REQUEST_VPN_START:
                     startVpn();
                     break;
+                case REQUEST_STATUS:
+                    ipStatus = data.getParcelableExtra(StatusActivity.EXTRA_STATUS);
+                    break;
                 case REQUEST_SELECT_REGION:
                     String city = data.getStringExtra(SelectCityActivity.EXTRA_CITY);
                     binding.region.setText(city);
@@ -164,6 +166,18 @@ public class MainActivity extends AppCompatActivity implements VpnStatus.StateLi
                     break;
             }
         }
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putParcelable("ip_status", ipStatus);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        ipStatus = savedInstanceState.getParcelable("ip_status");
     }
 
     @Override
@@ -219,6 +233,7 @@ public class MainActivity extends AppCompatActivity implements VpnStatus.StateLi
     }
 
     private void onVpnDisconnected() {
+        getIpAddress();
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -245,8 +260,13 @@ public class MainActivity extends AppCompatActivity implements VpnStatus.StateLi
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new SingleSubscriber<JsonipResult>() {
                     @Override
-                    public void onSuccess(JsonipResult ip) {
-                        originalIp = ip.getIp();
+                    public void onSuccess(JsonipResult jsonipResult) {
+                        if (status.isDisconnected()) {
+                            ipStatus.setOriginalIp(jsonipResult.getIp());
+                        } else if (!TextUtils.isEmpty(ipStatus.getNewIp())
+                                && !ipStatus.getNewIp().equals(jsonipResult.getIp())) {
+                            ipStatus.setNewIp(jsonipResult.getIp());
+                        }
                     }
 
                     @Override

@@ -4,6 +4,8 @@ import com.cypherpunk.android.vpn.data.api.CookieManager;
 import com.cypherpunk.android.vpn.data.api.CypherpunkService;
 import com.cypherpunk.android.vpn.data.api.JsonipService;
 
+import java.util.concurrent.TimeUnit;
+
 import javax.inject.Singleton;
 
 import dagger.Module;
@@ -50,6 +52,7 @@ public class ClientModule {
         OkHttpClient.Builder builder = new OkHttpClient.Builder();
         HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
         logging.setLevel(HttpLoggingInterceptor.Level.BODY);
+        builder.readTimeout(3, TimeUnit.SECONDS);
         builder.addInterceptor(logging);
 
         Retrofit build = new Retrofit.Builder().client(builder.build())
