@@ -39,10 +39,6 @@
         <item name="colorAccent">@color/input_layout_control_normal</item>
     </style>
 
-    <style name="TransparentButton">
-        <item name="colorAccent">#33ffffff</item>
-    </style>
-
     <style name="Animation.Activity.Alpha" parent="android:Animation.Activity">
         <item name="android:activityOpenEnterAnimation">@anim/alpha_enter</item>
         <item name="android:activityOpenExitAnimation">@anim/alpha_exit</item>
@@ -86,15 +82,6 @@
     <style name="Widget.Cypherpunk.TextInputLayout" parent="Widget.Design.TextInputLayout">
         <item name="android:textColorHint">@color/edit_text_hint</item>
         <item name="android:textColor">@color/edit_text_hint</item>
-    </style>
-
-    <style name="SelectableItemIndigoTheme">
-        <item name="colorControlHighlight">#26000000</item>
-    </style>
-
-    <style name="SelectableItemIndigoBackground">
-        <item name="android:theme">@style/SelectableItemIndigoTheme</item>
-        <item name="android:background">?attr/selectableItemBackground</item>
     </style>
 
     <!-- TextAppearance -->

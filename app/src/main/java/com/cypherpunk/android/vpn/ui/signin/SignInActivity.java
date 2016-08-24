@@ -24,7 +24,6 @@ import com.cypherpunk.android.vpn.data.api.CypherpunkService;
 import com.cypherpunk.android.vpn.data.api.UserManager;
 import com.cypherpunk.android.vpn.data.api.json.LoginRequest;
 import com.cypherpunk.android.vpn.databinding.ActivitySignInBinding;
-import com.cypherpunk.android.vpn.ui.settings.SelectModeActivity;
 import com.cypherpunk.android.vpn.ui.setup.TutorialActivity;
 
 import java.net.UnknownHostException;
