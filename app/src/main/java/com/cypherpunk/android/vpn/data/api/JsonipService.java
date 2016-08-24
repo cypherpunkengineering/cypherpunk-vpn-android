@@ -10,7 +10,7 @@ import rx.Single;
  */
 public interface JsonipService {
 
-    String ENDPOINT = "http://jsonip.com";
+    String ENDPOINT = "https://jsonip.com";
 
     @GET("/")
     Single<JsonipResult> getIpAddress();
