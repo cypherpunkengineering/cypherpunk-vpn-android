@@ -16,7 +16,7 @@ import android.view.ViewGroup;
 
 import com.cypherpunk.android.vpn.R;
 import com.cypherpunk.android.vpn.databinding.ActivityTutorialBinding;
-import com.cypherpunk.android.vpn.ui.MainActivity;
+import com.cypherpunk.android.vpn.ui.main.MainActivity;
 
 
 public class TutorialActivity extends AppCompatActivity {

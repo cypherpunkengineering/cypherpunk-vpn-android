@@ -1,7 +1,5 @@
 package com.cypherpunk.android.vpn.dagger;
 
-import android.app.Application;
-
 import com.cypherpunk.android.vpn.CypherpunkApplication;
 
 import javax.inject.Singleton;
