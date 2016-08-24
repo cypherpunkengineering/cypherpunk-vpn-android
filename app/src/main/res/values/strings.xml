@@ -2,8 +2,6 @@
     <string name="app_name">Cypherpunk</string>
 
     <!-- sign in-->
-    <string name="prompt_email">Email</string>
-    <string name="prompt_password">Password</string>
     <string name="error_field_required">This field is required</string>
     <string name="button_sign_in">Log In</string>
     <string name="no_internet">Network is unavailable</string>
@@ -17,10 +15,7 @@
     <string name="sign_up_password_hint">Password</string>
     <string name="sign_up_email_hint">Email</string>
     <string name="button_sign_up">Sign Up</string>
-
-    <!-- sign up-->
     <string name="title_activity_sign_up">Sign up</string>
-    <string name="send_email_button">Send Email</string>
 
     <!-- setting -->
     <string name="title_activity_settings">Configuration</string>
@@ -30,8 +25,6 @@
     <string name="settings_mode_max_privacy">Max privacy</string>
     <string name="settings_mode_max_speed">Max speed</string>
     <string name="settings_mode_max_freedom">Max freedom</string>
-    <string name="settings_choose_mode">Help me choose</string>
-    <string name="title_activity_advanced_settings">Advanced settings</string>
     <string name="contact_us_hint">Please describe the issues you are having…</string>
     <string name="action_send">send</string>
     <string name="action_done">done</string>
@@ -46,8 +39,6 @@
     <!-- status -->
     <string name="title_activity_status">Connection status</string>
     <string name="status_change_ip_address">Change IP Address</string>
-    <string name="status_connection_status">Connection status</string>
-    <string name="status_bandwidth">Bandwidth</string>
     <string name="ip_original">ORIGINAL</string>
     <string name="ip_new">NEW</string>
 
@@ -83,7 +74,6 @@
     <string name="plan_per_month">per month</string>
 
     <!-- introduction -->
-    <string name="introduction_create_account">Create account</string>
     <string name="introduction_exist_account">Have an account already?</string>
     <string name="introduction_sign_in">Log In</string>
     <string name="introduction_start_free_now">Start Free Now</string>

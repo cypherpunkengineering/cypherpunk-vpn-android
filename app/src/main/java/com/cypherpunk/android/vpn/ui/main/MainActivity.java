@@ -1,4 +1,4 @@
-package com.cypherpunk.android.vpn.ui;
+package com.cypherpunk.android.vpn.ui.main;
 
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
@@ -94,7 +94,6 @@ public class MainActivity extends AppCompatActivity implements VpnStatus.StateLi
             }
         });
 
-        // TODO: set progress
         binding.connectingCancelButton.setPaintFlags(
                 binding.connectingCancelButton.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
 
@@ -105,7 +104,7 @@ public class MainActivity extends AppCompatActivity implements VpnStatus.StateLi
             }
         });
 
-        binding.actionAccount.setOnMenuItemClickListener(new ActionMenuView.OnMenuItemClickListener() {
+        binding.actionMenuLeft.setOnMenuItemClickListener(new ActionMenuView.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
                 return onOptionsItemSelected(item);
@@ -128,8 +127,8 @@ public class MainActivity extends AppCompatActivity implements VpnStatus.StateLi
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.main_left, menu);
-        getMenuInflater().inflate(R.menu.main_right, binding.actionAccount.getMenu());
+        getMenuInflater().inflate(R.menu.main_right, menu);
+        getMenuInflater().inflate(R.menu.main_left, binding.actionMenuLeft.getMenu());
         return true;
     }
 
@@ -139,7 +138,7 @@ public class MainActivity extends AppCompatActivity implements VpnStatus.StateLi
             case R.id.action_setting:
                 startActivity(new Intent(this, SettingsActivity.class));
                 break;
-            case R.id.action_account:
+            case R.id.action_status:
                 Intent intent = new Intent(this, StatusActivity.class);
                 intent.putExtra("original_ip", originalIp);
                 startActivity(intent);

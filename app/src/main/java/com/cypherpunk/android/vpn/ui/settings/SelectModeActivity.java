@@ -12,7 +12,7 @@ import android.widget.RadioGroup;
 
 import com.cypherpunk.android.vpn.R;
 import com.cypherpunk.android.vpn.databinding.ActivitySelectModeBinding;
-import com.cypherpunk.android.vpn.ui.MainActivity;
+import com.cypherpunk.android.vpn.ui.main.MainActivity;
 
 
 public class SelectModeActivity extends AppCompatActivity implements RadioGroup.OnCheckedChangeListener {

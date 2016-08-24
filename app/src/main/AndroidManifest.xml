@@ -15,6 +15,24 @@
         android:theme="@style/AppTheme"
         tools:replace="android:allowBackup">
         <activity
+            android:name=".ui.main.MainActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar.TransparentStatusBar.Main">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <service
+            android:name="de.blinkt.openvpn.core.OpenVPNService"
+            android:permission="android.permission.BIND_VPN_SERVICE">
+            <intent-filter>
+                <action android:name="android.net.VpnService" />
+            </intent-filter>
+        </service>
+
+        <activity
             android:name=".ui.signin.SignInActivity"
             android:label="@string/title_activity_sign_in"
             android:screenOrientation="portrait"
@@ -32,29 +50,6 @@
             android:name=".ui.setup.TutorialActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".ui.MainActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar.TransparentStatusBar.Main">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-
-        <service
-            android:name="de.blinkt.openvpn.core.OpenVPNService"
-            android:permission="android.permission.BIND_VPN_SERVICE">
-            <intent-filter>
-                <action android:name="android.net.VpnService" />
-            </intent-filter>
-        </service>
-
-        <activity
-            android:name=".ui.settings.SelectModeActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar.TransparentStatusBar" />
         <activity
             android:name=".ui.settings.SettingsActivity"
             android:label="@string/title_activity_settings"
@@ -81,33 +76,14 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
         <activity
-            android:name=".ui.account.AccountActivity"
-            android:label="@string/title_activity_account"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme" />
-        <activity
-            android:name=".ui.account.UpgradePlanActivity"
+            android:name=".ui.settings.UpgradePlanActivity"
             android:label="@string/title_activity_upgrade_plan"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
         <activity
             android:name=".ui.region.LocationsActivity"
             android:label="@string/title_activity_locations"
-            android:screenOrientation="portrait"/>
-        <activity
-            android:name=".ui.region.SelectRegionActivity"
-            android:label="@string/title_activity_select_region"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme" />
-        <activity
-            android:name=".ui.region.SortRegionActivity"
-            android:label="@string/title_activity_sort_region"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme" />
-        <activity
-            android:name=".ui.region.SelectCityActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme" />
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>

@@ -5,7 +5,6 @@
     <color name="colorAccent">#aff067</color>
 
     <color name="divider">#333333</color>
-    <color name="window_background">#1a1a1a</color>
     <color name="account_grade_unchecked">#666666</color>
     <color name="switch_thumb_connect">#f5d80d</color>
     <color name="switch_track_connect">@color/colorAccent</color>
@@ -13,7 +12,6 @@
     <color name="vpn_button_frame_connecting">#99ff781a</color>
     <color name="vpn_button_frame_disconnected">#99f11a35</color>
     <color name="settings_label">#999999</color>
-    <color name="status_region">#cccccc</color>
     <color name="card_background">#26ffffff</color>
     <color name="background">#26ffffff</color>
     <color name="background_dark">#1affffff</color>

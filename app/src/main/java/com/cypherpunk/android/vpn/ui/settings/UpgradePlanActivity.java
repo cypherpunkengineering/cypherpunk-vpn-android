@@ -1,4 +1,4 @@
-package com.cypherpunk.android.vpn.ui.account;
+package com.cypherpunk.android.vpn.ui.settings;
 
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;

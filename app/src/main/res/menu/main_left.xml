@@ -3,9 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/action_setting"
-        android:icon="@drawable/settings_vector"
-        android:title="@string/action_settings"
+        android:id="@+id/action_status"
+        android:icon="@drawable/information_vector"
+        android:title="@string/action_account"
         app:showAsAction="always" />
 
 </menu>

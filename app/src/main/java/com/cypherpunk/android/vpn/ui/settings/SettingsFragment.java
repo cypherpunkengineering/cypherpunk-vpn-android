@@ -9,7 +9,6 @@ import android.support.v7.preference.PreferenceFragmentCompat;
 import com.cypherpunk.android.vpn.R;
 import com.cypherpunk.android.vpn.data.api.UserManager;
 import com.cypherpunk.android.vpn.ui.setup.IntroductionActivity;
-import com.cypherpunk.android.vpn.ui.account.UpgradePlanActivity;
 import com.cypherpunk.android.vpn.vpn.CypherpunkVPN;
 
 
