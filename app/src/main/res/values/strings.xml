@@ -41,6 +41,8 @@
     <string name="status_change_ip_address">Change IP Address</string>
     <string name="ip_original">ORIGINAL</string>
     <string name="ip_new">NEW</string>
+    <string name="status_ip_loading">Loading…</string>
+
 
     <!-- select mode -->
     <string name="select_mode_title">Select your Cypherpunk VPN mode</string>

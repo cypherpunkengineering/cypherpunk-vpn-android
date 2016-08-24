@@ -115,9 +115,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="4dp"
+                    android:text="@string/status_ip_loading"
                     android:textColor="@color/status_connected"
-                    android:textSize="28sp"
-                    tools:text="25.102.5.31" />
+                    android:textSize="28sp" />
 
                 <com.cypherpunk.android.vpn.widget.TypefaceTextView
                     android:layout_width="wrap_content"

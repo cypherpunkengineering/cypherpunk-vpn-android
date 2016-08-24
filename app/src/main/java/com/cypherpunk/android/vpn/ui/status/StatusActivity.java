@@ -33,6 +33,8 @@ import rx.subscriptions.Subscriptions;
 
 public class StatusActivity extends AppCompatActivity implements VpnStatus.StateListener {
 
+    public static String EXTRA_STATUS = "ip_status";
+
     private ActivityStatusBinding binding;
     private CypherpunkVpnStatus status;
     private Subscription subscription = Subscriptions.empty();
@@ -44,7 +46,7 @@ public class StatusActivity extends AppCompatActivity implements VpnStatus.State
     @NonNull
     public static Intent createIntent(@NonNull Context context, @NonNull IpStatus ipStatus) {
         Intent intent = new Intent(context, StatusActivity.class);
-        intent.putExtra("ip_status", ipStatus);
+        intent.putExtra(EXTRA_STATUS, ipStatus);
         return intent;
     }
 
@@ -56,15 +58,16 @@ public class StatusActivity extends AppCompatActivity implements VpnStatus.State
         binding = DataBindingUtil.setContentView(this, R.layout.activity_status);
         status = CypherpunkVpnStatus.getInstance();
 
-        IpStatus ipStatus = getIntent().getParcelableExtra("ip_status");
+        ipStatus = getIntent().getParcelableExtra(EXTRA_STATUS);
 
         if (!TextUtils.isEmpty(ipStatus.getOriginalIp())) {
             binding.originalIp.setText(ipStatus.getOriginalIp());
         }
         if (!TextUtils.isEmpty(ipStatus.getNewIp())) {
             binding.newIp.setText(ipStatus.getNewIp());
+        } else if (status.isConnected()) {
+            getIpAddress();
         }
-        getIpAddress();
 
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
@@ -83,6 +86,18 @@ public class StatusActivity extends AppCompatActivity implements VpnStatus.State
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putParcelable("ip_status", ipStatus);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        ipStatus = savedInstanceState.getParcelable("ip_status");
     }
 
     @Override
@@ -119,15 +134,18 @@ public class StatusActivity extends AppCompatActivity implements VpnStatus.State
     private void getIpAddress() {
         subscription = webService.getIpAddress()
                 .subscribeOn(Schedulers.newThread())
+                .retry(1)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new SingleSubscriber<JsonipResult>() {
                     @Override
                     public void onSuccess(JsonipResult jsonipResult) {
                         if (status.isConnected()) {
                             ipStatus.setNewIp(jsonipResult.getIp());
-                            if (!TextUtils.isEmpty(ipStatus.getNewIp())) {
-                                binding.newIp.setText(ipStatus.getNewIp());
-                            }
+                            binding.newIp.setText(ipStatus.getNewIp());
+
+                            Intent intent = new Intent();
+                            intent.putExtra(EXTRA_STATUS, ipStatus);
+                            setResult(RESULT_OK, intent);
                         }
                     }
 

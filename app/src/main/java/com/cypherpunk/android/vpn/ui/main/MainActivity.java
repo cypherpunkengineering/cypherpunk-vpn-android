@@ -49,6 +49,7 @@ public class MainActivity extends AppCompatActivity implements VpnStatus.StateLi
 
     private static final int REQUEST_VPN_START = 0;
     private static final int REQUEST_SELECT_REGION = 1;
+    private static final int REQUEST_STATUS = 2;
 
     private ActivityMainBinding binding;
     private CypherpunkVpnStatus status;
@@ -123,8 +124,6 @@ public class MainActivity extends AppCompatActivity implements VpnStatus.StateLi
 
         VpnStatus.addStateListener(this);
         setBinaryStrings();
-
-//        getIpAddress();
     }
 
     @Override
@@ -141,7 +140,7 @@ public class MainActivity extends AppCompatActivity implements VpnStatus.StateLi
                 startActivity(new Intent(this, SettingsActivity.class));
                 break;
             case R.id.action_status:
-                startActivity(StatusActivity.createIntent(this, ipStatus));
+                startActivityForResult(StatusActivity.createIntent(this, ipStatus), REQUEST_STATUS);
                 break;
         }
         return false;
@@ -154,6 +153,9 @@ public class MainActivity extends AppCompatActivity implements VpnStatus.StateLi
             switch (requestCode) {
                 case REQUEST_VPN_START:
                     startVpn();
+                    break;
+                case REQUEST_STATUS:
+                    ipStatus = data.getParcelableExtra(StatusActivity.EXTRA_STATUS);
                     break;
                 case REQUEST_SELECT_REGION:
                     String city = data.getStringExtra(SelectCityActivity.EXTRA_CITY);
