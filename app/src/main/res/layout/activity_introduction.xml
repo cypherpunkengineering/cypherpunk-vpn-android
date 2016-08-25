@@ -37,29 +37,30 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginBottom="16dp" />
+            android:layout_marginBottom="24dp" />
 
         <com.cypherpunk.android.vpn.widget.TypefaceButton
-            android:id="@+id/create_account_button"
+            android:id="@+id/start_free_button"
             style="@style/Widget.Cypherpunk.TransparentButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
+            android:layout_marginBottom="12dp"
             android:layout_marginLeft="28dp"
             android:layout_marginRight="28dp"
             android:text="@string/introduction_start_free_now" />
 
         <com.cypherpunk.android.vpn.widget.TypefaceButton
-            android:id="@+id/sign_in_button"
+            android:id="@+id/sign_up_premium_button"
             style="@style/Widget.Cypherpunk.YellowButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
+            android:layout_marginBottom="12dp"
             android:layout_marginLeft="28dp"
             android:layout_marginRight="28dp"
             android:text="@string/introduction_sign_up" />
 
         <com.cypherpunk.android.vpn.widget.TypefaceButton
+            android:id="@+id/get_premium_button"
             style="@style/Widget.Cypherpunk.TransparentButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
