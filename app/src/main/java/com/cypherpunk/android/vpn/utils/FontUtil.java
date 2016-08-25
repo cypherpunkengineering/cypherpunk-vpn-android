@@ -9,6 +9,7 @@ public class FontUtil {
     private static Typeface dosisRegular;
     private static Typeface dosisSemiBold;
     private static Typeface dosisMedium;
+    private static Typeface inconsolataRegular;
 
     public static Typeface getDosisRegular(Context context) {
         if (dosisRegular == null) {
@@ -29,5 +30,11 @@ public class FontUtil {
             dosisMedium = Typeface.createFromAsset(context.getAssets(), "fonts/Dosis-Medium.otf");
         }
         return dosisMedium;
+    }
+    public static Typeface getInconsolataRegular(Context context) {
+        if (inconsolataRegular == null) {
+            inconsolataRegular = Typeface.createFromAsset(context.getAssets(), "fonts/Inconsolata-Regular.ttf");
+        }
+        return inconsolataRegular;
     }
 }

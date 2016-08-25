@@ -68,7 +68,7 @@ public class BinaryTextureView extends TextureView implements TextureView.Surfac
 
             paintForText = new Paint(Paint.ANTI_ALIAS_FLAG);
             paintForText.setTextSize(getResources().getDimension(R.dimen.binary_text));
-            paintForText.setTypeface(FontUtil.getDosisRegular(getContext()));
+            paintForText.setTypeface(FontUtil.getInconsolataRegular(getContext()));
             paintForText.setTextAlign(Paint.Align.CENTER);
 
             scrollDistancePerMilliSec = getResources().getDisplayMetrics().density * SCROLL_DISTANCE_PER_SEC_IN_DP / 1000;
