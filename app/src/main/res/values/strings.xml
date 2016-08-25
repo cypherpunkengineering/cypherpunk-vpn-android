@@ -82,6 +82,12 @@
     <string name="introduction_sign_up">Sign up for 7-day Free Premium Trial</string>
     <string name="introduction_premium">Get a Premium plan</string>
 
+    <!-- get a premium -->
+    <string name="title_activity_get_premium">Get a Cypherpunk Premium</string>
+    <string name="premium_email_hint">Email</string>
+    <string name="premium_enter_your_email">Enter your email address</string>
+    <string name="premium_select_your_plan">Select your plan</string>
+
     <!-- tutorial -->
     <string name="tutorial_skip">SKIP</string>
     <string name="tutorial_finish">USE CYPHERPUNK NOW</string>

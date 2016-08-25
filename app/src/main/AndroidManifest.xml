@@ -47,6 +47,10 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
+            android:name=".ui.setup.GetPremiumActivity"
+            android:label="@string/title_activity_get_premium"
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".ui.settings.SettingsActivity"
             android:label="@string/title_activity_settings"
             android:screenOrientation="portrait"
