@@ -8,6 +8,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Matrix;
 import android.graphics.Paint;
+import android.graphics.Path;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.DrawableRes;
 import android.support.v4.content.ContextCompat;
@@ -22,12 +23,14 @@ public class WorldMapView extends View {
 
     private final Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
     private final Paint linePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+    private Path linePath = new Path();
     private float[] originalPositionMatrix = new float[2]; // x, y
     private float[] newPositionMatrix = new float[2]; // x, y
     private Bitmap mapBitmap;
     private Bitmap originalPositionBitmap;
     private Bitmap newPositionBitmap;
     private Matrix mapMatrix;
+    private DisplayMetrics dm;
     private float scale;
     private boolean isNewPositionVisible;
 
@@ -42,7 +45,7 @@ public class WorldMapView extends View {
     public WorldMapView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         mapBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.map_bk);
-        DisplayMetrics dm = Resources.getSystem().getDisplayMetrics();
+        dm = Resources.getSystem().getDisplayMetrics();
         int viewWidth = dm.widthPixels - (getResources().getDimensionPixelOffset(R.dimen.world_map_margin) * 2);
 
         scale = (float) viewWidth / mapBitmap.getWidth();
@@ -55,6 +58,7 @@ public class WorldMapView extends View {
 
         linePaint.setColor(ContextCompat.getColor(context, R.color.world_map_line));
         linePaint.setStrokeWidth(5);
+        linePaint.setStyle(Paint.Style.STROKE);
     }
 
     @Override
@@ -67,8 +71,12 @@ public class WorldMapView extends View {
 
         if (isNewPositionVisible) {
             // line
-            canvas.drawLine(originalPositionMatrix[0], originalPositionMatrix[1],
-                    newPositionMatrix[0], newPositionMatrix[1], linePaint);
+            linePath.reset();
+            linePath.moveTo(originalPositionMatrix[0], originalPositionMatrix[1]);
+            linePath.quadTo(Math.abs(newPositionMatrix[0] + originalPositionMatrix[0]) / 2,
+                    Math.abs(newPositionMatrix[1] + originalPositionMatrix[1]) / 2 - (50 * dm.density * scale),
+                    newPositionMatrix[0], newPositionMatrix[1]);
+            canvas.drawPath(linePath, linePaint);
 
             // new position
             canvas.drawBitmap(newPositionBitmap,
@@ -98,7 +106,6 @@ public class WorldMapView extends View {
      * @param y pixel y
      */
     public void setOriginalPosition(int x, int y) {
-        DisplayMetrics dm = Resources.getSystem().getDisplayMetrics();
         float dx = (x * dm.density);
         float dy = (y * dm.density);
         originalPositionMatrix[0] = dx * scale + getResources().getDimension(R.dimen.world_map_margin);
@@ -113,7 +120,6 @@ public class WorldMapView extends View {
      * @param y pixel y
      */
     public void setNewPosition(int x, int y) {
-        DisplayMetrics dm = Resources.getSystem().getDisplayMetrics();
         float dx = (x * dm.density);
         float dy = (y * dm.density);
         newPositionMatrix[0] = dx * scale + getResources().getDimension(R.dimen.world_map_margin);
