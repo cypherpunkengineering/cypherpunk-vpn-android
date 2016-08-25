@@ -51,7 +51,7 @@
 
         <com.cypherpunk.android.vpn.widget.TypefaceButton
             android:id="@+id/sign_in_button"
-            style="@style/Widget.Cypherpunk.TransparentButton"
+            style="@style/Widget.Cypherpunk.YellowButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
