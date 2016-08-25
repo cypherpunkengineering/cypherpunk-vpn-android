@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 
 import com.cypherpunk.android.vpn.R;
 import com.cypherpunk.android.vpn.databinding.ActivityIntroductionBinding;
+import com.cypherpunk.android.vpn.ui.signin.SignInActivity;
 import com.cypherpunk.android.vpn.ui.signin.SignUpActivity;
 
 
@@ -53,6 +54,14 @@ public class IntroductionActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View view) {
                         startActivity(new Intent(IntroductionActivity.this, GetPremiumActivity.class));
+                    }
+                });
+
+        binding.moveSignInButton.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        startActivity(new Intent(IntroductionActivity.this, SignInActivity.class));
                     }
                 });
 
