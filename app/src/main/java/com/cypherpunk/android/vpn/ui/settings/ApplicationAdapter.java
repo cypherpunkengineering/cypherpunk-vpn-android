@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 
 import com.cypherpunk.android.vpn.R;
 import com.cypherpunk.android.vpn.databinding.ListItemApplicationBinding;
+import com.cypherpunk.android.vpn.model.AppData;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,18 +17,17 @@ import java.util.List;
 
 public class ApplicationAdapter extends RecyclerView.Adapter<ApplicationAdapter.ViewHolder> {
 
-    private List<ApplicationSettingsActivity.AppData> items = new ArrayList<>();
+    private List<AppData> items = new ArrayList<>();
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item_application, parent, false);
-        return new ViewHolder(view);
+        return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item_application, parent, false));
     }
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        holder.getBinding().icon.setImageDrawable(items.get(position).icon);
-        holder.getBinding().name.setText(items.get(position).name);
+        holder.getBinding().setApp(items.get(position));
+        holder.getBinding().executePendingBindings();
     }
 
     @Override
@@ -35,7 +35,7 @@ public class ApplicationAdapter extends RecyclerView.Adapter<ApplicationAdapter.
         return items.size();
     }
 
-    public void addAll(@NonNull List<ApplicationSettingsActivity.AppData> data) {
+    public void addAll(@NonNull List<AppData> data) {
         items.addAll(data);
         notifyItemRangeInserted(0, items.size());
     }

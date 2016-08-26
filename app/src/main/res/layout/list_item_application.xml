@@ -5,6 +5,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:ignore="RtlHardcoded">
 
+    <data>
+
+        <variable
+            name="app"
+            type="com.cypherpunk.android.vpn.model.AppData" />
+    </data>
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="56dp"
@@ -17,6 +24,7 @@
             android:layout_height="30dp"
             android:layout_centerVertical="true"
             android:layout_marginRight="24dp"
+            android:src="@{app.icon}"
             tools:ignore="ContentDescription" />
 
         <com.cypherpunk.android.vpn.widget.TypefaceTextView
@@ -25,6 +33,7 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_toRightOf="@id/icon"
+            android:text="@{app.name}"
             android:textSize="18sp"
             app:fontName="dosisMedium"
             tools:text="Calender" />
