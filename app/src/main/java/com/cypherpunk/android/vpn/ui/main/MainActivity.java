@@ -23,8 +23,8 @@ import com.cypherpunk.android.vpn.data.api.UserManager;
 import com.cypherpunk.android.vpn.data.api.json.JsonipResult;
 import com.cypherpunk.android.vpn.databinding.ActivityMainBinding;
 import com.cypherpunk.android.vpn.model.IpStatus;
+import com.cypherpunk.android.vpn.model.Location;
 import com.cypherpunk.android.vpn.ui.region.LocationsActivity;
-import com.cypherpunk.android.vpn.ui.region.SelectCityActivity;
 import com.cypherpunk.android.vpn.ui.settings.SettingsActivity;
 import com.cypherpunk.android.vpn.ui.setup.IntroductionActivity;
 import com.cypherpunk.android.vpn.ui.status.StatusActivity;
@@ -85,6 +85,12 @@ public class MainActivity extends AppCompatActivity implements VpnStatus.StateLi
         ActionBar actionBar = getSupportActionBar();
         assert actionBar != null;
         actionBar.setDisplayShowTitleEnabled(false);
+
+        // TODO:
+        Location location = new Location("Honolulu", "199.68.252.203 7133");
+        binding.region.setText(location.getName());
+        CypherpunkVPN.address = location.getIpAddress();
+        ipStatus.setLocation(location.getName());
 
         binding.connectionButton.setOnCheckedChangeListener(new VpnButton.OnCheckedChangeListener() {
             @Override
@@ -158,10 +164,18 @@ public class MainActivity extends AppCompatActivity implements VpnStatus.StateLi
                     ipStatus = data.getParcelableExtra(StatusActivity.EXTRA_STATUS);
                     break;
                 case REQUEST_SELECT_REGION:
-                    String city = data.getStringExtra(SelectCityActivity.EXTRA_CITY);
-                    binding.region.setText(city);
-                    if (data.getBooleanExtra(SelectCityActivity.EXTRA_CONNECT, false)) {
-                        startVpn();
+                    Location location = (Location) data.getSerializableExtra(LocationsActivity.EXTRA_LOCATION);
+                    binding.region.setText(location.getName());
+                    if (!CypherpunkVPN.address.equals(location.getIpAddress())) {
+                        CypherpunkVPN.address = location.getIpAddress();
+
+                        if (status.isConnected()) {
+                            stopVpn();
+                        }
+
+                        if (data.getBooleanExtra(LocationsActivity.EXTRA_CONNECT, false)) {
+//                            stopVpn();
+                        }
                     }
                     break;
             }

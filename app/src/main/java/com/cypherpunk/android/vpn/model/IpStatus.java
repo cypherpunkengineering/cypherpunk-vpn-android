@@ -9,6 +9,8 @@ public class IpStatus implements Parcelable {
 
     private String newIp;
 
+    private String location;
+
     public String getOriginalIp() {
         return originalIp;
     }
@@ -25,6 +27,14 @@ public class IpStatus implements Parcelable {
         this.newIp = newIp;
     }
 
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -34,6 +44,7 @@ public class IpStatus implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(this.originalIp);
         dest.writeString(this.newIp);
+        dest.writeString(this.location);
     }
 
     public IpStatus() {
@@ -42,6 +53,7 @@ public class IpStatus implements Parcelable {
     protected IpStatus(Parcel in) {
         this.originalIp = in.readString();
         this.newIp = in.readString();
+        this.location = in.readString();
     }
 
     public static final Parcelable.Creator<IpStatus> CREATOR = new Parcelable.Creator<IpStatus>() {

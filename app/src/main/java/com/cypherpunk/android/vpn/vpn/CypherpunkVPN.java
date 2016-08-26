@@ -18,21 +18,19 @@ import java.util.List;
 import de.blinkt.openvpn.VpnProfile;
 import de.blinkt.openvpn.core.ConfigParser;
 import de.blinkt.openvpn.core.OpenVPNService;
-import de.blinkt.openvpn.core.OpenVpnManagementThread;
 import de.blinkt.openvpn.core.ProfileManager;
 import de.blinkt.openvpn.core.VPNLaunchHelper;
-import de.blinkt.openvpn.core.VpnStatus;
 
 /**
  * Created by jmaurice on 7/12/16.
  */
-public class CypherpunkVPN
-{
+public class CypherpunkVPN {
     private static String username;
     private static String password;
     private static ConfigParser cp;
     private static VpnProfile vpnProfile;
     private static String conf;
+    public static String address;
 
     private static OpenVPNService service = null;
 
@@ -49,55 +47,45 @@ public class CypherpunkVPN
         }
     };
 
-    private static void log(String str)
-    {
+    private static void log(String str) {
         Log.w("CypherpunkVPN", str);
     }
 
-    public static void start(final Context context, final Context baseContext)
-    {
+    public static void start(final Context context, final Context baseContext) {
         log("start()");
 
         Intent intent = new Intent(baseContext, OpenVPNService.class);
         intent.setAction(OpenVPNService.START_SERVICE);
         context.bindService(intent, connection, Context.BIND_AUTO_CREATE);
 
-        try
-        {
+        try {
             conf = generateConfig(context);
             cp = new ConfigParser();
             cp.parseConfig(new StringReader(conf));
             vpnProfile = cp.convertProfile();
             ProfileManager.setTemporaryProfile(vpnProfile);
             //log("vpn profile check: "+vpnProfile.checkProfile(context));
-        }
-        catch (Exception E)
-        {
+        } catch (Exception E) {
             return;
         }
 
-        new Thread()
-        {
+        new Thread() {
             @Override
-            public void run()
-            {
+            public void run() {
                 log("new Thread() -> VPNLaunchHelper()");
                 VPNLaunchHelper.startOpenVpn(vpnProfile, baseContext);
             }
         }.start();
     }
 
-    public static void stop(final Context context, final Context baseContext)
-    {
+    public static void stop(final Context context, final Context baseContext) {
         log("stop()");
-        if (service != null)
-        {
+        if (service != null) {
             service.getManagement().stopVPN(false);
         }
     }
 
-    private static String generateConfig(Context context)
-    {
+    private static String generateConfig(Context context) {
         log("generateConfig()");
 
         InputStream is;
@@ -108,9 +96,7 @@ public class CypherpunkVPN
             is = context.getAssets().open("openvpn.conf");
             isr = new InputStreamReader(is);
             br = new BufferedReader(isr);
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             log("unable to generate config: " + e.toString());
             return null;
         }
@@ -119,19 +105,15 @@ public class CypherpunkVPN
         String line;
 
 
-        try
-        {
-            while ((line = br.readLine()) != null)
-            {
+        try {
+            while ((line = br.readLine()) != null) {
                 list.add(line);
             }
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             return null;
         }
 
-        list.add("remote 208.111.52.1 7133\n");
+        list.add("remote " + address + " \n");
 
         String[] conf = list.toArray(new String[0]);
 

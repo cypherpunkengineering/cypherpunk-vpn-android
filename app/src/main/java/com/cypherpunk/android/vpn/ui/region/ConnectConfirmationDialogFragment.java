@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.cypherpunk.android.vpn.R;
+import com.cypherpunk.android.vpn.model.Location;
 
 
 public class ConnectConfirmationDialogFragment extends DialogFragment {
@@ -26,10 +27,10 @@ public class ConnectConfirmationDialogFragment extends DialogFragment {
     }
 
     // TODO: and national flag image url
-    public static ConnectConfirmationDialogFragment newInstance(@NonNull String city) {
+    public static ConnectConfirmationDialogFragment newInstance(@NonNull Location location) {
         ConnectConfirmationDialogFragment f = new ConnectConfirmationDialogFragment();
         Bundle args = new Bundle();
-        args.putString(ARGS_CITY, city);
+        args.putString(ARGS_CITY, location.getName());
         f.setArguments(args);
         return f;
     }

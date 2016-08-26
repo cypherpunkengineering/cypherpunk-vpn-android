@@ -125,6 +125,7 @@ public class StatusActivity extends AppCompatActivity implements VpnStatus.State
 
                 if (connected) {
                     binding.map.setNewPosition(20, 59);
+                    binding.newLocation.setText(ipStatus.getLocation());
                 }
                 binding.map.setNewPositionVisibility(connected);
             }
