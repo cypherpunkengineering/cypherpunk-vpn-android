@@ -20,18 +20,18 @@ import android.widget.TextView;
 import com.commonsware.cwac.merge.MergeAdapter;
 import com.cypherpunk.android.vpn.R;
 import com.cypherpunk.android.vpn.databinding.ListItemLocationBinding;
+import com.cypherpunk.android.vpn.model.Location;
 
 public class LocationsActivity extends AppCompatActivity
         implements AdapterView.OnItemClickListener,
         ConnectConfirmationDialogFragment.ConnectDialogListener {
 
-    private static String[] AREA = {"Hong Kong", "USA East", "USA West", "USA Central", "Brazil", "Canada"};
-    private static String[] RECOMMENDED = {"Tokyo 1", "Tokyo 2", "Honolulu"};
-    private static final int REQUEST_SELECT_REGION = 1;
+    public static final String EXTRA_LOCATION = "location";
+    public static final String EXTRA_CONNECT = "connect";
 
     private ListView listView;
     private MergeAdapter mergeAdapter;
-    private String selectedItem;
+    private Location selectedItem;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -49,33 +49,21 @@ public class LocationsActivity extends AppCompatActivity
 
         // recently connected
         mergeAdapter.addView(buildHeader(R.string.location_recommended));
-        ArrayAdapter<String> cityAdapter = new LocationAdapter(this);
-        cityAdapter.addAll(RECOMMENDED);
+        ArrayAdapter<Location> cityAdapter = new LocationAdapter(this);
+        cityAdapter.add(new Location("Tokyo 1", "208.111.52.1 7133", 305, 56));
+        cityAdapter.add(new Location("Tokyo 2", "208.111.52.2 7133", 305, 56));
+        cityAdapter.add(new Location("Honolulu", "199.68.252.203 7133", 355, 66));
         mergeAdapter.addAdapter(cityAdapter);
 
         // region
         mergeAdapter.addView(buildHeader(R.string.location_all_locations));
-        ArrayAdapter<String> regionAdapter = new LocationAdapter(this);
-        regionAdapter.addAll(AREA);
+        ArrayAdapter<Location> regionAdapter = new LocationAdapter(this);
         mergeAdapter.addAdapter(regionAdapter);
 
         listView.setAdapter(mergeAdapter);
         listView.setDivider(null);
         setContentView(listView);
         listView.setOnItemClickListener(this);
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == RESULT_OK) {
-            switch (requestCode) {
-                case REQUEST_SELECT_REGION:
-                    setResult(RESULT_OK, data);
-                    finish();
-                    break;
-            }
-        }
     }
 
     @Override
@@ -89,7 +77,7 @@ public class LocationsActivity extends AppCompatActivity
 
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
-        selectedItem = (String) mergeAdapter.getItem(position);
+        selectedItem = (Location) mergeAdapter.getItem(position);
         ConnectConfirmationDialogFragment dialogFragment = ConnectConfirmationDialogFragment.newInstance(selectedItem);
         dialogFragment.show(getSupportFragmentManager());
     }
@@ -110,8 +98,8 @@ public class LocationsActivity extends AppCompatActivity
     @Override
     public void onDialogPositiveButtonClick() {
         Intent intent = new Intent();
-        intent.putExtra(SelectCityActivity.EXTRA_CITY, selectedItem);
-        intent.putExtra(SelectCityActivity.EXTRA_CONNECT, true);
+        intent.putExtra(EXTRA_LOCATION, selectedItem);
+        intent.putExtra(EXTRA_CONNECT, true);
         setResult(RESULT_OK, intent);
         finish();
     }
@@ -119,12 +107,12 @@ public class LocationsActivity extends AppCompatActivity
     @Override
     public void onDialogNegativeButtonClick() {
         Intent intent = new Intent();
-        intent.putExtra(SelectCityActivity.EXTRA_CITY, selectedItem);
+        intent.putExtra(EXTRA_LOCATION, selectedItem);
         setResult(RESULT_OK, intent);
         finish();
     }
 
-    private class LocationAdapter extends ArrayAdapter<String> {
+    private class LocationAdapter extends ArrayAdapter<Location> {
 
         private LayoutInflater inflater;
 
@@ -135,7 +123,7 @@ public class LocationsActivity extends AppCompatActivity
 
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
-            String item = getItem(position);
+            String name = getItem(position).getName();
             ListItemLocationBinding binding;
             if (convertView == null) {
                 binding = DataBindingUtil.inflate(inflater, R.layout.list_item_location, parent, false);
@@ -144,7 +132,7 @@ public class LocationsActivity extends AppCompatActivity
             } else {
                 binding = (ListItemLocationBinding) convertView.getTag();
             }
-            binding.location.setText(item);
+            binding.location.setText(name);
 
             return convertView;
         }

@@ -51,8 +51,8 @@ public class SortRegionActivity extends AppCompatActivity
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, final int position, long id) {
         selectedItem = adapter.getItem(position);
-        ConnectConfirmationDialogFragment dialogFragment = ConnectConfirmationDialogFragment.newInstance(selectedItem);
-        dialogFragment.show(getSupportFragmentManager());
+//        ConnectConfirmationDialogFragment dialogFragment = ConnectConfirmationDialogFragment.newInstance(selectedItem);
+//        dialogFragment.show(getSupportFragmentManager());
     }
 
     @Override

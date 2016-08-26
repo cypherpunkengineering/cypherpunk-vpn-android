@@ -124,7 +124,8 @@ public class StatusActivity extends AppCompatActivity implements VpnStatus.State
                         connected ? R.color.status_connected : R.color.status_disconnected));
 
                 if (connected) {
-                    binding.map.setNewPosition(20, 59);
+                    binding.map.setNewPosition(ipStatus.getMapX(), ipStatus.getMapY());
+                    binding.newLocation.setText(ipStatus.getLocation());
                 }
                 binding.map.setNewPositionVisibility(connected);
             }
