@@ -50,9 +50,9 @@ public class LocationsActivity extends AppCompatActivity
         // recently connected
         mergeAdapter.addView(buildHeader(R.string.location_recommended));
         ArrayAdapter<Location> cityAdapter = new LocationAdapter(this);
-        cityAdapter.add(new Location("Tokyo 1", "208.111.52.1 7133"));
-        cityAdapter.add(new Location("Tokyo 2", "208.111.52.2 7133"));
-        cityAdapter.add(new Location("Honolulu", "199.68.252.203 7133"));
+        cityAdapter.add(new Location("Tokyo 1", "208.111.52.1 7133", 305, 56));
+        cityAdapter.add(new Location("Tokyo 2", "208.111.52.2 7133", 305, 56));
+        cityAdapter.add(new Location("Honolulu", "199.68.252.203 7133", 355, 66));
         mergeAdapter.addAdapter(cityAdapter);
 
         // region

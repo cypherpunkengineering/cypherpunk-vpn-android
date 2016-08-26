@@ -11,9 +11,15 @@ public class Location implements Serializable {
 
     private boolean favorite;
 
-    public Location(String name, String ipAddress) {
+    private int mapX;
+
+    private int mapY;
+
+    public Location(String name, String ipAddress, int mapX, int mapY) {
         this.name = name;
         this.ipAddress = ipAddress;
+        this.mapX = mapX;
+        this.mapY = mapY;
     }
 
     public String getName() {
@@ -39,5 +45,21 @@ public class Location implements Serializable {
 
     public void setFavorite(boolean favorite) {
         this.favorite = favorite;
+    }
+
+    public int getMapX() {
+        return mapX;
+    }
+
+    public void setMapX(int mapX) {
+        this.mapX = mapX;
+    }
+
+    public int getMapY() {
+        return mapY;
+    }
+
+    public void setMapY(int mapY) {
+        this.mapY = mapY;
     }
 }
