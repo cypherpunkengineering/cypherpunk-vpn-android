@@ -44,6 +44,7 @@ public class ApplicationSettingsActivity extends AppCompatActivity {
         binding.list.setHasFixedSize(true);
         ApplicationAdapter adapter = new ApplicationAdapter();
         adapter.addAll(dataList);
+        binding.list.addItemDecoration(new DividerItemDecoration(this));
         binding.list.setAdapter(adapter);
     }
 
