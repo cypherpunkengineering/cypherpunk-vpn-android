@@ -6,6 +6,8 @@ import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.SearchView;
+import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -26,9 +28,10 @@ import rx.subscriptions.Subscriptions;
 
 public class ApplicationSettingsActivity extends AppCompatActivity {
 
+    private List<AppData> items = new ArrayList<>();
+    private ActivityApplicationSettingsBinding binding;
     private Subscription subscription = Subscriptions.empty();
     private ApplicationAdapter adapter;
-    private ActivityApplicationSettingsBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +57,31 @@ public class ApplicationSettingsActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.application_settings, menu);
+        SearchView searchView = (SearchView) menu.findItem(R.id.action_search).getActionView();
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                if (TextUtils.isEmpty(newText)) {
+                    adapter.addAll(items);
+                } else {
+                    String query = newText.toLowerCase();
+                    ArrayList<AppData> filteredList = new ArrayList<>();
+                    for (AppData item : items) {
+                        String name = item.name.toLowerCase();
+                        if (name.contains(query)) {
+                            filteredList.add(item);
+                        }
+                    }
+                    adapter.addAll(filteredList);
+                }
+                return false;
+            }
+        });
         return true;
     }
 
@@ -104,6 +132,7 @@ public class ApplicationSettingsActivity extends AppCompatActivity {
                     @Override
                     public void onNext(List<AppData> list) {
                         adapter.addAll(list);
+                        items = list;
                         binding.progress.setVisibility(View.GONE);
                         binding.list.setVisibility(View.VISIBLE);
                     }

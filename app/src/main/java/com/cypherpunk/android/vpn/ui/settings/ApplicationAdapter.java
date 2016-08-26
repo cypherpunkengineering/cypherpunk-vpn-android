@@ -36,8 +36,9 @@ public class ApplicationAdapter extends RecyclerView.Adapter<ApplicationAdapter.
     }
 
     public void addAll(@NonNull List<AppData> data) {
+        items.clear();
         items.addAll(data);
-        notifyItemRangeInserted(0, items.size());
+        notifyDataSetChanged();
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
