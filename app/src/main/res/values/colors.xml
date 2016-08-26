@@ -4,7 +4,7 @@
     <color name="colorPrimaryDark">#26000000</color>
     <color name="colorAccent">#aff067</color>
 
-    <color name="divider">#333333</color>
+    <color name="divider">#4dffffff</color>
     <color name="account_grade_unchecked">#666666</color>
     <color name="switch_thumb_connect">#f5d80d</color>
     <color name="switch_track_connect">@color/colorAccent</color>

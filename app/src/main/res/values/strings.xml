@@ -36,6 +36,10 @@
     <string name="password_hint">New Password</string>
     <string name="current_password_hint">Current Password</string>
 
+    <!-- application settings -->
+    <string name="title_activity_application_settings">Per application settings</string>
+    <string name="search_application_title">Search Apps</string>
+
     <!-- status -->
     <string name="title_activity_status">Connection status</string>
     <string name="status_change_ip_address">Change IP Address</string>

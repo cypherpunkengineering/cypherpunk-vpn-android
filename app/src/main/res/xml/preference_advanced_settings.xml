@@ -53,7 +53,9 @@
 
         <SwitchPreferenceCompat android:title="Start application on boot" />
 
-        <Preference android:title="Per application setting" />
+        <Preference
+            android:key="application"
+            android:title="Per application setting" />
 
     </PreferenceCategory>
 
