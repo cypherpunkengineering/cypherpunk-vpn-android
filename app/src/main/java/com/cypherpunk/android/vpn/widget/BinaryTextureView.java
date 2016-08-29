@@ -227,6 +227,11 @@ public class BinaryTextureView extends TextureView implements TextureView.Surfac
 
     @Override
     public void onSurfaceTextureAvailable(SurfaceTexture surfaceTexture, int width, int height) {
+        // 別の画面から戻ってきたときに一瞬黒くなるのを防ぐため
+        final Canvas canvas = lockCanvas();
+        canvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR);
+        unlockCanvasAndPost(canvas);
+
         if (renderingThread == null) {
             renderingThread = new RenderingThread();
             renderingThread.start();
