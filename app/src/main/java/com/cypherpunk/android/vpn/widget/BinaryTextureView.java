@@ -123,7 +123,7 @@ public class BinaryTextureView extends TextureView implements TextureView.Surfac
         unlockCanvasAndPost(canvas);
 
         if (renderingThread == null) {
-            String[] strings = {Build.BRAND, Build.MANUFACTURER, Build.MODEL};
+            String[] strings = {Build.BRAND.toUpperCase(), Build.MANUFACTURER.toUpperCase(), Build.MODEL.toUpperCase()};
             renderingThread = new RenderingThread(getContext(), width, height, strings);
             renderingThread.start();
         }
