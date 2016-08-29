@@ -8,7 +8,7 @@
         <attr name="fontName">
             <enum name="DosisRegular" value="0" />
             <enum name="DosisSemiBold" value="1" />
-            <enum name="dosisMedium" value="2" />
+            <enum name="DosisMedium" value="2" />
         </attr>
     </declare-styleable>
 

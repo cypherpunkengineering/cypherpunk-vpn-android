@@ -35,7 +35,7 @@
             android:layout_toRightOf="@id/icon"
             android:text="@{app.name}"
             android:textSize="18sp"
-            app:fontName="dosisMedium"
+            app:fontName="DosisMedium"
             tools:text="Calender" />
 
         <android.support.v7.widget.SwitchCompat

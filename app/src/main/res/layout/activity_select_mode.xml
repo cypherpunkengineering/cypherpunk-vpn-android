@@ -38,7 +38,7 @@
             android:layout_marginTop="38dp"
             android:text="@string/select_mode_title"
             android:textSize="22sp"
-            app:fontName="dosisMedium" />
+            app:fontName="DosisMedium" />
 
         <RadioGroup
             android:id="@+id/radio_group"
@@ -88,7 +88,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
             android:textSize="22sp"
-            app:fontName="dosisMedium"
+            app:fontName="DosisMedium"
             tools:text="max freedom mode" />
 
         <com.cypherpunk.android.vpn.widget.TypefaceTextView
