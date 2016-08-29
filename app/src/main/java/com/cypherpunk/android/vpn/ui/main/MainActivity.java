@@ -34,8 +34,6 @@ import com.cypherpunk.android.vpn.widget.BinaryTextureView;
 import com.cypherpunk.android.vpn.widget.ConnectionStatusView;
 import com.cypherpunk.android.vpn.widget.VpnButton;
 
-import java.util.ArrayList;
-
 import javax.inject.Inject;
 
 import de.blinkt.openvpn.core.VpnStatus;
@@ -130,7 +128,6 @@ public class MainActivity extends AppCompatActivity implements VpnStatus.StateLi
         });
 
         VpnStatus.addStateListener(this);
-        setBinaryStrings();
     }
 
     @Override
@@ -258,14 +255,6 @@ public class MainActivity extends AppCompatActivity implements VpnStatus.StateLi
                 binding.connectingCancelButton.setVisibility(View.INVISIBLE);
             }
         });
-    }
-
-    private void setBinaryStrings() {
-        ArrayList<String> strings = new ArrayList<>();
-        strings.add(Build.BRAND);
-        strings.add(Build.MANUFACTURER);
-        strings.add(Build.MODEL);
-        binding.keyTexture.setStrings(strings);
     }
 
     private void getIpAddress() {
