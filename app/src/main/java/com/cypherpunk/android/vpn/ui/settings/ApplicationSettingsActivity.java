@@ -23,6 +23,7 @@ import rx.Observable;
 import rx.Subscriber;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Func2;
 import rx.schedulers.Schedulers;
 import rx.subscriptions.Subscriptions;
 
@@ -102,20 +103,22 @@ public class ApplicationSettingsActivity extends AppCompatActivity {
     }
 
     private void getApplicationList() {
-        // TODO: sort
         subscription = Observable
-                .create(new Observable.OnSubscribe<List<AppData>>() {
+                .create(new Observable.OnSubscribe<AppData>() {
                     @Override
-                    public void call(Subscriber<? super List<AppData>> subscriber) {
+                    public void call(Subscriber<? super AppData> subscriber) {
                         final PackageManager pm = getPackageManager();
                         List<ApplicationInfo> installedAppList = pm.getInstalledApplications(PackageManager.GET_META_DATA);
-                        final List<AppData> list = new ArrayList<>();
                         for (ApplicationInfo app : installedAppList) {
-                            list.add(new AppData(app.loadLabel(pm).toString(), app.loadIcon(pm), app.packageName));
+                            subscriber.onNext(new AppData(app.loadLabel(pm).toString(), app.loadIcon(pm), app.packageName));
                         }
-                        subscriber.onNext(list);
                         subscriber.onCompleted();
-
+                    }
+                })
+                .toSortedList(new Func2<AppData, AppData, Integer>() {
+                    @Override
+                    public Integer call(AppData appData, AppData appData2) {
+                        return appData.name.compareTo(appData2.name);
                     }
                 })
                 .subscribeOn(Schedulers.io())
