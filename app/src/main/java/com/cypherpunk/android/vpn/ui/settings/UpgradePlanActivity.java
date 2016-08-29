@@ -37,4 +37,8 @@ public class UpgradePlanActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
+
+    private void setupBilling() {
+
+    }
 }
