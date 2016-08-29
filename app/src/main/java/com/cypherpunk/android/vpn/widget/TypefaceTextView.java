@@ -17,6 +17,7 @@ public class TypefaceTextView extends TextView {
     public static final int DOSIS_REGULAR = 0;
     public static final int DOSIS_SEMI_BOLD = 1;
     public static final int DOSIS_MEDIUM = 2;
+    public static final int INCONSOLATE_REGULAR = 3;
 
     public TypefaceTextView(Context context) {
         this(context, null);
@@ -59,6 +60,9 @@ public class TypefaceTextView extends TextView {
                 break;
             case DOSIS_MEDIUM:
                 tf = FontUtil.getDosisMedium(getContext());
+                break;
+            case INCONSOLATE_REGULAR:
+                tf = FontUtil.getInconsolataRegular(getContext());
                 break;
         }
         if (tf != null) {
