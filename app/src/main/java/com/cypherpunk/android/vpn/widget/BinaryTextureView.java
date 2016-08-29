@@ -1,17 +1,23 @@
 package com.cypherpunk.android.vpn.widget;
 
 import android.content.Context;
-import android.graphics.Bitmap;
+import android.content.res.Resources;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.SurfaceTexture;
+import android.graphics.Typeface;
+import android.os.Build;
 import android.os.SystemClock;
 import android.support.annotation.ColorInt;
 import android.support.annotation.IntDef;
+import android.support.annotation.NonNull;
+import android.support.annotation.Size;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.util.Pair;
 import android.util.AttributeSet;
+import android.util.SparseArray;
 import android.view.TextureView;
 
 import com.cypherpunk.android.vpn.R;
@@ -28,16 +34,6 @@ public class BinaryTextureView extends TextureView implements TextureView.Surfac
     private static final float SCROLL_DISTANCE_PER_SEC_IN_DP = 6f;
 
     private volatile RenderingThread renderingThread;
-    private ArrayList<String> strings = new ArrayList<>();
-
-    @ColorInt
-    private int disconnectColor;
-
-    @ColorInt
-    private int connectingColor;
-
-    @ColorInt
-    private int connectedColor;
 
     public static final int DISCONNECTED = 0;
     public static final int CONNECTING = 1;
@@ -53,157 +49,55 @@ public class BinaryTextureView extends TextureView implements TextureView.Surfac
     private final Object stateMonitor = new Object();
 
     private final class RenderingThread extends Thread {
-        private KeyItem[] keyItems;
-        private Paint paint;
-        private Paint paintForText;
+        private final float scrollDistancePerMilliSec;
+        private final TileDrawable tileDrawable;
 
-        private int allTileHeight;
-        private int tileHeight;
-
-        private float scrollDistancePerMilliSec;
         private long baseTime;
 
-        RenderingThread() {
-            paint = new Paint();
+        private RenderingThread(@NonNull Context context, int width, int height, @NonNull String[] strings) {
+            final Resources res = context.getResources();
+            scrollDistancePerMilliSec = res.getDisplayMetrics().density * SCROLL_DISTANCE_PER_SEC_IN_DP / 1000;
 
-            paintForText = new Paint(Paint.ANTI_ALIAS_FLAG);
-            paintForText.setTextSize(getResources().getDimension(R.dimen.binary_text));
-            paintForText.setTypeface(FontUtil.getInconsolataRegular(getContext()));
-            paintForText.setTextAlign(Paint.Align.CENTER);
+            final int tileWidth = res.getDimensionPixelOffset(R.dimen.binary_text_width);
+            final int tileHeight = res.getDimensionPixelOffset(R.dimen.binary_text_height);
 
-            scrollDistancePerMilliSec = getResources().getDisplayMetrics().density * SCROLL_DISTANCE_PER_SEC_IN_DP / 1000;
+            final int rowCount = (int) Math.ceil((double) height / tileHeight) + 1;
+            final int columnCount = (int) Math.ceil((double) width / tileWidth);
+
+            final KeyItemGenerator keyItemGenerator = new KeyItemGenerator(
+                    ContextCompat.getColor(context, R.color.binary_text_color),
+                    ContextCompat.getColor(context, R.color.binary_text_disconnected),
+                    ContextCompat.getColor(context, R.color.binary_text_connecting),
+                    ContextCompat.getColor(context, R.color.binary_text_connected),
+                    strings, rowCount, columnCount);
+
+            final KeyItemDrawer keyItemDrawer = new KeyItemDrawer(
+                    res.getDimension(R.dimen.binary_text),
+                    FontUtil.getInconsolataRegular(context));
+
+            tileDrawable = new TileDrawable(tileWidth, tileHeight, rowCount, columnCount,
+                    keyItemGenerator, keyItemDrawer);
         }
 
         @Override
         public void run() {
-            if (keyItems == null) {
-                setupTile();
-                baseTime = SystemClock.uptimeMillis();
-            }
-
+            baseTime = SystemClock.uptimeMillis();
             while (renderingThread == this) {
                 drawTiles();
-            }
-        }
-
-        private Bitmap charAsBitmap(char ch, int color) {
-            paintForText.setColor(color);
-            Paint.FontMetrics fontMetrics = paintForText.getFontMetrics();
-            int width = (int) getResources().getDimension(R.dimen.binary_text_width); // round
-            int height = (int) getResources().getDimension(R.dimen.binary_text_height);
-            float baseline = (height / 2) - (fontMetrics.ascent + fontMetrics.descent) / 2;
-            Bitmap image = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
-            Canvas canvas = new Canvas(image);
-            canvas.drawText(new char[]{ch}, 0, 1, width / 2, baseline, paintForText);
-            return image;
-        }
-
-        private void setupTile() {
-            Random random = new Random();
-            tileHeight = getResources().getDimensionPixelOffset(R.dimen.binary_text_height);
-            int tileWidth = getResources().getDimensionPixelOffset(R.dimen.binary_text_width);
-            int tileRowCount = (int) Math.ceil((double) getHeight() / tileHeight) + 1;
-            int tileColumnCount = (int) Math.ceil((double) getWidth() / tileWidth);
-            allTileHeight = tileRowCount * tileHeight;
-            keyItems = new KeyItem[tileColumnCount * tileRowCount];
-
-            ArrayList<Integer> stringColumnNumbers = new ArrayList<>();
-            for (int i = 0; i < strings.size(); i++) {
-                stringColumnNumbers.add(random.nextInt(tileColumnCount));
-            }
-
-            // prepare Bitmaps for normal color
-            final int normalTextColor = ContextCompat.getColor(getContext(), R.color.binary_text_color);
-            final Bitmap[] binaryBitmaps = {charAsBitmap('0', normalTextColor), charAsBitmap('1', normalTextColor)};
-            final char randomCharFrom = '!'; // 0x21
-            final char randomCharTo = '`'; // 0x60
-            final Bitmap[] randomBitmaps = new Bitmap[randomCharTo - randomCharFrom + 1];
-            for (int i = 0; i < randomBitmaps.length; i++) {
-                randomBitmaps[i] = charAsBitmap((char) (randomCharFrom + i), normalTextColor);
-            }
-
-            // generate initial tile states
-            for (int i = 0; i < tileRowCount; i++) {
-                int y = i * tileHeight;
-                int x = 0;
-                for (int j = 0; j < tileColumnCount; j++) {
-                    final char character;
-                    final Bitmap plainTextBitmap, randomBitmap;
-                    final int randomCharIndex = random.nextInt(randomBitmaps.length);
-                    KeyItem item;
-                    if (stringColumnNumbers.contains(j)) {
-                        String text = strings.get(stringColumnNumbers.indexOf(j));
-                        if (i < text.length()) {
-                            character = text.charAt(i);
-                            char ch = (char) (randomCharFrom + randomCharIndex);
-                            item = new KeyItem(x, y, j % 2 == 0, charAsBitmap(character, disconnectColor),
-                                    charAsBitmap(character, connectingColor), charAsBitmap(ch, connectedColor));
-                        } else {
-                            // use prepared Bitmaps to avoid to generate same Bitmaps many times
-                            final int binaryCharIndex = random.nextInt(binaryBitmaps.length);
-                            plainTextBitmap = binaryBitmaps[binaryCharIndex];
-                            randomBitmap = randomBitmaps[randomCharIndex];
-                            item = new KeyItem(x, y, j % 2 == 0, plainTextBitmap, randomBitmap);
-                        }
-                    } else {
-                        // use prepared Bitmaps to avoid to generate same Bitmaps many times
-                        final int binaryCharIndex = random.nextInt(binaryBitmaps.length);
-                        plainTextBitmap = binaryBitmaps[binaryCharIndex];
-                        randomBitmap = randomBitmaps[randomCharIndex];
-                        item = new KeyItem(x, y, j % 2 == 0, plainTextBitmap, randomBitmap);
-                    }
-                    keyItems[i * tileColumnCount + j] = item;
-                    x += tileWidth;
-                }
             }
         }
 
         private void drawTiles() {
             Canvas canvas = lockCanvas();
             canvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR);
-            drawTilesInner(canvas);
-            unlockCanvasAndPost(canvas);
-        }
 
-        private void drawTilesInner(Canvas canvas) {
+            final long elapsedTime = SystemClock.uptimeMillis() - baseTime;
+            final float distance = elapsedTime * scrollDistancePerMilliSec;
             synchronized (stateMonitor) {
-                for (KeyItem item : keyItems) {
-                    if (item == null) {
-                        continue;
-                    }
-
-                    final long elapsedTime = SystemClock.uptimeMillis() - baseTime;
-                    final float distance = elapsedTime * scrollDistancePerMilliSec;
-
-                    final float y;
-
-                    if (item.downAnimation) {
-                        // tileHeightひとつ分上が基準位置
-                        y = ((item.y + distance + tileHeight) % allTileHeight) - tileHeight;
-                    } else {
-                        // tileHeightひとつ分上が基準位置なのは同じだが、全体をallTileHeight分ずらして常に負数になるように調整してから計算する
-                        y = ((item.y - distance + tileHeight - allTileHeight) % allTileHeight) - tileHeight + allTileHeight;
-                    }
-                    if (item.bitmap != null) {
-                        canvas.drawBitmap(connectionState == CONNECTED ?
-                                item.encryptedBitmap : item.bitmap, item.x, y, paint);
-                    } else {
-                        Bitmap bitmap = null;
-                        switch (connectionState) {
-                            case DISCONNECTED:
-                                bitmap = item.disconnectedBitmap;
-                                break;
-                            case CONNECTING:
-                                bitmap = item.connectingBitmap;
-                                break;
-                            case CONNECTED:
-                                bitmap = item.connectedEncryptedBitmap;
-                                break;
-                        }
-                        canvas.drawBitmap(bitmap, item.x, y, paint);
-                    }
-                }
+                tileDrawable.draw(canvas, distance, connectionState);
             }
+
+            unlockCanvasAndPost(canvas);
         }
     }
 
@@ -219,10 +113,6 @@ public class BinaryTextureView extends TextureView implements TextureView.Surfac
         super(context, attrs, defStyleAttr);
         setOpaque(false);
         setSurfaceTextureListener(this);
-
-        disconnectColor = ContextCompat.getColor(getContext(), R.color.binary_text_disconnected);
-        connectingColor = ContextCompat.getColor(getContext(), R.color.binary_text_connecting);
-        connectedColor = ContextCompat.getColor(getContext(), R.color.binary_text_connected);
     }
 
     @Override
@@ -233,7 +123,8 @@ public class BinaryTextureView extends TextureView implements TextureView.Surfac
         unlockCanvasAndPost(canvas);
 
         if (renderingThread == null) {
-            renderingThread = new RenderingThread();
+            String[] strings = {Build.BRAND, Build.MANUFACTURER, Build.MODEL};
+            renderingThread = new RenderingThread(getContext(), width, height, strings);
             renderingThread.start();
         }
     }
@@ -272,43 +163,216 @@ public class BinaryTextureView extends TextureView implements TextureView.Surfac
         connectionState = state;
     }
 
-    public void setStrings(ArrayList<String> strings) {
-        for (String string : strings) {
-            this.strings.add(string.toUpperCase());
+    /**
+     * 位置計算のみ
+     * <p>
+     * 描画関係は {@link KeyItemDrawer}
+     */
+    private static class TileDrawable {
+        private final int tileWidth;
+        private final int tileHeight;
+        private final int allTileHeight;
+
+        private final int rowCount;
+        private final int columnCount;
+
+        private final KeyItemDrawer keyItemDrawer;
+        private final KeyItem[][] keyItems;
+
+        private TileDrawable(int tileWidth, int tileHeight, int rowCount, int columnCount,
+                             @NonNull KeyItemGenerator keyItemGenerator,
+                             @NonNull KeyItemDrawer keyItemDrawer) {
+
+            this.tileWidth = tileWidth;
+            this.tileHeight = tileHeight;
+            this.rowCount = rowCount;
+            this.columnCount = columnCount;
+            this.keyItemDrawer = keyItemDrawer;
+
+            allTileHeight = rowCount * tileHeight;
+
+            keyItems = new KeyItem[rowCount][columnCount];
+            for (int row = 0; row < rowCount; row++) {
+                for (int column = 0; column < columnCount; column++) {
+                    keyItems[row][column] = keyItemGenerator.generate(row, column);
+                }
+            }
+        }
+
+        private void draw(Canvas canvas, float distance, @ConnectionState int connectedState) {
+            float y = 0;
+            for (int row = 0; row < rowCount; row++) {
+                float x = tileWidth * 0.5f;
+                boolean downAnimation = true;
+                for (int column = 0; column < columnCount; column++) {
+                    final float animatedY;
+                    if (downAnimation) {
+                        // tileHeightひとつ分上が基準位置
+                        animatedY = ((y + distance + tileHeight) % allTileHeight) - tileHeight;
+                    } else {
+                        // tileHeightひとつ分上が基準位置なのは同じだが、全体をallTileHeight分ずらして常に負数になるように調整してから計算する
+                        animatedY = ((y - distance + tileHeight - allTileHeight) % allTileHeight) - tileHeight + allTileHeight;
+                    }
+
+                    keyItemDrawer.draw(canvas, x, animatedY, keyItems[row][column], connectedState);
+
+                    x += tileWidth;
+                    downAnimation = !downAnimation;
+                }
+                y += tileHeight;
+            }
         }
     }
 
-    @SuppressWarnings("WeakerAccess")
-    private static class KeyItem {
-        public final int x;
-        public final float y;
-        public final boolean downAnimation; //  key image transition direction
-        public final Bitmap bitmap;
-        public final Bitmap encryptedBitmap;
-        public final Bitmap disconnectedBitmap;
-        public final Bitmap connectingBitmap;
-        public final Bitmap connectedEncryptedBitmap;
+    private static class KeyItemGenerator {
+        private static final char randomCharFrom = '!'; // 0x21
+        private static final char randomCharTo = '`'; // 0x60
+        private static final int randomCharLength = randomCharTo - randomCharFrom + 1;
+        private static final char[] binaryChar = {'0', '1'};
 
-        public KeyItem(int x, int y, boolean down, Bitmap bitmap, Bitmap encryptedBitmap) {
-            this.x = x;
-            this.y = y;
-            this.downAnimation = down;
-            this.bitmap = bitmap;
-            this.encryptedBitmap = encryptedBitmap;
-            this.disconnectedBitmap = null;
-            this.connectingBitmap = null;
-            this.connectedEncryptedBitmap = null;
+        private final SparseArray<Pair<Integer, String>> stringInfo = new SparseArray<>();
+
+        private final Random random = new Random();
+
+        @ColorInt
+        private final int normalTextColor;
+        @ColorInt
+        private final int disconnectTextColor;
+        @ColorInt
+        private final int connectingTextColor;
+        @ColorInt
+        private final int connectedTextColor;
+
+        private KeyItemGenerator(@ColorInt int normalTextColor, @ColorInt int disconnectTextColor,
+                                 @ColorInt int connectingTextColor, @ColorInt int connectedTextColor,
+                                 String[] strings, int rowCount, int columnCount) {
+
+            this.normalTextColor = normalTextColor;
+            this.disconnectTextColor = disconnectTextColor;
+            this.connectingTextColor = connectingTextColor;
+            this.connectedTextColor = connectedTextColor;
+
+            final ArrayList<Integer> positions = new ArrayList<>();
+            for (int i = 0; i < columnCount; i++) {
+                positions.add(i);
+            }
+            for (String s : strings) {
+                if (positions.isEmpty()) {
+                    break;
+                }
+                int position = random.nextInt(positions.size());
+                int column = positions.remove(position);
+                stringInfo.put(column, new Pair<>(random.nextInt(rowCount), s));
+            }
         }
 
-        public KeyItem(int x, int y, boolean down, Bitmap disconnectedBitmap, Bitmap connectingBitmap, Bitmap connectedEncryptedBitmap) {
-            this.x = x;
-            this.y = y;
-            this.downAnimation = down;
-            this.bitmap = null;
-            this.encryptedBitmap = null;
-            this.disconnectedBitmap = disconnectedBitmap;
-            this.connectingBitmap = connectingBitmap;
-            this.connectedEncryptedBitmap = connectedEncryptedBitmap;
+        private KeyItem generate(int row, int column) {
+            final Pair<Integer, String> pair = stringInfo.get(column);
+            if (pair != null) {
+                final int offset = pair.first;
+                final int index = row - offset;
+                final String text = pair.second;
+                if (text != null && index >= 0 && index < text.length()) {
+                    return new TextItem(text.charAt(index), newRandomChar(),
+                            disconnectTextColor, connectingTextColor, connectedTextColor);
+                } else {
+                    return new BinaryItem(newBinaryChar(), newRandomChar(), normalTextColor);
+                }
+            } else {
+                return new BinaryItem(newBinaryChar(), newRandomChar(), normalTextColor);
+            }
+        }
+
+        private char newRandomChar() {
+            return (char) (randomCharFrom + random.nextInt(randomCharLength));
+        }
+
+        private char newBinaryChar() {
+            return binaryChar[random.nextInt(binaryChar.length)];
+        }
+    }
+
+    private static class KeyItemDrawer {
+
+        private final Paint paint;
+
+        private KeyItemDrawer(float textSize, Typeface typeface) {
+            paint = new Paint(Paint.ANTI_ALIAS_FLAG);
+            paint.setTextSize(textSize);
+            paint.setTypeface(typeface);
+            paint.setTextAlign(Paint.Align.CENTER);
+        }
+
+        private void draw(@NonNull Canvas canvas, float x, float y,
+                          @NonNull KeyItem keyItem, @ConnectionState int connectedState) {
+            paint.setColor(keyItem.getTextColor(connectedState));
+            canvas.drawText(keyItem.c, keyItem.getIndex(connectedState), 1, x, y, paint);
+        }
+    }
+
+    private abstract static class KeyItem {
+        @Size(2)
+        private final char[] c;
+
+        private KeyItem(char normalChar, char connectedChar) {
+            this.c = new char[]{normalChar, connectedChar};
+        }
+
+        @ColorInt
+        protected abstract int getTextColor(@ConnectionState int connectedState);
+
+        private int getIndex(@ConnectionState int connectedState) {
+            return connectedState == CONNECTED ? 1 : 0;
+        }
+    }
+
+    private static class BinaryItem extends KeyItem {
+        @ColorInt
+        public final int textColor;
+
+        private BinaryItem(char normalChar, char connectedChar, @ColorInt int textColor) {
+            super(normalChar, connectedChar);
+            this.textColor = textColor;
+        }
+
+        @ColorInt
+        @Override
+        protected int getTextColor(@ConnectionState int connectedState) {
+            return textColor;
+        }
+    }
+
+    private static class TextItem extends KeyItem {
+        @ColorInt
+        private final int normalTextColor;
+        @ColorInt
+        private final int connectingTextColor;
+        @ColorInt
+        private final int connectedTextColor;
+
+        private TextItem(char normalChar, char connectedChar,
+                         @ColorInt int normalTextColor,
+                         @ColorInt int connectingTextColor,
+                         @ColorInt int connectedTextColor) {
+            super(normalChar, connectedChar);
+            this.normalTextColor = normalTextColor;
+            this.connectingTextColor = connectingTextColor;
+            this.connectedTextColor = connectedTextColor;
+        }
+
+        @ColorInt
+        @Override
+        protected int getTextColor(@ConnectionState int connectedState) {
+            switch (connectedState) {
+                case DISCONNECTED:
+                    return normalTextColor;
+                case CONNECTING:
+                    return connectingTextColor;
+                case CONNECTED:
+                    return connectedTextColor;
+                default:
+                    return normalTextColor;
+            }
         }
     }
 }
