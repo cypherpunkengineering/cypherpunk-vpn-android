@@ -11,7 +11,7 @@ android {
         minSdkVersion 15
         targetSdkVersion 24
         versionCode 1
-        versionName "1.0"
+        versionName "0.1"
 
         vectorDrawables.generatedDensities = ['hdpi', 'xhdpi', 'xxhdpi']
     }
@@ -28,6 +28,13 @@ android {
         debug {
             storeFile rootProject.file("certificate/debug.keystore")
         }
+
+//        release {
+//            storeFile rootProject.file("certificate/sample.keystore")
+//            storePassword "sample"
+//            keyAlias "sample"
+//            keyPassword "sample"
+//        }
     }
     buildTypes {
         debug {
@@ -36,7 +43,10 @@ android {
 
         release {
             minifyEnabled false
+//            applicationIdSuffix '.debug'
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+
+//            signingConfig signingConfigs.release
         }
     }
     dataBinding {

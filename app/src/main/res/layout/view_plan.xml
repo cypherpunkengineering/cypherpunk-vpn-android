@@ -6,10 +6,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="76dp"
-        android:background="@drawable/plan_background"
-        android:clickable="true"
-        android:duplicateParentState="true"
-        android:orientation="vertical">
+        android:background="@drawable/plan_background">
 
         <com.cypherpunk.android.vpn.widget.TypefaceTextView
             android:id="@+id/plan"
@@ -19,7 +16,6 @@
             android:layout_marginLeft="24dp"
             android:layout_toEndOf="@id/check"
             android:layout_toRightOf="@id/check"
-            android:duplicateParentState="true"
             android:textSize="20sp"
             app:fontName="dosisMedium"
             tools:text="6 MONTHS" />
@@ -50,7 +46,6 @@
             android:layout_alignParentRight="true"
             android:layout_marginRight="20dp"
             android:layout_marginTop="16dp"
-            android:duplicateParentState="true"
             android:textSize="20sp"
             app:fontName="dosisMedium"
             tools:ignore="RtlHardcoded"
@@ -65,7 +60,6 @@
             android:layout_centerVertical="true"
             android:layout_marginBottom="16dp"
             android:layout_marginRight="20dp"
-            android:duplicateParentState="true"
             android:text="@string/plan_per_month"
             android:textSize="14sp"
             app:fontName="DosisRegular"
