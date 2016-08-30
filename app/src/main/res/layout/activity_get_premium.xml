@@ -10,7 +10,7 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="#ffffff" />
+            android:background="@color/divider" />
 
         <com.cypherpunk.android.vpn.widget.TypefaceTextView
             android:layout_width="wrap_content"
