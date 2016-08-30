@@ -26,4 +26,5 @@
     <color name="world_map_line">#f8cf1c</color>
     <color name="status_connected">#a7d40a</color>
     <color name="status_disconnected">#c62e15</color>
+    <color name="search_view_hint_text">#80ffffff</color>
 </resources>

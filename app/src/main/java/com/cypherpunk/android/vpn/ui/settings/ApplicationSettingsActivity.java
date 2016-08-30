@@ -4,6 +4,7 @@ import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
@@ -11,10 +12,12 @@ import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 
 import com.cypherpunk.android.vpn.R;
 import com.cypherpunk.android.vpn.databinding.ActivityApplicationSettingsBinding;
 import com.cypherpunk.android.vpn.model.AppData;
+import com.cypherpunk.android.vpn.utils.FontUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -60,6 +63,10 @@ public class ApplicationSettingsActivity extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.application_settings, menu);
         SearchView searchView = (SearchView) menu.findItem(R.id.action_search).getActionView();
         searchView.setQueryHint(getString(R.string.search_application_title));
+        TextView textView = (TextView) searchView.findViewById(android.support.v7.appcompat.R.id.search_src_text);
+        textView.setTypeface(FontUtil.getDosisMedium(this));
+        textView.setHintTextColor(ContextCompat.getColor(this, R.color.search_view_hint_text));
+
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
