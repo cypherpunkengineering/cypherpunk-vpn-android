@@ -7,14 +7,18 @@
         android:layout="@layout/preference_account"
         android:title="mode" />
 
-    <Preference
-        android:key="plan"
-        android:summary="Renews On 02/02/2016"
-        android:title="Monthly Premium" />
+    <PreferenceCategory android:title="Account Type">
 
-    <Preference
-        android:key="upgrade"
-        android:title="Upgrade" />
+        <Preference
+            android:key="plan"
+            android:summary="Renews On 02/02/2016"
+            android:title="Monthly Premium" />
+
+        <Preference
+            android:key="upgrade"
+            android:title="Upgrade" />
+
+    </PreferenceCategory>
 
     <PreferenceCategory android:title="Account Details">
 
