@@ -5,14 +5,21 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/background"
-        android:orientation="vertical"
-        android:padding="16dp">
+        android:orientation="vertical">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/divider" />
 
         <android.support.design.widget.TextInputLayout
             style="@style/Widget.Cypherpunk.TextInputLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp">
+            android:layout_marginBottom="8dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginTop="16dp">
 
             <android.support.design.widget.TextInputEditText
                 android:id="@+id/email"
@@ -29,7 +36,9 @@
         <android.support.design.widget.TextInputLayout
             style="@style/Widget.Cypherpunk.TextInputLayout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp">
 
             <android.support.design.widget.TextInputEditText
                 android:id="@+id/confirm_email"
@@ -46,7 +55,9 @@
         <android.support.design.widget.TextInputLayout
             style="@style/Widget.Cypherpunk.TextInputLayout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp">
 
             <android.support.design.widget.TextInputEditText
                 android:id="@+id/current_password"

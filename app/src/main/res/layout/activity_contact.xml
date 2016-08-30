@@ -4,14 +4,21 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/background"
-        android:padding="16dp">
+        android:background="@color/background">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/divider" />
 
         <android.support.v7.widget.AppCompatEditText
             android:id="@+id/contact_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
             android:hint="@string/contact_us_hint"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
             android:textColorHint="@color/edit_text_hint" />
 
     </FrameLayout>
