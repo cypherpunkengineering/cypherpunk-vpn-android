@@ -17,7 +17,7 @@
             android:layout_toEndOf="@id/check"
             android:layout_toRightOf="@id/check"
             android:textSize="20sp"
-            app:fontName="dosisMedium"
+            app:fontName="DosisMedium"
             tools:text="6 MONTHS" />
 
         <com.cypherpunk.android.vpn.widget.TypefaceTextView
@@ -47,7 +47,7 @@
             android:layout_marginRight="20dp"
             android:layout_marginTop="16dp"
             android:textSize="20sp"
-            app:fontName="dosisMedium"
+            app:fontName="DosisMedium"
             tools:ignore="RtlHardcoded"
             tools:text="$ 9.99" />
 

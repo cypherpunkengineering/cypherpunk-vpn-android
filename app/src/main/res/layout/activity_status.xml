@@ -76,6 +76,7 @@
                     android:layout_marginBottom="4dp"
                     android:textColor="@color/status_disconnected"
                     android:textSize="28sp"
+                    app:fontName="InconsolataRegular"
                     tools:text="181.41.221.60" />
 
                 <com.cypherpunk.android.vpn.widget.TypefaceTextView
@@ -117,7 +118,8 @@
                     android:layout_marginBottom="4dp"
                     android:text="@string/status_ip_loading"
                     android:textColor="@color/status_connected"
-                    android:textSize="28sp" />
+                    android:textSize="28sp"
+                    app:fontName="InconsolataRegular" />
 
                 <com.cypherpunk.android.vpn.widget.TypefaceTextView
                     android:id="@+id/new_location"

@@ -30,7 +30,7 @@
                 android:drawablePadding="8dp"
                 android:drawableStart="@drawable/account_vector"
                 android:textSize="20sp"
-                app:fontName="dosisMedium"
+                app:fontName="DosisMedium"
                 tools:text="vpntestmax@gmail.com" />
 
             <com.cypherpunk.android.vpn.widget.TypefaceTextView
@@ -40,7 +40,7 @@
                 android:text="Monthly / until 2017.7.04"
                 android:textColor="#cccccc"
                 android:textSize="16sp"
-                app:fontName="dosisMedium" />
+                app:fontName="DosisMedium" />
 
             <com.cypherpunk.android.vpn.widget.TypefaceButton
                 android:id="@+id/upgrade_account_button"
@@ -64,14 +64,14 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/account_change_email"
-            app:fontName="dosisMedium" />
+            app:fontName="DosisMedium" />
 
         <com.cypherpunk.android.vpn.widget.TypefaceTextView
             style="@style/Widget.Cypherpunk.TextView.AccountMenu"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/account_change_password"
-            app:fontName="dosisMedium" />
+            app:fontName="DosisMedium" />
 
         <View
             android:layout_width="match_parent"
@@ -83,21 +83,21 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/account_contact_us"
-            app:fontName="dosisMedium" />
+            app:fontName="DosisMedium" />
 
         <com.cypherpunk.android.vpn.widget.TypefaceTextView
             style="@style/Widget.Cypherpunk.TextView.AccountMenu"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/account_review"
-            app:fontName="dosisMedium" />
+            app:fontName="DosisMedium" />
 
         <com.cypherpunk.android.vpn.widget.TypefaceTextView
             style="@style/Widget.Cypherpunk.TextView.AccountMenu"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/account_tutorial"
-            app:fontName="dosisMedium" />
+            app:fontName="DosisMedium" />
 
         <View
             android:layout_width="match_parent"
@@ -110,7 +110,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/account_logout"
-            app:fontName="dosisMedium" />
+            app:fontName="DosisMedium" />
 
         <View
             android:layout_width="match_parent"

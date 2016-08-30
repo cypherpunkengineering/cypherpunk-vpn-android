@@ -20,7 +20,7 @@
             android:layout_marginTop="24dp"
             android:text="@string/premium_enter_your_email"
             android:textSize="18sp"
-            app:fontName="dosisMedium" />
+            app:fontName="DosisMedium" />
 
         <android.support.design.widget.TextInputLayout
             style="@style/Widget.Cypherpunk.TextInputLayout"
