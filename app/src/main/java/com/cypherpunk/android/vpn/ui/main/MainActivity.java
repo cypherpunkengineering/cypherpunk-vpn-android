@@ -166,14 +166,11 @@ public class MainActivity extends AppCompatActivity implements VpnStatus.StateLi
                     binding.region.setText(location.getName());
                     if (!CypherpunkVPN.address.equals(location.getIpAddress())) {
                         CypherpunkVPN.address = location.getIpAddress();
+                        ipStatus.setLocation(location.getName());
+                        ipStatus.setMapPosition(location.getMapX(), location.getMapY());
 
-                        if (status.isConnected()) {
-                            stopVpn();
-                        }
+                        startVpn();
 
-                        if (data.getBooleanExtra(LocationsActivity.EXTRA_CONNECT, false)) {
-//                            stopVpn();
-                        }
                     }
                     break;
             }
@@ -210,9 +207,6 @@ public class MainActivity extends AppCompatActivity implements VpnStatus.StateLi
     }
 
     private void startVpn() {
-        if (status.isConnected()) {
-            return;
-        }
         Intent intent = VpnService.prepare(MainActivity.this);
         if (intent != null) {
             startActivityForResult(intent, REQUEST_VPN_START);

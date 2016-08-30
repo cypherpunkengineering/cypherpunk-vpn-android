@@ -153,6 +153,14 @@ public class StatusActivity extends AppCompatActivity implements VpnStatus.State
                     @Override
                     public void onError(Throwable error) {
                         error.printStackTrace();
+                        if (status.isConnected()) {
+                            ipStatus.setNewIp("");
+                            binding.newIp.setText("-");
+
+                            Intent intent = new Intent();
+                            intent.putExtra(EXTRA_STATUS, ipStatus);
+                            setResult(RESULT_OK, intent);
+                        }
                     }
                 });
     }
