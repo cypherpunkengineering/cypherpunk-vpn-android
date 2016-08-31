@@ -20,9 +20,12 @@ public class GetPremiumActivity extends AppCompatActivity {
         ActivityGetPremiumBinding binding =
                 DataBindingUtil.setContentView(this, R.layout.activity_get_premium);
 
+        setSupportActionBar(binding.toolbar.toolbar);
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
+            actionBar.setDisplayShowTitleEnabled(false);
+            binding.toolbar.title.setText(R.string.title_activity_upgrade_plan);
         }
 
         binding.monthPlan.setPlan("1 MONTH", "$ 9.99", false);

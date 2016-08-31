@@ -28,9 +28,12 @@ public class SignUpActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_sign_up);
 
+        setSupportActionBar(binding.toolbar.toolbar);
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
+            actionBar.setDisplayShowTitleEnabled(false);
+            binding.toolbar.title.setText(R.string.title_activity_sign_up);
         }
 
         binding.email.requestFocus();

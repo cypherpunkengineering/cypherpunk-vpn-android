@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
@@ -26,9 +25,12 @@ public class UpgradePlanActivity extends AppCompatActivity {
 
         ActivityUpgradePlanBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_upgrade_plan);
 
+        setSupportActionBar(binding.toolbar.toolbar);
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
+            actionBar.setDisplayShowTitleEnabled(false);
+            binding.toolbar.title.setText(R.string.title_activity_upgrade_plan);
         }
 
         binding.monthlyPlan.setPlan("1 MONTHS", "$ 9.99", false);

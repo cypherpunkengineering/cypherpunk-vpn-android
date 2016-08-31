@@ -42,11 +42,13 @@ public class ApplicationSettingsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_application_settings);
 
-        ActionBar actionBar = getSupportActionBar();
-
         // TODO: customize search view
+        setSupportActionBar(binding.toolbar.toolbar);
+        ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
+            actionBar.setDisplayShowTitleEnabled(false);
+            binding.toolbar.title.setText(R.string.title_activity_application_settings);
         }
 
         // TODO: scroll bar

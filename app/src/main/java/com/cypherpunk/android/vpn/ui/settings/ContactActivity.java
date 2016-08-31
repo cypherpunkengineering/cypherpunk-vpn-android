@@ -17,10 +17,13 @@ public class ContactActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         ActivityContactBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_contact);
-        ActionBar actionBar = getSupportActionBar();
 
+        setSupportActionBar(binding.toolbar.toolbar);
+        ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
+            actionBar.setDisplayShowTitleEnabled(false);
+            binding.toolbar.title.setText(R.string.title_activity_contact);
         }
 
     }

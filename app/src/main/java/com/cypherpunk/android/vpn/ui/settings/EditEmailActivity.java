@@ -17,14 +17,16 @@ public class EditEmailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         ActivityEditEmailBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_edit_email);
-        ActionBar actionBar = getSupportActionBar();
 
+        setSupportActionBar(binding.toolbar.toolbar);
+        ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
+            actionBar.setDisplayShowTitleEnabled(false);
+            binding.toolbar.title.setText(R.string.title_activity_edit_email);
         }
 
         binding.email.requestFocus();
-
     }
 
     @Override
