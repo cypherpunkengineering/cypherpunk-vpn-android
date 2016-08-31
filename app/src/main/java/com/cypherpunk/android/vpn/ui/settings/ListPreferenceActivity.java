@@ -46,7 +46,6 @@ public class ListPreferenceActivity extends AppCompatActivity {
         }
 
         SettingItemAdapter adapter = new SettingItemAdapter(this);
-
         adapter.add(new SettingItem("Automatic", "(Default) - Firewall will be enabled when you\n" +
                 "connect and disables when you disconnect from\n" +
                 "a location. It will remain on if your connection\n" +
@@ -58,7 +57,7 @@ public class ListPreferenceActivity extends AppCompatActivity {
         adapter.add(new SettingItem("Off", "Firewall is off"));
         binding.list.setAdapter(adapter);
         binding.list.setChoiceMode(AbsListView.CHOICE_MODE_SINGLE);
-
+        binding.list.setItemChecked(0, true);
     }
 
     @Override
@@ -95,7 +94,7 @@ public class ListPreferenceActivity extends AppCompatActivity {
             } else {
                 binding = (ListItemListPreferenceBinding) convertView.getTag();
             }
-            binding.setSetting(getItem(position));
+            binding.settingItem.setSetting(getItem(position));
 
             return convertView;
         }
