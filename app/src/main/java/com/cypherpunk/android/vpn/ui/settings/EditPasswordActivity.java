@@ -17,10 +17,13 @@ public class EditPasswordActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         ActivityEditPasswordBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_edit_password);
-        ActionBar actionBar = getSupportActionBar();
 
+        setSupportActionBar(binding.toolbar.toolbar);
+        ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
+            actionBar.setDisplayShowTitleEnabled(false);
+            binding.toolbar.title.setText(R.string.title_activity_edit_password);
         }
 
         binding.password.requestFocus();

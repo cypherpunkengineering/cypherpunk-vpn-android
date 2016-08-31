@@ -2,12 +2,13 @@
     <string name="app_name">Cypherpunk</string>
 
     <!-- sign in-->
+    <string name="title_activity_sign_in">Log In</string>
+    <string name="title_activity_sign_up">Sign Up</string>
     <string name="error_field_required">This field is required</string>
     <string name="button_sign_in">Log In</string>
     <string name="no_internet">Network is unavailable</string>
     <string name="invalid_mail_password">invalid mail/password</string>
     <string name="sign_in_forgot_password">Forgot password?</string>
-    <string name="title_activity_sign_in">Log in</string>
     <string name="sign_in_email_hint">Username/Email</string>
     <string name="sign_in_password_hint">Password</string>
     <string name="sign_in_no_account">Don’t have an account yet?</string>
@@ -15,7 +16,6 @@
     <string name="sign_up_password_hint">Password</string>
     <string name="sign_up_email_hint">Email</string>
     <string name="button_sign_up">Sign Up</string>
-    <string name="title_activity_sign_up">Sign up</string>
 
     <!-- setting -->
     <string name="title_activity_settings">Configuration</string>
@@ -41,7 +41,7 @@
     <string name="search_application_title">Search Apps</string>
 
     <!-- status -->
-    <string name="title_activity_status">Connection status</string>
+    <string name="title_activity_status">Connection Status</string>
     <string name="status_change_ip_address">Change IP Address</string>
     <string name="ip_original">ORIGINAL</string>
     <string name="ip_new">NEW</string>
@@ -74,8 +74,8 @@
     <string name="account_review">Write a review / Rate us</string>
     <string name="account_tutorial">Quick Tutorial</string>
 
-    <!-- upgrade plan -->
-    <string name="title_activity_upgrade_plan">Upgrade plan</string>
+    <!-- upgrade account -->
+    <string name="title_activity_upgrade_plan">Upgrade Account</string>
     <string name="plan_best_value">BEST VALUE!</string>
     <string name="plan_per_month">per month</string>
 

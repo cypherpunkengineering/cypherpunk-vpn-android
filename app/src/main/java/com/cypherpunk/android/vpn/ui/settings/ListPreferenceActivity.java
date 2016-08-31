@@ -41,12 +41,12 @@ public class ListPreferenceActivity extends AppCompatActivity {
 
         ActivityListPreferenceBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_list_preference);
 
-        setSupportActionBar(binding.toolbar);
-
+        setSupportActionBar(binding.toolbar.toolbar);
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
-            actionBar.setTitle(getIntent().getStringExtra(EXTRA_TITLE));
+            actionBar.setDisplayShowTitleEnabled(false);
+            binding.toolbar.title.setText(getIntent().getStringExtra(EXTRA_TITLE));
         }
 
         SettingItemAdapter adapter = new SettingItemAdapter(this);

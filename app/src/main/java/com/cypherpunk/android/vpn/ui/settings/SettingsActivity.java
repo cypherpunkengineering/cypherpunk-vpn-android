@@ -15,18 +15,19 @@ import com.cypherpunk.android.vpn.databinding.ActivitySettingsBinding;
 
 public class SettingsActivity extends AppCompatActivity {
 
-    private ActivitySettingsBinding binding;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
 
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_settings);
-        ActionBar actionBar = getSupportActionBar();
+        ActivitySettingsBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_settings);
 
+        setSupportActionBar(binding.toolbar.toolbar);
+        ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
+            actionBar.setDisplayShowTitleEnabled(false);
+            binding.toolbar.title.setText(R.string.title_activity_settings);
         }
 
         PagerAdapter adapter = new PagerAdapter(getSupportFragmentManager());

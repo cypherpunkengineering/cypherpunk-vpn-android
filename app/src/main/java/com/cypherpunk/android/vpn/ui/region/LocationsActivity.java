@@ -14,11 +14,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import com.commonsware.cwac.merge.MergeAdapter;
 import com.cypherpunk.android.vpn.R;
+import com.cypherpunk.android.vpn.databinding.ActivityLocationsBinding;
 import com.cypherpunk.android.vpn.databinding.ListItemLocationBinding;
 import com.cypherpunk.android.vpn.model.Location;
 
@@ -29,22 +29,26 @@ public class LocationsActivity extends AppCompatActivity
     public static final String EXTRA_LOCATION = "location";
     public static final String EXTRA_CONNECT = "connect";
 
-    private ListView listView;
+    private ActivityLocationsBinding binding;
     private MergeAdapter mergeAdapter;
     private Location selectedItem;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        final ActionBar actionBar = getSupportActionBar();
 
-        if (actionBar != null) {
-            actionBar.setDisplayHomeAsUpEnabled(true);
-        }
         overridePendingTransition(R.anim.region_anim_in, R.anim.region_no_anim);
 
-        listView = new ListView(this);
-        listView.setBackgroundResource(R.color.background);
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_locations);
+
+        setSupportActionBar(binding.toolbar.toolbar);
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+            actionBar.setDisplayShowTitleEnabled(false);
+            binding.toolbar.title.setText(R.string.title_activity_locations);
+        }
+
         mergeAdapter = new MergeAdapter();
 
         // recently connected
@@ -60,10 +64,9 @@ public class LocationsActivity extends AppCompatActivity
         ArrayAdapter<Location> regionAdapter = new LocationAdapter(this);
         mergeAdapter.addAdapter(regionAdapter);
 
-        listView.setAdapter(mergeAdapter);
-        listView.setDivider(null);
-        setContentView(listView);
-        listView.setOnItemClickListener(this);
+        binding.list.setAdapter(mergeAdapter);
+        binding.list.setDivider(null);
+        binding.list.setOnItemClickListener(this);
     }
 
     @Override
@@ -90,7 +93,7 @@ public class LocationsActivity extends AppCompatActivity
 
     private View buildHeader(@StringRes int text) {
         TextView textView = (TextView) LayoutInflater.from(this)
-                .inflate(R.layout.list_item_header_region_select, listView, false);
+                .inflate(R.layout.list_item_header_region_select, binding.list, false);
         textView.setText(text);
         return textView;
     }
