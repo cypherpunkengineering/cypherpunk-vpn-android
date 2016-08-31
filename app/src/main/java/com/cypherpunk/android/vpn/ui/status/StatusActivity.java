@@ -56,8 +56,16 @@ public class StatusActivity extends AppCompatActivity implements VpnStatus.State
         ((CypherpunkApplication) getApplication()).getAppComponent().inject(this);
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_status);
-        status = CypherpunkVpnStatus.getInstance();
 
+        setSupportActionBar(binding.toolbar.toolbar);
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+            actionBar.setDisplayShowTitleEnabled(false);
+            binding.toolbar.title.setText(R.string.title_activity_status);
+        }
+
+        status = CypherpunkVpnStatus.getInstance();
         ipStatus = getIntent().getParcelableExtra(EXTRA_STATUS);
 
         if (!TextUtils.isEmpty(ipStatus.getOriginalIp())) {
@@ -69,10 +77,6 @@ public class StatusActivity extends AppCompatActivity implements VpnStatus.State
             getIpAddress();
         }
 
-        ActionBar actionBar = getSupportActionBar();
-        if (actionBar != null) {
-            actionBar.setDisplayHomeAsUpEnabled(true);
-        }
         binding.map.setOriginalPosition(305, 56);
 
         VpnStatus.addStateListener(this);

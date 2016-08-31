@@ -53,9 +53,8 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.settings.SettingsActivity"
-            android:label="@string/title_activity_settings"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme" />
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".ui.settings.ListPreferenceActivity"
             android:screenOrientation="portrait"
@@ -66,9 +65,8 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.status.StatusActivity"
-            android:label="@string/title_activity_status"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme" />
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".ui.settings.ContactActivity"
             android:label="@string/title_activity_contact"
@@ -91,8 +89,8 @@
             android:theme="@style/AppTheme" />
         <activity
             android:name=".ui.region.LocationsActivity"
-            android:label="@string/title_activity_locations"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
     </application>
 
 </manifest>
