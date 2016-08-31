@@ -20,5 +20,13 @@ public class AdvancedSettingsFragment extends PreferenceFragmentCompat {
                 return true;
             }
         });
+
+        findPreference("protocol").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                startActivity(ListPreferenceActivity.createIntent(getActivity(), "Protocol"));
+                return true;
+            }
+        });
     }
 }

@@ -3,11 +3,9 @@
 
     <PreferenceCategory android:title="Network">
 
-        <ListPreference
-            android:entries="@array/protocol"
-            android:entryValues="@array/protocol_value"
+        <Preference
             android:key="protocol"
-            android:title="protocol" />
+            android:title="Protocol" />
 
         <ListPreference
             android:entries="@array/remote_port"

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="setting"
+            type="com.cypherpunk.android.vpn.model.SettingItem" />
+    </data>
+
+    <merge>
+
+        <android.support.v7.widget.AppCompatRadioButton
+            android:id="@+id/button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="16dp"
+            android:clickable="false"
+            android:focusable="false"
+            android:layout_marginRight="16dp" />
+
+        <com.cypherpunk.android.vpn.widget.TypefaceTextView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_toRightOf="@id/button"
+            android:text="@{setting.title}"
+            android:textSize="18sp"
+            tools:text="Automatic" />
+
+        <com.cypherpunk.android.vpn.widget.TypefaceTextView
+            android:id="@+id/description"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/title"
+            android:layout_marginBottom="8dp"
+            android:layout_toRightOf="@id/button"
+            android:text="@{setting.description}"
+            android:textColor="#4dffffff"
+            tools:text="(Default) - Firewall will be enabled when you
+connect and disables when you disconnect from
+a location. It will remain on if your connection
+suddenly drops" />
+    </merge>
+
+</layout>
