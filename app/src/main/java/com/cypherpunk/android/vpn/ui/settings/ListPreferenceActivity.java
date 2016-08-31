@@ -20,14 +20,18 @@ import com.cypherpunk.android.vpn.databinding.ActivityListPreferenceBinding;
 import com.cypherpunk.android.vpn.databinding.ListItemListPreferenceBinding;
 import com.cypherpunk.android.vpn.model.SettingItem;
 
+import java.util.ArrayList;
+
 public class ListPreferenceActivity extends AppCompatActivity {
 
     public static String EXTRA_TITLE = "title";
+    public static String EXTRA_LIST = "list";
 
     @NonNull
-    public static Intent createIntent(@NonNull Context context, @NonNull String title) {
+    public static Intent createIntent(@NonNull Context context, @NonNull String title, @NonNull ArrayList<SettingItem> list) {
         Intent intent = new Intent(context, ListPreferenceActivity.class);
         intent.putExtra(EXTRA_TITLE, title);
+        intent.putExtra(EXTRA_LIST, list);
         return intent;
     }
 
@@ -46,15 +50,7 @@ public class ListPreferenceActivity extends AppCompatActivity {
         }
 
         SettingItemAdapter adapter = new SettingItemAdapter(this);
-        adapter.add(new SettingItem("Automatic", "(Default) - Firewall will be enabled when you\n" +
-                "connect and disables when you disconnect from\n" +
-                "a location. It will remain on if your connection\n" +
-                "suddenly drops"));
-        adapter.add(new SettingItem("Always on", "Firewall is always on, and cannot be disabled unless\n" +
-                "You change this setting. You will not have any\n" +
-                "Internet access when you’re disconnected from\n" +
-                "Cypherpunk Network."));
-        adapter.add(new SettingItem("Off", "Firewall is off"));
+        adapter.addAll((ArrayList<SettingItem>) getIntent().getSerializableExtra(EXTRA_LIST));
         binding.list.setAdapter(adapter);
         binding.list.setChoiceMode(AbsListView.CHOICE_MODE_SINGLE);
         binding.list.setItemChecked(0, true);

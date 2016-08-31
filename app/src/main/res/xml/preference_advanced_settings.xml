@@ -7,9 +7,7 @@
             android:key="protocol"
             android:title="Protocol" />
 
-        <ListPreference
-            android:entries="@array/remote_port"
-            android:entryValues="@array/remote_port_value"
+        <Preference
             android:key="remote_port"
             android:title="Remote port" />
 
@@ -31,9 +29,7 @@
 
     <PreferenceCategory android:title="Encryption">
 
-        <ListPreference
-            android:entries="@array/encryption"
-            android:entryValues="@array/encryption_value"
+        <Preference
             android:key="encryption_level"
             android:title="Encryption level" />
 

@@ -9,6 +9,15 @@
         <item>IKEv2</item>
     </string-array>
 
+    <string-array name="protocol_description">
+        <item>Recommended</item>
+        <item>Best configuration of speed and security</item>
+        <item>Select when UDP doesn’t work TCP</item>
+        <item>J will draft this</item>
+        <item>J will draft this</item>
+        <item>J will draft this</item>
+    </string-array>
+
     <string-array name="protocol_value">
         <item>automatic</item>
         <item>open_vpn_udp</item>
@@ -51,6 +60,13 @@
         <item>None</item>
         <item>Strong</item>
         <item>Stealth</item>
+    </string-array>
+
+    <string-array name="encryption_description">
+        <item>Best combination of speed and security</item>
+        <item>Fastest speed but lower security</item>
+        <item>Higher security but slower speed</item>
+        <item>Proprietary Encryption best for bypassing restrictive network firewalls such as The Great Firewall of China</item>
     </string-array>
 
     <string-array name="encryption_value">

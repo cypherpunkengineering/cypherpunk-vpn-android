@@ -1,6 +1,8 @@
 package com.cypherpunk.android.vpn.model;
 
-public class SettingItem {
+import java.io.Serializable;
+
+public class SettingItem implements Serializable{
 
     public final String title;
     public final String description;
