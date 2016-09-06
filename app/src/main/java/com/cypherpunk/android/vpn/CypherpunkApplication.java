@@ -7,6 +7,7 @@ import com.cypherpunk.android.vpn.dagger.DaggerAppComponent;
 import com.deploygate.sdk.DeployGate;
 import com.orhanobut.hawk.Hawk;
 import com.orhanobut.hawk.HawkBuilder;
+import com.os.operando.garum.Garum;
 
 import de.blinkt.openvpn.core.PRNGFixes;
 import de.blinkt.openvpn.core.VpnStatus;
@@ -26,6 +27,7 @@ public class CypherpunkApplication extends Application {
 
         appComponent = DaggerAppComponent.create();
 
+        Garum.initialize(this);
         DeployGate.install(this);
         Hawk.init(this)
                 .setStorage(HawkBuilder.newSharedPrefStorage(this))
