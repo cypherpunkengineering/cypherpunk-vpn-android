@@ -15,15 +15,19 @@
             android:key="local_port"
             android:title="Local port" />
 
-        <ListPreference
-            android:entries="@array/firewall"
-            android:entryValues="@array/firewall_value"
+        <Preference
             android:key="firewall"
             android:title="Firewall" />
 
-        <SwitchPreferenceCompat android:title="Request port forwarding" />
+        <SwitchPreferenceCompat
+            android:key="port_forwarding"
+            android:summary="Allow incoming connection to your mobile device over an external port"
+            android:title="Request port forwarding" />
 
-        <SwitchPreferenceCompat android:title="Use small packets" />
+        <SwitchPreferenceCompat
+            android:key="small_packets"
+            android:summary="Optimized packet size for improved connectivity to various router and mobile networks"
+            android:title="Use small packets" />
 
     </PreferenceCategory>
 
@@ -43,9 +47,13 @@
 
     <PreferenceCategory android:title="Autostart">
 
-        <SwitchPreferenceCompat android:title="Auto-connect on launch" />
+        <SwitchPreferenceCompat
+            android:key="auto_connect"
+            android:title="Auto-connect on launch" />
 
-        <SwitchPreferenceCompat android:title="Start application on boot" />
+        <SwitchPreferenceCompat
+            android:key="boot_start"
+            android:title="Start application on boot" />
 
         <Preference
             android:key="application"

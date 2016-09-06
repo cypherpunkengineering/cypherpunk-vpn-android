@@ -49,6 +49,12 @@
         <item>Off</item>
     </string-array>
 
+    <string-array name="firewall_description">
+        <item>(Default) - Firewall will be enabled when you connect and disables when you disconnect from a location. It will remain on if your connection suddenly drops</item>
+        <item>Firewall is always on, and cannot be disabled unless You change this setting. You will not have any Internet access when you’re disconnected from Cypherpunk Network.</item>
+        <item>Firewall is off</item>
+    </string-array>
+
     <string-array name="firewall_value">
         <item>automatic</item>
         <item>always_on</item>

@@ -1,5 +1,6 @@
 package com.cypherpunk.android.vpn.ui.settings;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
@@ -13,24 +14,37 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 
 import com.cypherpunk.android.vpn.R;
 import com.cypherpunk.android.vpn.databinding.ActivityListPreferenceBinding;
 import com.cypherpunk.android.vpn.databinding.ListItemListPreferenceBinding;
+import com.cypherpunk.android.vpn.model.CypherpunkSetting;
 import com.cypherpunk.android.vpn.model.SettingItem;
 
 import java.util.ArrayList;
 
-public class ListPreferenceActivity extends AppCompatActivity {
+public class ListPreferenceActivity extends AppCompatActivity
+        implements AdapterView.OnItemClickListener {
 
     public static String EXTRA_TITLE = "title";
+    public static String EXTRA_VALUE = "value";
     public static String EXTRA_LIST = "list";
 
+    public static final String EXTRA_KEY = "key";
+    public static final String EXTRA_SELECTED_NAME = "name";
+    public static final String EXTRA_SELECTED_VALUE = "value";
+
+    private ArrayList<SettingItem> items;
+
     @NonNull
-    public static Intent createIntent(@NonNull Context context, @NonNull String title, @NonNull ArrayList<SettingItem> list) {
+    public static Intent createIntent(@NonNull Context context, @NonNull CharSequence key,
+                                      @NonNull CharSequence title, @NonNull String value, @NonNull ArrayList<SettingItem> list) {
         Intent intent = new Intent(context, ListPreferenceActivity.class);
+        intent.putExtra(EXTRA_KEY, key);
         intent.putExtra(EXTRA_TITLE, title);
+        intent.putExtra(EXTRA_VALUE, value);
         intent.putExtra(EXTRA_LIST, list);
         return intent;
     }
@@ -46,14 +60,31 @@ public class ListPreferenceActivity extends AppCompatActivity {
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
             actionBar.setDisplayShowTitleEnabled(false);
-            binding.toolbar.title.setText(getIntent().getStringExtra(EXTRA_TITLE));
+            binding.toolbar.title.setText(getIntent().getCharSequenceExtra(EXTRA_TITLE));
         }
 
         SettingItemAdapter adapter = new SettingItemAdapter(this);
-        adapter.addAll((ArrayList<SettingItem>) getIntent().getSerializableExtra(EXTRA_LIST));
+        items = (ArrayList<SettingItem>) getIntent().getSerializableExtra(EXTRA_LIST);
+        adapter.addAll(items);
         binding.list.setAdapter(adapter);
         binding.list.setChoiceMode(AbsListView.CHOICE_MODE_SINGLE);
-        binding.list.setItemChecked(0, true);
+        binding.list.setOnItemClickListener(this);
+
+        for (int i = 0; i < items.size(); i++) {
+            if (items.get(i).value.equals(getIntent().getStringExtra(EXTRA_VALUE))) {
+                binding.list.setItemChecked(i, true);
+            }
+        }
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+        Intent intent = new Intent();
+        intent.putExtra(EXTRA_KEY, getIntent().getStringExtra(EXTRA_KEY));
+        intent.putExtra(EXTRA_SELECTED_NAME, items.get(position).title);
+        intent.putExtra(EXTRA_SELECTED_VALUE, items.get(position).value);
+        setResult(Activity.RESULT_OK, intent);
+        finish();
     }
 
     @Override
