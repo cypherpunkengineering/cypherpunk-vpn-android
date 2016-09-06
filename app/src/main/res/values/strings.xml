@@ -107,4 +107,8 @@
     <string name="select_region_connect_negative">Not now</string>
     <string name="title_activity_locations">Locations</string>
 
+    <!-- rate dialog -->
+    <string name="rate_dialog_rate_now">Rate now</string>
+    <string name="later_dialog_later">Later</string>
+
 </resources>
