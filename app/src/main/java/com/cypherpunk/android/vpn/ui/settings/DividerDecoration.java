@@ -12,12 +12,12 @@ import android.view.View;
 import com.cypherpunk.android.vpn.R;
 
 
-public class DividerItemDecoration extends RecyclerView.ItemDecoration {
+public class DividerDecoration extends RecyclerView.ItemDecoration {
 
     private Paint paint;
     private int dividerHeight;
 
-    public DividerItemDecoration(Context context) {
+    public DividerDecoration(Context context) {
         paint = new Paint(Paint.ANTI_ALIAS_FLAG);
         paint.setColor(ContextCompat.getColor(context, R.color.divider));
         dividerHeight = (int) (1 * context.getResources().getDisplayMetrics().density);

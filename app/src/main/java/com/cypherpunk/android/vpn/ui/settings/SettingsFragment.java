@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.support.v4.app.TaskStackBuilder;
 import android.support.v7.preference.Preference;
 import android.support.v7.preference.PreferenceFragmentCompat;
+import android.support.v7.widget.RecyclerView;
+import android.view.View;
 
 import com.cypherpunk.android.vpn.R;
 import com.cypherpunk.android.vpn.data.api.UserManager;
@@ -13,6 +15,15 @@ import com.cypherpunk.android.vpn.vpn.CypherpunkVPN;
 
 
 public class SettingsFragment extends PreferenceFragmentCompat {
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        View rootView = getView();
+        assert rootView != null;
+        RecyclerView list = (RecyclerView) rootView.findViewById(R.id.list);
+        list.addItemDecoration(new SettingDividerDecoration(getActivity()));
+    }
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {

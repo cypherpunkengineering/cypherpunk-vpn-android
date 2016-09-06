@@ -53,7 +53,7 @@ public class ApplicationSettingsActivity extends AppCompatActivity {
 
         // TODO: scroll bar
         binding.list.setHasFixedSize(true);
-        binding.list.addItemDecoration(new DividerItemDecoration(this));
+        binding.list.addItemDecoration(new DividerDecoration(this));
         adapter = new ApplicationAdapter();
         binding.list.setAdapter(adapter);
 
