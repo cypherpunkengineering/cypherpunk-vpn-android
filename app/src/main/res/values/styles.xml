@@ -10,7 +10,7 @@
         <item name="android:textColorPrimary">@android:color/white</item>
         <item name="android:textColorSecondary">@android:color/white</item>
         <item name="android:windowBackground">@drawable/main_indigo_gradation</item>
-        <item name="preferenceTheme">@style/PreferenceThemeOverlay.v14.Material</item>
+        <item name="preferenceTheme">@style/Preference</item>
         <item name="android:windowAnimationStyle">@style/Animation.Activity.Alpha</item>
     </style>
 
@@ -20,6 +20,10 @@
     </style>
 
     <style name="AppTheme.NoActionBar.TransparentStatusBar" />
+
+    <style name="Preference" parent="@style/PreferenceThemeOverlay.v14.Material">
+        <item name="android:textColorSecondary">#99ffffff</item>
+    </style>
 
     <style name="AppTheme.Button.Transparent" parent="AppTheme">
         <item name="colorButtonNormal">#33ffffff</item>
