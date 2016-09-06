@@ -27,4 +27,5 @@
     <color name="status_connected">#a7d40a</color>
     <color name="status_disconnected">#c62e15</color>
     <color name="search_view_hint_text">#80ffffff</color>
+    <color name="dialog_text">#333333</color>
 </resources>

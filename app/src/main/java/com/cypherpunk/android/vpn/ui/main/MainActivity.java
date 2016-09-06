@@ -3,6 +3,7 @@ package com.cypherpunk.android.vpn.ui.main;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.graphics.Paint;
+import android.net.Uri;
 import android.net.VpnService;
 import android.os.Build;
 import android.os.Bundle;
@@ -25,6 +26,7 @@ import com.cypherpunk.android.vpn.databinding.ActivityMainBinding;
 import com.cypherpunk.android.vpn.model.IpStatus;
 import com.cypherpunk.android.vpn.model.Location;
 import com.cypherpunk.android.vpn.ui.region.LocationsActivity;
+import com.cypherpunk.android.vpn.ui.settings.RateDialogFragment;
 import com.cypherpunk.android.vpn.ui.settings.SettingsActivity;
 import com.cypherpunk.android.vpn.ui.setup.IntroductionActivity;
 import com.cypherpunk.android.vpn.ui.status.StatusActivity;
@@ -43,7 +45,8 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 import rx.subscriptions.Subscriptions;
 
-public class MainActivity extends AppCompatActivity implements VpnStatus.StateListener {
+public class MainActivity extends AppCompatActivity
+        implements VpnStatus.StateListener, RateDialogFragment.RateDialogListener {
 
     private static final int REQUEST_VPN_START = 0;
     private static final int REQUEST_SELECT_REGION = 1;
@@ -98,6 +101,8 @@ public class MainActivity extends AppCompatActivity implements VpnStatus.StateLi
                     startVpn();
                 } else {
                     stopVpn();
+                    RateDialogFragment dialogFragment = RateDialogFragment.newInstance();
+                    dialogFragment.show(getSupportFragmentManager());
                 }
             }
         });
@@ -193,6 +198,12 @@ public class MainActivity extends AppCompatActivity implements VpnStatus.StateLi
     protected void onDestroy() {
         subscription.unsubscribe();
         super.onDestroy();
+    }
+
+    @Override
+    public void onRateNowButtonClick() {
+        startActivity(new Intent(Intent.ACTION_VIEW,
+                Uri.parse("https://play.google.com/store/apps/details?id=com.cypherpunk.android.vpn.debug")));
     }
 
     @Override

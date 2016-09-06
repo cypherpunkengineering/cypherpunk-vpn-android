@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <com.cypherpunk.android.vpn.widget.TypefaceTextView
+        android:layout_width="260dp"
+        android:layout_height="120dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="8dp"
+        android:background="#cccccc"
+        android:gravity="center"
+        android:text="Illustration"
+        android:textSize="16sp"
+        app:fontName="DosisMedium" />
+
+    <com.cypherpunk.android.vpn.widget.TypefaceTextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginLeft="32dp"
+        android:layout_marginRight="32dp"
+        android:layout_marginTop="16dp"
+        android:text="Do you like Cypherpunk VPN?
+Please take a moment to rate us!
+It helps so much if you do.
+Thanks."
+        android:textColor="@color/dialog_text"
+        android:textSize="14sp"
+        app:fontName="DosisMedium" />
+
+    <com.cypherpunk.android.vpn.widget.TypefaceButton
+        android:id="@+id/rate_button"
+        style="@style/Widget.Cypherpunk.YellowButton"
+        android:layout_width="260dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="8dp"
+        android:layout_marginTop="32dp"
+        android:text="@string/rate_dialog_rate_now" />
+
+    <com.cypherpunk.android.vpn.widget.TypefaceTextView
+        android:id="@+id/later_button"
+        android:layout_width="260dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:background="?android:attr/selectableItemBackground"
+        android:clickable="true"
+        android:gravity="center"
+        android:padding="8dp"
+        android:text="@string/later_dialog_later"
+        android:textColor="@color/dialog_text"
+        android:textSize="14sp"
+        app:fontName="DosisMedium" />
+
+</LinearLayout>
