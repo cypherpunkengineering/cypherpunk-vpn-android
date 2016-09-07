@@ -1,49 +1,11 @@
-<?xml version="1.0" encoding="utf-8"?>
+<layout>
 
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    tools:ignore="RtlHardcoded">
-
-    <data>
-
-        <variable
-            name="app"
-            type="com.cypherpunk.android.vpn.model.AppData" />
-    </data>
-
-    <RelativeLayout
+    <com.cypherpunk.android.vpn.widget.ApplicationItemView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/application_item"
         android:layout_width="match_parent"
         android:layout_height="56dp"
+        android:background="?selectableItemBackground"
         android:paddingLeft="16dp"
-        android:paddingRight="16dp">
-
-        <ImageView
-            android:id="@+id/icon"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="24dp"
-            android:src="@{app.icon}"
-            tools:ignore="ContentDescription" />
-
-        <com.cypherpunk.android.vpn.widget.TypefaceTextView
-            android:id="@+id/name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_toRightOf="@id/icon"
-            android:text="@{app.name}"
-            android:textSize="18sp"
-            app:fontName="DosisMedium"
-            tools:text="Calender" />
-
-        <android.support.v7.widget.SwitchCompat
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true" />
-
-    </RelativeLayout>
+        android:paddingRight="16dp" />
 
 </layout>

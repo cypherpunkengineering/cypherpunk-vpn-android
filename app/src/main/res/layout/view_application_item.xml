@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:ignore="RtlHardcoded">
+
+    <data>
+
+        <variable
+            name="app"
+            type="com.cypherpunk.android.vpn.model.AppData" />
+    </data>
+
+    <merge>
+
+        <ImageView
+            android:id="@+id/icon"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="24dp"
+            android:src="@{app.icon}"
+            tools:ignore="ContentDescription" />
+
+        <com.cypherpunk.android.vpn.widget.TypefaceTextView
+            android:id="@+id/name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@id/icon"
+            android:text="@{app.name}"
+            android:textSize="18sp"
+            app:fontName="DosisMedium"
+            tools:text="Calender" />
+
+        <android.support.v7.widget.SwitchCompat
+            android:id="@+id/button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:checked="@{app.check? true : false}"
+            android:clickable="false"
+            android:focusable="false" />
+
+    </merge>
+
+</layout>
