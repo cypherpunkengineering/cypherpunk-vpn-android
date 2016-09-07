@@ -16,6 +16,7 @@
     <string name="sign_up_password_hint">Password</string>
     <string name="sign_up_email_hint">Email</string>
     <string name="button_sign_up">Sign Up</string>
+    <string name="dialog_login">Log in…</string>
 
     <!-- setting -->
     <string name="title_activity_settings">Configuration</string>
@@ -46,7 +47,6 @@
     <string name="ip_original">ORIGINAL</string>
     <string name="ip_new">NEW</string>
     <string name="status_ip_loading">Loading…</string>
-
 
     <!-- select mode -->
     <string name="select_mode_title">Select your Cypherpunk VPN mode</string>

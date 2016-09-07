@@ -96,6 +96,7 @@ public class SignInActivity extends AppCompatActivity {
                 binding.forgotPasswordButton.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
 
         progressDialog = new ProgressDialog(this);
+        progressDialog.setMessage(getString(R.string.dialog_login));
     }
 
     @Override
