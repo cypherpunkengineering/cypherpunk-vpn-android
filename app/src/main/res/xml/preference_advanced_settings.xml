@@ -37,21 +37,15 @@
             android:key="encryption_level"
             android:title="Encryption level" />
 
-        <android.support.v7.preference.ListPreference
-            android:entries="@array/cipher"
-            android:entryValues="@array/cipher_value"
+        <Preference
             android:key="cipher"
             android:title="Cipher" />
 
-        <ListPreference
-            android:entries="@array/authentication"
-            android:entryValues="@array/authentication_value"
+        <Preference
             android:key="authentication"
             android:title="Authentication" />
 
-        <ListPreference
-            android:entries="@array/key"
-            android:entryValues="@array/key_value"
+        <Preference
             android:key="key"
             android:title="Key" />
 

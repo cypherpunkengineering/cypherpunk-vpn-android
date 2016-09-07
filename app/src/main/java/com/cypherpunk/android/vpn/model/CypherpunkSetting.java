@@ -10,33 +10,33 @@ import com.os.operando.garum.models.PrefModel;
 public class CypherpunkSetting extends PrefModel {
 
     @PrefKey
-    @DefaultString("automatic")
+    @DefaultString("Automatic")
     public String protocol;
 
     @PrefKey("local_port")
-    @DefaultString("automatic")
+    @DefaultString("Automatic")
     public String local_port;
 
     @PrefKey("remote_port")
     public String remotePort;
 
     @PrefKey
-    @DefaultString("automatic")
+    @DefaultString("Automatic")
     public String firewall;
 
     @PrefKey("encryption_level")
-    @DefaultString("automatic")
+    @DefaultString("Automatic")
     public String encryptionLevel;
 
     @PrefKey
-    @DefaultString("aec_728")
+    @DefaultString("AEC 728")
     public String cipher;
 
     @PrefKey
-    @DefaultString("sha_1")
+    @DefaultString("SHA 1")
     public String authentication;
 
     @PrefKey
-    @DefaultString("rsa_2048")
+    @DefaultString("RSA 2048")
     public String key;
 }

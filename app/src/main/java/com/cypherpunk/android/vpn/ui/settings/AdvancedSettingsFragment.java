@@ -64,7 +64,7 @@ public class AdvancedSettingsFragment extends PreferenceFragmentCompat
             public boolean onPreferenceClick(Preference preference) {
                 startActivityForResult(ListPreferenceActivity.createIntent(getActivity(),
                         "protocol", protocol.getTitle(), cypherpunkSetting.protocol, getSettingItemList(
-                                R.array.protocol, R.array.protocol_description, R.array.protocol_value)),
+                                R.array.protocol_value, R.array.protocol_description)),
                         REQUEST_LIST_SETTING);
                 return true;
             }
@@ -77,7 +77,7 @@ public class AdvancedSettingsFragment extends PreferenceFragmentCompat
             public boolean onPreferenceClick(Preference preference) {
                 startActivityForResult(ListPreferenceActivity.createIntent(getActivity(),
                         "remote_port", remotePort.getTitle(), cypherpunkSetting.remotePort,
-                        getSettingItemList(R.array.remote_port, 0, R.array.remote_port_value)),
+                        getSettingItemList(R.array.remote_port_value, 0)),
                         REQUEST_LIST_SETTING);
                 return true;
             }
@@ -90,7 +90,7 @@ public class AdvancedSettingsFragment extends PreferenceFragmentCompat
             public boolean onPreferenceClick(Preference preference) {
                 startActivityForResult(ListPreferenceActivity.createIntent(getActivity(),
                         "firewall", firewall.getTitle(), cypherpunkSetting.firewall,
-                        getSettingItemList(R.array.firewall, R.array.firewall_description, R.array.firewall_value)),
+                        getSettingItemList(R.array.firewall_value, R.array.firewall_description)),
                         REQUEST_LIST_SETTING);
                 return true;
             }
@@ -105,8 +105,9 @@ public class AdvancedSettingsFragment extends PreferenceFragmentCompat
             @Override
             public boolean onPreferenceClick(Preference preference) {
                 startActivityForResult(ListPreferenceActivity.createIntent(getActivity(),
-                        "encryption_level", encryptionLevel.getTitle(), cypherpunkSetting.encryptionLevel, getSettingItemList(
-                                R.array.encryption, R.array.encryption_description, R.array.encryption_value)),
+                        "encryption_level", encryptionLevel.getTitle(),
+                        cypherpunkSetting.encryptionLevel, getSettingItemList(
+                                R.array.encryption_value, R.array.encryption_description)),
                         REQUEST_LIST_SETTING);
                 return true;
             }
@@ -114,21 +115,51 @@ public class AdvancedSettingsFragment extends PreferenceFragmentCompat
 
         cipher = findPreference("cipher");
         cipher.setSummary(cypherpunkSetting.cipher);
+        cipher.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                startActivityForResult(ListPreferenceActivity.createIntent(getActivity(),
+                        "cipher", cipher.getTitle(),
+                        cypherpunkSetting.cipher, getSettingItemList(R.array.cipher_value, 0)),
+                        REQUEST_LIST_SETTING);
+                return true;
+            }
+        });
 
         authentication = findPreference("authentication");
         authentication.setSummary(cypherpunkSetting.authentication);
+        authentication.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                startActivityForResult(ListPreferenceActivity.createIntent(getActivity(),
+                        "authentication", authentication.getTitle(), cypherpunkSetting.authentication, getSettingItemList(
+                                R.array.authentication_value, 0)),
+                        REQUEST_LIST_SETTING);
+                return true;
+            }
+        });
 
         key = findPreference("key");
         key.setSummary(cypherpunkSetting.key);
+        key.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                startActivityForResult(ListPreferenceActivity.createIntent(getActivity(),
+                        "key", key.getTitle(), cypherpunkSetting.key, getSettingItemList(
+                                R.array.key_value, 0)),
+                        REQUEST_LIST_SETTING);
+                return true;
+            }
+        });
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == Activity.RESULT_OK) {
-            String key = data.getStringExtra(ListPreferenceActivity.EXTRA_KEY);
+            String updateKey = data.getStringExtra(ListPreferenceActivity.EXTRA_KEY);
             CypherpunkSetting cypherpunkSetting = new CypherpunkSetting();
-            switch (key) {
+            switch (updateKey) {
                 case "protocol":
                     cypherpunkSetting.protocol = data.getStringExtra(ListPreferenceActivity.EXTRA_SELECTED_VALUE);
                     protocol.setSummary(data.getStringExtra(ListPreferenceActivity.EXTRA_SELECTED_NAME));
@@ -144,6 +175,18 @@ public class AdvancedSettingsFragment extends PreferenceFragmentCompat
                 case "encryption_level":
                     cypherpunkSetting.encryptionLevel = data.getStringExtra(ListPreferenceActivity.EXTRA_SELECTED_VALUE);
                     encryptionLevel.setSummary(data.getStringExtra(ListPreferenceActivity.EXTRA_SELECTED_NAME));
+                    break;
+                case "cipher":
+                    cypherpunkSetting.cipher = data.getStringExtra(ListPreferenceActivity.EXTRA_SELECTED_VALUE);
+                    cipher.setSummary(data.getStringExtra(ListPreferenceActivity.EXTRA_SELECTED_NAME));
+                    break;
+                case "authentication":
+                    cypherpunkSetting.authentication = data.getStringExtra(ListPreferenceActivity.EXTRA_SELECTED_VALUE);
+                    authentication.setSummary(data.getStringExtra(ListPreferenceActivity.EXTRA_SELECTED_NAME));
+                    break;
+                case "key":
+                    cypherpunkSetting.key = data.getStringExtra(ListPreferenceActivity.EXTRA_SELECTED_VALUE);
+                    key.setSummary(data.getStringExtra(ListPreferenceActivity.EXTRA_SELECTED_NAME));
                     break;
             }
             cypherpunkSetting.save();
@@ -164,16 +207,15 @@ public class AdvancedSettingsFragment extends PreferenceFragmentCompat
                 .unregisterOnSharedPreferenceChangeListener(this);
     }
 
-    private ArrayList<SettingItem> getSettingItemList(@ArrayRes int titleListRes, @ArrayRes int descriptionListRes, @ArrayRes int valueListRes) {
-        String[] titleList = getResources().getStringArray(titleListRes);
+    private ArrayList<SettingItem> getSettingItemList(@ArrayRes int valueListRes, @ArrayRes int descriptionListRes) {
         String[] valueList = getResources().getStringArray(valueListRes);
         String[] descriptionList = new String[0];
         if (descriptionListRes != 0) {
             descriptionList = getResources().getStringArray(descriptionListRes);
         }
         ArrayList<SettingItem> list = new ArrayList<>();
-        for (int i = 0; i < titleList.length; i++) {
-            list.add(new SettingItem(titleList[i], descriptionListRes != 0 ? descriptionList[i] : "", valueList[i]));
+        for (int i = 0; i < valueList.length; i++) {
+            list.add(new SettingItem(valueList[i], descriptionListRes != 0 ? descriptionList[i] : "", valueList[i]));
         }
         return list;
     }
