@@ -20,11 +20,23 @@ public class CypherpunkSetting extends PrefModel {
     @PrefKey("remote_port")
     public String remotePort;
 
-    @PrefKey("firewall")
+    @PrefKey
     @DefaultString("automatic")
     public String firewall;
 
     @PrefKey("encryption_level")
     @DefaultString("automatic")
     public String encryptionLevel;
+
+    @PrefKey
+    @DefaultString("aec_728")
+    public String cipher;
+
+    @PrefKey
+    @DefaultString("sha_1")
+    public String authentication;
+
+    @PrefKey
+    @DefaultString("rsa_2048")
+    public String key;
 }

@@ -37,11 +37,23 @@
             android:key="encryption_level"
             android:title="Encryption level" />
 
-        <Preference android:title="Cipher" />
+        <android.support.v7.preference.ListPreference
+            android:entries="@array/cipher"
+            android:entryValues="@array/cipher_value"
+            android:key="cipher"
+            android:title="Cipher" />
 
-        <Preference android:title="Authentication" />
+        <ListPreference
+            android:entries="@array/authentication"
+            android:entryValues="@array/authentication_value"
+            android:key="authentication"
+            android:title="Authentication" />
 
-        <Preference android:title="Key" />
+        <ListPreference
+            android:entries="@array/key"
+            android:entryValues="@array/key_value"
+            android:key="key"
+            android:title="Key" />
 
     </PreferenceCategory>
 
@@ -57,6 +69,7 @@
 
         <Preference
             android:key="application"
+            android:summary="Allow selected apps to connect directly without Cypherpunk"
             android:title="Per application setting" />
 
     </PreferenceCategory>

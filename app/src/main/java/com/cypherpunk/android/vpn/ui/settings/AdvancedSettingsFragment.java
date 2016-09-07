@@ -28,6 +28,9 @@ public class AdvancedSettingsFragment extends PreferenceFragmentCompat
     private Preference localPort;
     private Preference firewall;
     private Preference encryptionLevel;
+    private Preference cipher;
+    private Preference authentication;
+    private Preference key;
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -96,7 +99,6 @@ public class AdvancedSettingsFragment extends PreferenceFragmentCompat
         localPort = findPreference("local_port");
         localPort.setSummary(cypherpunkSetting.local_port);
 
-
         encryptionLevel = findPreference("encryption_level");
         encryptionLevel.setSummary(cypherpunkSetting.encryptionLevel);
         encryptionLevel.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
@@ -109,6 +111,15 @@ public class AdvancedSettingsFragment extends PreferenceFragmentCompat
                 return true;
             }
         });
+
+        cipher = findPreference("cipher");
+        cipher.setSummary(cypherpunkSetting.cipher);
+
+        authentication = findPreference("authentication");
+        authentication.setSummary(cypherpunkSetting.authentication);
+
+        key = findPreference("key");
+        key.setSummary(cypherpunkSetting.key);
     }
 
     @Override

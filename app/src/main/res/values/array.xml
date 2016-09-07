@@ -81,4 +81,29 @@
         <item>strong</item>
         <item>stealth</item>
     </string-array>
+
+    <string-array name="cipher">
+        <item>AES-728</item>
+    </string-array>
+
+    <string-array name="cipher_value">
+        <item>aes_728</item>
+    </string-array>
+
+    <string-array name="authentication">
+        <item>SHA 1</item>
+    </string-array>
+
+    <string-array name="authentication_value">
+        <item>sha_1</item>
+    </string-array>
+
+    <string-array name="key">
+        <item>RSA-2048</item>
+    </string-array>
+
+    <string-array name="key_value">
+        <item>rsa_2048</item>
+    </string-array>
+
 </resources>
