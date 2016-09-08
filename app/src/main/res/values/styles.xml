@@ -21,6 +21,8 @@
 
     <style name="AppTheme.NoActionBar.TransparentStatusBar" />
 
+    <style name="AppTheme.NoActionBar.TransparentStatusBar.Main" />
+
     <style name="Preference" parent="@style/PreferenceThemeOverlay.v14.Material">
         <item name="android:textColorSecondary">#99ffffff</item>
     </style>
