@@ -58,10 +58,15 @@ public class LocationsActivity extends AppCompatActivity
         cityAdapter.add(new Location("Tokyo 2", "208.111.52.2 7133", 305, 56));
         cityAdapter.add(new Location("Honolulu", "199.68.252.203 7133", 355, 66));
         mergeAdapter.addAdapter(cityAdapter);
+        mergeAdapter.addView(buildHeader());
 
         // region
         mergeAdapter.addView(buildHeader(R.string.location_all_locations));
         ArrayAdapter<Location> regionAdapter = new LocationAdapter(this);
+        regionAdapter.add(new Location("Tokyo 1", "208.111.52.1 7133", 305, 56));
+        regionAdapter.add(new Location("Tokyo 2", "208.111.52.2 7133", 305, 56));
+        regionAdapter.add(new Location("Honolulu", "199.68.252.203 7133", 355, 66));
+
         mergeAdapter.addAdapter(regionAdapter);
 
         binding.list.setAdapter(mergeAdapter);
@@ -96,6 +101,13 @@ public class LocationsActivity extends AppCompatActivity
                 .inflate(R.layout.list_item_header_region_select, binding.list, false);
         textView.setText(text);
         return textView;
+    }
+
+    private View buildHeader() {
+        View view = new View(this);
+        view.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
+                getResources().getDimensionPixelSize(R.dimen.list_divider)));
+        return view;
     }
 
     @Override

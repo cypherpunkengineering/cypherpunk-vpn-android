@@ -23,23 +23,19 @@
 
     <style name="AppTheme.NoActionBar.TransparentStatusBar.Main" />
 
-    <style name="Preference" parent="@style/PreferenceThemeOverlay.v14.Material">
-        <item name="android:textColorSecondary">#99ffffff</item>
-    </style>
-
-    <style name="AppTheme.Button.Transparent" parent="AppTheme">
+    <style name="AppTheme.ButtonTransparent">
         <item name="colorButtonNormal">#33ffffff</item>
     </style>
 
-    <style name="AppTheme.RadioButton" parent="AppTheme">
+    <style name="AppTheme.RadioButton">
         <item name="colorButtonNormal">@color/radio_button</item>
     </style>
 
-    <style name="AppTheme.FullScreenProgressDialog" parent="AppTheme">
+    <style name="AppTheme.FullScreenProgressDialog">
         <item name="android:windowBackground">@drawable/main_indigo_gradation_transparent</item>
     </style>
 
-    <style name="AppTheme.Progress" parent="AppTheme">
+    <style name="AppTheme.Progress">
         <item name="colorAccent">@color/dialog</item>
     </style>
 
@@ -58,6 +54,10 @@
         <item name="android:activityOpenExitAnimation">@anim/alpha_exit</item>
         <item name="android:activityCloseEnterAnimation">@anim/alpha_enter</item>
         <item name="android:activityCloseExitAnimation">@anim/alpha_exit</item>
+    </style>
+
+    <style name="Preference" parent="@style/PreferenceThemeOverlay.v14.Material">
+        <item name="android:textColorSecondary">#99ffffff</item>
     </style>
 
     <!-- widget -->
