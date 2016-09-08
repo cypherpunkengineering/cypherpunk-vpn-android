@@ -1,6 +1,5 @@
 package com.cypherpunk.android.vpn.ui.signin;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.graphics.Paint;
@@ -42,7 +41,7 @@ import rx.subscriptions.Subscriptions;
 public class SignInActivity extends AppCompatActivity {
 
     private ActivitySignInBinding binding;
-    private ProgressDialog progressDialog;
+    private ProgressFragment dialogFragment;
     private Subscription subscription = Subscriptions.empty();
 
     @Inject
@@ -95,8 +94,7 @@ public class SignInActivity extends AppCompatActivity {
         binding.forgotPasswordButton.setPaintFlags(
                 binding.forgotPasswordButton.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
 
-        progressDialog = new ProgressDialog(this);
-        progressDialog.setMessage(getString(R.string.dialog_login));
+        dialogFragment = ProgressFragment.newInstance();
     }
 
     @Override
@@ -130,7 +128,8 @@ public class SignInActivity extends AppCompatActivity {
         if (cancel) {
             focusView.requestFocus();
         } else {
-            progressDialog.show();
+            dialogFragment.show(getSupportFragmentManager());
+
             subscription = webService
                     .login(new LoginRequest(email, password))
                     .subscribeOn(Schedulers.newThread())
@@ -138,7 +137,7 @@ public class SignInActivity extends AppCompatActivity {
                     .subscribe(new SingleSubscriber<ResponseBody>() {
                         @Override
                         public void onSuccess(ResponseBody value) {
-                            progressDialog.dismiss();
+                            dialogFragment.dismiss();
                             UserManager manager = UserManager.getInstance(SignInActivity.this);
                             manager.saveMailAddress(email);
                             manager.savePassword(password);
@@ -151,7 +150,7 @@ public class SignInActivity extends AppCompatActivity {
 
                         @Override
                         public void onError(Throwable error) {
-                            progressDialog.dismiss();
+                            dialogFragment.dismiss();
                             if (error instanceof UnknownHostException) {
                                 Toast.makeText(SignInActivity.this, R.string.no_internet, Toast.LENGTH_SHORT).show();
                             } else if (error instanceof HttpException) {
