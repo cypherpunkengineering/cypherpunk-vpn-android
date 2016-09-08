@@ -2,7 +2,6 @@ package com.cypherpunk.android.vpn.ui.settings;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.ArrayRes;
 import android.support.v7.preference.Preference;
@@ -17,8 +16,7 @@ import com.cypherpunk.android.vpn.model.SettingItem;
 
 import java.util.ArrayList;
 
-public class AdvancedSettingsFragment extends PreferenceFragmentCompat
-        implements SharedPreferences.OnSharedPreferenceChangeListener {
+public class AdvancedSettingsFragment extends PreferenceFragmentCompat {
 
     private static final int REQUEST_LIST_SETTING = 1;
 
@@ -97,7 +95,15 @@ public class AdvancedSettingsFragment extends PreferenceFragmentCompat
         });
 
         localPort = findPreference("local_port");
-        localPort.setSummary(cypherpunkSetting.local_port);
+        localPort.setSummary(String.valueOf(cypherpunkSetting.localPort));
+        localPort.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                startActivityForResult(LocalPortActivity.createIntent(getActivity(),
+                        String.valueOf(cypherpunkSetting.localPort)), REQUEST_LIST_SETTING);
+                return true;
+            }
+        });
 
         encryptionLevel = findPreference("encryption_level");
         encryptionLevel.setSummary(cypherpunkSetting.encryptionLevel);
@@ -162,49 +168,39 @@ public class AdvancedSettingsFragment extends PreferenceFragmentCompat
             switch (updateKey) {
                 case "protocol":
                     cypherpunkSetting.protocol = data.getStringExtra(ListPreferenceActivity.EXTRA_SELECTED_VALUE);
-                    protocol.setSummary(data.getStringExtra(ListPreferenceActivity.EXTRA_SELECTED_NAME));
+                    protocol.setSummary(data.getStringExtra(ListPreferenceActivity.EXTRA_SELECTED_VALUE));
                     break;
                 case "remote_port":
                     cypherpunkSetting.remotePort = data.getStringExtra(ListPreferenceActivity.EXTRA_SELECTED_VALUE);
-                    remotePort.setSummary(data.getStringExtra(ListPreferenceActivity.EXTRA_SELECTED_NAME));
+                    remotePort.setSummary(data.getStringExtra(ListPreferenceActivity.EXTRA_SELECTED_VALUE));
                     break;
                 case "firewall":
                     cypherpunkSetting.firewall = data.getStringExtra(ListPreferenceActivity.EXTRA_SELECTED_VALUE);
-                    firewall.setSummary(data.getStringExtra(ListPreferenceActivity.EXTRA_SELECTED_NAME));
+                    firewall.setSummary(data.getStringExtra(ListPreferenceActivity.EXTRA_SELECTED_VALUE));
                     break;
                 case "encryption_level":
                     cypherpunkSetting.encryptionLevel = data.getStringExtra(ListPreferenceActivity.EXTRA_SELECTED_VALUE);
-                    encryptionLevel.setSummary(data.getStringExtra(ListPreferenceActivity.EXTRA_SELECTED_NAME));
+                    encryptionLevel.setSummary(data.getStringExtra(ListPreferenceActivity.EXTRA_SELECTED_VALUE));
                     break;
                 case "cipher":
                     cypherpunkSetting.cipher = data.getStringExtra(ListPreferenceActivity.EXTRA_SELECTED_VALUE);
-                    cipher.setSummary(data.getStringExtra(ListPreferenceActivity.EXTRA_SELECTED_NAME));
+                    cipher.setSummary(data.getStringExtra(ListPreferenceActivity.EXTRA_SELECTED_VALUE));
                     break;
                 case "authentication":
                     cypherpunkSetting.authentication = data.getStringExtra(ListPreferenceActivity.EXTRA_SELECTED_VALUE);
-                    authentication.setSummary(data.getStringExtra(ListPreferenceActivity.EXTRA_SELECTED_NAME));
+                    authentication.setSummary(data.getStringExtra(ListPreferenceActivity.EXTRA_SELECTED_VALUE));
                     break;
                 case "key":
                     cypherpunkSetting.key = data.getStringExtra(ListPreferenceActivity.EXTRA_SELECTED_VALUE);
-                    key.setSummary(data.getStringExtra(ListPreferenceActivity.EXTRA_SELECTED_NAME));
+                    key.setSummary(data.getStringExtra(ListPreferenceActivity.EXTRA_SELECTED_VALUE));
+                    break;
+                case "local_port":
+                    cypherpunkSetting.localPort = data.getIntExtra(ListPreferenceActivity.EXTRA_SELECTED_VALUE, 8888);
+                    localPort.setSummary(data.getStringExtra(ListPreferenceActivity.EXTRA_SELECTED_VALUE));
                     break;
             }
             cypherpunkSetting.save();
         }
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        getPreferenceScreen().getSharedPreferences()
-                .registerOnSharedPreferenceChangeListener(this);
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        getPreferenceScreen().getSharedPreferences()
-                .unregisterOnSharedPreferenceChangeListener(this);
     }
 
     private ArrayList<SettingItem> getSettingItemList(@ArrayRes int valueListRes, @ArrayRes int descriptionListRes) {
@@ -215,16 +211,8 @@ public class AdvancedSettingsFragment extends PreferenceFragmentCompat
         }
         ArrayList<SettingItem> list = new ArrayList<>();
         for (int i = 0; i < valueList.length; i++) {
-            list.add(new SettingItem(valueList[i], descriptionListRes != 0 ? descriptionList[i] : "", valueList[i]));
+            list.add(new SettingItem(valueList[i], descriptionListRes != 0 ? descriptionList[i] : ""));
         }
         return list;
-    }
-
-    @Override
-    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-        cypherpunkSetting = new CypherpunkSetting();
-        if (key.equals("local_port")) {
-            localPort.setSummary(cypherpunkSetting.local_port);
-        }
     }
 }

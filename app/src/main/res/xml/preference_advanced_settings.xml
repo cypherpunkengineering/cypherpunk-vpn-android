@@ -11,7 +11,7 @@
             android:key="remote_port"
             android:title="Remote port" />
 
-        <EditTextPreference
+        <Preference
             android:key="local_port"
             android:title="Local port" />
 

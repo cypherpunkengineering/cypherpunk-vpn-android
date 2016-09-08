@@ -33,8 +33,7 @@ public class ListPreferenceActivity extends AppCompatActivity
     public static String EXTRA_LIST = "list";
 
     public static final String EXTRA_KEY = "key";
-    public static final String EXTRA_SELECTED_NAME = "name";
-    public static final String EXTRA_SELECTED_VALUE = "value";
+    public static final String EXTRA_SELECTED_VALUE = "selected_value";
 
     private ArrayList<SettingItem> items;
 
@@ -81,7 +80,6 @@ public class ListPreferenceActivity extends AppCompatActivity
     public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
         Intent intent = new Intent();
         intent.putExtra(EXTRA_KEY, getIntent().getStringExtra(EXTRA_KEY));
-        intent.putExtra(EXTRA_SELECTED_NAME, items.get(position).title);
         intent.putExtra(EXTRA_SELECTED_VALUE, items.get(position).value);
         setResult(Activity.RESULT_OK, intent);
         finish();

@@ -110,5 +110,7 @@
     <!-- rate dialog -->
     <string name="rate_dialog_rate_now">Rate now</string>
     <string name="later_dialog_later">Later</string>
+    <string name="local_port_hint">Local port: Ex. 88888</string>
+    <string name="title_activity_local_port">Local port</string>
 
 </resources>

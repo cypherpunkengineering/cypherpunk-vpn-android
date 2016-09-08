@@ -1,5 +1,6 @@
 package com.cypherpunk.android.vpn.model;
 
+import com.os.operando.garum.annotations.DefaultInt;
 import com.os.operando.garum.annotations.DefaultString;
 import com.os.operando.garum.annotations.Pref;
 import com.os.operando.garum.annotations.PrefKey;
@@ -14,10 +15,11 @@ public class CypherpunkSetting extends PrefModel {
     public String protocol;
 
     @PrefKey("local_port")
-    @DefaultString("Automatic")
-    public String local_port;
+    @DefaultInt(8888)
+    public int localPort;
 
     @PrefKey("remote_port")
+    @DefaultString("Automatic")
     public String remotePort;
 
     @PrefKey

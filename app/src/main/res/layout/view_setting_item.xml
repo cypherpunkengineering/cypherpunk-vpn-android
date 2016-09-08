@@ -28,7 +28,7 @@
             android:layout_marginBottom="8dp"
             android:layout_marginTop="8dp"
             android:layout_toRightOf="@id/button"
-            android:text="@{setting.title}"
+            android:text="@{setting.value}"
             android:textSize="18sp"
             tools:text="Automatic" />
 
