@@ -1,4 +1,4 @@
-box: uphyca/android
+box: cypherpunk/android
 build:
   steps:
     - install-packages:
