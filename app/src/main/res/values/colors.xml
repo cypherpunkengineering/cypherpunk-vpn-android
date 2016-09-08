@@ -28,4 +28,6 @@
     <color name="status_disconnected">#c62e15</color>
     <color name="search_view_hint_text">#80ffffff</color>
     <color name="dialog_text">#333333</color>
+    <color name="dialog_background">#80000000</color>
+    <color name="dialog">#eeeeee</color>
 </resources>
