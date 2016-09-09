@@ -7,8 +7,9 @@ import android.graphics.Typeface;
 public class FontUtil {
 
     private static Typeface dosisRegular;
-    private static Typeface dosisSemiBold;
     private static Typeface dosisMedium;
+    private static Typeface dosisSemiBold;
+    private static Typeface dosisBold;
     private static Typeface inconsolataRegular;
 
     public static Typeface getDosisRegular(Context context) {
@@ -25,12 +26,20 @@ public class FontUtil {
         return dosisSemiBold;
     }
 
+    public static Typeface getDosisBold(Context context) {
+        if (dosisBold == null) {
+            dosisBold = Typeface.createFromAsset(context.getAssets(), "fonts/Dosis-Bold.otf");
+        }
+        return dosisBold;
+    }
+
     public static Typeface getDosisMedium(Context context) {
         if (dosisMedium == null) {
             dosisMedium = Typeface.createFromAsset(context.getAssets(), "fonts/Dosis-Medium.otf");
         }
         return dosisMedium;
     }
+
     public static Typeface getInconsolataRegular(Context context) {
         if (inconsolataRegular == null) {
             inconsolataRegular = Typeface.createFromAsset(context.getAssets(), "fonts/Inconsolata-Regular.ttf");

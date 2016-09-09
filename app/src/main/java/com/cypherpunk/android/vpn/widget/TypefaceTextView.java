@@ -15,9 +15,10 @@ import com.cypherpunk.android.vpn.utils.FontUtil;
 public class TypefaceTextView extends TextView {
 
     public static final int DOSIS_REGULAR = 0;
-    public static final int DOSIS_SEMI_BOLD = 1;
-    public static final int DOSIS_MEDIUM = 2;
-    public static final int INCONSOLATE_REGULAR = 3;
+    public static final int DOSIS_MEDIUM = 1;
+    public static final int DOSIS_SEMI_BOLD = 2;
+    public static final int DOSIS_BOLD = 3;
+    public static final int INCONSOLATE_REGULAR = 4;
 
     public TypefaceTextView(Context context) {
         this(context, null);
@@ -55,11 +56,14 @@ public class TypefaceTextView extends TextView {
             case DOSIS_REGULAR:
                 tf = FontUtil.getDosisRegular(getContext());
                 break;
+            case DOSIS_MEDIUM:
+                tf = FontUtil.getDosisMedium(getContext());
+                break;
             case DOSIS_SEMI_BOLD:
                 tf = FontUtil.getDosisSemiBold(getContext());
                 break;
-            case DOSIS_MEDIUM:
-                tf = FontUtil.getDosisMedium(getContext());
+            case DOSIS_BOLD:
+                tf = FontUtil.getDosisBold(getContext());
                 break;
             case INCONSOLATE_REGULAR:
                 tf = FontUtil.getInconsolataRegular(getContext());
