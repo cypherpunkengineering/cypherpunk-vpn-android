@@ -30,4 +30,7 @@
     <color name="dialog_text">#333333</color>
     <color name="dialog_background">#80000000</color>
     <color name="dialog">#eeeeee</color>
+    <color name="plan_badge_text">#034698</color>
+    <color name="plan_price">#000000</color>
+    <color name="plan_text">#333333</color>
 </resources>

@@ -77,7 +77,7 @@
     <!-- upgrade account -->
     <string name="title_activity_upgrade_plan">Upgrade Account</string>
     <string name="plan_best_value">BEST VALUE!</string>
-    <string name="plan_per_month">per month</string>
+    <string name="plan_per_month">/ month</string>
 
     <!-- introduction -->
     <string name="introduction_exist_account">Have an account already?</string>
