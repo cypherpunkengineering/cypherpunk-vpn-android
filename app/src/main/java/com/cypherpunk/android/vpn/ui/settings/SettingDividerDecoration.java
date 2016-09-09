@@ -6,7 +6,6 @@ import android.graphics.Rect;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.view.ViewCompat;
 import android.support.v7.preference.PreferenceViewHolder;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -25,17 +24,18 @@ public class SettingDividerDecoration extends RecyclerView.ItemDecoration {
     }
 
     @Override
-    public void onDrawOver(Canvas c, RecyclerView parent, RecyclerView.State state) {
-        if (divider == null) {
-            return;
-        }
+    public void onDraw(Canvas c, RecyclerView parent, RecyclerView.State state) {
+        super.onDraw(c, parent, state);
         final int childCount = parent.getChildCount();
         final int width = parent.getWidth();
         for (int childViewIndex = 0; childViewIndex < childCount; childViewIndex++) {
             final View view = parent.getChildAt(childViewIndex);
             if (shouldDrawDividerBelow(view, parent)) {
-                int top = (int) ViewCompat.getY(view) + view.getHeight();
-                divider.setBounds(0, top, width, top + dividerHeight);
+                final RecyclerView.LayoutParams params = (RecyclerView.LayoutParams) view
+                        .getLayoutParams();
+                final int top = view.getBottom() + params.bottomMargin;
+                final int bottom = top + dividerHeight;
+                divider.setBounds(0, top, width, bottom);
                 divider.draw(c);
             }
         }
