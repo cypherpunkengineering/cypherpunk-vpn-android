@@ -10,7 +10,7 @@
         <item name="android:textColorPrimary">@android:color/white</item>
         <item name="android:textColorSecondary">@android:color/white</item>
         <item name="android:windowBackground">@drawable/main_indigo_gradation</item>
-        <item name="preferenceTheme">@style/Preference</item>
+        <item name="preferenceTheme">@style/CypherpunkPreference</item>
         <item name="android:windowAnimationStyle">@style/Animation.Activity.Alpha</item>
     </style>
 
@@ -56,8 +56,24 @@
         <item name="android:activityCloseExitAnimation">@anim/alpha_exit</item>
     </style>
 
-    <style name="Preference" parent="@style/PreferenceThemeOverlay.v14.Material">
+    <style name="CypherpunkPreference" parent="@style/PreferenceThemeOverlay.v14.Material">
         <item name="android:textColorSecondary">#99ffffff</item>
+        <item name="preferenceCategoryStyle">@style/PreferenceCategory</item>
+        <item name="preferenceStyle">@style/CustomPreference</item>
+        <item name="switchPreferenceCompatStyle">@style/switchPreference</item>
+    </style>
+
+    <style name="PreferenceCategory">
+        <item name="android:layout">@layout/custom_preference_category_margin</item>
+        <item name="android:selectable">false</item>
+    </style>
+
+    <style name="CustomPreference">
+        <item name="android:layout">@layout/custom_preference</item>
+    </style>
+
+    <style name="switchPreference" parent="Preference.SwitchPreferenceCompat">
+        <item name="android:layout">@layout/custom_preference</item>
     </style>
 
     <!-- widget -->

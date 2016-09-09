@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="62dp"
     android:layout_gravity="center"
+    android:background="@color/background"
     android:gravity="center_horizontal"
     android:orientation="vertical">
 
@@ -11,7 +12,6 @@
         android:id="@+id/mail"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:layout_marginBottom="8dp"
         android:drawableLeft="@drawable/account_vector"
         android:drawablePadding="16dp"
         android:drawableStart="@drawable/account_vector"
@@ -19,6 +19,5 @@
         android:text="wiz"
         android:textSize="20sp"
         app:fontName="DosisMedium" />
-
 
 </LinearLayout>
