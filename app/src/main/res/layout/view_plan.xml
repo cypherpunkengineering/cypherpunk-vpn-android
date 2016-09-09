@@ -3,9 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <merge>
+
     <RelativeLayout
+        android:id="@+id/card"
         android:layout_width="match_parent"
         android:layout_height="76dp"
+        android:layout_marginTop="10dp"
         android:background="@drawable/plan_background">
 
         <com.cypherpunk.android.vpn.widget.TypefaceTextView
@@ -16,55 +20,54 @@
             android:layout_marginLeft="24dp"
             android:layout_toEndOf="@id/check"
             android:layout_toRightOf="@id/check"
-            android:textSize="20sp"
+            android:textColor="@color/plan_price"
+            android:textSize="22sp"
             app:fontName="DosisMedium"
             tools:text="6 MONTHS" />
-
-        <com.cypherpunk.android.vpn.widget.TypefaceTextView
-            android:id="@+id/badge"
-            android:layout_width="78dp"
-            android:layout_height="20dp"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="16dp"
-            android:layout_toEndOf="@id/plan"
-            android:layout_toRightOf="@id/plan"
-            android:background="@drawable/best_value_badge"
-            android:gravity="center"
-            android:text="@string/plan_best_value"
-            android:textSize="12sp"
-            android:visibility="invisible"
-            app:fontName="DosisSemiBold"
-            tools:ignore="RtlHardcoded"
-            tools:visibility="visible" />
-
 
         <com.cypherpunk.android.vpn.widget.TypefaceTextView
             android:id="@+id/price"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:layout_marginRight="20dp"
-            android:layout_marginTop="16dp"
-            android:textSize="20sp"
-            app:fontName="DosisMedium"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="4dp"
+            android:layout_toLeftOf="@+id/month"
+            android:textColor="@color/plan_text"
+            android:textSize="26sp"
+            app:fontName="DosisSemiBold"
             tools:ignore="RtlHardcoded"
             tools:text="$ 9.99" />
 
         <com.cypherpunk.android.vpn.widget.TypefaceTextView
+            android:id="@id/month"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
+            android:layout_alignBaseline="@id/price"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginBottom="16dp"
-            android:layout_marginRight="20dp"
+            android:layout_marginRight="24dp"
             android:text="@string/plan_per_month"
+            android:textColor="#666666"
             android:textSize="14sp"
             app:fontName="DosisRegular"
             tools:ignore="RtlHardcoded" />
 
     </RelativeLayout>
+
+    <com.cypherpunk.android.vpn.widget.TypefaceTextView
+        android:id="@+id/badge"
+        android:layout_width="96dp"
+        android:layout_height="22dp"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/best_value_badge"
+        android:gravity="center"
+        android:text="@string/plan_best_value"
+        android:textSize="13sp"
+        android:visibility="invisible"
+        app:fontName="DosisSemiBold"
+        tools:ignore="RtlHardcoded"
+        tools:visibility="visible" />
+
+    </merge>
 
 </layout>
