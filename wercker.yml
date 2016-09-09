@@ -52,3 +52,8 @@ deploy:
             name: Upload apk to DeployGate
             code: |
               curl -F file=@app/build/outputs/apk/app-debug.apk -F token="$DEPLOYGATE_API_KEY" https://deploygate.com/api/users/cypherpunk/apps
+        - script:
+            name: Archive apk to build repo server
+            code: |
+              BUILD_NUMBER=`date +%s`
+              scp -P92 "app/build/outputs/apk/app-debug.apk" "upload@builds.cypherpunk.engineering:/data/builds/`printf 'cypherpunk-vpn-android-%05d' ${BUILD_NUMBER}`.apk"
