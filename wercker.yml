@@ -54,9 +54,9 @@ deploy:
               curl -F file=@app/build/outputs/apk/app-debug.apk -F token="$DEPLOYGATE_API_KEY" https://deploygate.com/api/users/cypherpunk/apps
         - add-ssh-key:
             keyname: upload
-            host: uploadbuilds.cypherpunk.com
+            host: builds-upload.cypherpunk.com
         - script:
             name: Archive apk to build repo server
             code: |
               BUILD_NUMBER=`date +%s`
-              scp -P92 "app/build/outputs/apk/app-debug.apk" "upload@uploadbuilds.cypherpunk.engineering:/data/builds/`printf 'cypherpunk-vpn-android-%05d' ${BUILD_NUMBER}`.apk"
+              scp -P92 "app/build/outputs/apk/app-debug.apk" "upload@builds-upload.cypherpunk.engineering:/data/builds/`printf 'cypherpunk-vpn-android-%05d' ${BUILD_NUMBER}`.apk"
