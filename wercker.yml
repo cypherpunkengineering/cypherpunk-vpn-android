@@ -53,7 +53,7 @@ deploy:
             code: |
               curl -F file=@app/build/outputs/apk/app-debug.apk -F token="$DEPLOYGATE_API_KEY" https://deploygate.com/api/users/cypherpunk/apps
         - add-ssh-key:
-            keyname: upload
+            keyname: cypherpunkbuilder
             host: builds-upload.cypherpunk.com
         - script:
             name: Archive apk to build repo server
