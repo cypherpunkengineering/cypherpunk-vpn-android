@@ -57,7 +57,7 @@ deploy:
             host: builds-upload.cypherpunk.com
         - add-to-known_hosts:
             hostname: builds-upload.cypherpunk.engineering
-            fingerprint: e5:41:e1:1a:17:e4:76:8e:c4:f2:61:1d:03:96:07:6e
+            fingerprint: 9d:f0:e6:f5:d2:d4:27:42:ef:f0:75:72:eb:2c:6e:84
         - script:
             name: Archive apk to build repo server
             code: |
