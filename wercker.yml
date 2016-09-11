@@ -55,12 +55,10 @@ deploy:
         - add-ssh-key:
             keyname: cypherpunkbuilder
             host: builds-upload.cypherpunk.com
-        - add-to-known_hosts:
-            hostname: [builds-upload.cypherpunk.engineering]\:92
-            fingerprint: e5:41:e1:1a:17:e4:76:8e:c4:f2:61:1d:03:96:07:6e
-            type: rsa
         - script:
             name: Archive apk to build repo server
             code: |
+              mkdir -p $HOME/.ssh/
+              echo '[builds-upload.cypherpunk.engineering]:92,[208.111.52.44]:92 ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBF3loDObhGOkV6ocni0AAv9il/yeQOuhzExcB9NHJRqGavyHhOi5NdZBEeNdXYYEou9vYilARYESVnknRJsK6nA=' > $HOME/.ssh/known_hosts
               BUILD_NUMBER=`date +%s`
               scp -P92 "app/build/outputs/apk/app-debug.apk" "upload@builds-upload.cypherpunk.engineering:/data/builds/`printf 'cypherpunk-vpn-android-%05d' ${BUILD_NUMBER}`.apk"
