@@ -25,7 +25,7 @@
     <color name="input_layout_control_normal">#f8cf1c</color>
     <color name="world_map_line">#f8cf1c</color>
     <color name="status_connected">#a7d40a</color>
-    <color name="status_disconnected">#c62e15</color>
+    <color name="status_disconnected">#e15013</color>
     <color name="search_view_hint_text">#80ffffff</color>
     <color name="dialog_text">#333333</color>
     <color name="dialog_background">#80000000</color>
