@@ -93,13 +93,15 @@
                 android:layout_height="wrap_content"
                 android:layout_marginRight="16dp"
                 android:text="@string/introduction_exist_account"
-                android:textSize="18sp" />
+                android:textSize="18sp"
+                app:fontName="DosisMedium" />
 
             <com.cypherpunk.android.vpn.widget.TypefaceTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/introduction_sign_in"
-                android:textSize="20sp" />
+                android:textSize="20sp"
+                app:fontName="DosisMedium" />
 
         </LinearLayout>
 
