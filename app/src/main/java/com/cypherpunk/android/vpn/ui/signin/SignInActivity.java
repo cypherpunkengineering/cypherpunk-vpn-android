@@ -59,7 +59,10 @@ public class SignInActivity extends AppCompatActivity {
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
             actionBar.setDisplayShowTitleEnabled(false);
-            binding.toolbar.title.setText(R.string.title_activity_sign_in);
+
+            if (!getResources().getBoolean(R.bool.is_tablet)) {
+                binding.toolbar.title.setText(R.string.title_activity_sign_in);
+            }
         }
 
         binding.email.requestFocus();
