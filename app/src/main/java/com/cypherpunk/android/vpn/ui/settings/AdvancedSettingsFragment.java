@@ -2,8 +2,10 @@ package com.cypherpunk.android.vpn.ui.settings;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.ArrayRes;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.preference.Preference;
 import android.support.v7.preference.PreferenceFragmentCompat;
 import android.support.v7.preference.PreferenceManager;
@@ -35,8 +37,8 @@ public class AdvancedSettingsFragment extends PreferenceFragmentCompat {
         super.onActivityCreated(savedInstanceState);
         View rootView = getView();
         assert rootView != null;
-        RecyclerView list = (RecyclerView) rootView.findViewById(R.id.list);
-        list.addItemDecoration(new SettingDividerDecoration(getActivity()));
+        setDivider(new ColorDrawable(ContextCompat.getColor(getContext(), R.color.divider)));
+        setDividerHeight(getContext().getResources().getDimensionPixelSize(R.dimen.divider));
     }
 
     @Override
