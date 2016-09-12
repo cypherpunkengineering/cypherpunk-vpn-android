@@ -14,6 +14,19 @@
         <item name="android:windowAnimationStyle">@style/Animation.Activity.Alpha</item>
     </style>
 
+    <style name="AppTheme.DialogWhenLarge" parent="Theme.AppCompat.DialogWhenLarge">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+
+        <item name="android:textColorPrimary">@android:color/white</item>
+        <item name="android:textColorSecondary">@android:color/white</item>
+        <item name="android:windowBackground">@drawable/main_indigo_gradation</item>
+        <item name="preferenceTheme">@style/CypherpunkPreference</item>
+    </style>
+
     <style name="AppTheme.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>

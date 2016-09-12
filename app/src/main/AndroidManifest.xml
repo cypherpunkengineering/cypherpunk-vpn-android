@@ -54,19 +54,19 @@
         <activity
             android:name=".ui.settings.SettingsActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.DialogWhenLarge" />
         <activity
             android:name=".ui.settings.ListPreferenceActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.DialogWhenLarge" />
         <activity
             android:name=".ui.settings.LocalPortActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.DialogWhenLarge" />
         <activity
             android:name=".ui.settings.ApplicationSettingsActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.DialogWhenLarge" />
         <activity
             android:name=".ui.status.StatusActivity"
             android:screenOrientation="portrait"
@@ -74,19 +74,19 @@
         <activity
             android:name=".ui.settings.ContactActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.DialogWhenLarge" />
         <activity
             android:name=".ui.settings.EditEmailActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.DialogWhenLarge" />
         <activity
             android:name=".ui.settings.EditPasswordActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.DialogWhenLarge" />
         <activity
             android:name=".ui.settings.UpgradePlanActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.DialogWhenLarge" />
         <activity
             android:name=".ui.region.LocationsActivity"
             android:screenOrientation="portrait"
