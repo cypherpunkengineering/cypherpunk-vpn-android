@@ -11,7 +11,10 @@ import android.support.v4.app.TaskStackBuilder;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.ActionMenuView;
+import android.text.SpannableStringBuilder;
+import android.text.Spanned;
 import android.text.TextUtils;
+import android.text.style.TextAppearanceSpan;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -86,6 +89,8 @@ public class MainActivity extends AppCompatActivity
         ActionBar actionBar = getSupportActionBar();
         assert actionBar != null;
         actionBar.setDisplayShowTitleEnabled(false);
+
+        // showSignUpButton();
 
         // TODO:
         Location location = new Location("Honolulu", "199.68.252.203 7133", 355, 66);
@@ -283,5 +288,12 @@ public class MainActivity extends AppCompatActivity
                         error.printStackTrace();
                     }
                 });
+    }
+
+    private void showSignUpButton() {
+        SpannableStringBuilder sb = new SpannableStringBuilder(getString(R.string.main_sign_up));
+        sb.setSpan(new TextAppearanceSpan(this, R.style.TextAppearance_Cypherpunk_Yellow), 0, 7, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        binding.signUpButton.setText(sb);
+        binding.signUpButton.setVisibility(View.VISIBLE);
     }
 }
