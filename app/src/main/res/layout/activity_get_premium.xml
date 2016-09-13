@@ -58,26 +58,24 @@
 
         <com.cypherpunk.android.vpn.widget.PlanView
             android:id="@+id/month_plan"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            android:layout_marginLeft="32dp"
-            android:layout_marginRight="32dp" />
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="16dp" />
 
         <com.cypherpunk.android.vpn.widget.PlanView
             android:id="@+id/six_month_plan"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            android:layout_marginLeft="32dp"
-            android:layout_marginRight="32dp" />
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="16dp" />
 
         <com.cypherpunk.android.vpn.widget.PlanView
             android:id="@+id/yearly_plan"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="32dp"
-            android:layout_marginRight="32dp" />
+            android:layout_gravity="center_horizontal" />
+
     </LinearLayout>
 
 </layout>
