@@ -30,7 +30,7 @@
     <string name="action_send">send</string>
     <string name="action_done">done</string>
     <string name="title_activity_edit_email">Update Email</string>
-    <string name="title_activity_edit_password">Update password</string>
+    <string name="title_activity_edit_password">Update Password</string>
     <string name="title_activity_contact">Contact us</string>
     <string name="email_hint">New Email</string>
     <string name="confirm_hint">Confirm</string>
