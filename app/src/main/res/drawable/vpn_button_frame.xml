@@ -2,8 +2,8 @@
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
     <item>
         <shape android:shape="oval">
+            <stroke android:width="7dp" android:color="@color/vpn_button_frame_connected" />
             <size android:width="140dp" android:height="140dp" />
-            <stroke android:color="@color/vpn_button_frame_connected" />
         </shape>
     </item>
 </selector>
