@@ -1,15 +1,14 @@
 package com.cypherpunk.android.vpn.ui.region;
 
-import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.cypherpunk.android.vpn.R;
@@ -45,34 +44,30 @@ public class ConnectConfirmationDialogFragment extends DialogFragment {
         }
     }
 
-    @NonNull
+    @Nullable
     @Override
-    public Dialog onCreateDialog(Bundle savedInstanceState) {
-        View view = LayoutInflater.from(getActivity()).inflate(R.layout.dialog_city, null, false);
+    public View onCreateView(LayoutInflater inflater,
+                             @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View view = LayoutInflater.from(getActivity()).inflate(R.layout.dialog_connect_now, container, false);
         TextView textView = (TextView) view.findViewById(R.id.city_name);
         textView.setText(getArguments().getString(ARGS_CITY));
-        return new AlertDialog.Builder(getActivity(), R.style.AppTheme_Alert)
-                .setMessage(R.string.select_region_connect_dialog_message)
-                .setView(view)
-                .setPositiveButton(R.string.select_region_connect_dialog_positive,
-                        new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                if (listener != null) {
-                                    listener.onDialogPositiveButtonClick();
-                                }
-                            }
-                        })
-                .setNegativeButton(R.string.select_region_connect_negative,
-                        new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                if (listener != null) {
-                                    listener.onDialogNegativeButtonClick();
-                                }
-                            }
-                        })
-                .create();
+        view.findViewById(R.id.rate_button).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (listener != null) {
+                    listener.onDialogPositiveButtonClick();
+                }
+            }
+        });
+        view.findViewById(R.id.later_button).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (listener != null) {
+                    listener.onDialogNegativeButtonClick();
+                }
+            }
+        });
+        return view;
     }
 
     public void show(@NonNull FragmentManager fragmentManager) {

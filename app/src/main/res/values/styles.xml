@@ -52,11 +52,6 @@
         <item name="colorAccent">@color/dialog</item>
     </style>
 
-    <style name="AppTheme.Alert" parent="Theme.AppCompat.Light.Dialog.Alert">
-        <item name="android:textColorPrimary">@color/dialog_text</item>
-        <item name="colorAccent">@color/colorAccent</item>
-    </style>
-
     <style name="EditTextColorControl">
         <item name="colorControlNormal">@color/input_layout_control_normal</item>
         <item name="colorControlActivated">@color/input_layout_control_normal</item>
