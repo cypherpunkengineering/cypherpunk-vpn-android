@@ -17,9 +17,10 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:button="@drawable/radio_setting_item"
             android:clickable="false"
-            android:focusable="false"
-            android:layout_marginRight="16dp" />
+            android:focusable="false" />
 
         <com.cypherpunk.android.vpn.widget.TypefaceTextView
             android:id="@+id/title"
@@ -45,6 +46,7 @@
 connect and disables when you disconnect from
 a location. It will remain on if your connection
 suddenly drops" />
+
     </merge>
 
 </layout>
