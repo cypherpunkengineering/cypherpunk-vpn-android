@@ -16,7 +16,6 @@
     <string name="sign_up_password_hint">Password</string>
     <string name="sign_up_email_hint">Email</string>
     <string name="button_sign_up">Sign Up</string>
-    <string name="dialog_login">Log in…</string>
 
     <!-- setting -->
     <string name="title_activity_settings">Configuration</string>

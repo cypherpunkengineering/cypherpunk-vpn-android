@@ -20,7 +20,6 @@ import android.widget.ArrayAdapter;
 import com.cypherpunk.android.vpn.R;
 import com.cypherpunk.android.vpn.databinding.ActivityListPreferenceBinding;
 import com.cypherpunk.android.vpn.databinding.ListItemListPreferenceBinding;
-import com.cypherpunk.android.vpn.model.CypherpunkSetting;
 import com.cypherpunk.android.vpn.model.SettingItem;
 
 import java.util.ArrayList;

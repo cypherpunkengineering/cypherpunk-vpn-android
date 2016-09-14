@@ -117,7 +117,8 @@
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
                     android:layout_marginRight="16dp"
-                    android:src="@drawable/expand_less_vector" />
+                    android:src="@drawable/expand_less_vector"
+                    tools:ignore="ContentDescription" />
 
             </RelativeLayout>
 
