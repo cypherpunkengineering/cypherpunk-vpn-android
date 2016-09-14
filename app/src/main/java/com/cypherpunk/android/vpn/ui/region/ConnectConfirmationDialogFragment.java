@@ -51,7 +51,7 @@ public class ConnectConfirmationDialogFragment extends DialogFragment {
         View view = LayoutInflater.from(getActivity()).inflate(R.layout.dialog_city, null, false);
         TextView textView = (TextView) view.findViewById(R.id.city_name);
         textView.setText(getArguments().getString(ARGS_CITY));
-        return new AlertDialog.Builder(getActivity())
+        return new AlertDialog.Builder(getActivity(), R.style.AppTheme_Alert)
                 .setMessage(R.string.select_region_connect_dialog_message)
                 .setView(view)
                 .setPositiveButton(R.string.select_region_connect_dialog_positive,
