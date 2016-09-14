@@ -39,15 +39,15 @@
 
         <View
             android:layout_width="wrap_content"
+            android:layout_height="1dp"
             android:layout_below="@id/toolbar"
-            android:background="@color/divider"
-            android:layout_height="1dp"/>
+            android:background="@color/divider" />
 
         <com.cypherpunk.android.vpn.widget.BinaryTextureView
             android:id="@+id/key_texture"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_above="@+id/region_container"
+            android:layout_above="@+id/bottom_container"
             android:layout_below="@id/toolbar" />
 
         <com.cypherpunk.android.vpn.widget.VpnButton
@@ -80,40 +80,59 @@
             android:visibility="gone"
             tools:visibility="visible" />
 
-        <View
-            android:layout_width="wrap_content"
-            android:background="@color/divider"
-            android:layout_above="@id/region_container"
-            android:layout_height="1dp"/>
 
-        <RelativeLayout
-            android:id="@id/region_container"
+        <LinearLayout
+            android:id="@+id/bottom_container"
             android:layout_width="match_parent"
-            android:layout_height="60dp"
+            android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            android:background="@drawable/button_location"
-            android:clickable="true">
+            android:orientation="vertical">
+
+            <View
+                android:layout_width="wrap_content"
+                android:layout_height="1dp"
+                android:background="@color/divider" />
+
+            <RelativeLayout
+                android:id="@+id/region_container"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:background="@drawable/button_location"
+                android:clickable="true">
+
+                <com.cypherpunk.android.vpn.widget.TypefaceTextView
+                    android:id="@+id/region"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:drawableLeft="@drawable/national_flag_placeholder"
+                    android:drawablePadding="13dp"
+                    android:text="USA WEST"
+                    android:textAppearance="?android:textAppearanceLarge"
+                    android:textSize="20sp" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="16dp"
+                    android:src="@drawable/expand_less_vector" />
+
+            </RelativeLayout>
 
             <com.cypherpunk.android.vpn.widget.TypefaceTextView
-                android:id="@+id/region"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:drawableLeft="@drawable/national_flag_placeholder"
-                android:drawablePadding="13dp"
-                android:text="USA WEST"
-                android:textAppearance="?android:textAppearanceLarge"
-                android:textSize="20sp" />
+                android:id="@+id/sign_up_button"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@drawable/button_main_sign_up"
+                android:gravity="center"
+                android:textSize="16sp"
+                android:visibility="gone"
+                tools:text="@string/main_sign_up"
+                tools:visibility="visible" />
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:layout_marginRight="16dp"
-                android:src="@drawable/expand_less_vector" />
-
-        </RelativeLayout>
+        </LinearLayout>
 
     </RelativeLayout>
 
