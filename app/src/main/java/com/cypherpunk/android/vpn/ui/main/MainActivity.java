@@ -99,9 +99,9 @@ public class MainActivity extends AppCompatActivity
         ipStatus.setLocation(location.getName());
         ipStatus.setMapPosition(location.getMapX(), location.getMapY());
 
-        binding.connectionButton.setOnCheckedChangeListener(new VpnButton.OnCheckedChangeListener() {
+        binding.connectionButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+            public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
                 if (isChecked) {
                     startVpn();
                 } else {

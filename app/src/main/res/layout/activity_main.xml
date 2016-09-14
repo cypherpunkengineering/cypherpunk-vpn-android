@@ -52,8 +52,8 @@
 
         <com.cypherpunk.android.vpn.widget.VpnButton
             android:id="@+id/connection_button"
-            android:layout_width="139dp"
-            android:layout_height="139dp"
+            android:layout_width="140dp"
+            android:layout_height="140dp"
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true" />
 
