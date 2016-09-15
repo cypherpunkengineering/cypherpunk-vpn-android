@@ -13,8 +13,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.CompoundButton;
 import android.widget.TextView;
 
 import com.commonsware.cwac.merge.MergeAdapter;
@@ -24,8 +24,7 @@ import com.cypherpunk.android.vpn.databinding.ListItemLocationBinding;
 import com.cypherpunk.android.vpn.model.Location;
 
 public class LocationsActivity extends AppCompatActivity
-        implements AdapterView.OnItemClickListener,
-        ConnectConfirmationDialogFragment.ConnectDialogListener {
+        implements ConnectConfirmationDialogFragment.ConnectDialogListener {
 
     public static final String EXTRA_LOCATION = "location";
     public static final String EXTRA_CONNECT = "connect";
@@ -72,7 +71,6 @@ public class LocationsActivity extends AppCompatActivity
 
         binding.list.setAdapter(mergeAdapter);
         binding.list.setDivider(null);
-        binding.list.setOnItemClickListener(this);
     }
 
     @Override
@@ -82,13 +80,6 @@ public class LocationsActivity extends AppCompatActivity
             return true;
         }
         return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
-        selectedItem = (Location) mergeAdapter.getItem(position);
-        ConnectConfirmationDialogFragment dialogFragment = ConnectConfirmationDialogFragment.newInstance(selectedItem);
-        dialogFragment.show(getSupportFragmentManager());
     }
 
     @Override
@@ -139,7 +130,7 @@ public class LocationsActivity extends AppCompatActivity
 
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
-            String name = getItem(position).getName();
+            final Location item = getItem(position);
             ListItemLocationBinding binding;
             if (convertView == null) {
                 binding = DataBindingUtil.inflate(inflater, R.layout.list_item_location, parent, false);
@@ -148,7 +139,22 @@ public class LocationsActivity extends AppCompatActivity
             } else {
                 binding = (ListItemLocationBinding) convertView.getTag();
             }
-            binding.location.setText(name);
+            binding.location.setText(item.getName());
+            binding.favorite.setChecked(item.isFavorite());
+            binding.favorite.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                    item.setFavorite(b);
+                }
+            });
+            convertView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    selectedItem = item;
+                    ConnectConfirmationDialogFragment dialogFragment = ConnectConfirmationDialogFragment.newInstance(selectedItem);
+                    dialogFragment.show(getSupportFragmentManager());
+                }
+            });
 
             return convertView;
         }
