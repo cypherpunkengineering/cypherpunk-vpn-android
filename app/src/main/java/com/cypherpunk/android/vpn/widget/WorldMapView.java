@@ -71,7 +71,7 @@ public class WorldMapView extends View {
 
         if (isNewPositionVisible) {
             // new と current の position が近すぎて重なってしまう場合は、new だけ表示する
-            if (isOriginalPositionVisible()) {
+            if (!isTooClosePosition()) {
                 // original position
                 canvas.drawBitmap(originalPositionBitmap,
                         originalPositionMatrix[0] - originalPositionBitmap.getWidth() / 2,
@@ -150,8 +150,9 @@ public class WorldMapView extends View {
      *
      * @return
      */
-    private boolean isOriginalPositionVisible() {
-        return Math.abs(newPositionMatrix[0] - originalPositionMatrix[0]) > newPositionBitmap.getWidth() / 2;
+    private boolean isTooClosePosition() {
+        return Math.abs(newPositionMatrix[0] - originalPositionMatrix[0]) < newPositionBitmap.getWidth() / 2 &&
+                Math.abs(newPositionMatrix[1] - originalPositionMatrix[1]) < newPositionBitmap.getHeight() / 2;
     }
 
     private Bitmap getBitmap(@DrawableRes int resId) {
