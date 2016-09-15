@@ -61,7 +61,7 @@ dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     testCompile 'junit:junit:4.12'
 
-    def supportLibraryVersion = '24.2.0'
+    def supportLibraryVersion = '24.2.1'
     def daggerVersion = '2.6'
 
     compile "com.android.support:appcompat-v7:${supportLibraryVersion}"
