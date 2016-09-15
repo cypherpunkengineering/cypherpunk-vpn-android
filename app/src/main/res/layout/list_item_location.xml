@@ -3,20 +3,35 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <CheckedTextView
-        android:id="@+id/location"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="48dp"
-        android:checkMark="@drawable/location_star"
-        android:drawableLeft="@drawable/national_flag_placeholder"
-        android:drawablePadding="16dp"
-        android:gravity="center_vertical"
-        android:paddingLeft="32dp"
         android:background="@color/background_dark"
-        android:paddingRight="32dp"
-        android:textColor="?android:attr/textColorPrimary"
-        android:textSize="16sp"
-        app:fontName="DosisMedium"
-        tools:text="US" />
+        android:orientation="horizontal"
+        android:paddingLeft="20dp"
+        android:paddingRight="8dp">
+
+        <com.cypherpunk.android.vpn.widget.TypefaceTextView
+            android:id="@+id/location"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_gravity="center_vertical"
+            android:drawableLeft="@drawable/national_flag_placeholder"
+            android:drawablePadding="16dp"
+            android:textColor="?android:attr/textColorPrimary"
+            android:textSize="18sp"
+            app:fontName="DosisMedium"
+            tools:text="US" />
+
+        <android.support.v7.widget.AppCompatRadioButton
+            android:id="@+id/favorite"
+            android:layout_width="28dp"
+            android:layout_height="28dp"
+            android:layout_gravity="center_vertical"
+            android:gravity="center"
+            android:button="@drawable/location_star"
+            android:padding="8dp" />
+    </LinearLayout>
 
 </layout>
