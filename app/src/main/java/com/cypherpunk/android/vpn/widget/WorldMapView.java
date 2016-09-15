@@ -73,8 +73,9 @@ public class WorldMapView extends View {
             // line
             linePath.reset();
             linePath.moveTo(originalPositionMatrix[0], originalPositionMatrix[1]);
-            linePath.quadTo(Math.abs(newPositionMatrix[0] + originalPositionMatrix[0]) / 2,
-                    Math.abs(newPositionMatrix[1] + originalPositionMatrix[1]) / 2 - (50 * dm.density * scale),
+            linePath.quadTo(
+                    Math.abs(newPositionMatrix[0] + originalPositionMatrix[0]) / 2,
+                    Math.abs(-newPositionMatrix[1] + originalPositionMatrix[1] / 2),
                     newPositionMatrix[0], newPositionMatrix[1]);
             canvas.drawPath(linePath, linePaint);
 
