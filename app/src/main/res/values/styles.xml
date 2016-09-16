@@ -11,7 +11,6 @@
         <item name="android:textColorSecondary">@android:color/white</item>
         <item name="android:windowBackground">@drawable/main_indigo_gradation</item>
         <item name="preferenceTheme">@style/CypherpunkPreference</item>
-        <item name="android:windowAnimationStyle">@style/Animation.Activity.Alpha</item>
     </style>
 
     <style name="AppTheme.DialogWhenLarge" parent="Theme.AppCompat.DialogWhenLarge">
@@ -25,6 +24,7 @@
         <item name="android:textColorSecondary">@android:color/white</item>
         <item name="android:windowBackground">@drawable/main_indigo_gradation</item>
         <item name="preferenceTheme">@style/CypherpunkPreference</item>
+        <item name="android:windowAnimationStyle">@style/Animation.Activity.Slide</item>
     </style>
 
     <style name="AppTheme.NoActionBar">
@@ -67,6 +67,13 @@
         <item name="android:activityOpenExitAnimation">@anim/alpha_exit</item>
         <item name="android:activityCloseEnterAnimation">@anim/alpha_enter</item>
         <item name="android:activityCloseExitAnimation">@anim/alpha_exit</item>
+    </style>
+
+    <style name="Animation.Activity.Slide" parent="android:Animation.Activity">
+        <item name="android:activityOpenEnterAnimation">@anim/translate_open_enter</item>
+        <item name="android:activityOpenExitAnimation">@anim/translate_open_exit</item>
+        <item name="android:activityCloseEnterAnimation">@anim/translate_close_enter</item>
+        <item name="android:activityCloseExitAnimation">@anim/translate_close_exit</item>
     </style>
 
     <style name="CypherpunkPreference" parent="@style/PreferenceThemeOverlay.v14.Material">
