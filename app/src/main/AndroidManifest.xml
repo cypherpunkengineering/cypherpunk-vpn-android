@@ -35,13 +35,11 @@
 
         <activity
             android:name=".ui.signin.SignInActivity"
-            android:label="@string/title_activity_sign_in"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".ui.signin.SignUpActivity"
-            android:label="@string/title_activity_sign_up"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity

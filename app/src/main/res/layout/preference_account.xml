@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="62dp"
     android:layout_gravity="center"
@@ -16,8 +17,8 @@
         android:drawablePadding="16dp"
         android:drawableStart="@drawable/account_vector"
         android:gravity="center"
-        android:text="wiz"
         android:textSize="20sp"
-        app:fontName="DosisMedium" />
+        app:fontName="DosisMedium"
+        tools:text="wiz" />
 
 </LinearLayout>

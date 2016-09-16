@@ -9,7 +9,6 @@
     <color name="switch_thumb_connect">#f5d80d</color>
     <color name="switch_track_connect">@color/colorAccent</color>
     <color name="vpn_button_frame_connected">#996ec909</color>
-    <color name="vpn_button_frame_connecting">#99ff781a</color>
     <color name="vpn_button_frame_disconnected">#99f11a35</color>
     <color name="settings_label">#999999</color>
     <color name="card_background">#26ffffff</color>

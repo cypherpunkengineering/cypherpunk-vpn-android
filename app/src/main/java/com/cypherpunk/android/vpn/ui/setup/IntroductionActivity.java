@@ -20,8 +20,6 @@ import com.cypherpunk.android.vpn.ui.signin.SignUpActivity;
 
 public class IntroductionActivity extends AppCompatActivity {
 
-    private ActivityIntroductionBinding binding;
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,7 +29,7 @@ public class IntroductionActivity extends AppCompatActivity {
                     View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
         }
 
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_introduction);
+        ActivityIntroductionBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_introduction);
 
         binding.startFreeButton.setOnClickListener(
                 new View.OnClickListener() {
@@ -76,7 +74,7 @@ public class IntroductionActivity extends AppCompatActivity {
 
         private final LayoutInflater inflater;
 
-        public IntroductionPagerAdapter(Context context) {
+        IntroductionPagerAdapter(Context context) {
             inflater = LayoutInflater.from(context);
         }
 

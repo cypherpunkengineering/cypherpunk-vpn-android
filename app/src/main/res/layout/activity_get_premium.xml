@@ -42,7 +42,6 @@
                 android:hint="@string/premium_email_hint"
                 android:inputType="textEmailAddress"
                 android:maxLines="1"
-                android:singleLine="true"
                 android:theme="@style/EditTextColorControl" />
 
         </android.support.design.widget.TextInputLayout>

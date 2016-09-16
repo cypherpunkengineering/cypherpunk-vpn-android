@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import android.support.v7.app.ActionBar;
@@ -128,6 +129,7 @@ public class LocationsActivity extends AppCompatActivity
             this.inflater = LayoutInflater.from(context);
         }
 
+        @NonNull
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
             final Location item = getItem(position);

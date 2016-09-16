@@ -29,7 +29,6 @@ public class VpnButton extends FrameLayout {
 
     private ObjectAnimator anim;
     private VpnCoreButton buttonView;
-    private ImageView frameView;
     private Drawable frame;
 
     @Retention(RetentionPolicy.SOURCE)
@@ -48,7 +47,7 @@ public class VpnButton extends FrameLayout {
     public VpnButton(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
 
-        frameView = new ImageView(context);
+        ImageView frameView = new ImageView(context);
         addView(frameView);
         buttonView = new VpnCoreButton(context);
         addView(buttonView);

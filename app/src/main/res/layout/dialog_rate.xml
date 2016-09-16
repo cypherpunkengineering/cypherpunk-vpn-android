@@ -27,10 +27,7 @@
         android:layout_marginLeft="32dp"
         android:layout_marginRight="32dp"
         android:layout_marginTop="16dp"
-        android:text="Do you like Cypherpunk VPN?
-Please take a moment to rate us!
-It helps so much if you do.
-Thanks."
+        android:text="@string/rate_text"
         android:textColor="@color/dialog_text"
         android:textSize="14sp"
         app:fontName="DosisMedium" />
@@ -54,7 +51,7 @@ Thanks."
         android:clickable="true"
         android:gravity="center"
         android:padding="8dp"
-        android:text="@string/later_dialog_later"
+        android:text="@string/rate_dialog_later"
         android:textColor="@color/dialog_text"
         android:textSize="14sp"
         app:fontName="DosisMedium" />

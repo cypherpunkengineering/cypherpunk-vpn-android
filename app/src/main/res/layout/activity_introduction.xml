@@ -88,6 +88,7 @@
             <com.cypherpunk.android.vpn.widget.TypefaceTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
                 android:layout_alignParentRight="true"
                 android:text="@string/introduction_sign_in"
                 android:textSize="18sp" />

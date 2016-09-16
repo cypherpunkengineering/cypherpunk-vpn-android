@@ -29,8 +29,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:text="Sign up and start your 7 day
-\nFree Premium Trial now!"
+                android:text="@string/sign_up_free_premium_trial_2_line"
                 android:textSize="18sp" />
 
             <android.support.design.widget.TextInputLayout
@@ -48,7 +47,6 @@
                     android:imeOptions="actionNext"
                     android:inputType="textEmailAddress"
                     android:maxLines="1"
-                    android:singleLine="true"
                     android:theme="@style/EditTextColorControl" />
 
             </android.support.design.widget.TextInputLayout>
@@ -68,7 +66,6 @@
                     android:imeOptions="actionDone"
                     android:inputType="textPassword"
                     android:maxLines="1"
-                    android:singleLine="true"
                     android:theme="@style/EditTextColorControl" />
 
             </android.support.design.widget.TextInputLayout>
@@ -79,7 +76,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:text="@string/button_sign_up" />
+                android:text="@string/sign_up_button_sign_up" />
 
         </LinearLayout>
 
