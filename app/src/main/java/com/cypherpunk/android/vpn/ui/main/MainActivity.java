@@ -77,11 +77,6 @@ public class MainActivity extends AppCompatActivity
 
         ((CypherpunkApplication) getApplication()).getAppComponent().inject(this);
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            getWindow().getDecorView().setSystemUiVisibility(
-                    View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
-        }
-
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
 
         status = CypherpunkVpnStatus.getInstance();
@@ -89,6 +84,8 @@ public class MainActivity extends AppCompatActivity
         ActionBar actionBar = getSupportActionBar();
         assert actionBar != null;
         actionBar.setDisplayShowTitleEnabled(false);
+        String[] text = {Build.BRAND.toUpperCase(), Build.MANUFACTURER.toUpperCase(), Build.MODEL.toUpperCase()};
+        binding.binaryTextureView.setText(text);
 
         // showSignUpButton();
 
@@ -228,7 +225,7 @@ public class MainActivity extends AppCompatActivity
             startActivityForResult(intent, REQUEST_VPN_START);
         } else {
             CypherpunkVPN.start(getApplicationContext(), getBaseContext());
-            binding.keyTexture.setState(BinaryTextureView.CONNECTING);
+            binding.binaryTextureView.setState(BinaryTextureView.CONNECTING);
             binding.connectionStatus.setStatus(ConnectionStatusView.CONNECTING);
             binding.connectionButton.setStatus(VpnButton.CONNECTING);
             binding.connectingCancelButton.setVisibility(View.VISIBLE);
@@ -246,7 +243,7 @@ public class MainActivity extends AppCompatActivity
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                binding.keyTexture.setState(BinaryTextureView.CONNECTED);
+                binding.binaryTextureView.setState(BinaryTextureView.CONNECTED);
                 binding.connectionStatus.setStatus(ConnectionStatusView.CONNECTED);
                 binding.connectionButton.setStatus(VpnButton.CONNECTED);
                 binding.connectingCancelButton.setVisibility(View.INVISIBLE);
@@ -259,7 +256,7 @@ public class MainActivity extends AppCompatActivity
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                binding.keyTexture.setState(BinaryTextureView.DISCONNECTED);
+                binding.binaryTextureView.setState(BinaryTextureView.DISCONNECTED);
                 binding.connectionStatus.setStatus(ConnectionStatusView.DISCONNECTED);
                 binding.connectionButton.setStatus(VpnButton.DISCONNECTED);
                 binding.connectingCancelButton.setVisibility(View.INVISIBLE);
