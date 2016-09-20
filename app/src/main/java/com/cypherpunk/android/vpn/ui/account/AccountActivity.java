@@ -17,6 +17,9 @@ import com.cypherpunk.android.vpn.ui.settings.UpgradePlanActivity;
 import com.cypherpunk.android.vpn.ui.setup.IntroductionActivity;
 import com.cypherpunk.android.vpn.vpn.CypherpunkVPN;
 
+/**
+ * (Unused)
+ */
 public class AccountActivity extends AppCompatActivity {
 
 
