@@ -31,6 +31,6 @@ public class CypherpunkVpnStatus implements VpnStatus.StateListener {
     }
 
     public boolean isDisconnected() {
-        return level == VpnStatus.ConnectionStatus.LEVEL_NOTCONNECTED;
+        return level == VpnStatus.ConnectionStatus.LEVEL_NOTCONNECTED || level == VpnStatus.ConnectionStatus.LEVEL_NONETWORK;
     }
 }

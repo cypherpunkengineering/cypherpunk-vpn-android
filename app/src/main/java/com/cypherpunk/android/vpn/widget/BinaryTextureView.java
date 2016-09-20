@@ -8,7 +8,6 @@ import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.SurfaceTexture;
 import android.graphics.Typeface;
-import android.os.Build;
 import android.os.SystemClock;
 import android.support.annotation.ColorInt;
 import android.support.annotation.IntDef;
@@ -38,6 +37,7 @@ public class BinaryTextureView extends TextureView implements TextureView.Surfac
     public static final int DISCONNECTED = 0;
     public static final int CONNECTING = 1;
     public static final int CONNECTED = 2;
+    private String[] strings;
 
     @Retention(RetentionPolicy.SOURCE)
     @IntDef({DISCONNECTED, CONNECTING, CONNECTED})
@@ -61,7 +61,7 @@ public class BinaryTextureView extends TextureView implements TextureView.Surfac
             final int tileWidth = res.getDimensionPixelOffset(R.dimen.binary_text_width);
             final int tileHeight = res.getDimensionPixelOffset(R.dimen.binary_text_height);
 
-            final int rowCount = (int) Math.ceil((double) height / tileHeight) + 1;
+            final int rowCount = (int) Math.ceil((double) height / tileHeight) + 2;
             final int columnCount = (int) Math.ceil((double) width / tileWidth);
 
             final KeyItemGenerator keyItemGenerator = new KeyItemGenerator(
@@ -123,7 +123,6 @@ public class BinaryTextureView extends TextureView implements TextureView.Surfac
         unlockCanvasAndPost(canvas);
 
         if (renderingThread == null) {
-            String[] strings = {Build.BRAND.toUpperCase(), Build.MANUFACTURER.toUpperCase(), Build.MODEL.toUpperCase()};
             renderingThread = new RenderingThread(getContext(), width, height, strings);
             renderingThread.start();
         }
@@ -161,6 +160,10 @@ public class BinaryTextureView extends TextureView implements TextureView.Surfac
 
     public void setState(@ConnectionState int state) {
         connectionState = state;
+    }
+
+    public void setText(String[] text) {
+        this.strings = text;
     }
 
     /**

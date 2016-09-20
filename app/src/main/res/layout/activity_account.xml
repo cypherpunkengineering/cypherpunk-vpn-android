@@ -54,10 +54,7 @@
 
         </LinearLayout>
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/divider" />
+        <include layout="@layout/divider" />
 
         <com.cypherpunk.android.vpn.widget.TypefaceTextView
             style="@style/Widget.Cypherpunk.TextView.AccountMenu"
@@ -73,10 +70,7 @@
             android:text="@string/account_change_password"
             app:fontName="DosisMedium" />
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/divider" />
+        <include layout="@layout/divider" />
 
         <com.cypherpunk.android.vpn.widget.TypefaceTextView
             style="@style/Widget.Cypherpunk.TextView.AccountMenu"
@@ -99,10 +93,7 @@
             android:text="@string/account_tutorial"
             app:fontName="DosisMedium" />
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/divider" />
+        <include layout="@layout/divider" />
 
         <com.cypherpunk.android.vpn.widget.TypefaceTextView
             android:id="@+id/sign_out_button"
@@ -112,10 +103,7 @@
             android:text="@string/account_logout"
             app:fontName="DosisMedium" />
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/divider" />
+        <include layout="@layout/divider" />
 
     </LinearLayout>
 

@@ -18,6 +18,9 @@ import com.commonsware.cwac.merge.MergeAdapter;
 import com.cypherpunk.android.vpn.R;
 
 
+/**
+ * (Unused)
+ */
 public class SelectRegionActivity extends AppCompatActivity
         implements AdapterView.OnItemClickListener,
         ConnectConfirmationDialogFragment.ConnectDialogListener {

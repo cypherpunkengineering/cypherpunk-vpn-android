@@ -13,6 +13,9 @@ import android.widget.ListView;
 
 import com.cypherpunk.android.vpn.R;
 
+/**
+ * (Unused)
+ */
 public class SelectCityActivity extends AppCompatActivity
         implements AdapterView.OnItemClickListener,
         ConnectConfirmationDialogFragment.ConnectDialogListener {

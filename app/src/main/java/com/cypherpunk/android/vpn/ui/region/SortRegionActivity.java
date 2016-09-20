@@ -14,6 +14,9 @@ import android.widget.ListView;
 
 import com.cypherpunk.android.vpn.R;
 
+/**
+ * (Unused)
+ */
 public class SortRegionActivity extends AppCompatActivity
         implements AdapterView.OnItemClickListener,
         ConnectConfirmationDialogFragment.ConnectDialogListener {

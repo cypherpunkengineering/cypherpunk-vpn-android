@@ -10,10 +10,7 @@
             android:id="@+id/toolbar"
             layout="@layout/toolbar" />
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/divider" />
+        <include layout="@layout/divider" />
 
         <android.support.design.widget.TextInputLayout
             style="@style/Widget.Cypherpunk.TextInputLayout"

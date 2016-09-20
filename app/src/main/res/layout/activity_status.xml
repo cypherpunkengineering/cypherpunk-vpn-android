@@ -22,10 +22,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="@color/divider" />
+                <include layout="@layout/divider" />
 
                 <com.cypherpunk.android.vpn.widget.WorldMapView
                     android:id="@+id/map"
