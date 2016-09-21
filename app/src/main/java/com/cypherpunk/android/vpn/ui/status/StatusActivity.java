@@ -68,6 +68,7 @@ public class StatusActivity extends AppCompatActivity implements VpnStatus.State
         status = CypherpunkVpnStatus.getInstance();
         ipStatus = getIntent().getParcelableExtra(EXTRA_STATUS);
 
+        binding.time.setBaseTime(status.getConnectedTime());
         if (!TextUtils.isEmpty(ipStatus.getOriginalIp())) {
             binding.originalIp.setText(ipStatus.getOriginalIp());
         }
@@ -123,7 +124,7 @@ public class StatusActivity extends AppCompatActivity implements VpnStatus.State
                 binding.newContainer.setVisibility(connected ? View.VISIBLE : View.GONE);
                 binding.changeIpButton.setVisibility(connected ? View.VISIBLE : View.GONE);
                 binding.time.setVisibility(connected ? View.VISIBLE : View.GONE);
-                binding.state.setText(connected ? "Connected" : "Disconnected");
+                binding.state.setText(connected ? R.string.status_connected : R.string.status_disconnected);
                 binding.state.setTextColor(ContextCompat.getColor(StatusActivity.this,
                         connected ? R.color.status_connected : R.color.status_disconnected));
 
