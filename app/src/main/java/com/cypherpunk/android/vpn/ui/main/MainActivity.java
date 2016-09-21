@@ -11,6 +11,7 @@ import android.support.v4.app.TaskStackBuilder;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.ActionMenuView;
+import android.telephony.TelephonyManager;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
 import android.text.TextUtils;
@@ -84,8 +85,16 @@ public class MainActivity extends AppCompatActivity
         ActionBar actionBar = getSupportActionBar();
         assert actionBar != null;
         actionBar.setDisplayShowTitleEnabled(false);
-        String[] text = {Build.BRAND.toUpperCase(), Build.MANUFACTURER.toUpperCase(), Build.MODEL.toUpperCase()};
-        binding.binaryTextureView.setText(text);
+
+        // background
+        String operatorName = getSimOperatorName();
+        if (TextUtils.isEmpty(operatorName)) {
+            String[] text = {Build.BRAND.toUpperCase(), Build.MODEL.toUpperCase()};
+            binding.binaryTextureView.setText(text);
+        } else {
+            String[] text = {Build.BRAND.toUpperCase(), Build.MODEL.toUpperCase(), operatorName};
+            binding.binaryTextureView.setText(text);
+        }
 
         // showSignUpButton();
 
@@ -297,6 +306,11 @@ public class MainActivity extends AppCompatActivity
                         error.printStackTrace();
                     }
                 });
+    }
+
+    private String getSimOperatorName() {
+        TelephonyManager telephonyManager = (TelephonyManager) getSystemService(TELEPHONY_SERVICE);
+        return telephonyManager.getSimOperatorName();
     }
 
     private void showSignUpButton() {
