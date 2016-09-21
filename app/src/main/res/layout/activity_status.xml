@@ -45,16 +45,17 @@
                         tools:text="Connected"
                         android:textSize="16sp" />
 
-                    <com.cypherpunk.android.vpn.widget.TypefaceTextView
+                    <com.cypherpunk.android.vpn.widget.TimeTexView
                         android:id="@+id/time"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_horizontal"
                         android:layout_marginLeft="16dp"
                         android:drawableLeft="@drawable/time_vector"
+                        app:fontName="InconsolataRegular"
                         android:drawablePadding="8dp"
                         android:drawableStart="@drawable/time_vector"
-                        android:text="00:14:25"
+                        tools:text="00:14:25"
                         android:textSize="16sp" />
 
                 </LinearLayout>
