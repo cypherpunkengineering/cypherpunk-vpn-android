@@ -52,6 +52,7 @@
                         android:layout_gravity="center_horizontal"
                         android:layout_marginLeft="16dp"
                         android:drawableLeft="@drawable/time_vector"
+                        app:fontName="InconsolataRegular"
                         android:drawablePadding="8dp"
                         android:drawableStart="@drawable/time_vector"
                         tools:text="00:14:25"
