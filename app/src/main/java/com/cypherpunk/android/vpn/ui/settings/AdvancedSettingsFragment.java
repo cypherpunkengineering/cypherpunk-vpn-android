@@ -56,6 +56,14 @@ public class AdvancedSettingsFragment extends PreferenceFragmentCompat {
             }
         });
 
+        findPreference("trusted_network").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                startActivity(new Intent(getActivity(), NetworkActivity.class));
+                return true;
+            }
+        });
+
         protocol = findPreference("protocol");
         protocol.setSummary(cypherpunkSetting.protocol);
         protocol.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
