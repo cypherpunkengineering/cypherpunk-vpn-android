@@ -14,6 +14,7 @@
     <color name="card_background">#26ffffff</color>
     <color name="background">#26ffffff</color>
     <color name="background_dark">#1affffff</color>
+    <color name="sub_text">#99ffffff</color>
     <color name="binary_text_color">#23ffffff</color>
     <color name="binary_text_disconnected">#80f11b35</color>
     <color name="binary_text_connecting">#80ff781b</color>

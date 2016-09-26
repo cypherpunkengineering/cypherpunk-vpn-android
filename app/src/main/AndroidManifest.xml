@@ -66,6 +66,10 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.DialogWhenLarge" />
         <activity
+            android:name=".ui.settings.NetworkActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.DialogWhenLarge" />
+        <activity
             android:name=".ui.status.StatusActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />

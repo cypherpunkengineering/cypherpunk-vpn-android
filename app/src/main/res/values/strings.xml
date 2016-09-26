@@ -48,6 +48,7 @@
     <string name="current_password_hint">Current Password</string>
     <string name="title_activity_local_port">Local port</string>
     <string name="local_port_hint">Local port: Ex. 88888</string>
+    <string name="title_activity_network">Manage trusted networks</string>
 
     <!-- application settings -->
     <string name="title_activity_application_settings">Per application settings</string>
