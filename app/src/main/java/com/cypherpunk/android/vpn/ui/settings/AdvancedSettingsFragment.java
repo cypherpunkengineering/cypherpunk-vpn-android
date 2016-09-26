@@ -120,44 +120,44 @@ public class AdvancedSettingsFragment extends PreferenceFragmentCompat {
             }
         });
 
-        cipher = findPreference("cipher");
-        cipher.setSummary(cypherpunkSetting.cipher);
-        cipher.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-            @Override
-            public boolean onPreferenceClick(Preference preference) {
-                startActivityForResult(ListPreferenceActivity.createIntent(getActivity(),
-                        "cipher", cipher.getTitle(),
-                        cypherpunkSetting.cipher, getSettingItemList(R.array.cipher_value, 0)),
-                        REQUEST_LIST_SETTING);
-                return true;
-            }
-        });
-
-        authentication = findPreference("authentication");
-        authentication.setSummary(cypherpunkSetting.authentication);
-        authentication.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-            @Override
-            public boolean onPreferenceClick(Preference preference) {
-                startActivityForResult(ListPreferenceActivity.createIntent(getActivity(),
-                        "authentication", authentication.getTitle(), cypherpunkSetting.authentication, getSettingItemList(
-                                R.array.authentication_value, 0)),
-                        REQUEST_LIST_SETTING);
-                return true;
-            }
-        });
-
-        key = findPreference("key");
-        key.setSummary(cypherpunkSetting.key);
-        key.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-            @Override
-            public boolean onPreferenceClick(Preference preference) {
-                startActivityForResult(ListPreferenceActivity.createIntent(getActivity(),
-                        "key", key.getTitle(), cypherpunkSetting.key, getSettingItemList(
-                                R.array.key_value, 0)),
-                        REQUEST_LIST_SETTING);
-                return true;
-            }
-        });
+//        cipher = findPreference("cipher");
+//        cipher.setSummary(cypherpunkSetting.cipher);
+//        cipher.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+//            @Override
+//            public boolean onPreferenceClick(Preference preference) {
+//                startActivityForResult(ListPreferenceActivity.createIntent(getActivity(),
+//                        "cipher", cipher.getTitle(),
+//                        cypherpunkSetting.cipher, getSettingItemList(R.array.cipher_value, 0)),
+//                        REQUEST_LIST_SETTING);
+//                return true;
+//            }
+//        });
+//
+//        authentication = findPreference("authentication");
+//        authentication.setSummary(cypherpunkSetting.authentication);
+//        authentication.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+//            @Override
+//            public boolean onPreferenceClick(Preference preference) {
+//                startActivityForResult(ListPreferenceActivity.createIntent(getActivity(),
+//                        "authentication", authentication.getTitle(), cypherpunkSetting.authentication, getSettingItemList(
+//                                R.array.authentication_value, 0)),
+//                        REQUEST_LIST_SETTING);
+//                return true;
+//            }
+//        });
+//
+//        key = findPreference("key");
+//        key.setSummary(cypherpunkSetting.key);
+//        key.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+//            @Override
+//            public boolean onPreferenceClick(Preference preference) {
+//                startActivityForResult(ListPreferenceActivity.createIntent(getActivity(),
+//                        "key", key.getTitle(), cypherpunkSetting.key, getSettingItemList(
+//                                R.array.key_value, 0)),
+//                        REQUEST_LIST_SETTING);
+//                return true;
+//            }
+//        });
     }
 
     @Override
@@ -183,18 +183,18 @@ public class AdvancedSettingsFragment extends PreferenceFragmentCompat {
                     cypherpunkSetting.encryptionLevel = data.getStringExtra(ListPreferenceActivity.EXTRA_SELECTED_VALUE);
                     encryptionLevel.setSummary(data.getStringExtra(ListPreferenceActivity.EXTRA_SELECTED_VALUE));
                     break;
-                case "cipher":
-                    cypherpunkSetting.cipher = data.getStringExtra(ListPreferenceActivity.EXTRA_SELECTED_VALUE);
-                    cipher.setSummary(data.getStringExtra(ListPreferenceActivity.EXTRA_SELECTED_VALUE));
-                    break;
-                case "authentication":
-                    cypherpunkSetting.authentication = data.getStringExtra(ListPreferenceActivity.EXTRA_SELECTED_VALUE);
-                    authentication.setSummary(data.getStringExtra(ListPreferenceActivity.EXTRA_SELECTED_VALUE));
-                    break;
-                case "key":
-                    cypherpunkSetting.key = data.getStringExtra(ListPreferenceActivity.EXTRA_SELECTED_VALUE);
-                    key.setSummary(data.getStringExtra(ListPreferenceActivity.EXTRA_SELECTED_VALUE));
-                    break;
+//                case "cipher":
+//                    cypherpunkSetting.cipher = data.getStringExtra(ListPreferenceActivity.EXTRA_SELECTED_VALUE);
+//                    cipher.setSummary(data.getStringExtra(ListPreferenceActivity.EXTRA_SELECTED_VALUE));
+//                    break;
+//                case "authentication":
+//                    cypherpunkSetting.authentication = data.getStringExtra(ListPreferenceActivity.EXTRA_SELECTED_VALUE);
+//                    authentication.setSummary(data.getStringExtra(ListPreferenceActivity.EXTRA_SELECTED_VALUE));
+//                    break;
+//                case "key":
+//                    cypherpunkSetting.key = data.getStringExtra(ListPreferenceActivity.EXTRA_SELECTED_VALUE);
+//                    key.setSummary(data.getStringExtra(ListPreferenceActivity.EXTRA_SELECTED_VALUE));
+//                    break;
                 case "local_port":
                     cypherpunkSetting.localPort = data.getIntExtra(ListPreferenceActivity.EXTRA_SELECTED_VALUE, 8888);
                     localPort.setSummary(data.getStringExtra(ListPreferenceActivity.EXTRA_SELECTED_VALUE));
