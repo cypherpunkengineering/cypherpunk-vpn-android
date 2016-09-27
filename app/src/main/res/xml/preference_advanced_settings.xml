@@ -25,7 +25,8 @@
             android:key="trusted_network"
             android:title="Manage trusted networks" />
 
-        <Preference
+        <com.cypherpunk.android.vpn.ui.settings.EncryptionPreference
+            android:id="@+id/preference"
             android:key="encryption_level"
             android:title="Encryption" />
 

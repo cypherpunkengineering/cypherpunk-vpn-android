@@ -26,7 +26,7 @@ public class AdvancedSettingsFragment extends PreferenceFragmentCompat {
     private Preference remotePort;
     private Preference localPort;
     private Preference firewall;
-    private Preference encryptionLevel;
+    private EncryptionPreference encryptionLevel;
     private Preference cipher;
     private Preference authentication;
     private Preference key;
@@ -70,7 +70,7 @@ public class AdvancedSettingsFragment extends PreferenceFragmentCompat {
             @Override
             public boolean onPreferenceClick(Preference preference) {
                 startActivityForResult(ListPreferenceActivity.createIntent(getActivity(),
-                        "protocol", protocol.getTitle(), cypherpunkSetting.protocol, getSettingItemList(
+                        "protocol", protocol.getTitle(), new CypherpunkSetting().protocol, getSettingItemList(
                                 R.array.protocol_value, R.array.protocol_description)),
                         REQUEST_LIST_SETTING);
                 return true;
@@ -83,7 +83,7 @@ public class AdvancedSettingsFragment extends PreferenceFragmentCompat {
             @Override
             public boolean onPreferenceClick(Preference preference) {
                 startActivityForResult(ListPreferenceActivity.createIntent(getActivity(),
-                        "remote_port", remotePort.getTitle(), cypherpunkSetting.remotePort,
+                        "remote_port", remotePort.getTitle(), new CypherpunkSetting().remotePort,
                         getSettingItemList(R.array.remote_port_value, 0)),
                         REQUEST_LIST_SETTING);
                 return true;
@@ -96,7 +96,7 @@ public class AdvancedSettingsFragment extends PreferenceFragmentCompat {
             @Override
             public boolean onPreferenceClick(Preference preference) {
                 startActivityForResult(ListPreferenceActivity.createIntent(getActivity(),
-                        "firewall", firewall.getTitle(), cypherpunkSetting.firewall,
+                        "firewall", firewall.getTitle(), new CypherpunkSetting().firewall,
                         getSettingItemList(R.array.firewall_value, R.array.firewall_description)),
                         REQUEST_LIST_SETTING);
                 return true;
@@ -114,58 +114,22 @@ public class AdvancedSettingsFragment extends PreferenceFragmentCompat {
             }
         });
 
-        encryptionLevel = findPreference("encryption_level");
+        encryptionLevel = (EncryptionPreference) findPreference("encryption_level");
         encryptionLevel.setSummary(cypherpunkSetting.encryptionLevel);
+        encryptionLevel.setCipherText(cypherpunkSetting.cipher);
+        encryptionLevel.setAuthText(cypherpunkSetting.authentication);
+        encryptionLevel.setKeyText(cypherpunkSetting.key);
         encryptionLevel.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
                 startActivityForResult(ListPreferenceActivity.createIntent(getActivity(),
                         "encryption_level", encryptionLevel.getTitle(),
-                        cypherpunkSetting.encryptionLevel, getSettingItemList(
+                        new CypherpunkSetting().encryptionLevel, getSettingItemList(
                                 R.array.encryption_value, R.array.encryption_description)),
                         REQUEST_LIST_SETTING);
                 return true;
             }
         });
-
-//        cipher = findPreference("cipher");
-//        cipher.setSummary(cypherpunkSetting.cipher);
-//        cipher.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-//            @Override
-//            public boolean onPreferenceClick(Preference preference) {
-//                startActivityForResult(ListPreferenceActivity.createIntent(getActivity(),
-//                        "cipher", cipher.getTitle(),
-//                        cypherpunkSetting.cipher, getSettingItemList(R.array.cipher_value, 0)),
-//                        REQUEST_LIST_SETTING);
-//                return true;
-//            }
-//        });
-//
-//        authentication = findPreference("authentication");
-//        authentication.setSummary(cypherpunkSetting.authentication);
-//        authentication.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-//            @Override
-//            public boolean onPreferenceClick(Preference preference) {
-//                startActivityForResult(ListPreferenceActivity.createIntent(getActivity(),
-//                        "authentication", authentication.getTitle(), cypherpunkSetting.authentication, getSettingItemList(
-//                                R.array.authentication_value, 0)),
-//                        REQUEST_LIST_SETTING);
-//                return true;
-//            }
-//        });
-//
-//        key = findPreference("key");
-//        key.setSummary(cypherpunkSetting.key);
-//        key.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-//            @Override
-//            public boolean onPreferenceClick(Preference preference) {
-//                startActivityForResult(ListPreferenceActivity.createIntent(getActivity(),
-//                        "key", key.getTitle(), cypherpunkSetting.key, getSettingItemList(
-//                                R.array.key_value, 0)),
-//                        REQUEST_LIST_SETTING);
-//                return true;
-//            }
-//        });
     }
 
     @Override

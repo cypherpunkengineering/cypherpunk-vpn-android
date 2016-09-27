@@ -49,6 +49,9 @@
     <string name="title_activity_local_port">Local port</string>
     <string name="local_port_hint">Local port: Ex. 88888</string>
     <string name="title_activity_network">Manage trusted networks</string>
+    <string name="advanced_setting_cipher">Cipher</string>
+    <string name="advanced_setting_auth">Auth</string>
+    <string name="advanced_setting_key">Key</string>
 
     <!-- application settings -->
     <string name="title_activity_application_settings">Per application settings</string>
