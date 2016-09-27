@@ -39,6 +39,11 @@ public class SettingsFragment extends PreferenceFragmentCompat {
         plan.setTitle("Monthly Premium");
         plan.setSummary("Renews On 02/02/2016");
 
+        // email
+        Preference email = findPreference("email");
+        UserManager userManager = UserManager.getInstance(getContext());
+        email.setSummary(userManager.getMailAddress());
+
         findPreference("log_out").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
@@ -62,9 +67,6 @@ public class SettingsFragment extends PreferenceFragmentCompat {
                 return true;
             }
         });
-
-        Preference email = findPreference("email");
-        email.setSummary("wiz@wiz.biz");
 
         email.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
