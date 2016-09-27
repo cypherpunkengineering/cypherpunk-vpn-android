@@ -1,18 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
 
 
-    <Preference
-        android:key="mode"
-        android:layout="@layout/preference_account"
-        android:title="mode" />
+    <com.cypherpunk.android.vpn.ui.settings.AccountPreference android:key="account" />
 
     <PreferenceCategory android:title="Account Type">
 
         <Preference
             android:key="plan"
-            android:summary="Renews On 02/02/2016"
-            android:title="Monthly Premium" />
+            tools:summary="Renews On 02/02/2016"
+            tools:title="Monthly Premium" />
 
         <Preference
             android:key="upgrade"
@@ -24,8 +22,8 @@
 
         <Preference
             android:key="email"
-            android:summary="wiz@wiz.biz"
-            android:title="Email" />
+            android:title="Email"
+            tools:summary="wiz@wiz.biz" />
 
         <Preference
             android:key="password"
