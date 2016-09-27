@@ -8,8 +8,11 @@ import android.support.annotation.IntDef;
 import android.support.v4.content.res.ResourcesCompat;
 import android.util.AttributeSet;
 import android.view.Gravity;
+import android.view.ViewGroup;
 import android.view.animation.LinearInterpolator;
 import android.widget.CompoundButton;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
 
 import com.cypherpunk.android.vpn.R;
 
@@ -17,14 +20,17 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
 
-public class VpnFlatButton extends CompoundButton {
+public class VpnFlatButton extends FrameLayout {
 
     public static final int DISCONNECTED = 0;
     public static final int CONNECTING = 1;
     public static final int CONNECTED = 2;
 
-    private Drawable icon;
+    private CompoundButton.OnCheckedChangeListener listener;
+
+    private VpnFlatButton.VpnCoreButton buttonView;
     private ObjectAnimator anim;
+    private ImageView imageView;
 
     @Retention(RetentionPolicy.SOURCE)
     @IntDef({DISCONNECTED, CONNECTING, CONNECTED})
@@ -44,29 +50,75 @@ public class VpnFlatButton extends CompoundButton {
 
         setClickable(true);
 
-        icon = ResourcesCompat.getDrawable(getResources(), R.drawable.vpn_flat_button_icon, null);
-        setGravity(Gravity.BOTTOM);
-        setButtonDrawable(icon);
+         imageView = new ImageView(context);
+        imageView.setImageResource(R.drawable.io_btn_big_orange);
+        addView(imageView, new LayoutParams(
+                ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, Gravity.BOTTOM));
 
-        anim = ObjectAnimator.ofFloat(icon, "rotation", 0f, 360f);
+        anim = ObjectAnimator.ofFloat(imageView, "rotation", 0f, 360f);
         anim.setInterpolator(new LinearInterpolator());
-        anim.setTarget(icon);
         anim.setDuration(3000);
         anim.setRepeatCount(ValueAnimator.INFINITE);
+
+        buttonView = new VpnFlatButton.VpnCoreButton(context);
+        addView(buttonView);
+        buttonView.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (listener != null) {
+                    listener.onCheckedChanged(buttonView, isChecked);
+                }
+            }
+        });
 
         setStatus(DISCONNECTED);
     }
 
     public void setStatus(@ConnectionStatus int status) {
-        icon.setLevel(status);
+        buttonView.setStatus(status);
         switch (status) {
             case DISCONNECTED:
             case CONNECTED:
-                anim.cancel();
+                anim.end();
+                imageView.setVisibility(GONE);
                 break;
             case CONNECTING:
+                imageView.setVisibility(VISIBLE);
                 anim.start();
                 break;
+        }
+    }
+
+    public void setOnCheckedChangeListener(CompoundButton.OnCheckedChangeListener listener) {
+        this.listener = listener;
+    }
+
+    public static class VpnCoreButton extends CompoundButton {
+
+        private Drawable icon;
+
+        public VpnCoreButton(Context context) {
+            this(context, null);
+        }
+
+        public VpnCoreButton(Context context, AttributeSet attrs) {
+            this(context, attrs, 0);
+        }
+
+        public VpnCoreButton(Context context, AttributeSet attrs, int defStyleAttr) {
+            super(context, attrs, defStyleAttr);
+
+            setClickable(true);
+
+            icon = ResourcesCompat.getDrawable(getResources(), R.drawable.vpn_flat_button_icon, null);
+            setButtonDrawable(icon);
+            setGravity(Gravity.BOTTOM);
+
+            setStatus(DISCONNECTED);
+        }
+
+        public void setStatus(@ConnectionStatus int status) {
+            icon.setLevel(status);
         }
     }
 }
