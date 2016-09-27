@@ -53,8 +53,8 @@
             android:id="@+id/connection_button"
             android:layout_width="140dp"
             android:layout_height="190dp"
-            android:layout_marginTop="140dp"
-            android:layout_centerHorizontal="true" />
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true" />
 
         <com.cypherpunk.android.vpn.widget.ConnectionStatusView
             android:id="@+id/connection_status"
