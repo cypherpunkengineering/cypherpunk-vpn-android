@@ -16,6 +16,7 @@ import android.text.SpannableStringBuilder;
 import android.text.Spanned;
 import android.text.TextUtils;
 import android.text.style.TextAppearanceSpan;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -52,6 +53,7 @@ import rx.subscriptions.Subscriptions;
 public class MainActivity extends AppCompatActivity
         implements VpnStatus.StateListener, RateDialogFragment.RateDialogListener {
 
+    public static final String AUTO_START = "com.cypherpunk.android.vpn.AUTO_START";
     private static final int REQUEST_VPN_START = 0;
     private static final int REQUEST_SELECT_REGION = 1;
     private static final int REQUEST_STATUS = 2;
@@ -250,6 +252,40 @@ public class MainActivity extends AppCompatActivity
             case LEVEL_NOTCONNECTED:
                 onVpnDisconnected();
                 break;
+        }
+    }
+
+    private static void log(String str) {
+        Log.w("CypherpunkVPN", str);
+    }
+
+    @Override
+    protected void onResume()
+    {
+        log("onResume()");
+        super.onResume();
+        Intent intent = getIntent();
+        checkIfAutoStart(intent);
+        setIntent(null);
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent)
+    {
+        log("onNewIntent()");
+        super.onNewIntent(intent);
+        checkIfAutoStart(intent);
+        setIntent(null);
+    }
+
+    private void checkIfAutoStart(Intent i)
+    {
+        log("checkIfAutoStart()");
+        if (i != null && i.getBooleanExtra(AUTO_START, false))
+        {
+            log("auto starting VPN");
+            startVpn();
+            moveTaskToBack(true);
         }
     }
 
