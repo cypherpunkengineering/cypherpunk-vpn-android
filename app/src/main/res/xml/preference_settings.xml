@@ -1,45 +1,67 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <PreferenceCategory
+        android:title="@string/setting_category_startup"
+        app:layout="@layout/custom_preference_category">
 
-    <com.cypherpunk.android.vpn.ui.settings.AccountPreference android:key="account" />
+        <SwitchPreferenceCompat
+            android:key="auto_connect"
+            android:title="@string/setting_auto_connect" />
 
-    <PreferenceCategory android:title="Account Type">
-
-        <Preference
-            android:key="plan"
-            tools:summary="Renews On 02/02/2016"
-            tools:title="Monthly Premium" />
-
-        <Preference
-            android:key="upgrade"
-            android:title="Upgrade" />
+        <SwitchPreferenceCompat
+            android:key="boot_start"
+            android:title="@string/setting_boot_start" />
 
     </PreferenceCategory>
 
-    <PreferenceCategory android:title="Account Details">
+    <PreferenceCategory android:title="@string/setting_category_privacy">
+
+        <com.cypherpunk.android.vpn.ui.settings.EncryptionPreference
+            android:id="@+id/preference"
+            android:key="encryption_level"
+            android:title="@string/setting_encryption" />
 
         <Preference
-            android:key="email"
-            android:title="Email"
-            tools:summary="wiz@wiz.biz" />
+            android:key="firewall"
+            android:title="@string/setting_firewall" />
 
         <Preference
-            android:key="password"
-            android:title="Password" />
+            android:key="trusted_network"
+            android:summary="@string/setting_network_summary"
+            android:title="@string/setting_network" />
+
+        <Preference
+            android:key="application"
+            android:summary="@string/setting_application_summary"
+            android:title="@string/setting_application" />
 
     </PreferenceCategory>
 
-    <PreferenceCategory android:title="More">
+    <PreferenceCategory android:title="@string/setting_category_advanced">
 
         <Preference
-            android:key="contact_us"
-            android:title="Contact us" />
+            android:key="protocol"
+            android:title="@string/setting_protocol" />
 
         <Preference
-            android:key="log_out"
-            android:title="Log out" />
+            android:key="remote_port"
+            android:title="@string/setting_remote_port" />
+
+        <Preference
+            android:key="local_port"
+            android:title="@string/setting_local_port" />
+
+        <SwitchPreferenceCompat
+            android:key="port_forwarding"
+            android:summary="@string/setting_port_forwarding_summary"
+            android:title="@string/setting_port_forwarding" />
+
+        <SwitchPreferenceCompat
+            android:key="small_packets"
+            android:summary="@string/setting_small_packets_summary"
+            android:title="@string/setting_small_packets" />
 
     </PreferenceCategory>
 

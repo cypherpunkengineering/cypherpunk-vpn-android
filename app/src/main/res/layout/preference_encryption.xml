@@ -27,6 +27,16 @@
         app:fontName="DosisMedium"
         tools:text="title" />
 
+    <com.cypherpunk.android.vpn.widget.TypefaceTextView
+        android:id="@android:id/summary"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:maxLines="10"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+        android:textColor="?android:attr/textColorSecondary"
+        app:fontName="DosisMedium"
+        tools:text="summary" />
+
     <LinearLayout
         android:id="@+id/detail_container"
         android:layout_width="match_parent"
@@ -36,7 +46,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginRight="4dp"
-            android:text="@string/advanced_setting_cipher"
+            android:text="@string/setting_cipher"
             android:textColor="?android:attr/textColorSecondary" />
 
         <com.cypherpunk.android.vpn.widget.TypefaceTextView
@@ -51,7 +61,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginRight="4dp"
-            android:text="@string/advanced_setting_auth"
+            android:text="@string/setting_auth"
             android:textColor="?android:attr/textColorSecondary" />
 
         <com.cypherpunk.android.vpn.widget.TypefaceTextView
@@ -66,7 +76,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginRight="4dp"
-            android:text="@string/advanced_setting_key"
+            android:text="@string/setting_key"
             android:textColor="?android:attr/textColorSecondary" />
 
         <com.cypherpunk.android.vpn.widget.TypefaceTextView
@@ -77,15 +87,5 @@
             tools:text="4096-bit" />
 
     </LinearLayout>
-
-    <com.cypherpunk.android.vpn.widget.TypefaceTextView
-        android:id="@android:id/summary"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:maxLines="10"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-        android:textColor="?android:attr/textColorSecondary"
-        app:fontName="DosisMedium"
-        tools:text="summary" />
 
 </LinearLayout>

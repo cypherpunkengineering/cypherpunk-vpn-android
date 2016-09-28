@@ -31,30 +31,66 @@
     <!-- setting -->
     <string name="title_activity_settings">Configuration</string>
     <string name="tab_settings_account">Account</string>
-    <string name="tab_settings_advanced_settings">Advanced Settings</string>
+    <string name="tab_settings_advanced_settings">Settings</string>
     <string name="mode_description_text">‘Speed and Country’ mode is very high speed because not encrypted.\n Omnicos directe al desirabilite de un nov lingua franca: On refusa continuar payar custosi traductores. At solmen va esser necessi far uniform grammatica, pronunciation e plu sommun paroles.</string>
     <string name="settings_mode_max_privacy">Max privacy</string>
     <string name="settings_mode_max_speed">Max speed</string>
     <string name="settings_mode_max_freedom">Max freedom</string>
-    <string name="contact_us_hint">Please describe the issues you are having…</string>
     <string name="action_send">send</string>
     <string name="action_done">done</string>
+    <string name="title_activity_network">Manage trusted networks</string>
+
+    <!-- account setting -->
+    <string name="account_setting_category_type">Account Type</string>
+    <string name="account_setting_upgrade">Upgrade</string>
+    <string name="account_setting_category_details">Account Details</string>
+    <string name="account_setting_email">Email</string>
+    <string name="account_setting_password">Password</string>
+    <string name="account_setting_category_more">More</string>
+    <string name="account_setting_contact">Contact us</string>
+    <string name="account_setting_logout">Log out</string>
+
+    <!-- advanced setting -->
+    <string name="setting_category_startup">Startup</string>
+    <string name="setting_auto_connect">Auto-connect on start</string>
+    <string name="setting_boot_start">Auto-start on boot</string>
+    <string name="setting_category_privacy">Privacy Settings</string>
+    <string name="setting_encryption">Encryption</string>
+    <string name="setting_firewall">Firewall</string>
+    <string name="setting_network">Manage trusted networks</string>
+    <string name="setting_network_summary">something</string>
+    <string name="setting_application">Per-app VPN</string>
+    <string name="setting_application_summary">Allows app to connect directly without VPN</string>
+    <string name="setting_category_advanced">Advanced Settings</string>
+    <string name="setting_protocol">VPN Protocol</string>
+    <string name="setting_remote_port">Remote port</string>
+    <string name="setting_local_port">Local port</string>
+    <string name="setting_port_forwarding">Port Forwarding</string>
+    <string name="setting_port_forwarding_summary">Allow incoming connection to your mobile device over an external port</string>
+    <string name="setting_small_packets">Use small packets</string>
+    <string name="setting_small_packets_summary">Optimized packet size for improved connectivity to various router and mobile networks</string>
+
+    <string name="setting_cipher">Cipher</string>
+    <string name="setting_auth">Auth</string>
+    <string name="setting_key">Key</string>
+
+    <!-- edit profile-->
     <string name="title_activity_edit_email">Update Email</string>
     <string name="title_activity_edit_password">Update Password</string>
     <string name="edit_email_account_error_do_not_match">Confirm email do not match</string>
     <string name="edit_password_account_error_do_not_match">Confirm password do not match</string>
-
-    <string name="title_activity_contact">Contact us</string>
     <string name="email_hint">New Email</string>
     <string name="confirm_hint">Confirm</string>
     <string name="password_hint">New Password</string>
     <string name="current_password_hint">Current Password</string>
+
+    <!-- contact us-->
+    <string name="title_activity_contact">Contact us</string>
+    <string name="contact_us_hint">Please describe the issues you are having…</string>
+
+    <!-- port-->
     <string name="title_activity_local_port">Local port</string>
     <string name="local_port_hint">Local port: Ex. 88888</string>
-    <string name="title_activity_network">Manage trusted networks</string>
-    <string name="advanced_setting_cipher">Cipher</string>
-    <string name="advanced_setting_auth">Auth</string>
-    <string name="advanced_setting_key">Key</string>
 
     <!-- application settings -->
     <string name="title_activity_application_settings">Per application settings</string>
@@ -68,18 +104,6 @@
     <string name="status_ip_loading">Loading…</string>
     <string name="status_connected">Connected</string>
     <string name="status_disconnected">Disconnected</string>
-
-    <!-- account -->
-    <string name="account_grade_free">Free</string>
-    <string name="account_grade_monthly">Monthly</string>
-    <string name="account_grade_yearly">Yearly</string>
-    <string name="account_logout">Sign out</string>
-    <string name="account_upgrade">Upgrade</string>
-    <string name="account_change_email">Change email</string>
-    <string name="account_change_password">Change password</string>
-    <string name="account_contact_us">Contact us</string>
-    <string name="account_review">Write a review / Rate us</string>
-    <string name="account_tutorial">Quick Tutorial</string>
 
     <!-- upgrade account -->
     <string name="title_activity_upgrade_plan">Upgrade Account</string>

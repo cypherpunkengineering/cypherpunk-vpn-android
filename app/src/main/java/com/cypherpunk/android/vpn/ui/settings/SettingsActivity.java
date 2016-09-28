@@ -61,9 +61,9 @@ public class SettingsActivity extends AppCompatActivity {
         public Fragment getItem(int position) {
             switch (position) {
                 case 0:
-                    return new SettingsFragment();
+                    return new AccountSettingsFragment();
                 case 1:
-                    return new AdvancedSettingsFragment();
+                    return new SettingsFragment();
                 default:
                     return null;
             }
