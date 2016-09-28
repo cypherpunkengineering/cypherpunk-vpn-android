@@ -13,7 +13,7 @@
         <item name="preferenceTheme">@style/CypherpunkPreference</item>
     </style>
 
-    <style name="AppTheme.DialogWhenLarge" parent="Theme.AppCompat.DialogWhenLarge">
+    <style name="AppTheme.DialogWhenLarge" parent="Theme.AppCompat.Light.DialogWhenLarge">
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
@@ -24,6 +24,7 @@
         <item name="android:textColorSecondary">@android:color/white</item>
         <item name="android:windowBackground">@drawable/main_indigo_gradation</item>
         <item name="preferenceTheme">@style/CypherpunkPreference</item>
+        <item name="switchStyle">@style/Widget.Cypherpunk.Switch</item>
         <item name="android:windowAnimationStyle">@style/Animation.Activity.Slide</item>
     </style>
 
@@ -153,6 +154,10 @@
     <style name="Widget.Cypherpunk.TextInputLayout" parent="Widget.Design.TextInputLayout">
         <item name="android:textColorHint">@color/edit_text_hint</item>
         <item name="android:textColor">@color/edit_text_hint</item>
+    </style>
+
+    <style name="Widget.Cypherpunk.Switch" parent="Widget.AppCompat.CompoundButton.Switch">
+        <item name="android:textColor">@android:color/white</item>
     </style>
 
     <!-- TextAppearance -->
