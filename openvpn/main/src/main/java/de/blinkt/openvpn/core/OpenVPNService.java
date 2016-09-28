@@ -250,6 +250,7 @@ public class OpenVPNService extends VpnService implements StateListener, Callbac
 
             }
 
+            /*
             Intent disconnectVPN = new Intent(this, DisconnectVPN.class);
             disconnectVPN.setAction(DISCONNECT_VPN);
             PendingIntent disconnectPendingIntent = PendingIntent.getActivity(this, 0, disconnectVPN, 0);
@@ -270,6 +271,7 @@ public class OpenVPNService extends VpnService implements StateListener, Callbac
                 nbuilder.addAction(R.drawable.ic_menu_play,
                         getString(R.string.resumevpn), resumeVPNPending);
             }
+            */
 
 
             //ignore exception
