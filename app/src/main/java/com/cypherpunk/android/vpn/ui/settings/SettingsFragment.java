@@ -30,6 +30,20 @@ public class SettingsFragment extends PreferenceFragmentCompat {
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         addPreferencesFromResource(R.xml.preference_settings);
 
+        // TODO: set username
+        AccountPreference account = (AccountPreference) findPreference("account");
+        account.setUsernameText("wiz");
+
+        // TODO: set plan
+        Preference plan = findPreference("plan");
+        plan.setTitle("Monthly Premium");
+        plan.setSummary("Renews On 02/02/2016");
+
+        // email
+        Preference email = findPreference("email");
+        UserManager userManager = UserManager.getInstance(getContext());
+        email.setSummary(userManager.getMailAddress());
+
         findPreference("log_out").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
@@ -54,7 +68,7 @@ public class SettingsFragment extends PreferenceFragmentCompat {
             }
         });
 
-        findPreference("email").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+        email.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
                 startActivity(new Intent(getActivity(), EditEmailActivity.class));

@@ -1,6 +1,7 @@
 package com.cypherpunk.android.vpn.ui.settings;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.support.v7.preference.Preference;
 import android.support.v7.preference.PreferenceViewHolder;
 import android.util.AttributeSet;
@@ -44,15 +45,15 @@ public class EncryptionPreference extends Preference {
         keyView.setText(key);
     }
 
-    public void setAuthText(String auth) {
+    public void setAuthText(@NonNull String auth) {
         this.auth = auth;
     }
 
-    public void setCipherText(String cipher) {
+    public void setCipherText(@NonNull String cipher) {
         this.cipher = cipher;
     }
 
-    public void setKeyText(String key) {
+    public void setKeyText(@NonNull String key) {
         this.key = key;
     }
 }
