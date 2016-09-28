@@ -17,23 +17,24 @@
 
     <PreferenceCategory android:title="Privacy Settings">
 
-        <Preference
-            android:key="firewall"
-            android:title="Firewall" />
-
-        <Preference
-            android:key="trusted_network"
-            android:title="Manage trusted networks" />
-
         <com.cypherpunk.android.vpn.ui.settings.EncryptionPreference
             android:id="@+id/preference"
             android:key="encryption_level"
             android:title="Encryption" />
 
         <Preference
+            android:key="firewall"
+            android:title="Firewall" />
+
+        <Preference
+            android:key="trusted_network"
+            android:summary="something"
+            android:title="Manage trusted networks" />
+
+        <Preference
             android:key="application"
             android:summary="Allows app to connect directly without VPN"
-            android:title="Per application setting" />
+            android:title="Per-app VPN" />
 
     </PreferenceCategory>
 

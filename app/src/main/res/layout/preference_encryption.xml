@@ -27,6 +27,16 @@
         app:fontName="DosisMedium"
         tools:text="title" />
 
+    <com.cypherpunk.android.vpn.widget.TypefaceTextView
+        android:id="@android:id/summary"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:maxLines="10"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+        android:textColor="?android:attr/textColorSecondary"
+        app:fontName="DosisMedium"
+        tools:text="summary" />
+
     <LinearLayout
         android:id="@+id/detail_container"
         android:layout_width="match_parent"
@@ -77,15 +87,5 @@
             tools:text="4096-bit" />
 
     </LinearLayout>
-
-    <com.cypherpunk.android.vpn.widget.TypefaceTextView
-        android:id="@android:id/summary"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:maxLines="10"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-        android:textColor="?android:attr/textColorSecondary"
-        app:fontName="DosisMedium"
-        tools:text="summary" />
 
 </LinearLayout>
