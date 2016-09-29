@@ -16,6 +16,7 @@ import android.support.annotation.Size;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.util.Pair;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.util.SparseArray;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -89,18 +90,30 @@ public class BinarySurfaceView extends SurfaceView implements SurfaceHolder.Call
             }
         }
 
-        private void drawTiles() {
+        private void drawTiles()
+        {
             Canvas canvas = surfaceHolder.lockCanvas();
-            if (canvas != null) {
-                canvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR);
-
-                final long elapsedTime = SystemClock.uptimeMillis() - baseTime;
-                final float distance = elapsedTime * scrollDistancePerMilliSec;
-                synchronized (stateMonitor) {
-                    tileDrawable.draw(canvas, distance, connectionState);
+            try
+            {
+                synchronized (stateMonitor)
+                {
+                    final long elapsedTime = SystemClock.uptimeMillis() - baseTime;
+                    final float distance = elapsedTime * scrollDistancePerMilliSec;
+                    if (canvas != null)
+                    {
+                        canvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR);
+                        tileDrawable.draw(canvas, distance, connectionState);
+                    }
                 }
-
-                surfaceHolder.unlockCanvasAndPost(canvas);
+            }
+            catch (Exception e)
+            {
+                Log.e("", "drawTiles() exception: "+e);
+            }
+            finally
+            {
+                if (canvas != null)
+                    surfaceHolder.unlockCanvasAndPost(canvas);
             }
         }
     }
