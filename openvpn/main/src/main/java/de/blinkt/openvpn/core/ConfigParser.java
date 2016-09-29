@@ -251,6 +251,7 @@ public class ConfigParser {
             "route-up",
             "route-pre-down",
             "auth-user-pass-verify",
+            "block-outside-dns",
             "dhcp-release",
             "dhcp-renew",
             "dh",
@@ -273,6 +274,7 @@ public class ConfigParser {
             "plugin",
             "machine-readable-output",
             "persist-key",
+            "push",
             "register-dns",
             "route-delay",
             "route-gateway",
@@ -448,7 +450,7 @@ public class ConfigParser {
                     throw new ConfigParseError("Argument to --mssfix has to be an integer");
                 }
             } else {
-                np.mMssFix = VpnProfile.DEFAULT_MSSFIX_SIZE;
+                np.mMssFix = 1450; // OpenVPN default size
             }
         }
 
@@ -566,6 +568,11 @@ public class ConfigParser {
 
         }
 
+        Vector<String> x509usernamefield = getOption("x509-username-field", 1,1);
+        if (x509usernamefield!=null) {
+            np.mx509UsernameField =  x509usernamefield.get(1);
+        }
+
 
         Vector<String> verb = getOption("verb", 1, 1);
         if (verb != null) {
@@ -582,9 +589,12 @@ public class ConfigParser {
         if (getOption("push-peer-info", 0, 0) != null)
             np.mPushPeerInfo = true;
 
-        Vector<String> connectretry = getOption("connect-retry", 1, 1);
-        if (connectretry != null)
+        Vector<String> connectretry = getOption("connect-retry", 1, 2);
+        if (connectretry != null) {
             np.mConnectRetry = connectretry.get(1);
+            if (connectretry.size() > 2)
+                np.mConnectRetryMaxTime = connectretry.get(2);
+        }
 
         Vector<String> connectretrymax = getOption("connect-retry-max", 1, 1);
         if (connectretrymax != null)

@@ -39,7 +39,6 @@ import java.net.Inet6Address;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.Locale;
 import java.util.Vector;
 
@@ -54,7 +53,6 @@ import de.blinkt.openvpn.core.VpnStatus.StateListener;
 
 import static de.blinkt.openvpn.core.NetworkSpace.ipAddress;
 import static de.blinkt.openvpn.core.VpnStatus.ConnectionStatus.LEVEL_CONNECTED;
-import static de.blinkt.openvpn.core.VpnStatus.ConnectionStatus.LEVEL_CONNECTING_NO_SERVER_REPLY_YET;
 import static de.blinkt.openvpn.core.VpnStatus.ConnectionStatus.LEVEL_WAITING_FOR_USER_INPUT;
 
 public class OpenVPNService extends VpnService implements StateListener, Callback, ByteCountListener {
@@ -116,7 +114,7 @@ public class OpenVPNService extends VpnService implements StateListener, Callbac
 
     @Override
     public void onRevoke() {
-        VpnStatus.logInfo(R.string.permission_revoked);
+        VpnStatus.logError(R.string.permission_revoked);
         mManagement.stopVPN(false);
         endVpnService();
     }
@@ -465,8 +463,7 @@ public class OpenVPNService extends VpnService implements StateListener, Callbac
 
 
         } else {
-            HashMap<String, String> env = new HashMap<>();
-            processThread = new OpenVPNThread(this, argv, env, nativeLibraryDirectory);
+            processThread = new OpenVPNThread(this, argv, nativeLibraryDirectory);
             mOpenVPNThread = processThread;
         }
 
