@@ -4,9 +4,11 @@ import android.app.Application;
 
 import com.cypherpunk.android.vpn.dagger.AppComponent;
 import com.cypherpunk.android.vpn.dagger.DaggerAppComponent;
+import com.cypherpunk.android.vpn.model.CypherpunkSetting;
 import com.deploygate.sdk.DeployGate;
 import com.orhanobut.hawk.Hawk;
 import com.orhanobut.hawk.HawkBuilder;
+import com.os.operando.garum.Configuration;
 import com.os.operando.garum.Garum;
 
 import de.blinkt.openvpn.core.PRNGFixes;
@@ -27,7 +29,10 @@ public class CypherpunkApplication extends Application {
 
         appComponent = DaggerAppComponent.create();
 
-        Garum.initialize(this);
+        Configuration.Builder builder = new Configuration.Builder(getApplicationContext());
+        //noinspection unchecked
+        builder.setModelClasses(CypherpunkSetting.class);
+        Garum.initialize(builder.create());
         DeployGate.install(this);
         Hawk.init(this)
                 .setStorage(HawkBuilder.newSharedPrefStorage(this))
