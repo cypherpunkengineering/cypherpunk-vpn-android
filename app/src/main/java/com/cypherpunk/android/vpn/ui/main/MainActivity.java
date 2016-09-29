@@ -68,7 +68,7 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if (!UserManager.getInstance(this).isSignedIn()) {
+        if (!UserManager.isSignedIn()) {
             Intent intent = new Intent(this, IntroductionActivity.class);
             TaskStackBuilder builder = TaskStackBuilder.create(this);
             builder.addNextIntent(intent);

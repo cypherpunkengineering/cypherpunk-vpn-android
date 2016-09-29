@@ -41,4 +41,16 @@ public class CypherpunkSetting extends PrefModel {
     @PrefKey
     @DefaultString("RSA 2048")
     public String key;
+
+    @PrefKey("auto_connect")
+    public boolean autoConnect;
+
+    @PrefKey("auto_start")
+    public boolean autoStart;
+
+    @PrefKey("port_forwarding")
+    public boolean portForwarding;
+
+    @PrefKey("small_packets")
+    public boolean smallPackets;
 }

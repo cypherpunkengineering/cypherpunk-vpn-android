@@ -5,6 +5,7 @@ import android.app.Application;
 import com.cypherpunk.android.vpn.dagger.AppComponent;
 import com.cypherpunk.android.vpn.dagger.DaggerAppComponent;
 import com.cypherpunk.android.vpn.model.CypherpunkSetting;
+import com.cypherpunk.android.vpn.model.UserSetting;
 import com.deploygate.sdk.DeployGate;
 import com.orhanobut.hawk.Hawk;
 import com.orhanobut.hawk.HawkBuilder;
@@ -31,7 +32,7 @@ public class CypherpunkApplication extends Application {
 
         Configuration.Builder builder = new Configuration.Builder(getApplicationContext());
         //noinspection unchecked
-        builder.setModelClasses(CypherpunkSetting.class);
+        builder.setModelClasses(CypherpunkSetting.class, UserSetting.class);
         Garum.initialize(builder.create());
         DeployGate.install(this);
         Hawk.init(this)

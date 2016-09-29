@@ -1,65 +1,45 @@
 package com.cypherpunk.android.vpn.data.api;
 
-import android.content.Context;
-import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 
+import com.cypherpunk.android.vpn.model.UserSetting;
 import com.orhanobut.hawk.Hawk;
 
 public class UserManager {
 
-    private static final String PREF_KEY_MAIL = "mail";
     private static final String PREF_KEY_PASSWORD = "password";
 
-    private static UserManager singleton = null;
 
-    @NonNull
-    public static synchronized UserManager getInstance(@NonNull Context context) {
-        if (singleton == null) {
-            singleton = new UserManager(context);
-        }
-        return singleton;
-    }
-
-    @NonNull
-    private final Context context;
-
-    private UserManager(@NonNull Context context) {
-        this.context = context.getApplicationContext();
-    }
-
-    public boolean isSignedIn() {
+    public static boolean isSignedIn() {
         String mail = getMailAddress();
-        return mail != null && mail.length() > 0;
+        return !TextUtils.isEmpty(mail);
     }
 
     @Nullable
-    public String getMailAddress() {
-        return getPrefs(context).getString(PREF_KEY_MAIL, null);
+    public static String getMailAddress() {
+        return new UserSetting().mail;
     }
 
-    public void saveMailAddress(@NonNull String mail) {
-        getPrefs(context).edit().putString(PREF_KEY_MAIL, mail).apply();
+    public static void saveMailAddress(@NonNull String mail) {
+        UserSetting user = new UserSetting();
+        user.mail = mail;
+        user.save();
     }
 
     @Nullable
-    public String getPassword() {
+    public static String getPassword() {
         return Hawk.get(PREF_KEY_PASSWORD);
     }
 
-    public void savePassword(@NonNull String password) {
+    public static void savePassword(@NonNull String password) {
         Hawk.put(PREF_KEY_PASSWORD, password);
     }
 
-    public void clearUser() {
-        getPrefs(context).edit().remove(PREF_KEY_MAIL).apply();
+    public static void clearUser() {
+        UserSetting user = new UserSetting();
+        user.clear();
         Hawk.remove(PREF_KEY_PASSWORD);
-    }
-
-    @NonNull
-    private SharedPreferences getPrefs(@NonNull Context context) {
-        return PreferenceManager.getDefaultSharedPreferences(context);
     }
 }

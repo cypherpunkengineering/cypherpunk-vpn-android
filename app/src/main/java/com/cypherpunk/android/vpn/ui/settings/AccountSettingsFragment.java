@@ -41,8 +41,7 @@ public class AccountSettingsFragment extends PreferenceFragmentCompat {
 
         // email
         Preference email = findPreference("email");
-        UserManager userManager = UserManager.getInstance(getContext());
-        email.setSummary(userManager.getMailAddress());
+        email.setSummary(UserManager.getMailAddress());
 
         findPreference("log_out").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
@@ -87,8 +86,7 @@ public class AccountSettingsFragment extends PreferenceFragmentCompat {
 
     private void signOut() {
         CypherpunkVPN.stop(getActivity().getApplicationContext(), getActivity().getBaseContext());
-        UserManager manager = UserManager.getInstance(getActivity());
-        manager.clearUser();
+        UserManager.clearUser();
         Intent intent = new Intent(getActivity(), IntroductionActivity.class);
         TaskStackBuilder builder = TaskStackBuilder.create(getActivity());
         builder.addNextIntent(intent);

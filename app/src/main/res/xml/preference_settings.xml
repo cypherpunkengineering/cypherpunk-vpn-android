@@ -11,7 +11,7 @@
             android:title="@string/setting_auto_connect" />
 
         <SwitchPreferenceCompat
-            android:key="boot_start"
+            android:key="auto_start"
             android:title="@string/setting_boot_start" />
 
     </PreferenceCategory>
