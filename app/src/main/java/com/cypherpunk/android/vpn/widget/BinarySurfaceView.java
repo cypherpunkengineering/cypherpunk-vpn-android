@@ -16,7 +16,6 @@ import android.support.annotation.Size;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.util.Pair;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.util.SparseArray;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -118,8 +117,8 @@ public class BinarySurfaceView extends SurfaceView implements SurfaceHolder.Call
         super(context, attrs, defStyleAttr);
         surfaceHolder = getHolder();
         surfaceHolder.setFormat(PixelFormat.TRANSLUCENT);
-        surfaceHolder.addCallback(this);
         setZOrderOnTop(true);
+        surfaceHolder.addCallback(this);
     }
 
     @Override
@@ -137,7 +136,6 @@ public class BinarySurfaceView extends SurfaceView implements SurfaceHolder.Call
 
     @Override
     public void surfaceDestroyed(SurfaceHolder holder) {
-        Log.d("BinaryTextureView", "onSurfaceTextureDestroyed");
         Thread t = renderingThread;
         if (t != null) {
             renderingThread = null;
