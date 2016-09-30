@@ -438,6 +438,9 @@ public class OpenVPNService extends VpnService implements StateListener, Callbac
         if (!"ovpn3".equals(BuildConfig.FLAVOR))
             mOvpn3 = false;
 
+		// XXX: hard-code for now, convert to userpref later
+        mOvpn3 = true;
+
         // Open the Management Interface
         if (!mOvpn3) {
             // start a Thread that handles incoming messages of the managment socket

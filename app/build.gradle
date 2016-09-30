@@ -17,7 +17,7 @@ android {
     }
     sourceSets {
         main {
-            java.srcDirs += '../openvpn/main/src/main/java'
+            java.srcDirs += [ '../openvpn/main/src/main/java', '../openvpn/main/src/ovpn3/java' ]
             res.srcDirs += '../openvpn/main/src/main/res'
             assets.srcDirs += [ '../openvpn/main/src/main/assets', '../openvpn/main/ovpnlibs/assets' ]
             jniLibs.srcDirs += '../openvpn/main/ovpnlibs/jniLibs'

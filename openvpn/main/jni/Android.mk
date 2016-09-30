@@ -3,7 +3,7 @@ JNI_DIR := $(call my-dir)
 
 #optional arguments
 #WITH_MBEDTLS=1
-#WITH_OPENVPN3=1
+WITH_OPENVPN3=1
 # Build openvpn with mbedTLS (OpenVPN3 core is always build with mbedTLS)
 #USE_BREAKPAD=0
 
@@ -38,7 +38,7 @@ ifeq ($(WITH_OPENVPN3),1)
 endif
 
 ifeq ($(USE_MBEDTLS),1)
-	include mbedtls/Android.mk
+#	include mbedtls/Android.mk
 endif
 
 include openvpn/Android.mk

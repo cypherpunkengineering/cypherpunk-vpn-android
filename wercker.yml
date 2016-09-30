@@ -2,7 +2,7 @@ box: cypherpunk/android
 build:
   steps:
     - install-packages:
-        packages: openssh-client git unzip make file
+        packages: openssh-client git unzip make file swig
     - add-ssh-key:
         keyname: cypherpunkbuilder
         host: github.com
@@ -10,19 +10,9 @@ build:
         hostname: github.com
         fingerprint: 16:27:ac:a5:76:28:2d:36:63:1b:56:4d:eb:df:a6:48
     - script:
-        name: initialize git submodules
+        name: run build script
         code: |
-            git submodule update --init
-    - script:
-        name: build native libraries
-        code: |
-            cd openvpn/main/
-            ./misc/build-native.sh
-            cd ../../
-    - script:
-        name: build android app
-        code: |
-            ./gradlew -PdisablePreDex --project-cache-dir=$WERCKER_CACHE_DIR build
+            ./build-ubuntu
     - script:
         name: cleanup
         code: |
