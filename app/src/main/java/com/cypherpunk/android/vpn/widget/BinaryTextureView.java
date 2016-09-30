@@ -44,8 +44,20 @@ public class BinaryTextureView extends TextureView implements TextureView.Surfac
     public @interface ConnectionState {
     }
 
+    @Retention(RetentionPolicy.SOURCE)
+    @IntDef({STATE_RUNNING, STATE_STOPPED})
+    private @interface AnimationState {
+    }
+
+    private static final int STATE_RUNNING = 0;
+    private static final int STATE_STOPPED = 1;
+
     @ConnectionState
     private int connectionState = DISCONNECTED;
+
+    @AnimationState
+    private int animationState = STATE_RUNNING;
+
     private final Object stateMonitor = new Object();
 
     private final class RenderingThread extends Thread {
@@ -84,6 +96,7 @@ public class BinaryTextureView extends TextureView implements TextureView.Surfac
             baseTime = SystemClock.uptimeMillis();
             while (renderingThread == this) {
                 drawTiles();
+                sleepIfStopped();
             }
         }
 
@@ -98,6 +111,17 @@ public class BinaryTextureView extends TextureView implements TextureView.Surfac
             }
 
             unlockCanvasAndPost(canvas);
+        }
+
+        private void sleepIfStopped() {
+            synchronized (stateMonitor) {
+                if (animationState == STATE_STOPPED) {
+                    try {
+                        stateMonitor.wait();
+                    } catch (InterruptedException ignored) {
+                    }
+                }
+            }
         }
     }
 
@@ -156,6 +180,21 @@ public class BinaryTextureView extends TextureView implements TextureView.Surfac
 
     @Override
     public void onSurfaceTextureUpdated(SurfaceTexture surfaceTexture) {
+    }
+
+    public void startAnimation() {
+        synchronized (stateMonitor) {
+            animationState = STATE_RUNNING;
+            stateMonitor.notifyAll();
+        }
+    }
+
+    public void stopAnimation() {
+        synchronized (stateMonitor) {
+            if (animationState == STATE_RUNNING) {
+                animationState = STATE_STOPPED;
+            }
+        }
     }
 
     public void setState(@ConnectionState int state) {
