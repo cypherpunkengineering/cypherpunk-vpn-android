@@ -38,7 +38,7 @@ import com.cypherpunk.android.vpn.vpn.CypherpunkVPN;
 import com.cypherpunk.android.vpn.vpn.CypherpunkVpnStatus;
 import com.cypherpunk.android.vpn.widget.BinaryTextureView;
 import com.cypherpunk.android.vpn.widget.ConnectionStatusView;
-import com.cypherpunk.android.vpn.widget.VpnButton;
+import com.cypherpunk.android.vpn.widget.VpnFlatButton;
 
 import javax.inject.Inject;
 
@@ -216,6 +216,19 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        binding.binaryTextureView.startAnimation();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        // 画面が黒くなってしまうから、アニメーションを止める
+        binding.binaryTextureView.stopAnimation();
+    }
+
+    @Override
     protected void onDestroy() {
         subscription.unsubscribe();
         super.onDestroy();
@@ -247,7 +260,7 @@ public class MainActivity extends AppCompatActivity
         } else {
             binding.binaryTextureView.setState(BinaryTextureView.CONNECTING);
             binding.connectionStatus.setStatus(ConnectionStatusView.CONNECTING);
-            binding.connectionButton.setStatus(VpnButton.CONNECTING);
+            binding.connectionButton.setStatus(VpnFlatButton.CONNECTING);
             binding.connectingCancelButton.setVisibility(View.VISIBLE);
             CypherpunkVPN.start(getApplicationContext(), getBaseContext());
         }
@@ -266,7 +279,7 @@ public class MainActivity extends AppCompatActivity
             public void run() {
                 binding.binaryTextureView.setState(BinaryTextureView.CONNECTED);
                 binding.connectionStatus.setStatus(ConnectionStatusView.CONNECTED);
-                binding.connectionButton.setStatus(VpnButton.CONNECTED);
+                binding.connectionButton.setStatus(VpnFlatButton.CONNECTED);
                 binding.connectingCancelButton.setVisibility(View.INVISIBLE);
             }
         });
@@ -279,7 +292,7 @@ public class MainActivity extends AppCompatActivity
             public void run() {
                 binding.binaryTextureView.setState(BinaryTextureView.DISCONNECTED);
                 binding.connectionStatus.setStatus(ConnectionStatusView.DISCONNECTED);
-                binding.connectionButton.setStatus(VpnButton.DISCONNECTED);
+                binding.connectionButton.setStatus(VpnFlatButton.DISCONNECTED);
                 binding.connectingCancelButton.setVisibility(View.INVISIBLE);
             }
         });
