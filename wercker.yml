@@ -2,7 +2,7 @@ box: cypherpunk/android
 build:
   steps:
     - install-packages:
-        packages: openssh-client git unzip make file
+        packages: openssh-client git unzip make file swig
     - add-ssh-key:
         keyname: cypherpunkbuilder
         host: github.com
