@@ -10,25 +10,9 @@ build:
         hostname: github.com
         fingerprint: 16:27:ac:a5:76:28:2d:36:63:1b:56:4d:eb:df:a6:48
     - script:
-        name: initialize git submodules
+        name: run build script
         code: |
-            git submodule update --init
-    - script:
-        name: build native libraries
-        code: |
-            cd openvpn/main/
-            ./misc/build-native.sh
-            cd ../../
-    - script:
-        name: build android app
-        code: |
-            ./gradlew -PdisablePreDex --project-cache-dir=$WERCKER_CACHE_DIR build
-    - script:
-        name: cleanup
-        code: |
-            rm -rf .git
-            rm -rf ${ANDROID_NDK_HOME}
-            rm -rf openvpn
+            ./build-ubuntu
   after-steps:
     - install-packages:
         packages: curl
