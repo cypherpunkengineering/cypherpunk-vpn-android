@@ -8,16 +8,17 @@ git submodule update --init
 cd openvpn/main/openvpn3
 
 # vars
-export O3=${HOME}/Development/cypherpunk/cypherpunk-vpn-android/openvpn/main/openvpn3
-export DEP_DIR=${HOME}/src/android
-export SDK=${HOME}/Library/Android/sdk
-export NDK=${HOME}/Library/Android/ndk
-export TC=$DEP_DIR/tc-arm
+export O3="${PWD}"
+export DEP_DIR="${HOME}/src/android"
+#export SDK="${HOME}/Library/Android/sdk"
+export SDK="${ANDROID_HOME}"
+#export NDK="${HOME}/Library/Android/ndk"
+export NDK="${ANDROID_NDK_HOME}"
+export TC="$DEP_DIR/tc-arm"
 export PLATFORM_FLAGS="--sysroot=$TC/sysroot"
-export ORIGPATH="$PATH"
+export ORIGPATH="${PATH}"
 export PATH="$SDK/tools:$SDK/platform-tools:$PATH"
 export PATH="$TC/bin:$TC/arm-linux-androideabi/bin:$VARS_SAVE_PATH:$PATH"
-echo $PATH
 
 # prep
 mkdir -p "${DEP_DIR}"
