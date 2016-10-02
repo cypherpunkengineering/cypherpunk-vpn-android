@@ -64,6 +64,7 @@ public class OpenVPNService extends VpnService implements StateListener, Callbac
     private static final String RESUME_VPN = "de.blinkt.openvpn.RESUME_VPN";
     private static final int OPENVPN_STATUS = 1;
     private static boolean mNotificationAlwaysVisible = false;
+    private static OpenVPNService mService;
     private final Vector<String> mDnslist = new Vector<>();
     private final NetworkSpace mRoutes = new NetworkSpace();
     private final NetworkSpace mRoutesv6 = new NetworkSpace();
@@ -86,6 +87,22 @@ public class OpenVPNService extends VpnService implements StateListener, Callbac
     private Handler guiHandler;
     private Toast mlastToast;
     private Runnable mOpenVPNThread;
+    private int mOpenVPNfd = -1;
+
+    public void closeOpenVPNtun(int fdint)
+    {
+        mOpenVPNfd = fdint;
+    }
+
+    public void stopKillSwitch()
+    {
+        endVpnService();
+    }
+
+    public boolean isKillSwitchActive()
+    {
+        return (mOpenVPNfd != -1);
+    }
 
     // From: http://stackoverflow.com/questions/3758606/how-to-convert-byte-size-into-human-readable-format-in-java
     public static String humanReadableByteCount(long bytes, boolean mbit) {
@@ -120,8 +137,12 @@ public class OpenVPNService extends VpnService implements StateListener, Callbac
     }
 
     // Similar to revoke but do not try to stop process
-    public void processDied() {
-        endVpnService();
+    public void processDied()
+    {
+        if (!mProfile.mPersistTun)
+        {
+            endVpnService();
+        }
     }
 
     private void endVpnService() {
@@ -139,6 +160,18 @@ public class OpenVPNService extends VpnService implements StateListener, Callbac
                 stopSelf();
                 VpnStatus.removeStateListener(this);
             }
+        }
+
+        closeOpenVPNfdIfOpen();
+        mService = null;
+    }
+
+    private void closeOpenVPNfdIfOpen()
+    {
+        if (mOpenVPNfd != -1)
+        {
+            NativeUtils.jniclose(mOpenVPNfd);
+            mOpenVPNfd = -1;
         }
     }
 
@@ -330,6 +363,8 @@ public class OpenVPNService extends VpnService implements StateListener, Callbac
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+
+        mService = this;
 
         if (intent != null && intent.getBooleanExtra(ALWAYS_SHOW_NOTIFICATION, false))
             mNotificationAlwaysVisible = true;
@@ -710,6 +745,7 @@ public class OpenVPNService extends VpnService implements StateListener, Callbac
             ParcelFileDescriptor tun = builder.establish();
             if (tun == null)
                 throw new NullPointerException("Android establish() method returned null (Really broken network configuration?)");
+            closeOpenVPNfdIfOpen();
             return tun;
         } catch (Exception e) {
             VpnStatus.logError(R.string.tun_open_error);

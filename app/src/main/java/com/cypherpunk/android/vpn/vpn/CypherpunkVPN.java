@@ -85,6 +85,22 @@ public class CypherpunkVPN {
         log("stop()");
         if (service != null) {
             service.getManagement().stopVPN(false);
+            // privacy firewall killswitch
+            CypherpunkSetting cypherpunkSetting = new CypherpunkSetting();
+            if (cypherpunkSetting.privacyFirewallMode != null && cypherpunkSetting.privacyFirewallMode.length() > 0)
+            {
+                switch (cypherpunkSetting.privacyFirewallMode)
+                {
+                    case "setting_privacy_firewall_mode_auto":
+                        service.stopKillSwitch();
+                        break;
+                    case "setting_privacy_firewall_mode_always":
+                        break;
+                    case "setting_privacy_firewall_mode_never":
+                        service.stopKillSwitch();
+                        break;
+                }
+            }
         }
     }
 
@@ -97,8 +113,6 @@ public class CypherpunkVPN {
         CypherpunkSetting cypherpunkSetting = new CypherpunkSetting();
 
         // debug print
-        /*
-        log("vpnAutoStartConnect: "+ cypherpunkSetting.vpnAutoStartConnect);
         log("vpnCryptoProfile: "+ cypherpunkSetting.vpnCryptoProfile);
         log("vpnCryptoProfileAuth: "+ cypherpunkSetting.vpnCryptoProfileAuth);
         log("vpnCryptoProfileCipher: "+ cypherpunkSetting.vpnCryptoProfileCipher);
@@ -107,7 +121,6 @@ public class CypherpunkVPN {
         log("vpnProtocol: "+ cypherpunkSetting.vpnProtocol);
         log("vpnPortLocal: "+ cypherpunkSetting.vpnPortLocal);
         log("vpnPortRemote: "+ cypherpunkSetting.vpnPortRemote);
-        */
 
         // standard options
         list.add("client\n");
@@ -175,6 +188,26 @@ public class CypherpunkVPN {
         else
             list.add("nobind\n");
 
+        // privacy firewall killswitch
+        if (cypherpunkSetting.privacyFirewallMode != null && cypherpunkSetting.privacyFirewallMode.length() > 0)
+        {
+            switch (cypherpunkSetting.privacyFirewallMode)
+            {
+                case "setting_privacy_firewall_mode_auto":
+                case "setting_privacy_firewall_mode_always":
+                    list.add("persist-tun\n");
+                    break;
+                case "setting_privacy_firewall_mode_never":
+                    break;
+            }
+        }
+
+        // privacy firewall exempt LAN from killswitch
+        if (cypherpunkSetting.privacyFirewallExemptLAN)
+            list.add("redirect-gateway autolocal unblock-local\n");
+        else
+            list.add("redirect-gateway autolocal block-local\n");
+
         // append contents of openvpn.conf
         try
         {
@@ -192,7 +225,6 @@ public class CypherpunkVPN {
             return null;
         }
 
-        // join lines and output as string
         String[] confLines = list.toArray(new String[0]);
         String conf = TextUtils.join("\n", confLines);
 
