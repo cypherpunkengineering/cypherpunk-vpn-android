@@ -28,6 +28,7 @@ import com.cypherpunk.android.vpn.data.api.JsonipService;
 import com.cypherpunk.android.vpn.data.api.UserManager;
 import com.cypherpunk.android.vpn.data.api.json.JsonipResult;
 import com.cypherpunk.android.vpn.databinding.ActivityMainBinding;
+import com.cypherpunk.android.vpn.model.CypherpunkSetting;
 import com.cypherpunk.android.vpn.model.IpStatus;
 import com.cypherpunk.android.vpn.model.Location;
 import com.cypherpunk.android.vpn.ui.region.LocationsActivity;
@@ -218,9 +219,15 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
-    protected void onResume() {
+    protected void onResume()
+    {
         super.onResume();
+
         binding.binaryTextureView.startAnimation();
+
+        Intent intent = getIntent();
+        checkIfAutoStart(intent);
+        setIntent(null);
     }
 
     @Override
@@ -260,16 +267,6 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
-    protected void onResume()
-    {
-        log("onResume()");
-        super.onResume();
-        Intent intent = getIntent();
-        checkIfAutoStart(intent);
-        setIntent(null);
-    }
-
-    @Override
     protected void onNewIntent(Intent intent)
     {
         log("onNewIntent()");
@@ -283,9 +280,17 @@ public class MainActivity extends AppCompatActivity
         log("checkIfAutoStart()");
         if (i != null && i.getBooleanExtra(AUTO_START, false))
         {
-            log("auto starting VPN");
-            startVpn();
-            moveTaskToBack(true);
+            CypherpunkSetting cypherpunkSetting = new CypherpunkSetting();
+            if (cypherpunkSetting.vpnAutoStartConnect == true)
+            {
+                log("auto starting VPN");
+                startVpn();
+                moveTaskToBack(true);
+            }
+            else
+            {
+                finish();
+            }
         }
     }
 

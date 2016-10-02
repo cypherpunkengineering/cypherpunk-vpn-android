@@ -7,8 +7,8 @@
         app:layout="@layout/custom_preference_category">
 
         <SwitchPreferenceCompat
-            android:key="auto_start_connect"
-            android:title="@string/setting_auto_start_connect" />
+            android:key="vpn_auto_start_connect"
+            android:title="@string/setting_vpn_auto_start_connect" />
 
     </PreferenceCategory>
 
