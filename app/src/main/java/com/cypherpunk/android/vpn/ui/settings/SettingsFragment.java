@@ -24,9 +24,9 @@ public class SettingsFragment extends PreferenceFragmentCompat {
     private CypherpunkSetting cypherpunkSetting;
     private Preference protocol;
     private Preference remotePort;
-    private Preference localPort;
+    private Preference vpnPortLocal;
     private Preference firewall;
-    private EncryptionPreference encryptionLevel;
+    private EncryptionPreference vpnCryptoProfile;
     private Preference cipher;
     private Preference authentication;
     private Preference key;
@@ -64,68 +64,68 @@ public class SettingsFragment extends PreferenceFragmentCompat {
             }
         });
 
-        protocol = findPreference("protocol");
-        protocol.setSummary(cypherpunkSetting.protocol);
+        protocol = findPreference("vpn_protocol");
+        protocol.setSummary(getStringByKey(cypherpunkSetting.vpnProtocol));
         protocol.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
                 startActivityForResult(ListPreferenceActivity.createIntent(getActivity(),
-                        "protocol", protocol.getTitle(), new CypherpunkSetting().protocol, getSettingItemList(
-                                R.array.protocol_value, R.array.protocol_description)),
+                        "vpn_protocol", protocol.getTitle(), new CypherpunkSetting().vpnProtocol, getSettingItemList(
+                                R.array.vpn_protocol_value, R.array.vpn_protocol_description)),
                         REQUEST_LIST_SETTING);
                 return true;
             }
         });
 
-        remotePort = findPreference("remote_port");
-        remotePort.setSummary(cypherpunkSetting.remotePort);
+        remotePort = findPreference("vpn_port_remote");
+        remotePort.setSummary(getStringByKey(cypherpunkSetting.vpnPortRemote));
         remotePort.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
                 startActivityForResult(ListPreferenceActivity.createIntent(getActivity(),
-                        "remote_port", remotePort.getTitle(), new CypherpunkSetting().remotePort,
-                        getSettingItemList(R.array.remote_port_value, 0)),
+                        "vpn_port_remote", remotePort.getTitle(), new CypherpunkSetting().vpnPortRemote,
+                        getSettingItemList(R.array.vpn_port_remote_value, 0)),
                         REQUEST_LIST_SETTING);
                 return true;
             }
         });
 
-        firewall = findPreference("firewall");
-        firewall.setSummary(cypherpunkSetting.firewall);
+        firewall = findPreference("privacy_firewall_mode");
+        firewall.setSummary(getStringByKey(cypherpunkSetting.privacyFirewallMode));
         firewall.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
                 startActivityForResult(ListPreferenceActivity.createIntent(getActivity(),
-                        "firewall", firewall.getTitle(), new CypherpunkSetting().firewall,
-                        getSettingItemList(R.array.firewall_value, R.array.firewall_description)),
+                        "privacy_firewall_mode", firewall.getTitle(), new CypherpunkSetting().privacyFirewallMode,
+                        getSettingItemList(R.array.privacy_firewall_mode_value, R.array.privacy_firewall_mode_description)),
                         REQUEST_LIST_SETTING);
                 return true;
             }
         });
 
-        localPort = findPreference("local_port");
-        localPort.setSummary(String.valueOf(cypherpunkSetting.localPort));
-        localPort.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+        vpnPortLocal = findPreference("vpn_port_local");
+        vpnPortLocal.setSummary(String.valueOf(cypherpunkSetting.vpnPortLocal));
+        vpnPortLocal.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
                 startActivityForResult(LocalPortActivity.createIntent(getActivity(),
-                        String.valueOf(cypherpunkSetting.localPort)), REQUEST_LIST_SETTING);
+                        String.valueOf(cypherpunkSetting.vpnPortLocal)), REQUEST_LIST_SETTING);
                 return true;
             }
         });
 
-        encryptionLevel = (EncryptionPreference) findPreference("encryption_level");
-        encryptionLevel.setSummary(cypherpunkSetting.encryptionLevel);
-        encryptionLevel.setCipherText(cypherpunkSetting.cipher);
-        encryptionLevel.setAuthText(cypherpunkSetting.authentication);
-        encryptionLevel.setKeyText(cypherpunkSetting.key);
-        encryptionLevel.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+        vpnCryptoProfile = (EncryptionPreference) findPreference("vpn_crypto_profile");
+        vpnCryptoProfile.setSummary(getStringByKey(cypherpunkSetting.vpnCryptoProfile));
+        vpnCryptoProfile.setCipherText(getStringByKey(cypherpunkSetting.vpnCryptoProfileCipher));
+        vpnCryptoProfile.setAuthText(getStringByKey(cypherpunkSetting.vpnCryptoProfileAuth));
+        vpnCryptoProfile.setKeyText(getStringByKey(cypherpunkSetting.vpnCryptoProfileKeylen));
+        vpnCryptoProfile.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
                 startActivityForResult(ListPreferenceActivity.createIntent(getActivity(),
-                        "encryption_level", encryptionLevel.getTitle(),
-                        new CypherpunkSetting().encryptionLevel, getSettingItemList(
-                                R.array.encryption_value, R.array.encryption_description)),
+                        "vpn_crypto_profile", vpnCryptoProfile.getTitle(),
+                        new CypherpunkSetting().vpnCryptoProfile, getSettingItemList(
+                                R.array.vpn_crypto_profile_value, R.array.vpn_crypto_profile_description)),
                         REQUEST_LIST_SETTING);
                 return true;
             }
@@ -139,21 +139,21 @@ public class SettingsFragment extends PreferenceFragmentCompat {
             String updateKey = data.getStringExtra(ListPreferenceActivity.EXTRA_KEY);
             CypherpunkSetting cypherpunkSetting = new CypherpunkSetting();
             switch (updateKey) {
-                case "protocol":
-                    cypherpunkSetting.protocol = data.getStringExtra(ListPreferenceActivity.EXTRA_SELECTED_VALUE);
-                    protocol.setSummary(data.getStringExtra(ListPreferenceActivity.EXTRA_SELECTED_VALUE));
+                case "vpn_protocol":
+                    cypherpunkSetting.vpnProtocol = data.getStringExtra(ListPreferenceActivity.EXTRA_SELECTED_VALUE);
+                    protocol.setSummary(getStringByKey(data.getStringExtra(ListPreferenceActivity.EXTRA_SELECTED_VALUE)));
                     break;
-                case "remote_port":
-                    cypherpunkSetting.remotePort = data.getStringExtra(ListPreferenceActivity.EXTRA_SELECTED_VALUE);
-                    remotePort.setSummary(data.getStringExtra(ListPreferenceActivity.EXTRA_SELECTED_VALUE));
+                case "vpn_port_remote":
+                    cypherpunkSetting.vpnPortRemote = data.getStringExtra(ListPreferenceActivity.EXTRA_SELECTED_VALUE);
+                    remotePort.setSummary(getStringByKey(data.getStringExtra(ListPreferenceActivity.EXTRA_SELECTED_VALUE)));
                     break;
-                case "firewall":
-                    cypherpunkSetting.firewall = data.getStringExtra(ListPreferenceActivity.EXTRA_SELECTED_VALUE);
-                    firewall.setSummary(data.getStringExtra(ListPreferenceActivity.EXTRA_SELECTED_VALUE));
+                case "privacy_firewall_mode":
+                    cypherpunkSetting.privacyFirewallMode = data.getStringExtra(ListPreferenceActivity.EXTRA_SELECTED_VALUE);
+                    firewall.setSummary(getStringByKey(data.getStringExtra(ListPreferenceActivity.EXTRA_SELECTED_VALUE)));
                     break;
-                case "encryption_level":
-                    cypherpunkSetting.encryptionLevel = data.getStringExtra(ListPreferenceActivity.EXTRA_SELECTED_VALUE);
-                    encryptionLevel.setSummary(data.getStringExtra(ListPreferenceActivity.EXTRA_SELECTED_VALUE));
+                case "vpn_crypto_profile":
+                    cypherpunkSetting.vpnCryptoProfile = data.getStringExtra(ListPreferenceActivity.EXTRA_SELECTED_VALUE);
+                    vpnCryptoProfile.setSummary(getStringByKey(data.getStringExtra(ListPreferenceActivity.EXTRA_SELECTED_VALUE)));
                     break;
 //                case "cipher":
 //                    cypherpunkSetting.cipher = data.getStringExtra(ListPreferenceActivity.EXTRA_SELECTED_VALUE);
@@ -167,24 +167,40 @@ public class SettingsFragment extends PreferenceFragmentCompat {
 //                    cypherpunkSetting.key = data.getStringExtra(ListPreferenceActivity.EXTRA_SELECTED_VALUE);
 //                    key.setSummary(data.getStringExtra(ListPreferenceActivity.EXTRA_SELECTED_VALUE));
 //                    break;
-                case "local_port":
-                    cypherpunkSetting.localPort = data.getIntExtra(ListPreferenceActivity.EXTRA_SELECTED_VALUE, 8888);
-                    localPort.setSummary(data.getStringExtra(ListPreferenceActivity.EXTRA_SELECTED_VALUE));
+                case "vpn_port_local":
+                    cypherpunkSetting.vpnPortLocal = data.getStringExtra(ListPreferenceActivity.EXTRA_SELECTED_VALUE);
+                    vpnPortLocal.setSummary(getStringByKey(data.getStringExtra(ListPreferenceActivity.EXTRA_SELECTED_VALUE)));
                     break;
             }
             cypherpunkSetting.save();
         }
     }
 
-    private ArrayList<SettingItem> getSettingItemList(@ArrayRes int valueListRes, @ArrayRes int descriptionListRes) {
-        String[] valueList = getResources().getStringArray(valueListRes);
+    private String getStringByKey(String key)
+    {
+        String packageName = getContext().getPackageName();
+        int id = getResources().getIdentifier(key, "string", packageName);
+        String str;
+        try
+        {
+            str = getResources().getString(id);
+        }
+        catch (Exception NotFoundException)
+        {
+            str = key;
+        }
+        return str;
+    }
+
+    private ArrayList<SettingItem> getSettingItemList(@ArrayRes int keyListRes, @ArrayRes int descriptionListRes) {
+        String[] keyList = getResources().getStringArray(keyListRes);
         String[] descriptionList = new String[0];
         if (descriptionListRes != 0) {
             descriptionList = getResources().getStringArray(descriptionListRes);
         }
         ArrayList<SettingItem> list = new ArrayList<>();
-        for (int i = 0; i < valueList.length; i++) {
-            list.add(new SettingItem(valueList[i], descriptionListRes != 0 ? descriptionList[i] : ""));
+        for (int i = 0; i < keyList.length; i++) {
+            list.add(new SettingItem(keyList[i], getStringByKey(keyList[i]), descriptionListRes != 0 ? getStringByKey(descriptionList[i]) : ""));
         }
         return list;
     }

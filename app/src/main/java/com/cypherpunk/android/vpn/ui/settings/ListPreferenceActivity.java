@@ -68,18 +68,25 @@ public class ListPreferenceActivity extends AppCompatActivity
         binding.list.setChoiceMode(AbsListView.CHOICE_MODE_SINGLE);
         binding.list.setOnItemClickListener(this);
 
+        boolean prefSelected = false;
         for (int i = 0; i < items.size(); i++) {
-            if (items.get(i).value.equals(getIntent().getStringExtra(EXTRA_VALUE))) {
+            if (items.get(i).key.equals(getIntent().getStringExtra(EXTRA_VALUE))) {
                 binding.list.setItemChecked(i, true);
+                prefSelected = true;
+                break;
             }
         }
+        // if saved preferences no longer exist due to app upgrade,
+        // or if default pref not found, select 0th option
+        if (prefSelected == false)
+            binding.list.setItemChecked(0, true);
     }
 
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
         Intent intent = new Intent();
         intent.putExtra(EXTRA_KEY, getIntent().getStringExtra(EXTRA_KEY));
-        intent.putExtra(EXTRA_SELECTED_VALUE, items.get(position).value);
+        intent.putExtra(EXTRA_SELECTED_VALUE, items.get(position).key);
         setResult(Activity.RESULT_OK, intent);
         finish();
     }

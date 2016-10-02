@@ -7,12 +7,8 @@
         app:layout="@layout/custom_preference_category">
 
         <SwitchPreferenceCompat
-            android:key="auto_connect"
-            android:title="@string/setting_auto_connect" />
-
-        <SwitchPreferenceCompat
-            android:key="auto_start"
-            android:title="@string/setting_boot_start" />
+            android:key="auto_start_connect"
+            android:title="@string/setting_auto_start_connect" />
 
     </PreferenceCategory>
 
@@ -20,12 +16,19 @@
 
         <com.cypherpunk.android.vpn.ui.settings.EncryptionPreference
             android:id="@+id/preference"
-            android:key="encryption_level"
-            android:title="@string/setting_encryption" />
+            android:key="vpn_crypto_profile"
+            android:title="@string/setting_vpn_crypto_profile" />
 
         <Preference
-            android:key="firewall"
-            android:title="@string/setting_firewall" />
+            android:key="privacy_firewall_mode"
+            android:title="@string/setting_privacy_firewall_mode" />
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/setting_category_advanced">
+
+        <Preference
+            android:key="vpn_protocol"
+            android:title="@string/setting_vpn_protocol" />
 
         <Preference
             android:key="trusted_network"
@@ -37,32 +40,18 @@
             android:summary="@string/setting_application_summary"
             android:title="@string/setting_application" />
 
-    </PreferenceCategory>
-
-    <PreferenceCategory android:title="@string/setting_category_advanced">
+        <Preference
+            android:key="vpn_port_remote"
+            android:title="@string/setting_vpn_port_remote" />
 
         <Preference
-            android:key="protocol"
-            android:title="@string/setting_protocol" />
-
-        <Preference
-            android:key="remote_port"
-            android:title="@string/setting_remote_port" />
-
-        <Preference
-            android:key="local_port"
-            android:title="@string/setting_local_port" />
+            android:key="vpn_port_local"
+            android:title="@string/setting_vpn_port_local" />
 
         <SwitchPreferenceCompat
-            android:key="port_forwarding"
-            android:summary="@string/setting_port_forwarding_summary"
-            android:title="@string/setting_port_forwarding" />
-
-        <SwitchPreferenceCompat
-            android:key="small_packets"
-            android:summary="@string/setting_small_packets_summary"
-            android:title="@string/setting_small_packets" />
-
+            android:key="vpn_port_forwarding"
+            android:summary="@string/setting_vpn_port_forwarding_summary"
+            android:title="@string/setting_vpn_port_forwarding" />
     </PreferenceCategory>
 
 </PreferenceScreen>

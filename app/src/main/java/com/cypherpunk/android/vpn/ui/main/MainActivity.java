@@ -99,7 +99,7 @@ public class MainActivity extends AppCompatActivity
         // showSignUpButton();
 
         // TODO:
-        Location location = new Location("Honolulu", "199.68.252.203 7133", 355, 66);
+        Location location = new Location("Honolulu", "199.68.252.203", 355, 66);
         binding.region.setText(location.getName());
         CypherpunkVPN.address = location.getIpAddress();
         ipStatus.setLocation(location.getName());

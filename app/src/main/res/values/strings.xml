@@ -38,7 +38,82 @@
     <string name="settings_mode_max_freedom">Max freedom</string>
     <string name="action_send">send</string>
     <string name="action_done">done</string>
-    <string name="title_activity_network">Manage trusted networks</string>
+
+    <!-- startup settings -->
+    <string name="setting_category_startup">Startup</string>
+    <string name="setting_auto_start_connect">Auto-connect on device startup</string>
+
+    <!-- privacy settings -->
+    <string name="setting_category_privacy">Privacy</string>
+
+    <!-- crypto profile settings -->
+    <string name="setting_vpn_crypto_profile">Encryption Profile</string>
+    <!-- crypto profile: default -->
+    <string name="setting_vpn_crypto_profile_default">Default</string>
+    <string name="setting_vpn_crypto_profile_default_desc">Best combination of speed and security</string>
+    <!-- crypto profile: none -->
+    <string name="setting_vpn_crypto_profile_none">None</string>
+    <string name="setting_vpn_crypto_profile_none_desc">Max speed: no cryptography</string>
+    <!-- crypto profile: strong -->
+    <string name="setting_vpn_crypto_profile_strong">Strong</string>
+    <string name="setting_vpn_crypto_profile_strong_desc">Max privacy: strong cryptography</string>
+    <!-- crypto profile: stealth -->
+    <string name="setting_vpn_crypto_profile_stealth">Stealth</string>
+    <string name="setting_vpn_crypto_profile_stealth_desc">Max freedom: strong cryptography + anti-censorship tweaks</string>
+    <!-- crypto profile cipher -->
+    <string name="setting_vpn_crypto_cipher">Cipher</string>
+    <string name="setting_vpn_crypto_cipher_aes256">AES-256</string>
+    <!-- crypto profile auth -->
+    <string name="setting_vpn_crypto_auth">Auth</string>
+    <string name="setting_vpn_crypto_auth_sha1">SHA-1</string>
+    <!-- crypto profile keylen -->
+    <string name="setting_vpn_crypto_keylen">Key</string>
+    <string name="setting_vpn_crypto_keylen_rsa2048">RSA-2048</string>
+
+    <!-- privacy firewall mode -->
+    <string name="setting_privacy_firewall_mode">Privacy Firewall</string>
+    <!-- privacy firewall mode: auto -->
+    <string name="setting_privacy_firewall_mode_auto">Auto</string>
+    <string name="setting_privacy_firewall_mode_auto_desc">Privacy Firewall will automatically engage internet killswitch when VPN is on, preventing any leak while not on Cypherpunk Privacy Network.</string>
+    <!-- privacy firewall mode: always -->
+    <string name="setting_privacy_firewall_mode_always">Always</string>
+    <string name="setting_privacy_firewall_mode_always_desc">Privacy Firewall will always engage internet killswitch, preventing any leak while not on Cypherpunk Privacy Network.</string>
+    <!-- privacy firewall mode: never -->
+    <string name="setting_privacy_firewall_mode_never">Never</string>
+    <string name="setting_privacy_firewall_mode_never_desc">Privacy Firewall is disabled</string>
+
+    <!-- advanced setting -->
+    <string name="setting_category_advanced">Advanced Settings</string>
+    <!-- protocol settings -->
+    <string name="setting_vpn_protocol">VPN Protocol</string>
+    <string name="setting_vpn_protocol_openvpn23_udp">OpenVPN 2.3 UDP</string>
+    <string name="setting_vpn_protocol_openvpn23_udp_desc">OpenVPN 2.3 UDP is the default.</string>
+    <string name="setting_vpn_protocol_openvpn23_tcp">OpenVPN 2.3 TCP</string>
+    <string name="setting_vpn_protocol_openvpn23_tcp_desc">OpenVPN 2.3 TCP is a fallback when UDP cannot be used.</string>
+    <string name="setting_vpn_protocol_openvpn31_udp">OpenVPN 3.1 UDP</string>
+    <string name="setting_vpn_protocol_openvpn31_udp_desc">OpenVPN 3.1 support is still experimental.</string>
+    <string name="setting_vpn_protocol_openvpn31_tcp">OpenVPN 3.1 TCP</string>
+    <string name="setting_vpn_protocol_openvpn31_tcp_desc">OpenVPN 3.1 support is still experimental.</string>
+    <!-- manage trusted networks -->
+    <string name="setting_network">Trusted networks</string>
+    <string name="title_activity_network">Trusted networks</string>
+    <string name="setting_network_summary">Automatically enable VPN on untrusted networks</string>
+    <!-- per-app vpn settings -->
+    <string name="setting_application">Per-app VPN</string>
+    <string name="setting_application_summary">Allows app to connect directly without VPN</string>
+    <!-- vpn port remote -->
+    <string name="setting_vpn_port_remote">Remote port</string>
+    <!-- vpn port local -->
+    <string name="setting_vpn_port_local">Local port</string>
+    <!-- vpn port forwarding -->
+    <string name="setting_vpn_port_forwarding">Port Forwarding</string>
+    <string name="setting_vpn_port_forwarding_summary">Allow incoming connection to your mobile device over an external port</string>
+    <!-- vpn use small packets -->
+    <string name="setting_small_packets">Use small packets</string>
+    <string name="setting_small_packets_summary">Optimized packet size for improved connectivity to various router and mobile networks</string>
+    <!-- vpn use openvpn3 -->
+    <string name="setting_use_openvpn3">Enable experimental OpenVPN 3 support</string>
+    <string name="setting_use_openvpn3_summary">OpenVPN 3 features performance enhancements but is still alpha quality.</string>
 
     <!-- account setting -->
     <string name="account_setting_category_type">Account Type</string>
@@ -49,30 +124,6 @@
     <string name="account_setting_category_more">More</string>
     <string name="account_setting_contact">Contact us</string>
     <string name="account_setting_logout">Log out</string>
-
-    <!-- advanced setting -->
-    <string name="setting_category_startup">Startup</string>
-    <string name="setting_auto_connect">Auto-connect on start</string>
-    <string name="setting_boot_start">Auto-start on boot</string>
-    <string name="setting_category_privacy">Privacy Settings</string>
-    <string name="setting_encryption">Encryption</string>
-    <string name="setting_firewall">Firewall</string>
-    <string name="setting_network">Manage trusted networks</string>
-    <string name="setting_network_summary">something</string>
-    <string name="setting_application">Per-app VPN</string>
-    <string name="setting_application_summary">Allows app to connect directly without VPN</string>
-    <string name="setting_category_advanced">Advanced Settings</string>
-    <string name="setting_protocol">VPN Protocol</string>
-    <string name="setting_remote_port">Remote port</string>
-    <string name="setting_local_port">Local port</string>
-    <string name="setting_port_forwarding">Port Forwarding</string>
-    <string name="setting_port_forwarding_summary">Allow incoming connection to your mobile device over an external port</string>
-    <string name="setting_small_packets">Use small packets</string>
-    <string name="setting_small_packets_summary">Optimized packet size for improved connectivity to various router and mobile networks</string>
-
-    <string name="setting_cipher">Cipher</string>
-    <string name="setting_auth">Auth</string>
-    <string name="setting_key">Key</string>
 
     <!-- edit profile-->
     <string name="title_activity_edit_email">Update Email</string>

@@ -8,6 +8,8 @@ import android.os.IBinder;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.cypherpunk.android.vpn.model.CypherpunkSetting;
+
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -51,7 +53,8 @@ public class CypherpunkVPN {
         Log.w("CypherpunkVPN", str);
     }
 
-    public static void start(final Context context, final Context baseContext) {
+    public static void start(final Context context, final Context baseContext)
+    {
         log("start()");
 
         Intent intent = new Intent(baseContext, OpenVPNService.class);
@@ -88,36 +91,114 @@ public class CypherpunkVPN {
     private static String generateConfig(Context context) {
         log("generateConfig()");
 
-        InputStream is;
-        InputStreamReader isr;
-        BufferedReader br;
-
-        try {
-            is = context.getAssets().open("openvpn.conf");
-            isr = new InputStreamReader(is);
-            br = new BufferedReader(isr);
-        } catch (Exception e) {
-            log("unable to generate config: " + e.toString());
-            return null;
-        }
-
         List<String> list = new ArrayList<String>();
-        String line;
 
+        // get user prefs
+        CypherpunkSetting cypherpunkSetting = new CypherpunkSetting();
 
-        try {
-            while ((line = br.readLine()) != null) {
-                list.add(line);
+        // debug print
+        /*
+        log("vpnAutoStartConnect: "+ cypherpunkSetting.vpnAutoStartConnect);
+        log("vpnCryptoProfile: "+ cypherpunkSetting.vpnCryptoProfile);
+        log("vpnCryptoProfileAuth: "+ cypherpunkSetting.vpnCryptoProfileAuth);
+        log("vpnCryptoProfileCipher: "+ cypherpunkSetting.vpnCryptoProfileCipher);
+        log("vpnCryptoProfileKeylen: "+ cypherpunkSetting.vpnCryptoProfileKeylen);
+        log("privacyFirewallMode: "+ cypherpunkSetting.privacyFirewallMode);
+        log("vpnProtocol: "+ cypherpunkSetting.vpnProtocol);
+        log("vpnPortLocal: "+ cypherpunkSetting.vpnPortLocal);
+        log("vpnPortRemote: "+ cypherpunkSetting.vpnPortRemote);
+        */
+
+        // standard options
+        list.add("client\n");
+        list.add("dev tun\n");
+        list.add("resolv-retry infinite\n");
+        list.add("route-delay 0\n");
+
+        // vpn protocol
+        String proto = "udp";
+        if (cypherpunkSetting.vpnProtocol != null && cypherpunkSetting.vpnProtocol.length() > 0)
+        {
+            switch (cypherpunkSetting.vpnProtocol)
+            {
+                case "setting_vpn_protocol_openvpn23_udp":
+                case "setting_vpn_protocol_openvpn31_udp":
+                    proto = "udp";
+                    break;
+                case "setting_vpn_protocol_openvpn23_tcp":
+                case "setting_vpn_protocol_openvpn31_tcp":
+                    proto = "tcp";
+                    break;
             }
-        } catch (Exception e) {
+        }
+        list.add("proto " + proto + " \n");
+
+        // vpn crypto profile
+        if (cypherpunkSetting.vpnCryptoProfile != null && cypherpunkSetting.vpnCryptoProfile.length() > 0)
+        {
+            switch (cypherpunkSetting.vpnCryptoProfile)
+            {
+                case "setting_vpn_crypto_profile_default":
+                    list.add("cipher AES-128-CBC\n");
+                    break;
+                case "setting_vpn_crypto_profile_none":
+                    list.add("cipher AES-128-CBC\n");
+                    break;
+                case "setting_vpn_crypto_profile_strong":
+                    list.add("cipher AES-128-CBC\n");
+                    break;
+                case "setting_vpn_crypto_profile_stealth":
+                    list.add("cipher AES-128-CBC\n");
+                    break;
+                default:
+                    list.add("cipher AES-128-CBC\n");
+                    break;
+            }
+        }
+
+        // remote port
+        int rport = 7133;
+        if (cypherpunkSetting.vpnPortRemote != null && cypherpunkSetting.vpnPortRemote.length() > 0)
+            rport = Integer.parseInt(cypherpunkSetting.vpnPortRemote);
+        if (rport < 1 && rport > 65535)
+            rport = 7133;
+
+        // remote server ip + remote port
+        list.add("remote " + address + " " + rport + "\n");
+
+        // local port
+        int lport = 0;
+        if (cypherpunkSetting.vpnPortLocal != null && cypherpunkSetting.vpnPortLocal.length() > 0)
+            lport = Integer.parseInt(cypherpunkSetting.vpnPortLocal);
+        if (lport > 0 && lport < 65535)
+            list.add("lport " + lport + " \n" + "bind\n");
+        else
+            list.add("nobind\n");
+
+        // append contents of openvpn.conf
+        try
+        {
+            InputStream is = context.getAssets().open("openvpn.conf");
+            InputStreamReader isr = new InputStreamReader(is);
+            BufferedReader br = new BufferedReader(isr);
+            String line;
+
+            while ((line = br.readLine()) != null)
+                list.add(line);
+        }
+        catch (Exception e)
+        {
+            log("unable to read openvpn.conf: " + e.toString());
             return null;
         }
 
-        list.add("remote " + address + " \n");
+        // join lines and output as string
+        String[] confLines = list.toArray(new String[0]);
+        String conf = TextUtils.join("\n", confLines);
 
-        String[] conf = list.toArray(new String[0]);
+        // debug print
+        // for (String line : confLines) log(line);
 
-        return TextUtils.join("\n", conf);
-
+        return conf;
     }
 }
