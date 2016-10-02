@@ -116,8 +116,10 @@ public class MainActivity extends AppCompatActivity
                 }
                 if (status.isConnected()) {
                     stopVpn();
+                    /*
                     RateDialogFragment dialogFragment = RateDialogFragment.newInstance();
                     dialogFragment.show(getSupportFragmentManager());
+                    */
                 }
                 if (!status.isConnected() && !status.isDisconnected()) {
                     // connecting
