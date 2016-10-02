@@ -1,67 +1,61 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string-array name="protocol_description">
-        <item>Recommended</item>
-        <item>Best configuration of speed and security</item>
-        <item>Select when UDP doesn’t work TCP</item>
-        <item>J will draft this</item>
-        <item>J will draft this</item>
-        <item>J will draft this</item>
+    <string-array name="vpn_protocol_value">
+        <item>setting_vpn_protocol_openvpn23_udp</item>
+        <item>setting_vpn_protocol_openvpn23_tcp</item>
+        <item>setting_vpn_protocol_openvpn31_udp</item>
+        <item>setting_vpn_protocol_openvpn31_tcp</item>
     </string-array>
 
-    <string-array name="protocol_value">
-        <item>Automatic</item>
-        <item>OpenVPN UDP</item>
-        <item>OpenVPN TCP</item>
-        <item>Cisco IPsec</item>
-        <item>IKEv1</item>
-        <item>IKEv2</item>
+    <string-array name="vpn_protocol_description">
+        <item>setting_vpn_protocol_openvpn23_udp_desc</item>
+        <item>setting_vpn_protocol_openvpn23_tcp_desc</item>
+        <item>setting_vpn_protocol_openvpn31_udp_desc</item>
+        <item>setting_vpn_protocol_openvpn31_tcp_desc</item>
     </string-array>
 
-    <string-array name="remote_port_value">
-        <item>Automatic</item>
+    <string-array name="vpn_port_remote_value">
+        <item>7133</item>
         <item>1194</item>
-        <item>8080</item>
-        <item>9210</item>
         <item>53</item>
     </string-array>
 
-    <string-array name="firewall_description">
-        <item>(Default) - Firewall will be enabled when you connect and disables when you disconnect from a location. It will remain on if your connection suddenly drops</item>
-        <item>Firewall is always on, and cannot be disabled unless You change this setting. You will not have any Internet access when you’re disconnected from Cypherpunk Network.</item>
-        <item>Firewall is off</item>
+    <string-array name="privacy_firewall_mode_value">
+        <item>setting_privacy_firewall_mode_auto</item>
+        <item>setting_privacy_firewall_mode_always</item>
+        <item>setting_privacy_firewall_mode_never</item>
     </string-array>
 
-    <string-array name="firewall_value">
-        <item>Automatic</item>
-        <item>Always on</item>
-        <item>Off</item>
+    <string-array name="privacy_firewall_mode_description">
+        <item>setting_privacy_firewall_mode_auto_desc</item>
+        <item>setting_privacy_firewall_mode_always_desc</item>
+        <item>setting_privacy_firewall_mode_never_desc</item>
     </string-array>
 
-    <string-array name="encryption_description">
-        <item>Best combination of speed and security</item>
-        <item>Fastest speed but lower security</item>
-        <item>Higher security but slower speed</item>
-        <item>Proprietary Encryption best for bypassing restrictive network firewalls such as The Great Firewall of China</item>
+    <string-array name="vpn_crypto_profile_value">
+        <item>setting_vpn_crypto_profile_default</item>
+        <item>setting_vpn_crypto_profile_none</item>
+        <item>setting_vpn_crypto_profile_strong</item>
+        <item>setting_vpn_crypto_profile_stealth</item>
     </string-array>
 
-    <string-array name="encryption_value">
-        <item>Automatic</item>
-        <item>None</item>
-        <item>Strong</item>
-        <item>Stealth</item>
+    <string-array name="vpn_crypto_profile_description">
+        <item>setting_vpn_crypto_profile_default_desc</item>
+        <item>setting_vpn_crypto_profile_none_desc</item>
+        <item>setting_vpn_crypto_profile_strong_desc</item>
+        <item>setting_vpn_crypto_profile_stealth_desc</item>
     </string-array>
 
-    <string-array name="cipher_value">
-        <item>AES-728</item>
+    <string-array name="vpn_crypto_cipher_value">
+        <item>setting_vpn_crypto_cipher</item>
     </string-array>
 
-    <string-array name="authentication_value">
-        <item>SHA 1</item>
+    <string-array name="vpn_crypto_authentication_value">
+        <item>setting_vpn_crypto_auth</item>
     </string-array>
 
-    <string-array name="key_value">
-        <item>RSA-2048</item>
+    <string-array name="vpn_crypto_keylen_value">
+        <item>setting_vpn_crypto_keylen</item>
     </string-array>
 
 </resources>
