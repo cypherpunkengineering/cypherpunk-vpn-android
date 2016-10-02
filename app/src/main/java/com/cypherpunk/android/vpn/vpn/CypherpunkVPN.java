@@ -113,6 +113,7 @@ public class CypherpunkVPN {
         CypherpunkSetting cypherpunkSetting = new CypherpunkSetting();
 
         // debug print
+        /*
         log("vpnCryptoProfile: "+ cypherpunkSetting.vpnCryptoProfile);
         log("vpnCryptoProfileAuth: "+ cypherpunkSetting.vpnCryptoProfileAuth);
         log("vpnCryptoProfileCipher: "+ cypherpunkSetting.vpnCryptoProfileCipher);
@@ -121,6 +122,7 @@ public class CypherpunkVPN {
         log("vpnProtocol: "+ cypherpunkSetting.vpnProtocol);
         log("vpnPortLocal: "+ cypherpunkSetting.vpnPortLocal);
         log("vpnPortRemote: "+ cypherpunkSetting.vpnPortRemote);
+        */
 
         // standard options
         list.add("client\n");
