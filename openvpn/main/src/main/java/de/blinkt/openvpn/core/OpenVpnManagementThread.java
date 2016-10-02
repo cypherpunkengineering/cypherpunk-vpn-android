@@ -171,6 +171,27 @@ public class OpenVpnManagementThread implements Runnable, OpenVPNManagement {
         }
     }
 
+    void requestClose(FileDescriptor fd)
+    {
+        Exception ex = null;
+        try
+        {
+            Method getInt = FileDescriptor.class.getDeclaredMethod("getInt$");
+            int fdint = (Integer)getInt.invoke(fd);
+            mOpenVPNService.closeOpenVPNtun(fdint);
+        }
+        catch (NoSuchMethodException e) { ex = e; }
+        catch (IllegalArgumentException e) { ex = e; }
+        catch (IllegalAccessException e) { ex = e; }
+        catch (InvocationTargetException e) { ex = e; }
+        catch (NullPointerException e) { ex = e; }
+        if (ex != null)
+        {
+            ex.printStackTrace();
+            Log.d("Openvpn", "Failed to retrieve fd from socket: " + fd);
+        }
+    }
+
     //! Hack O Rama 2000!
     private void protectFileDescriptor(FileDescriptor fd) {
         try {
@@ -477,6 +498,9 @@ public class OpenVpnManagementThread implements Runnable, OpenVPNManagement {
                 // This not nice or anything but setFileDescriptors accepts only FilDescriptor class :(
 
                 break;
+            case "CLOSETUN":
+                FileDescriptor fdtoclose = mFDList.pollFirst();
+                requestClose(fdtoclose);
             default:
                 Log.e(TAG, "Unknown needok command " + argument);
                 return;
