@@ -41,7 +41,7 @@
 
     <!-- startup settings -->
     <string name="setting_category_startup">Startup</string>
-    <string name="setting_auto_start_connect">Auto-connect on device startup</string>
+    <string name="setting_vpn_auto_start_connect">Auto-connect on device startup</string>
 
     <!-- privacy settings -->
     <string name="setting_category_privacy">Privacy</string>
