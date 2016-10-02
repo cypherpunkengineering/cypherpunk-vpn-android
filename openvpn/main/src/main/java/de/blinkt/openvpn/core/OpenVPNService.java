@@ -44,6 +44,8 @@ import java.util.Vector;
 
 import com.cypherpunk.android.vpn.BuildConfig;
 import com.cypherpunk.android.vpn.R;
+import com.cypherpunk.android.vpn.model.CypherpunkSetting;
+
 import de.blinkt.openvpn.VpnProfile;
 import de.blinkt.openvpn.activities.DisconnectVPN;
 //import de.blinkt.openvpn.activities.LogWindow;
@@ -467,14 +469,23 @@ public class OpenVPNService extends VpnService implements StateListener, Callbac
         mStarting = false;
 
         // Start a new session by creating a new thread.
+        /*
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
 
         mOvpn3 = prefs.getBoolean("ovpn3", false);
         if (!"ovpn3".equals(BuildConfig.FLAVOR))
             mOvpn3 = false;
-
-		// XXX: hard-code for now, convert to userpref later
-        mOvpn3 = true;
+        */
+        CypherpunkSetting cypherpunkSetting = new CypherpunkSetting();
+        switch (cypherpunkSetting.vpnProtocol)
+        {
+            case "setting_vpn_protocol_openvpn31_udp":
+            case "setting_vpn_protocol_openvpn31_tcp":
+                mOvpn3 = true;
+                break;
+            default:
+                mOvpn3 = false;
+        }
 
         // Open the Management Interface
         if (!mOvpn3) {
