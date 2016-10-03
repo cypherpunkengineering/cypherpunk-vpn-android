@@ -26,7 +26,7 @@ public class CypherpunkApplication extends Application {
         super.onCreate();
         instance = this;
         PRNGFixes.apply();
-        VpnStatus.initLogCache(getApplicationContext().getCacheDir());
+        //VpnStatus.initLogCache(getApplicationContext().getCacheDir());
 
         appComponent = DaggerAppComponent.create();
 
