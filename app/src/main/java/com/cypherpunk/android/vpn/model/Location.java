@@ -6,6 +6,7 @@ import java.io.Serializable;
 public class Location implements Serializable {
 
     private String name;
+    private String region;
 
     private String ipDefault;
     private String ipNone;
@@ -18,8 +19,9 @@ public class Location implements Serializable {
 
     private int mapY;
 
-    public Location(String name, int mapX, int mapY, String ipDefault, String ipNone, String ipStrong, String ipStealth) {
+    public Location(String name, String region, int mapX, int mapY, String ipDefault, String ipNone, String ipStrong, String ipStealth) {
         this.name = name;
+        this.region = region;
         this.ipDefault = ipDefault;
         this.ipNone = ipNone;
         this.ipStrong = ipStrong;
@@ -28,13 +30,11 @@ public class Location implements Serializable {
         this.mapY = mapY;
     }
 
-    public String getName() {
-        return name;
-    }
+    public String getName() { return name; }
+    public void setName(String name) { this.name = name; }
 
-    public void setName(String name) {
-        this.name = name;
-    }
+    public String getRegion() { return region; }
+    public void setRegion(String region) { this.region = region; }
 
     public String getIpDefault() { return ipDefault; }
     public String getIpNone() { return ipNone; }

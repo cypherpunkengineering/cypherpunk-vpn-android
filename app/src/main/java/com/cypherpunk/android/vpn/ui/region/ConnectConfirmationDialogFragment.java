@@ -31,7 +31,7 @@ public class ConnectConfirmationDialogFragment extends DialogFragment {
     public static ConnectConfirmationDialogFragment newInstance(@NonNull Location location) {
         ConnectConfirmationDialogFragment f = new ConnectConfirmationDialogFragment();
         Bundle args = new Bundle();
-        args.putString(ARGS_CITY, location.getName());
+        args.putString(ARGS_CITY, location.getRegion());
         f.setArguments(args);
         return f;
     }

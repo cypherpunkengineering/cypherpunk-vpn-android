@@ -129,12 +129,14 @@ public class CypherpunkVPN {
         // standard options
         list.add("client\n");
         list.add("dev tun\n");
+        list.add("tls-client\n");
         list.add("resolv-retry infinite\n");
         list.add("route-delay 0\n");
 
         // security/privacy options
         list.add("tls-version-min 1.2\n");
-        list.add("remote-cert-tls server\n");
+        list.add("remote-cert-eku \"TLS Web Server Authentication\"\n");
+        list.add("verify-x509-name " + location.getName() + " name\n");
 
         // vpn protocol
         String proto = "udp";
@@ -168,26 +170,26 @@ public class CypherpunkVPN {
             {
                 case "setting_vpn_crypto_profile_none":
                     list.add("remote " + location.getIpNone() + " " + rport + "\n");
-                    list.add("tls-cipher TLS-ECDHE-ECDSA-WITH-AES-128-GCM-SHA256\n");
+                    list.add("tls-cipher TLS-DHE-RSA-WITH-AES-128-GCM-SHA256:TLS-DHE-RSA-WITH-AES-128-CBC-SHA256\n");
                     list.add("cipher none\n");
                     list.add("auth SHA1\n");
                     break;
                 case "setting_vpn_crypto_profile_strong":
                     list.add("remote " + location.getIpStrong() + " " + rport + "\n");
-                    list.add("tls-cipher TLS-ECDHE-ECDSA-WITH-AES-256-GCM-SHA384\n");
+                    list.add("tls-cipher TLS-DHE-RSA-WITH-AES-256-GCM-SHA384:TLS-DHE-RSA-WITH-AES-256-CBC-SHA256\n");
                     list.add("cipher AES-256-CBC\n");
                     list.add("auth SHA512\n");
                     break;
                 case "setting_vpn_crypto_profile_stealth":
                     list.add("remote " + location.getIpStealth() + " " + rport + "\n");
-                    list.add("tls-cipher TLS-ECDHE-ECDSA-WITH-AES-128-GCM-SHA256\n");
+                    list.add("tls-cipher TLS-DHE-RSA-WITH-AES-128-GCM-SHA256:TLS-DHE-RSA-WITH-AES-128-CBC-SHA256\n");
                     list.add("cipher AES-128-CBC\n");
                     list.add("auth SHA256\n");
                     break;
                 case "setting_vpn_crypto_profile_default":
                 default:
                     list.add("remote " + location.getIpDefault() + " " + rport + "\n");
-                    list.add("tls-cipher TLS-ECDHE-ECDSA-WITH-AES-128-GCM-SHA256\n");
+                    list.add("tls-cipher TLS-DHE-RSA-WITH-AES-128-GCM-SHA256:TLS-DHE-RSA-WITH-AES-128-CBC-SHA256\n");
                     list.add("cipher AES-128-CBC\n");
                     list.add("auth SHA256\n");
                     break;

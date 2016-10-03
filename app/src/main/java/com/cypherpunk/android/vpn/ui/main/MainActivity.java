@@ -102,10 +102,10 @@ public class MainActivity extends AppCompatActivity
         // showSignUpButton();
 
         // TODO:
-        Location location = new Location("Honolulu 1", 355, 66, "199.68.252.203", "199.68.252.203", "199.68.252.203", "199.68.252.203");
-        binding.region.setText(location.getName());
+        Location location = new Location("honolulu.vpn.cypherpunk.network", "Honolulu", 355, 66, "199.68.252.203", "199.68.252.203", "199.68.252.203", "199.68.252.203");
+        binding.region.setText(location.getRegion());
         CypherpunkVPN.location = location;
-        ipStatus.setLocation(location.getName());
+        ipStatus.setLocation(location.getRegion());
         ipStatus.setMapPosition(location.getMapX(), location.getMapY());
 
         binding.connectionButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -190,10 +190,10 @@ public class MainActivity extends AppCompatActivity
                     break;
                 case REQUEST_SELECT_REGION:
                     Location location = (Location) data.getSerializableExtra(LocationsActivity.EXTRA_LOCATION);
-                    binding.region.setText(location.getName());
+                    binding.region.setText(location.getRegion());
                     if (CypherpunkVPN.location != location) {
                         CypherpunkVPN.location = location;
-                        ipStatus.setLocation(location.getName());
+                        ipStatus.setLocation(location.getRegion());
                         ipStatus.setMapPosition(location.getMapX(), location.getMapY());
 
                         if (data.getBooleanExtra(LocationsActivity.EXTRA_CONNECT, false)) {
