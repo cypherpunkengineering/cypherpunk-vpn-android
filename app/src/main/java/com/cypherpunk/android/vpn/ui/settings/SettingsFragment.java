@@ -158,9 +158,15 @@ public class SettingsFragment extends PreferenceFragmentCompat {
                         case "setting_vpn_crypto_profile_none":
                         case "setting_vpn_crypto_profile_strong":
                         case "setting_vpn_crypto_profile_stealth":
-                            cypherpunkSetting.vpnCryptoProfileCipher = getStringByKey("vpn_crypto_profile_cipher");
-                            cypherpunkSetting.vpnCryptoProfileAuth = getStringByKey("vpn_crypto_profile_auth");
-                            cypherpunkSetting.vpnCryptoProfileKeylen = getStringByKey("vpn_crypto_profile_keylen");
+                            String cipher = getStringByKey("setting_vpn_crypto_cipher_aes256");
+                            String auth = getStringByKey("setting_vpn_crypto_auth_sha1");
+                            String keylen = getStringByKey("setting_vpn_crypto_keylen_rsa2048");
+                            cypherpunkSetting.vpnCryptoProfileCipher = cipher;
+                            cypherpunkSetting.vpnCryptoProfileAuth = auth;
+                            cypherpunkSetting.vpnCryptoProfileKeylen = keylen;
+                            vpnCryptoProfile.setCipherText(cipher);
+                            vpnCryptoProfile.setAuthText(auth);
+                            vpnCryptoProfile.setKeyText(keylen);
                     }
                     break;
                 case "vpn_port_local":
