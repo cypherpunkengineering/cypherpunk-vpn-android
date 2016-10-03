@@ -28,15 +28,15 @@ public class CypherpunkSetting extends PrefModel {
     public String vpnCryptoProfile;
 
     @PrefKey("vpn_crypto_profile_cipher")
-    @DefaultString("setting_vpn_crypto_cipher_aes256")
+    @DefaultString("setting_vpn_crypto_cipher_aes128cbc")
     public String vpnCryptoProfileCipher;
 
     @PrefKey("vpn_crypto_profile_auth")
-    @DefaultString("setting_vpn_crypto_auth_sha1")
+    @DefaultString("setting_vpn_crypto_auth_sha256")
     public String vpnCryptoProfileAuth;
 
     @PrefKey("vpn_crypto_profile_keylen")
-    @DefaultString("setting_vpn_crypto_keylen_rsa2048")
+    @DefaultString("setting_vpn_crypto_keylen_rsa4096")
     public String vpnCryptoProfileKeylen;
 
     @PrefKey("vpn_protocol")

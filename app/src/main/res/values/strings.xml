@@ -62,13 +62,17 @@
     <string name="setting_vpn_crypto_profile_stealth_desc">Max freedom: strong cryptography + anti-censorship tweaks</string>
     <!-- crypto profile cipher -->
     <string name="setting_vpn_crypto_cipher">Cipher</string>
-    <string name="setting_vpn_crypto_cipher_aes256">AES-256</string>
+    <string name="setting_vpn_crypto_cipher_none">NONE</string>
+    <string name="setting_vpn_crypto_cipher_aes128cbc">AES-128-CBC</string>
+    <string name="setting_vpn_crypto_cipher_aes256cbc">AES-256-CBC</string>
     <!-- crypto profile auth -->
     <string name="setting_vpn_crypto_auth">Auth</string>
     <string name="setting_vpn_crypto_auth_sha1">SHA-1</string>
+    <string name="setting_vpn_crypto_auth_sha256">SHA-256</string>
+    <string name="setting_vpn_crypto_auth_sha512">SHA-512</string>
     <!-- crypto profile keylen -->
     <string name="setting_vpn_crypto_keylen">Key</string>
-    <string name="setting_vpn_crypto_keylen_rsa2048">RSA-2048</string>
+    <string name="setting_vpn_crypto_keylen_rsa4096">RSA-4096</string>
 
     <!-- privacy firewall mode -->
     <string name="setting_privacy_firewall_mode">Privacy Firewall</string>
