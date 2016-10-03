@@ -58,6 +58,7 @@ public class MainActivity extends AppCompatActivity
     private static final int REQUEST_VPN_START = 0;
     private static final int REQUEST_SELECT_REGION = 1;
     private static final int REQUEST_STATUS = 2;
+    private static final int REQUEST_SETTINGS = 3;
 
     private ActivityMainBinding binding;
     private CypherpunkVpnStatus status;
@@ -168,7 +169,7 @@ public class MainActivity extends AppCompatActivity
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_setting:
-                startActivity(new Intent(this, SettingsActivity.class));
+                startActivityForResult(new Intent(this, SettingsActivity.class), REQUEST_SETTINGS);
                 break;
             case R.id.action_status:
                 startActivityForResult(StatusActivity.createIntent(this, ipStatus), REQUEST_STATUS);
@@ -201,9 +202,14 @@ public class MainActivity extends AppCompatActivity
                         } else {
                             stopVpn();
                         }
-
                     }
                     break;
+                case REQUEST_SETTINGS:
+                    if (data.getBooleanExtra(LocationsActivity.EXTRA_CONNECT, false)) {
+                        startVpn();
+                    } else {
+                        stopVpn();
+                    }
             }
         }
     }

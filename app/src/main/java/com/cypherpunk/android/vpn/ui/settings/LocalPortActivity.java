@@ -59,7 +59,7 @@ public class LocalPortActivity extends AppCompatActivity {
                 return true;
             case R.id.action_done:
                 Intent intent = new Intent();
-                intent.putExtra(ListPreferenceActivity.EXTRA_KEY, "local_port");
+                intent.putExtra(ListPreferenceActivity.EXTRA_KEY, "vpn_port_local");
                 intent.putExtra(ListPreferenceActivity.EXTRA_SELECTED_VALUE, binding.localPort.getText().toString());
                 setResult(Activity.RESULT_OK, intent);
                 finish();

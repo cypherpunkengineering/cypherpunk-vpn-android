@@ -175,6 +175,9 @@ public class SettingsFragment extends PreferenceFragmentCompat {
                     break;
             }
             cypherpunkSetting.save();
+
+            SettingConnectDialogFragment dialogFragment = SettingConnectDialogFragment.newInstance();
+            dialogFragment.show(getFragmentManager());
         }
     }
 
