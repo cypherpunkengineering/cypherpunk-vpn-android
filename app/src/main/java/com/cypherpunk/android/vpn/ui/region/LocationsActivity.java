@@ -9,6 +9,7 @@ import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -23,6 +24,14 @@ import com.cypherpunk.android.vpn.R;
 import com.cypherpunk.android.vpn.databinding.ActivityLocationsBinding;
 import com.cypherpunk.android.vpn.databinding.ListItemLocationBinding;
 import com.cypherpunk.android.vpn.model.Location;
+import com.cypherpunk.android.vpn.model.Region;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
+import io.realm.Realm;
+import io.realm.RealmConfiguration;
 
 public class LocationsActivity extends AppCompatActivity
         implements ConnectConfirmationDialogFragment.ConnectDialogListener {
@@ -33,6 +42,7 @@ public class LocationsActivity extends AppCompatActivity
     private ActivityLocationsBinding binding;
     private MergeAdapter mergeAdapter;
     private Location selectedItem;
+    private Realm realm;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -49,6 +59,14 @@ public class LocationsActivity extends AppCompatActivity
             actionBar.setDisplayShowTitleEnabled(false);
             binding.toolbar.title.setText(R.string.title_activity_locations);
         }
+
+        RealmConfiguration realmConfiguration = new RealmConfiguration.Builder(this).build();
+
+        // Clear the realm from last time
+        Realm.deleteRealm(realmConfiguration);
+
+        // Create a new empty instance of Realm
+        realm = Realm.getDefaultInstance();
 
         mergeAdapter = new MergeAdapter();
 
@@ -70,8 +88,26 @@ public class LocationsActivity extends AppCompatActivity
 
         mergeAdapter.addAdapter(regionAdapter);
 
+        ArrayList<Region> location = getLocation();
+        for (Region region : location) {
+            Log.d("LocationsActivity", "region:" + region);
+        }
+
         binding.list.setAdapter(mergeAdapter);
         binding.list.setDivider(null);
+    }
+
+    private ArrayList<Region> getLocation() {
+        realm.beginTransaction();
+
+        List<Region> regions = new ArrayList<>();
+        regions.add(new Region("Tokyo 1", "", "208.111.52.1", "http://flags.fmcdn.net/data/flags/normal/jp.png", 305, 56));
+        regions.add(new Region("Tokyo 2", "", "208.111.52.2", "http://flags.fmcdn.net/data/flags/normal/jp.png", 305, 56));
+        regions.add(new Region("Honolulu", "", "199.68.252.203", "http://flags.fmcdn.net/data/flags/normal/us.png", 305, 56));
+
+        Collection<Region> realmCities = realm.copyToRealm(regions);
+        realm.commitTransaction();
+        return new ArrayList<>(realmCities);
     }
 
     @Override

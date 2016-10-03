@@ -14,6 +14,8 @@ import com.os.operando.garum.Garum;
 
 import de.blinkt.openvpn.core.PRNGFixes;
 import de.blinkt.openvpn.core.VpnStatus;
+import io.realm.Realm;
+import io.realm.RealmConfiguration;
 
 public class CypherpunkApplication extends Application {
 
@@ -39,6 +41,9 @@ public class CypherpunkApplication extends Application {
                 .setStorage(HawkBuilder.newSharedPrefStorage(this))
                 .setEncryptionMethod(HawkBuilder.EncryptionMethod.MEDIUM)
                 .build();
+
+        RealmConfiguration realmConfiguration = new RealmConfiguration.Builder(this).build();
+        Realm.setDefaultConfiguration(realmConfiguration);
     }
 
     public AppComponent getAppComponent() {
