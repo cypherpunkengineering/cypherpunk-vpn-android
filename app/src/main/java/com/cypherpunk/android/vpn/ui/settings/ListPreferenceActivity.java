@@ -35,6 +35,7 @@ public class ListPreferenceActivity extends AppCompatActivity
     public static final String EXTRA_SELECTED_VALUE = "selected_value";
 
     private ArrayList<SettingItem> items;
+    private String selectedItem;
 
     @NonNull
     public static Intent createIntent(@NonNull Context context, @NonNull CharSequence key,
@@ -68,9 +69,10 @@ public class ListPreferenceActivity extends AppCompatActivity
         binding.list.setChoiceMode(AbsListView.CHOICE_MODE_SINGLE);
         binding.list.setOnItemClickListener(this);
 
+        selectedItem = getIntent().getStringExtra(EXTRA_VALUE);
         boolean prefSelected = false;
         for (int i = 0; i < items.size(); i++) {
-            if (items.get(i).key.equals(getIntent().getStringExtra(EXTRA_VALUE))) {
+            if (items.get(i).key.equals(selectedItem)) {
                 binding.list.setItemChecked(i, true);
                 prefSelected = true;
                 break;
@@ -84,10 +86,12 @@ public class ListPreferenceActivity extends AppCompatActivity
 
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-        Intent intent = new Intent();
-        intent.putExtra(EXTRA_KEY, getIntent().getStringExtra(EXTRA_KEY));
-        intent.putExtra(EXTRA_SELECTED_VALUE, items.get(position).key);
-        setResult(Activity.RESULT_OK, intent);
+        if (!items.get(position).key.equals(selectedItem)) {
+            Intent intent = new Intent();
+            intent.putExtra(EXTRA_KEY, getIntent().getStringExtra(EXTRA_KEY));
+            intent.putExtra(EXTRA_SELECTED_VALUE, items.get(position).key);
+            setResult(Activity.RESULT_OK, intent);
+        }
         finish();
     }
 

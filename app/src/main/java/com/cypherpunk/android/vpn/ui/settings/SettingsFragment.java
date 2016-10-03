@@ -14,6 +14,7 @@ import android.view.View;
 import com.cypherpunk.android.vpn.R;
 import com.cypherpunk.android.vpn.model.CypherpunkSetting;
 import com.cypherpunk.android.vpn.model.SettingItem;
+import com.cypherpunk.android.vpn.vpn.CypherpunkVpnStatus;
 
 import java.util.ArrayList;
 
@@ -175,6 +176,12 @@ public class SettingsFragment extends PreferenceFragmentCompat {
                     break;
             }
             cypherpunkSetting.save();
+
+            CypherpunkVpnStatus vpnStatus = new CypherpunkVpnStatus();
+            if (vpnStatus.isConnected()) {
+                SettingConnectDialogFragment dialogFragment = SettingConnectDialogFragment.newInstance();
+                dialogFragment.show(getFragmentManager());
+            }
         }
     }
 
