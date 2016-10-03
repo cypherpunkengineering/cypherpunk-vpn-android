@@ -27,9 +27,6 @@ public class SettingsFragment extends PreferenceFragmentCompat {
     private Preference vpnPortLocal;
     private Preference firewall;
     private EncryptionPreference vpnCryptoProfile;
-    private Preference cipher;
-    private Preference authentication;
-    private Preference key;
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -153,20 +150,19 @@ public class SettingsFragment extends PreferenceFragmentCompat {
                     break;
                 case "vpn_crypto_profile":
                     cypherpunkSetting.vpnCryptoProfile = data.getStringExtra(ListPreferenceActivity.EXTRA_SELECTED_VALUE);
-                    vpnCryptoProfile.setSummary(getStringByKey(data.getStringExtra(ListPreferenceActivity.EXTRA_SELECTED_VALUE)));
+                    String stringExtra = data.getStringExtra(ListPreferenceActivity.EXTRA_SELECTED_VALUE);
+                    vpnCryptoProfile.setSummary(getStringByKey(stringExtra));
+                    // TODO:
+                    switch (stringExtra) {
+                        case "setting_vpn_crypto_profile_default":
+                        case "setting_vpn_crypto_profile_none":
+                        case "setting_vpn_crypto_profile_strong":
+                        case "setting_vpn_crypto_profile_stealth":
+                            cypherpunkSetting.vpnCryptoProfileCipher = getStringByKey("vpn_crypto_profile_cipher");
+                            cypherpunkSetting.vpnCryptoProfileAuth = getStringByKey("vpn_crypto_profile_auth");
+                            cypherpunkSetting.vpnCryptoProfileKeylen = getStringByKey("vpn_crypto_profile_keylen");
+                    }
                     break;
-//                case "cipher":
-//                    cypherpunkSetting.cipher = data.getStringExtra(ListPreferenceActivity.EXTRA_SELECTED_VALUE);
-//                    cipher.setSummary(data.getStringExtra(ListPreferenceActivity.EXTRA_SELECTED_VALUE));
-//                    break;
-//                case "authentication":
-//                    cypherpunkSetting.authentication = data.getStringExtra(ListPreferenceActivity.EXTRA_SELECTED_VALUE);
-//                    authentication.setSummary(data.getStringExtra(ListPreferenceActivity.EXTRA_SELECTED_VALUE));
-//                    break;
-//                case "key":
-//                    cypherpunkSetting.key = data.getStringExtra(ListPreferenceActivity.EXTRA_SELECTED_VALUE);
-//                    key.setSummary(data.getStringExtra(ListPreferenceActivity.EXTRA_SELECTED_VALUE));
-//                    break;
                 case "vpn_port_local":
                     cypherpunkSetting.vpnPortLocal = data.getStringExtra(ListPreferenceActivity.EXTRA_SELECTED_VALUE);
                     vpnPortLocal.setSummary(getStringByKey(data.getStringExtra(ListPreferenceActivity.EXTRA_SELECTED_VALUE)));
