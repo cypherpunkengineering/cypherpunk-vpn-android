@@ -9,7 +9,6 @@ import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -24,24 +23,20 @@ import com.cypherpunk.android.vpn.R;
 import com.cypherpunk.android.vpn.databinding.ActivityLocationsBinding;
 import com.cypherpunk.android.vpn.databinding.ListItemLocationBinding;
 import com.cypherpunk.android.vpn.model.Location;
-import com.cypherpunk.android.vpn.model.Region;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
 
 import io.realm.Realm;
-import io.realm.RealmConfiguration;
+import io.realm.RealmResults;
 
 public class LocationsActivity extends AppCompatActivity
         implements ConnectConfirmationDialogFragment.ConnectDialogListener {
 
-    public static final String EXTRA_LOCATION = "location";
+    public static final String EXTRA_LOCATION_ID = "location_id";
     public static final String EXTRA_CONNECT = "connect";
 
     private ActivityLocationsBinding binding;
-    private MergeAdapter mergeAdapter;
-    private Location selectedItem;
+    private String selectedItemId;
     private Realm realm;
 
     @Override
@@ -60,54 +55,49 @@ public class LocationsActivity extends AppCompatActivity
             binding.toolbar.title.setText(R.string.title_activity_locations);
         }
 
-        RealmConfiguration realmConfiguration = new RealmConfiguration.Builder(this).build();
-
-        // Clear the realm from last time
-        Realm.deleteRealm(realmConfiguration);
-
-        // Create a new empty instance of Realm
         realm = Realm.getDefaultInstance();
 
-        mergeAdapter = new MergeAdapter();
+        MergeAdapter mergeAdapter = new MergeAdapter();
 
-        // recently connected
-        mergeAdapter.addView(buildHeader(R.string.location_recommended));
-        ArrayAdapter<Location> cityAdapter = new LocationAdapter(this);
-        cityAdapter.add(new Location("Tokyo 1", "208.111.52.1", 305, 56));
-        cityAdapter.add(new Location("Tokyo 2", "208.111.52.2", 305, 56));
-        cityAdapter.add(new Location("Honolulu", "199.68.252.203", 355, 66));
-        mergeAdapter.addAdapter(cityAdapter);
-        mergeAdapter.addView(buildHeader());
+        // favorite
+        ArrayList<Location> favoriteLocation = getFavoriteLocation();
+        if (!favoriteLocation.isEmpty()) {
+            mergeAdapter.addView(buildHeader(R.string.location_favorite));
+            ArrayAdapter<Location> favoriteAdapter = new LocationAdapter(this);
+            favoriteAdapter.addAll(favoriteLocation);
+            mergeAdapter.addAdapter(favoriteAdapter);
+            mergeAdapter.addView(buildHeader());
+        }
 
-        // region
+        // recommended
+//        mergeAdapter.addView(buildHeader(R.string.location_recommended));
+//        ArrayAdapter<Location> cityAdapter = new LocationAdapter(this);
+//        // TODO:
+//        mergeAdapter.addAdapter(cityAdapter);
+//        mergeAdapter.addView(buildHeader());
+
+        // all
         mergeAdapter.addView(buildHeader(R.string.location_all_locations));
         ArrayAdapter<Location> regionAdapter = new LocationAdapter(this);
-        regionAdapter.add(new Location("Tokyo 1", "208.111.52.1", 305, 56));
-        regionAdapter.add(new Location("Tokyo 2", "208.111.52.2", 305, 56));
-        regionAdapter.add(new Location("Honolulu", "199.68.252.203", 355, 66));
-
+        regionAdapter.addAll(getLocation());
         mergeAdapter.addAdapter(regionAdapter);
-
-        ArrayList<Region> location = getLocation();
-        for (Region region : location) {
-            Log.d("LocationsActivity", "region:" + region);
-        }
 
         binding.list.setAdapter(mergeAdapter);
         binding.list.setDivider(null);
     }
 
-    private ArrayList<Region> getLocation() {
+    private ArrayList<Location> getLocation() {
         realm.beginTransaction();
-
-        List<Region> regions = new ArrayList<>();
-        regions.add(new Region("Tokyo 1", "", "208.111.52.1", "http://flags.fmcdn.net/data/flags/normal/jp.png", 305, 56));
-        regions.add(new Region("Tokyo 2", "", "208.111.52.2", "http://flags.fmcdn.net/data/flags/normal/jp.png", 305, 56));
-        regions.add(new Region("Honolulu", "", "199.68.252.203", "http://flags.fmcdn.net/data/flags/normal/us.png", 305, 56));
-
-        Collection<Region> realmCities = realm.copyToRealm(regions);
+        RealmResults<Location> locationList = realm.where(Location.class).findAll();
         realm.commitTransaction();
-        return new ArrayList<>(realmCities);
+        return new ArrayList<>(locationList);
+    }
+
+    private ArrayList<Location> getFavoriteLocation() {
+        realm.beginTransaction();
+        RealmResults<Location> favoritedList = realm.where(Location.class).equalTo("favorited", true).findAll();
+        realm.commitTransaction();
+        return new ArrayList<>(favoritedList);
     }
 
     @Override
@@ -117,6 +107,12 @@ public class LocationsActivity extends AppCompatActivity
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onDestroy() {
+        realm.close();
+        super.onDestroy();
     }
 
     @Override
@@ -142,7 +138,7 @@ public class LocationsActivity extends AppCompatActivity
     @Override
     public void onDialogPositiveButtonClick() {
         Intent intent = new Intent();
-        intent.putExtra(EXTRA_LOCATION, selectedItem);
+        intent.putExtra(EXTRA_LOCATION_ID, selectedItemId);
         intent.putExtra(EXTRA_CONNECT, true);
         setResult(RESULT_OK, intent);
         finish();
@@ -151,7 +147,7 @@ public class LocationsActivity extends AppCompatActivity
     @Override
     public void onDialogNegativeButtonClick() {
         Intent intent = new Intent();
-        intent.putExtra(EXTRA_LOCATION, selectedItem);
+        intent.putExtra(EXTRA_LOCATION_ID, selectedItemId);
         setResult(RESULT_OK, intent);
         finish();
     }
@@ -167,7 +163,7 @@ public class LocationsActivity extends AppCompatActivity
 
         @NonNull
         @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
+        public View getView(int position, View convertView, @NonNull ViewGroup parent) {
             final Location item = getItem(position);
             ListItemLocationBinding binding;
             if (convertView == null) {
@@ -177,19 +173,32 @@ public class LocationsActivity extends AppCompatActivity
             } else {
                 binding = (ListItemLocationBinding) convertView.getTag();
             }
-            binding.location.setText(item.getName());
-            binding.favorite.setChecked(item.isFavorite());
+            binding.location.setText(item.getCity());
+            binding.favorite.setChecked(item.isFavorited());
             binding.favorite.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
-                public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                    item.setFavorite(b);
+                public void onCheckedChanged(CompoundButton compoundButton, final boolean b) {
+                    realm.executeTransaction(new Realm.Transaction() {
+                        @Override
+                        public void execute(Realm realm) {
+                            item.setFavorited(b);
+                        }
+                    });
                 }
             });
             convertView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    selectedItem = item;
-                    ConnectConfirmationDialogFragment dialogFragment = ConnectConfirmationDialogFragment.newInstance(selectedItem);
+                    realm.executeTransaction(new Realm.Transaction() {
+                        @Override
+                        public void execute(Realm realm) {
+                            Location selected = realm.where(Location.class).equalTo("selected", true).findFirst();
+                            selected.setSelected(false);
+                            item.setSelected(true);
+                        }
+                    });
+                    selectedItemId = item.getId();
+                    ConnectConfirmationDialogFragment dialogFragment = ConnectConfirmationDialogFragment.newInstance(selectedItemId);
                     dialogFragment.show(getSupportFragmentManager());
                 }
             });
