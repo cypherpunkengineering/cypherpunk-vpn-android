@@ -3,11 +3,16 @@ package com.cypherpunk.android.vpn.widget;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.content.Context;
+import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
+import android.support.annotation.ColorInt;
 import android.support.annotation.IntDef;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.content.res.ResourcesCompat;
 import android.util.AttributeSet;
 import android.view.Gravity;
+import android.view.MotionEvent;
+import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.LinearInterpolator;
 import android.widget.CompoundButton;
@@ -50,7 +55,7 @@ public class VpnFlatButton extends FrameLayout {
 
         setClickable(true);
 
-         imageView = new ImageView(context);
+        imageView = new ImageView(context);
         imageView.setImageResource(R.drawable.io_btn_big_orange);
         addView(imageView, new LayoutParams(
                 ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, Gravity.BOTTOM));
@@ -93,9 +98,12 @@ public class VpnFlatButton extends FrameLayout {
         this.listener = listener;
     }
 
-    public static class VpnCoreButton extends CompoundButton {
+    public static class VpnCoreButton extends CompoundButton implements OnTouchListener {
 
         private Drawable icon;
+
+        @ColorInt
+        private int pressedColor;
 
         public VpnCoreButton(Context context) {
             this(context, null);
@@ -109,16 +117,37 @@ public class VpnFlatButton extends FrameLayout {
             super(context, attrs, defStyleAttr);
 
             setClickable(true);
-
             icon = ResourcesCompat.getDrawable(getResources(), R.drawable.vpn_flat_button_icon, null);
             setButtonDrawable(icon);
             setGravity(Gravity.BOTTOM);
-
+            pressedColor = ContextCompat.getColor(context, R.color.vpn_button_pressed);
+            setOnTouchListener(this);
             setStatus(DISCONNECTED);
         }
 
         public void setStatus(@ConnectionStatus int status) {
             icon.setLevel(status);
+        }
+
+        @Override
+        public boolean onTouch(View v, MotionEvent event) {
+            // 4系もサポート。本当は R.drawable.vpn_flat_button_icon に android:tint で色を変えたい
+            switch (event.getAction()) {
+                case MotionEvent.ACTION_DOWN: {
+                    CompoundButton view = (CompoundButton) v;
+                    icon.getCurrent().setColorFilter(pressedColor, PorterDuff.Mode.SRC_ATOP);
+                    view.invalidate();
+                    break;
+                }
+                case MotionEvent.ACTION_UP:
+                case MotionEvent.ACTION_CANCEL: {
+                    CompoundButton view = (CompoundButton) v;
+                    icon.getCurrent().clearColorFilter();
+                    view.invalidate();
+                    break;
+                }
+            }
+            return false;
         }
     }
 }
