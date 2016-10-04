@@ -203,4 +203,7 @@
     <string name="connect_dialog_positive">CONNECT</string>
     <string name="connect_dialog_negative">Not now</string>
 
+    <!-- quick settings tile -->
+    <string name="qs_tile_title">Privacy VPN</string>
+
 </resources>
