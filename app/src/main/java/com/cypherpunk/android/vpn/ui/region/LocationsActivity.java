@@ -23,6 +23,7 @@ import com.cypherpunk.android.vpn.R;
 import com.cypherpunk.android.vpn.databinding.ActivityLocationsBinding;
 import com.cypherpunk.android.vpn.databinding.ListItemLocationBinding;
 import com.cypherpunk.android.vpn.model.Location;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -202,7 +203,7 @@ public class LocationsActivity extends AppCompatActivity
                     dialogFragment.show(getSupportFragmentManager());
                 }
             });
-
+            Picasso.with(getContext()).load(item.getNationalFlagUrl()).into(binding.nationalFlag);
             return convertView;
         }
     }

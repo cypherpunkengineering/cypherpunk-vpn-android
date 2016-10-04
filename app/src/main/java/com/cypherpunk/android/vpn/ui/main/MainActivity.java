@@ -41,6 +41,7 @@ import com.cypherpunk.android.vpn.vpn.CypherpunkVpnStatus;
 import com.cypherpunk.android.vpn.widget.BinaryTextureView;
 import com.cypherpunk.android.vpn.widget.ConnectionStatusView;
 import com.cypherpunk.android.vpn.widget.VpnFlatButton;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -117,6 +118,7 @@ public class MainActivity extends AppCompatActivity
         }
 
         binding.region.setText(location.getCity());
+        Picasso.with(this).load(location.getNationalFlagUrl()).into(binding.nationalFlag);
         CypherpunkVPN.address = location.getIpAddress();
         ipStatus.setLocation(location.getCity());
         ipStatus.setMapPosition(location.getMapX(), location.getMapY());
@@ -207,6 +209,7 @@ public class MainActivity extends AppCompatActivity
                     Realm realm = Realm.getDefaultInstance();
                     Location location = realm.where(Location.class).equalTo("id", locationId).findFirst();
                     binding.region.setText(location.getCity());
+                    Picasso.with(this).load(location.getNationalFlagUrl()).into(binding.nationalFlag);
                     if (!CypherpunkVPN.address.equals(location.getIpAddress())) {
                         CypherpunkVPN.address = location.getIpAddress();
                         ipStatus.setLocation(location.getCity());
