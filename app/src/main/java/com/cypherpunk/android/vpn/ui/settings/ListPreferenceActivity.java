@@ -20,7 +20,6 @@ import android.widget.ArrayAdapter;
 import com.cypherpunk.android.vpn.R;
 import com.cypherpunk.android.vpn.databinding.ActivityListPreferenceBinding;
 import com.cypherpunk.android.vpn.databinding.ListItemListPreferenceBinding;
-import com.cypherpunk.android.vpn.model.CypherpunkSetting;
 import com.cypherpunk.android.vpn.model.SettingItem;
 
 import java.util.ArrayList;
@@ -36,6 +35,7 @@ public class ListPreferenceActivity extends AppCompatActivity
     public static final String EXTRA_SELECTED_VALUE = "selected_value";
 
     private ArrayList<SettingItem> items;
+    private String selectedItem;
 
     @NonNull
     public static Intent createIntent(@NonNull Context context, @NonNull CharSequence key,
@@ -69,19 +69,29 @@ public class ListPreferenceActivity extends AppCompatActivity
         binding.list.setChoiceMode(AbsListView.CHOICE_MODE_SINGLE);
         binding.list.setOnItemClickListener(this);
 
+        selectedItem = getIntent().getStringExtra(EXTRA_VALUE);
+        boolean prefSelected = false;
         for (int i = 0; i < items.size(); i++) {
-            if (items.get(i).value.equals(getIntent().getStringExtra(EXTRA_VALUE))) {
+            if (items.get(i).key.equals(selectedItem)) {
                 binding.list.setItemChecked(i, true);
+                prefSelected = true;
+                break;
             }
         }
+        // if saved preferences no longer exist due to app upgrade,
+        // or if default pref not found, select 0th option
+        if (prefSelected == false)
+            binding.list.setItemChecked(0, true);
     }
 
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-        Intent intent = new Intent();
-        intent.putExtra(EXTRA_KEY, getIntent().getStringExtra(EXTRA_KEY));
-        intent.putExtra(EXTRA_SELECTED_VALUE, items.get(position).value);
-        setResult(Activity.RESULT_OK, intent);
+        if (!items.get(position).key.equals(selectedItem)) {
+            Intent intent = new Intent();
+            intent.putExtra(EXTRA_KEY, getIntent().getStringExtra(EXTRA_KEY));
+            intent.putExtra(EXTRA_SELECTED_VALUE, items.get(position).key);
+            setResult(Activity.RESULT_OK, intent);
+        }
         finish();
     }
 

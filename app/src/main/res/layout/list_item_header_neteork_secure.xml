@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <com.cypherpunk.android.vpn.widget.TypefaceTextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginTop="16dp"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:text="AUTO-SECURE"
+        android:textColor="@color/colorAccent"
+        android:textSize="16sp"
+        app:fontName="DosisMedium" />
+
+    <com.cypherpunk.android.vpn.widget.TypefaceTextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:text="Cypherpunk can automatically secure connections to untrusted networks."
+        android:textColor="@color/sub_text"
+        android:textSize="14sp"
+        app:fontName="DosisMedium" />
+
+    <android.support.v7.widget.SwitchCompat
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:background="@drawable/list_item_background"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:text="Auto secure connections" />
+
+    <com.cypherpunk.android.vpn.widget.TypefaceTextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginTop="16dp"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:text="WI-FI NETWORKS"
+        android:textColor="@color/colorAccent"
+        android:textSize="16sp"
+        app:fontName="DosisMedium" />
+
+    <com.cypherpunk.android.vpn.widget.TypefaceTextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:text="Add the networks you trust so Cypherpunk will now when connections should be secured."
+        android:textColor="@color/sub_text"
+        android:textSize="14sp"
+        app:fontName="DosisMedium" />
+
+</LinearLayout>

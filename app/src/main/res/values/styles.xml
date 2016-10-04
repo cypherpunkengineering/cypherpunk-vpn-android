@@ -11,10 +11,9 @@
         <item name="android:textColorSecondary">@android:color/white</item>
         <item name="android:windowBackground">@drawable/window_background_indigo</item>
         <item name="preferenceTheme">@style/CypherpunkPreference</item>
-        <item name="android:windowAnimationStyle">@style/Animation.Activity.Alpha</item>
     </style>
 
-    <style name="AppTheme.DialogWhenLarge" parent="Theme.AppCompat.DialogWhenLarge">
+    <style name="AppTheme.DialogWhenLarge" parent="Theme.AppCompat.Light.DialogWhenLarge">
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
@@ -25,6 +24,8 @@
         <item name="android:textColorSecondary">@android:color/white</item>
         <item name="android:windowBackground">@drawable/window_background</item>
         <item name="preferenceTheme">@style/CypherpunkPreference</item>
+        <item name="switchStyle">@style/Widget.Cypherpunk.Switch</item>
+        <item name="android:windowAnimationStyle">@style/Animation.Activity.Slide</item>
     </style>
 
     <style name="AppTheme.NoActionBar">
@@ -67,6 +68,13 @@
         <item name="android:activityOpenExitAnimation">@anim/alpha_exit</item>
         <item name="android:activityCloseEnterAnimation">@anim/alpha_enter</item>
         <item name="android:activityCloseExitAnimation">@anim/alpha_exit</item>
+    </style>
+
+    <style name="Animation.Activity.Slide" parent="android:Animation.Activity">
+        <item name="android:activityOpenEnterAnimation">@anim/translate_open_enter</item>
+        <item name="android:activityOpenExitAnimation">@anim/translate_open_exit</item>
+        <item name="android:activityCloseEnterAnimation">@anim/translate_close_enter</item>
+        <item name="android:activityCloseExitAnimation">@anim/translate_close_exit</item>
     </style>
 
     <style name="CypherpunkPreference" parent="@style/PreferenceThemeOverlay.v14.Material">
@@ -148,6 +156,10 @@
         <item name="android:textColor">@color/edit_text_hint</item>
     </style>
 
+    <style name="Widget.Cypherpunk.Switch" parent="Widget.AppCompat.CompoundButton.Switch">
+        <item name="android:textColor">@android:color/white</item>
+    </style>
+
     <!-- TextAppearance -->
 
     <style name="TextAppearance.Cypherpunk.Button.NoCaps" parent="Base.TextAppearance.AppCompat.Button">
@@ -157,6 +169,10 @@
     <style name="TextAppearance.Cypherpunk.SettingLabel" parent="TextAppearance.AppCompat">
         <item name="android:textColor">@color/settings_label</item>
         <item name="android:textSize">16sp</item>
+    </style>
+
+    <style name="TextAppearance.Cypherpunk.Yellow" parent="TextAppearance.AppCompat">
+        <item name="android:textColor">#f8e71c</item>
     </style>
 
 </resources>

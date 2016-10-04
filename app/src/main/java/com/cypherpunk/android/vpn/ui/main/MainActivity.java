@@ -11,7 +11,12 @@ import android.support.v4.app.TaskStackBuilder;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.ActionMenuView;
+import android.telephony.TelephonyManager;
+import android.text.SpannableStringBuilder;
+import android.text.Spanned;
 import android.text.TextUtils;
+import android.text.style.TextAppearanceSpan;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -23,6 +28,7 @@ import com.cypherpunk.android.vpn.data.api.JsonipService;
 import com.cypherpunk.android.vpn.data.api.UserManager;
 import com.cypherpunk.android.vpn.data.api.json.JsonipResult;
 import com.cypherpunk.android.vpn.databinding.ActivityMainBinding;
+import com.cypherpunk.android.vpn.model.CypherpunkSetting;
 import com.cypherpunk.android.vpn.model.IpStatus;
 import com.cypherpunk.android.vpn.model.Location;
 import com.cypherpunk.android.vpn.ui.region.LocationsActivity;
@@ -34,11 +40,16 @@ import com.cypherpunk.android.vpn.vpn.CypherpunkVPN;
 import com.cypherpunk.android.vpn.vpn.CypherpunkVpnStatus;
 import com.cypherpunk.android.vpn.widget.BinaryTextureView;
 import com.cypherpunk.android.vpn.widget.ConnectionStatusView;
-import com.cypherpunk.android.vpn.widget.VpnButton;
+import com.cypherpunk.android.vpn.widget.VpnFlatButton;
+import com.squareup.picasso.Picasso;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.inject.Inject;
 
 import de.blinkt.openvpn.core.VpnStatus;
+import io.realm.Realm;
 import rx.SingleSubscriber;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
@@ -48,14 +59,18 @@ import rx.subscriptions.Subscriptions;
 public class MainActivity extends AppCompatActivity
         implements VpnStatus.StateListener, RateDialogFragment.RateDialogListener {
 
+    public static final String AUTO_START = "com.cypherpunk.android.vpn.AUTO_START";
+    public static final String TILE_CLICK = "com.cypherpunk.android.vpn.TILE_CLICK";
     private static final int REQUEST_VPN_START = 0;
     private static final int REQUEST_SELECT_REGION = 1;
     private static final int REQUEST_STATUS = 2;
+    private static final int REQUEST_SETTINGS = 3;
 
     private ActivityMainBinding binding;
     private CypherpunkVpnStatus status;
     private Subscription subscription = Subscriptions.empty();
     private IpStatus ipStatus = new IpStatus();
+    private Realm realm;
 
     @Inject
     JsonipService webService;
@@ -64,7 +79,7 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if (!UserManager.getInstance(this).isSignedIn()) {
+        if (!UserManager.isSignedIn()) {
             Intent intent = new Intent(this, IntroductionActivity.class);
             TaskStackBuilder builder = TaskStackBuilder.create(this);
             builder.addNextIntent(intent);
@@ -74,11 +89,6 @@ public class MainActivity extends AppCompatActivity
 
         ((CypherpunkApplication) getApplication()).getAppComponent().inject(this);
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            getWindow().getDecorView().setSystemUiVisibility(
-                    View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
-        }
-
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
 
         status = CypherpunkVpnStatus.getInstance();
@@ -87,23 +97,36 @@ public class MainActivity extends AppCompatActivity
         assert actionBar != null;
         actionBar.setDisplayShowTitleEnabled(false);
 
-        // TODO:
-        Location location = new Location("Honolulu", "199.68.252.203 7133", 355, 66);
-        binding.region.setText(location.getName());
+        // background
+        String operatorName = getSimOperatorName();
+        if (TextUtils.isEmpty(operatorName)) {
+            String[] text = {Build.BRAND.toUpperCase(), Build.MODEL.toUpperCase()};
+            binding.binaryTextureView.setText(text);
+        } else {
+            String[] text = {Build.BRAND.toUpperCase(), Build.MODEL.toUpperCase(), operatorName};
+            binding.binaryTextureView.setText(text);
+        }
+
+        // showSignUpButton();
+
+        // TODO;
+        realm = Realm.getDefaultInstance();
+        Location location = realm.where(Location.class).equalTo("selected", true).findFirst();
+        if (location == null) {
+            getServerList();
+            location = realm.where(Location.class).equalTo("selected", true).findFirst();
+        }
+
+        binding.region.setText(location.getCity());
+        Picasso.with(this).load(location.getNationalFlagUrl()).into(binding.nationalFlag);
         CypherpunkVPN.address = location.getIpAddress();
-        ipStatus.setLocation(location.getName());
+        ipStatus.setLocation(location.getCity());
         ipStatus.setMapPosition(location.getMapX(), location.getMapY());
 
-        binding.connectionButton.setOnCheckedChangeListener(new VpnButton.OnCheckedChangeListener() {
+        binding.connectionButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked) {
-                    startVpn();
-                } else {
-                    stopVpn();
-                    RateDialogFragment dialogFragment = RateDialogFragment.newInstance();
-                    dialogFragment.show(getSupportFragmentManager());
-                }
+            public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
+                toggleVpn();
             }
         });
 
@@ -135,6 +158,21 @@ public class MainActivity extends AppCompatActivity
         VpnStatus.addStateListener(this);
     }
 
+
+    private void toggleVpn()
+    {
+        if (status.isDisconnected()) {
+            startVpn();
+        }
+        if (status.isConnected()) {
+            stopVpn();
+        }
+        if (!status.isConnected() && !status.isDisconnected()) {
+            // connecting
+            stopVpn();
+        }
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main_right, menu);
@@ -146,7 +184,7 @@ public class MainActivity extends AppCompatActivity
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_setting:
-                startActivity(new Intent(this, SettingsActivity.class));
+                startActivityForResult(new Intent(this, SettingsActivity.class), REQUEST_SETTINGS);
                 break;
             case R.id.action_status:
                 startActivityForResult(StatusActivity.createIntent(this, ipStatus), REQUEST_STATUS);
@@ -167,17 +205,30 @@ public class MainActivity extends AppCompatActivity
                     ipStatus = data.getParcelableExtra(StatusActivity.EXTRA_STATUS);
                     break;
                 case REQUEST_SELECT_REGION:
-                    Location location = (Location) data.getSerializableExtra(LocationsActivity.EXTRA_LOCATION);
-                    binding.region.setText(location.getName());
+                    String locationId = data.getStringExtra(LocationsActivity.EXTRA_LOCATION_ID);
+                    Realm realm = Realm.getDefaultInstance();
+                    Location location = realm.where(Location.class).equalTo("id", locationId).findFirst();
+                    binding.region.setText(location.getCity());
+                    Picasso.with(this).load(location.getNationalFlagUrl()).into(binding.nationalFlag);
                     if (!CypherpunkVPN.address.equals(location.getIpAddress())) {
                         CypherpunkVPN.address = location.getIpAddress();
-                        ipStatus.setLocation(location.getName());
+                        ipStatus.setLocation(location.getCity());
                         ipStatus.setMapPosition(location.getMapX(), location.getMapY());
+                        realm.close();
 
-                        startVpn();
-
+                        if (data.getBooleanExtra(LocationsActivity.EXTRA_CONNECT, false)) {
+                            startVpn();
+                        } else {
+                            stopVpn();
+                        }
                     }
                     break;
+                case REQUEST_SETTINGS:
+                    if (data.getBooleanExtra(LocationsActivity.EXTRA_CONNECT, false)) {
+                        startVpn();
+                    } else {
+                        stopVpn();
+                    }
             }
         }
     }
@@ -195,8 +246,28 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+
+        binding.binaryTextureView.startAnimation();
+
+        Intent intent = getIntent();
+        checkIfAutoStart(intent);
+        checkIfTileClick(intent);
+        setIntent(null);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        // 画面が黒くなってしまうから、アニメーションを止める
+        binding.binaryTextureView.stopAnimation();
+    }
+
+    @Override
     protected void onDestroy() {
         subscription.unsubscribe();
+        realm.close();
         super.onDestroy();
     }
 
@@ -209,11 +280,50 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void updateState(String state, String logmessage,
                             int localizedResId, VpnStatus.ConnectionStatus level) {
-        if (level == VpnStatus.ConnectionStatus.LEVEL_CONNECTED) {
-            onVpnConnected();
-        } else if (level == VpnStatus.ConnectionStatus.LEVEL_NOTCONNECTED
-                || level == VpnStatus.ConnectionStatus.LEVEL_NONETWORK) {
-            onVpnDisconnected();
+        switch (level) {
+            case LEVEL_CONNECTED:
+                onVpnConnected();
+                break;
+            case LEVEL_NOTCONNECTED:
+                onVpnDisconnected();
+                break;
+        }
+    }
+
+    private static void log(String str) {
+        Log.w("CypherpunkVPN", str);
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        log("onNewIntent()");
+        super.onNewIntent(intent);
+        checkIfAutoStart(intent);
+        checkIfTileClick(intent);
+        setIntent(null);
+    }
+
+    private void checkIfAutoStart(Intent i) {
+        log("checkIfAutoStart()");
+        if (i != null && i.getBooleanExtra(AUTO_START, false)) {
+            CypherpunkSetting cypherpunkSetting = new CypherpunkSetting();
+            if (cypherpunkSetting.vpnAutoStartConnect) {
+                log("auto starting VPN");
+                startVpn();
+                moveTaskToBack(true);
+            } else {
+                finish();
+            }
+        }
+    }
+
+    private void checkIfTileClick(Intent i)
+    {
+        log("checkIfTileClick()");
+        if (i != null && i.getBooleanExtra(TILE_CLICK, false))
+        {
+            toggleVpn();
+            moveTaskToBack(true);
         }
     }
 
@@ -222,11 +332,11 @@ public class MainActivity extends AppCompatActivity
         if (intent != null) {
             startActivityForResult(intent, REQUEST_VPN_START);
         } else {
-            CypherpunkVPN.start(getApplicationContext(), getBaseContext());
-            binding.keyTexture.setState(BinaryTextureView.CONNECTING);
+            binding.binaryTextureView.setState(BinaryTextureView.CONNECTING);
             binding.connectionStatus.setStatus(ConnectionStatusView.CONNECTING);
-            binding.connectionButton.setStatus(VpnButton.CONNECTING);
+            binding.connectionButton.setStatus(VpnFlatButton.CONNECTING);
             binding.connectingCancelButton.setVisibility(View.VISIBLE);
+            CypherpunkVPN.start(getApplicationContext(), getBaseContext());
         }
     }
 
@@ -241,9 +351,9 @@ public class MainActivity extends AppCompatActivity
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                binding.keyTexture.setState(BinaryTextureView.CONNECTED);
+                binding.binaryTextureView.setState(BinaryTextureView.CONNECTED);
                 binding.connectionStatus.setStatus(ConnectionStatusView.CONNECTED);
-                binding.connectionButton.setStatus(VpnButton.CONNECTED);
+                binding.connectionButton.setStatus(VpnFlatButton.CONNECTED);
                 binding.connectingCancelButton.setVisibility(View.INVISIBLE);
             }
         });
@@ -254,9 +364,9 @@ public class MainActivity extends AppCompatActivity
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                binding.keyTexture.setState(BinaryTextureView.DISCONNECTED);
+                binding.binaryTextureView.setState(BinaryTextureView.DISCONNECTED);
                 binding.connectionStatus.setStatus(ConnectionStatusView.DISCONNECTED);
-                binding.connectionButton.setStatus(VpnButton.DISCONNECTED);
+                binding.connectionButton.setStatus(VpnFlatButton.DISCONNECTED);
                 binding.connectingCancelButton.setVisibility(View.INVISIBLE);
             }
         });
@@ -283,5 +393,30 @@ public class MainActivity extends AppCompatActivity
                         error.printStackTrace();
                     }
                 });
+    }
+
+    private void getServerList() {
+        realm.beginTransaction();
+        List<Location> locations = new ArrayList<>();
+        // TODO: serverList api
+        locations.add(new Location("Tokyo 1", "", "208.111.52.1", "http://flags.fmcdn.net/data/flags/normal/jp.png", 305, 56));
+        locations.add(new Location("Tokyo 2", "", "208.111.52.2", "http://flags.fmcdn.net/data/flags/normal/jp.png", 305, 56));
+        locations.add(new Location("Honolulu", "", "199.68.252.203", "http://flags.fmcdn.net/data/flags/normal/us.png", 305, 56));
+        realm.copyToRealm(locations);
+        Location first = realm.where(Location.class).findFirst();
+        first.setSelected(true);
+        realm.commitTransaction();
+    }
+
+    private String getSimOperatorName() {
+        TelephonyManager telephonyManager = (TelephonyManager) getSystemService(TELEPHONY_SERVICE);
+        return telephonyManager.getSimOperatorName();
+    }
+
+    private void showSignUpButton() {
+        SpannableStringBuilder sb = new SpannableStringBuilder(getString(R.string.main_sign_up));
+        sb.setSpan(new TextAppearanceSpan(this, R.style.TextAppearance_Cypherpunk_Yellow), 0, 7, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        binding.signUpButton.setText(sb);
+        binding.signUpButton.setVisibility(View.VISIBLE);
     }
 }

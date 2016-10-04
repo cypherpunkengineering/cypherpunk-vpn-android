@@ -1,9 +1,27 @@
-<?xml version="1.0" encoding="utf-8"?>
-<selector xmlns:android="http://schemas.android.com/apk/res/android">
-    <item>
+<level-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:maxLevel="0">
         <shape android:shape="oval">
-            <size android:width="140dp" android:height="140dp" />
-            <stroke android:color="@color/vpn_button_frame_connected" />
+            <stroke
+                android:width="7dp"
+                android:color="@color/vpn_button_frame_disconnected" />
+            <size
+                android:width="140dp"
+                android:height="140dp" />
+            <solid android:color="@android:color/transparent" />
         </shape>
     </item>
-</selector>
+    <item
+        android:drawable="@drawable/vpn_button_border_orange"
+        android:maxLevel="1" />
+    <item android:maxLevel="2">
+        <shape android:shape="oval">
+            <stroke
+                android:width="7dp"
+                android:color="@color/vpn_button_frame_connected" />
+            <size
+                android:width="140dp"
+                android:height="140dp" />
+            <solid android:color="@android:color/transparent" />
+        </shape>
+    </item>
+</level-list>

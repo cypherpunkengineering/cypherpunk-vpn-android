@@ -43,7 +43,6 @@
                     android:imeOptions="actionNext"
                     android:inputType="textEmailAddress"
                     android:maxLines="1"
-                    android:singleLine="true"
                     android:theme="@style/EditTextColorControl" />
 
             </android.support.design.widget.TextInputLayout>
@@ -63,7 +62,6 @@
                     android:imeOptions="actionDone"
                     android:inputType="textPassword"
                     android:maxLines="1"
-                    android:singleLine="true"
                     android:theme="@style/EditTextColorControl" />
 
             </android.support.design.widget.TextInputLayout>
@@ -75,7 +73,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="8dp"
                 android:layout_marginTop="8dp"
-                android:text="@string/button_sign_in" />
+                android:text="@string/sign_in_button_sign_in" />
 
             <com.cypherpunk.android.vpn.widget.TypefaceTextView
                 android:id="@+id/forgot_password__button"

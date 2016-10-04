@@ -70,24 +70,32 @@ public class WorldMapView extends View {
         canvas.drawBitmap(mapBitmap, mapMatrix, paint);
 
         if (isNewPositionVisible) {
-            // line
-            linePath.reset();
-            linePath.moveTo(originalPositionMatrix[0], originalPositionMatrix[1]);
-            linePath.quadTo(Math.abs(newPositionMatrix[0] + originalPositionMatrix[0]) / 2,
-                    Math.abs(newPositionMatrix[1] + originalPositionMatrix[1]) / 2 - (50 * dm.density * scale),
-                    newPositionMatrix[0], newPositionMatrix[1]);
-            canvas.drawPath(linePath, linePaint);
+            // new と current の position が近すぎて重なってしまう場合は、new だけ表示する
+            if (!isTooClosePosition()) {
+                // original position
+                canvas.drawBitmap(originalPositionBitmap,
+                        originalPositionMatrix[0] - originalPositionBitmap.getWidth() / 2,
+                        originalPositionMatrix[1] - originalPositionBitmap.getHeight() / 2, paint);
+                // line
+                linePath.reset();
+                linePath.moveTo(originalPositionMatrix[0], originalPositionMatrix[1]);
+                linePath.quadTo(
+                        Math.abs(newPositionMatrix[0] + originalPositionMatrix[0]) / 2,
+                        Math.abs(-newPositionMatrix[1] + originalPositionMatrix[1] / 2),
+                        newPositionMatrix[0], newPositionMatrix[1]);
+                canvas.drawPath(linePath, linePaint);
+            }
 
             // new position
             canvas.drawBitmap(newPositionBitmap,
                     newPositionMatrix[0] - newPositionBitmap.getWidth() / 2,
                     newPositionMatrix[1] - newPositionBitmap.getHeight() / 2, paint);
+        } else {
+            // original position
+            canvas.drawBitmap(originalPositionBitmap,
+                    originalPositionMatrix[0] - originalPositionBitmap.getWidth() / 2,
+                    originalPositionMatrix[1] - originalPositionBitmap.getHeight() / 2, paint);
         }
-
-        // original position
-        canvas.drawBitmap(originalPositionBitmap,
-                originalPositionMatrix[0] - originalPositionBitmap.getWidth() / 2,
-                originalPositionMatrix[1] - originalPositionBitmap.getHeight() / 2, paint);
 
         canvas.restore();
     }
@@ -135,6 +143,16 @@ public class WorldMapView extends View {
     public void setNewPositionVisibility(boolean visible) {
         isNewPositionVisible = visible;
         invalidate();
+    }
+
+    /**
+     * new と current の position が近すぎてていないかチェックする
+     *
+     * @return
+     */
+    private boolean isTooClosePosition() {
+        return Math.abs(newPositionMatrix[0] - originalPositionMatrix[0]) < newPositionBitmap.getWidth() / 2 &&
+                Math.abs(newPositionMatrix[1] - originalPositionMatrix[1]) < newPositionBitmap.getHeight() / 2;
     }
 
     private Bitmap getBitmap(@DrawableRes int resId) {

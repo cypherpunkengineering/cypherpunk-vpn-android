@@ -1,11 +1,20 @@
 <resources>
     <string name="app_name">Cypherpunk</string>
 
+    <!-- main -->
+    <string name="action_account">Account</string>
+    <string name="action_settings">Settings</string>
+    <string name="main_status_disconnected">Tap to  protect</string>
+    <string name="status_connecting">Connecting</string>
+    <string name="main_status_connected">You are protected</string>
+    <string name="vpn_cancel">Cancel</string>
+    <string name="main_sign_up">Sign Up and get a 7-Day Free Premium Trial</string>
+
     <!-- sign in-->
     <string name="title_activity_sign_in">Log In</string>
     <string name="title_activity_sign_up">Sign Up</string>
     <string name="error_field_required">This field is required</string>
-    <string name="button_sign_in">Log In</string>
+    <string name="sign_in_button_sign_in">Log In</string>
     <string name="no_internet">Network is unavailable</string>
     <string name="invalid_mail_password">invalid mail/password</string>
     <string name="sign_in_forgot_password">Forgot password?</string>
@@ -15,27 +24,126 @@
     <string name="sign_in_sign_up">Sign Up</string>
     <string name="sign_up_password_hint">Password</string>
     <string name="sign_up_email_hint">Email</string>
-    <string name="button_sign_up">Sign Up</string>
-    <string name="dialog_login">Log in…</string>
+    <string name="sign_up_button_sign_up">Sign Up</string>
+    <string name="sign_up_free_premium_trial_2_line">Sign up and start your 7 day\n Free Premium Trial now!</string>
+    <string name="sign_up_free_premium_trial">Sign up and start your 7 day Free Premium Trial now!</string>
 
     <!-- setting -->
     <string name="title_activity_settings">Configuration</string>
     <string name="tab_settings_account">Account</string>
-    <string name="tab_settings_advanced_settings">Advanced Settings</string>
+    <string name="tab_settings_advanced_settings">Settings</string>
     <string name="mode_description_text">‘Speed and Country’ mode is very high speed because not encrypted.\n Omnicos directe al desirabilite de un nov lingua franca: On refusa continuar payar custosi traductores. At solmen va esser necessi far uniform grammatica, pronunciation e plu sommun paroles.</string>
     <string name="settings_mode_max_privacy">Max privacy</string>
     <string name="settings_mode_max_speed">Max speed</string>
     <string name="settings_mode_max_freedom">Max freedom</string>
-    <string name="contact_us_hint">Please describe the issues you are having…</string>
     <string name="action_send">send</string>
     <string name="action_done">done</string>
+    <string name="setting_connect_dialog_message">Do you reconnect now?</string>
+
+
+    <!-- startup settings -->
+    <string name="setting_category_startup">Startup</string>
+    <string name="setting_vpn_auto_start_connect">Auto-connect on device startup</string>
+
+    <!-- privacy settings -->
+    <string name="setting_category_privacy">Privacy</string>
+
+    <!-- crypto profile settings -->
+    <string name="setting_vpn_crypto_profile">Encryption Profile</string>
+    <!-- crypto profile: default -->
+    <string name="setting_vpn_crypto_profile_default">Default</string>
+    <string name="setting_vpn_crypto_profile_default_desc">Best combination of speed and security</string>
+    <!-- crypto profile: none -->
+    <string name="setting_vpn_crypto_profile_none">None</string>
+    <string name="setting_vpn_crypto_profile_none_desc">Max speed: no cryptography</string>
+    <!-- crypto profile: strong -->
+    <string name="setting_vpn_crypto_profile_strong">Strong</string>
+    <string name="setting_vpn_crypto_profile_strong_desc">Max privacy: strong cryptography</string>
+    <!-- crypto profile: stealth -->
+    <string name="setting_vpn_crypto_profile_stealth">Stealth</string>
+    <string name="setting_vpn_crypto_profile_stealth_desc">Max freedom: strong cryptography + anti-censorship tweaks</string>
+    <!-- crypto profile cipher -->
+    <string name="setting_vpn_crypto_cipher">Cipher</string>
+    <string name="setting_vpn_crypto_cipher_aes256">AES-256</string>
+    <!-- crypto profile auth -->
+    <string name="setting_vpn_crypto_auth">Auth</string>
+    <string name="setting_vpn_crypto_auth_sha1">SHA-1</string>
+    <!-- crypto profile keylen -->
+    <string name="setting_vpn_crypto_keylen">Key</string>
+    <string name="setting_vpn_crypto_keylen_rsa2048">RSA-2048</string>
+
+    <!-- privacy firewall mode -->
+    <string name="setting_privacy_firewall_mode">Privacy Firewall</string>
+    <!-- privacy firewall mode: auto -->
+    <string name="setting_privacy_firewall_mode_auto">Auto</string>
+    <string name="setting_privacy_firewall_mode_auto_desc">Privacy Firewall will automatically engage internet killswitch when VPN is on, preventing any leak while not on Cypherpunk Privacy Network.</string>
+    <!-- privacy firewall mode: always -->
+    <string name="setting_privacy_firewall_mode_always">Always</string>
+    <string name="setting_privacy_firewall_mode_always_desc">Privacy Firewall will always engage internet killswitch, preventing any leak while not on Cypherpunk Privacy Network.</string>
+    <!-- privacy firewall mode: never -->
+    <string name="setting_privacy_firewall_mode_never">Never</string>
+    <string name="setting_privacy_firewall_mode_never_desc">Privacy Firewall is disabled</string>
+
+    <!-- advanced setting -->
+    <string name="setting_category_advanced">Advanced Settings</string>
+    <!-- protocol settings -->
+    <string name="setting_vpn_protocol">VPN Protocol</string>
+    <string name="setting_vpn_protocol_openvpn23_udp">OpenVPN 2.3 UDP</string>
+    <string name="setting_vpn_protocol_openvpn23_udp_desc">OpenVPN 2.3 UDP is the default.</string>
+    <string name="setting_vpn_protocol_openvpn23_tcp">OpenVPN 2.3 TCP</string>
+    <string name="setting_vpn_protocol_openvpn23_tcp_desc">OpenVPN 2.3 TCP is a fallback when UDP cannot be used.</string>
+    <string name="setting_vpn_protocol_openvpn31_udp">OpenVPN 3.1 UDP</string>
+    <string name="setting_vpn_protocol_openvpn31_udp_desc">OpenVPN 3.1 support is still experimental.</string>
+    <string name="setting_vpn_protocol_openvpn31_tcp">OpenVPN 3.1 TCP</string>
+    <string name="setting_vpn_protocol_openvpn31_tcp_desc">OpenVPN 3.1 support is still experimental.</string>
+    <!-- manage trusted networks -->
+    <string name="setting_network">Trusted networks</string>
+    <string name="title_activity_network">Trusted networks</string>
+    <string name="setting_network_summary">Automatically enable VPN on untrusted networks</string>
+    <!-- per-app vpn settings -->
+    <string name="setting_application">Per-app VPN</string>
+    <string name="setting_application_summary">Allows app to connect directly without VPN</string>
+    <!-- vpn port remote -->
+    <string name="setting_vpn_port_remote">Remote port</string>
+    <!-- vpn port local -->
+    <string name="setting_vpn_port_local">Local port</string>
+    <!-- vpn port forwarding -->
+    <string name="setting_vpn_port_forwarding">Port Forwarding</string>
+    <string name="setting_vpn_port_forwarding_summary">Allow incoming connection to your mobile device over an external port</string>
+    <!-- vpn use small packets -->
+    <string name="setting_small_packets">Use small packets</string>
+    <string name="setting_small_packets_summary">Optimized packet size for improved connectivity to various router and mobile networks</string>
+    <!-- vpn use openvpn3 -->
+    <string name="setting_use_openvpn3">Enable experimental OpenVPN 3 support</string>
+    <string name="setting_use_openvpn3_summary">OpenVPN 3 features performance enhancements but is still alpha quality.</string>
+
+    <!-- account setting -->
+    <string name="account_setting_category_type">Account Type</string>
+    <string name="account_setting_upgrade">Upgrade</string>
+    <string name="account_setting_category_details">Account Details</string>
+    <string name="account_setting_email">Email</string>
+    <string name="account_setting_password">Password</string>
+    <string name="account_setting_category_more">More</string>
+    <string name="account_setting_contact">Contact us</string>
+    <string name="account_setting_logout">Log out</string>
+
+    <!-- edit profile-->
     <string name="title_activity_edit_email">Update Email</string>
     <string name="title_activity_edit_password">Update Password</string>
-    <string name="title_activity_contact">Contact us</string>
+    <string name="edit_email_account_error_do_not_match">Confirm email do not match</string>
+    <string name="edit_password_account_error_do_not_match">Confirm password do not match</string>
     <string name="email_hint">New Email</string>
     <string name="confirm_hint">Confirm</string>
     <string name="password_hint">New Password</string>
     <string name="current_password_hint">Current Password</string>
+
+    <!-- contact us-->
+    <string name="title_activity_contact">Contact us</string>
+    <string name="contact_us_hint">Please describe the issues you are having…</string>
+
+    <!-- port-->
+    <string name="title_activity_local_port">Local port</string>
+    <string name="local_port_hint">Local port: Ex. 88888</string>
 
     <!-- application settings -->
     <string name="title_activity_application_settings">Per application settings</string>
@@ -47,32 +155,8 @@
     <string name="ip_original">ORIGINAL</string>
     <string name="ip_new">NEW</string>
     <string name="status_ip_loading">Loading…</string>
-
-    <!-- select mode -->
-    <string name="select_mode_title">Select your Cypherpunk VPN mode</string>
-    <string name="select_mode_connect">Connect</string>
-    <string name="select_mode_skip">Skip</string>
-
-    <!-- main -->
-    <string name="action_account">Account</string>
-    <string name="action_settings">Settings</string>
-    <string name="status_disconnected">Tap to  protect</string>
-    <string name="status_connecting">Connecting</string>
-    <string name="status_connected">You are protected</string>
-    <string name="vpn_cancel">Cancel</string>
-
-    <!-- account -->
-    <string name="title_activity_account">Account</string>
-    <string name="account_grade_free">Free</string>
-    <string name="account_grade_monthly">Monthly</string>
-    <string name="account_grade_yearly">Yearly</string>
-    <string name="account_logout">Sign out</string>
-    <string name="account_upgrade">Upgrade</string>
-    <string name="account_change_email">Change email</string>
-    <string name="account_change_password">Change password</string>
-    <string name="account_contact_us">Contact us</string>
-    <string name="account_review">Write a review / Rate us</string>
-    <string name="account_tutorial">Quick Tutorial</string>
+    <string name="status_connected">Connected</string>
+    <string name="status_disconnected">Disconnected</string>
 
     <!-- upgrade account -->
     <string name="title_activity_upgrade_plan">Upgrade Account</string>
@@ -92,25 +176,34 @@
     <string name="premium_enter_your_email">Enter your email address</string>
     <string name="premium_select_your_plan">Select your plan</string>
 
+    <!-- rate dialog -->
+    <string name="rate_dialog_rate_now">Rate now</string>
+    <string name="rate_dialog_later">Later</string>
+    <string name="rate_text">Do you like Cypherpunk VPN? Please take a moment to rate us! It helps so much if you do. Thanks.</string>
+
+    <!-- select mode -->
+    <string name="select_mode_title">Select your Cypherpunk VPN mode</string>
+    <string name="select_mode_connect">Connect</string>
+    <string name="select_mode_skip">Skip</string>
+
     <!-- tutorial -->
     <string name="tutorial_skip">SKIP</string>
     <string name="tutorial_finish">USE CYPHERPUNK NOW</string>
 
     <!-- select region -->
-    <string name="title_activity_select_region">Select region</string>
+    <string name="title_activity_locations">Locations</string>
+    <string name="location_favorite">FAVORITE</string>
     <string name="location_recommended">RECOMMENDED</string>
     <string name="location_all_locations">ALL LOCATION</string>
     <string name="select_region_sort_by_distance">Sort by distance</string>
     <string name="title_activity_sort_region">Sort by distance</string>
     <string name="select_region_connect_dialog_message">Do you connect now?</string>
-    <string name="select_region_connect_dialog_positive">CONNECT</string>
-    <string name="select_region_connect_negative">Not now</string>
-    <string name="title_activity_locations">Locations</string>
 
-    <!-- rate dialog -->
-    <string name="rate_dialog_rate_now">Rate now</string>
-    <string name="later_dialog_later">Later</string>
-    <string name="local_port_hint">Local port: Ex. 88888</string>
-    <string name="title_activity_local_port">Local port</string>
+    <!-- connect dialog -->
+    <string name="connect_dialog_positive">CONNECT</string>
+    <string name="connect_dialog_negative">Not now</string>
+
+    <!-- quick settings tile -->
+    <string name="qs_tile_title">Privacy VPN</string>
 
 </resources>

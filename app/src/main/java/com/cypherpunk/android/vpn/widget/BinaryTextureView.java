@@ -8,7 +8,6 @@ import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.SurfaceTexture;
 import android.graphics.Typeface;
-import android.os.Build;
 import android.os.SystemClock;
 import android.support.annotation.ColorInt;
 import android.support.annotation.IntDef;
@@ -38,14 +37,27 @@ public class BinaryTextureView extends TextureView implements TextureView.Surfac
     public static final int DISCONNECTED = 0;
     public static final int CONNECTING = 1;
     public static final int CONNECTED = 2;
+    private String[] strings;
 
     @Retention(RetentionPolicy.SOURCE)
     @IntDef({DISCONNECTED, CONNECTING, CONNECTED})
     public @interface ConnectionState {
     }
 
+    @Retention(RetentionPolicy.SOURCE)
+    @IntDef({STATE_RUNNING, STATE_STOPPED})
+    private @interface AnimationState {
+    }
+
+    private static final int STATE_RUNNING = 0;
+    private static final int STATE_STOPPED = 1;
+
     @ConnectionState
     private int connectionState = DISCONNECTED;
+
+    @AnimationState
+    private int animationState = STATE_RUNNING;
+
     private final Object stateMonitor = new Object();
 
     private final class RenderingThread extends Thread {
@@ -61,7 +73,7 @@ public class BinaryTextureView extends TextureView implements TextureView.Surfac
             final int tileWidth = res.getDimensionPixelOffset(R.dimen.binary_text_width);
             final int tileHeight = res.getDimensionPixelOffset(R.dimen.binary_text_height);
 
-            final int rowCount = (int) Math.ceil((double) height / tileHeight) + 1;
+            final int rowCount = (int) Math.ceil((double) height / tileHeight) + 2;
             final int columnCount = (int) Math.ceil((double) width / tileWidth);
 
             final KeyItemGenerator keyItemGenerator = new KeyItemGenerator(
@@ -84,6 +96,7 @@ public class BinaryTextureView extends TextureView implements TextureView.Surfac
             baseTime = SystemClock.uptimeMillis();
             while (renderingThread == this) {
                 drawTiles();
+                sleepIfStopped();
             }
         }
 
@@ -98,6 +111,17 @@ public class BinaryTextureView extends TextureView implements TextureView.Surfac
             }
 
             unlockCanvasAndPost(canvas);
+        }
+
+        private void sleepIfStopped() {
+            synchronized (stateMonitor) {
+                if (animationState == STATE_STOPPED) {
+                    try {
+                        stateMonitor.wait();
+                    } catch (InterruptedException ignored) {
+                    }
+                }
+            }
         }
     }
 
@@ -123,7 +147,6 @@ public class BinaryTextureView extends TextureView implements TextureView.Surfac
         unlockCanvasAndPost(canvas);
 
         if (renderingThread == null) {
-            String[] strings = {Build.BRAND.toUpperCase(), Build.MANUFACTURER.toUpperCase(), Build.MODEL.toUpperCase()};
             renderingThread = new RenderingThread(getContext(), width, height, strings);
             renderingThread.start();
         }
@@ -159,8 +182,27 @@ public class BinaryTextureView extends TextureView implements TextureView.Surfac
     public void onSurfaceTextureUpdated(SurfaceTexture surfaceTexture) {
     }
 
+    public void startAnimation() {
+        synchronized (stateMonitor) {
+            animationState = STATE_RUNNING;
+            stateMonitor.notifyAll();
+        }
+    }
+
+    public void stopAnimation() {
+        synchronized (stateMonitor) {
+            if (animationState == STATE_RUNNING) {
+                animationState = STATE_STOPPED;
+            }
+        }
+    }
+
     public void setState(@ConnectionState int state) {
         connectionState = state;
+    }
+
+    public void setText(String[] text) {
+        this.strings = text;
     }
 
     /**

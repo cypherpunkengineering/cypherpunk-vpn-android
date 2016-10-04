@@ -9,6 +9,7 @@ import android.content.Context;
 import android.net.LocalServerSocket;
 import android.net.LocalSocket;
 import android.net.LocalSocketAddress;
+import android.os.Handler;
 import android.os.ParcelFileDescriptor;
 import android.support.annotation.NonNull;
 import android.util.Log;
@@ -36,6 +37,7 @@ import de.blinkt.openvpn.core.VpnStatus.ConnectionStatus;
 public class OpenVpnManagementThread implements Runnable, OpenVPNManagement {
 
     private static final String TAG = "openvpn";
+    private final Handler mResumeHandler;
     private LocalSocket mSocket;
     private VpnProfile mProfile;
     private OpenVPNService mOpenVPNService;
@@ -54,7 +56,18 @@ public class OpenVpnManagementThread implements Runnable, OpenVPNManagement {
     public OpenVpnManagementThread(VpnProfile profile, OpenVPNService openVpnService) {
         mProfile = profile;
         mOpenVPNService = openVpnService;
+        mResumeHandler = new Handler(openVpnService.getMainLooper());
+
     }
+
+    private Runnable mResumeHoldRunnable = new Runnable() {
+        @Override
+        public void run() {
+            if (shouldBeRunning()) {
+                releaseHoldCmd();
+            }
+        }
+    };
 
     public boolean openManagementInterface(@NonNull Context c) {
         // Could take a while to open connection
@@ -118,6 +131,8 @@ public class OpenVpnManagementThread implements Runnable, OpenVPNManagement {
             // Wait for a client to connect
             mSocket = mServerSocket.accept();
             InputStream instream = mSocket.getInputStream();
+
+
             // Close the management socket after client connected
 
             mServerSocket.close();
@@ -125,6 +140,7 @@ public class OpenVpnManagementThread implements Runnable, OpenVPNManagement {
             //mServerSocketLocal.close();
 
             while (true) {
+
                 int numbytesread = instream.read(buffer);
                 if (numbytesread == -1)
                     return;
@@ -148,11 +164,31 @@ public class OpenVpnManagementThread implements Runnable, OpenVPNManagement {
 
             }
         } catch (IOException e) {
-            if (!e.getMessage().equals("socket closed") && !e.getMessage().equals("Connection reset by peer"))
-                VpnStatus.logException(e);
+            VpnStatus.logDebug(R.string.management_socket_closed, e.getLocalizedMessage());
         }
         synchronized (active) {
             active.remove(this);
+        }
+    }
+
+    void requestClose(FileDescriptor fd)
+    {
+        Exception ex = null;
+        try
+        {
+            Method getInt = FileDescriptor.class.getDeclaredMethod("getInt$");
+            int fdint = (Integer)getInt.invoke(fd);
+            mOpenVPNService.closeOpenVPNtun(fdint);
+        }
+        catch (NoSuchMethodException e) { ex = e; }
+        catch (IllegalArgumentException e) { ex = e; }
+        catch (IllegalAccessException e) { ex = e; }
+        catch (InvocationTargetException e) { ex = e; }
+        catch (NullPointerException e) { ex = e; }
+        if (ex != null)
+        {
+            ex.printStackTrace();
+            Log.d("Openvpn", "Failed to retrieve fd from socket: " + fd);
         }
     }
 
@@ -215,7 +251,7 @@ public class OpenVpnManagementThread implements Runnable, OpenVPNManagement {
                     processPWCommand(argument);
                     break;
                 case "HOLD":
-                    handleHold();
+                    handleHold(argument);
                     break;
                 case "NEED-OK":
                     processNeedCommand(argument);
@@ -305,9 +341,17 @@ public class OpenVpnManagementThread implements Runnable, OpenVPNManagement {
             return mPauseCallback.shouldBeRunning();
     }
 
-    private void handleHold() {
+    private void handleHold(String argument) {
+        int waittime = Integer.parseInt(argument.split(":")[1]);
         if (shouldBeRunning()) {
-            releaseHoldCmd();
+            if (waittime > 1)
+                VpnStatus.updateStateString("CONNECTRETRY", String.valueOf(waittime),
+                        R.string.state_waitconnectretry, ConnectionStatus.LEVEL_CONNECTING_NO_SERVER_REPLY_YET);
+            mResumeHandler.postDelayed(mResumeHoldRunnable, waittime * 1000);
+            if (waittime > 5) {
+                VpnStatus.logInfo(R.string.state_waitconnectretry, String.valueOf(waittime));
+
+            }
         } else {
             mWaitingForRelease = true;
 
@@ -318,6 +362,7 @@ public class OpenVpnManagementThread implements Runnable, OpenVPNManagement {
     }
 
     private void releaseHoldCmd() {
+        mResumeHandler.removeCallbacks(mResumeHoldRunnable);
         if ((System.currentTimeMillis() - mLastHoldRelease) < 5000) {
             try {
                 Thread.sleep(3000);
@@ -453,6 +498,9 @@ public class OpenVpnManagementThread implements Runnable, OpenVPNManagement {
                 // This not nice or anything but setFileDescriptors accepts only FilDescriptor class :(
 
                 break;
+            case "CLOSETUN":
+                FileDescriptor fdtoclose = mFDList.pollFirst();
+                requestClose(fdtoclose);
             default:
                 Log.e(TAG, "Unknown needok command " + argument);
                 return;
@@ -582,6 +630,7 @@ public class OpenVpnManagementThread implements Runnable, OpenVPNManagement {
     }
 
     public void signalusr1() {
+        mResumeHandler.removeCallbacks(mResumeHoldRunnable);
         if (!mWaitingForRelease)
             managmentCommand("signal SIGUSR1\n");
         else

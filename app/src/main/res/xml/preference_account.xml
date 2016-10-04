@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+
+    <com.cypherpunk.android.vpn.ui.settings.AccountPreference android:key="account" />
+
+    <PreferenceCategory android:title="@string/account_setting_category_type">
+
+        <Preference
+            android:key="plan"
+            tools:summary="Renews On 02/02/2016"
+            tools:title="Monthly Premium" />
+
+        <Preference
+            android:key="upgrade"
+            android:title="Upgrade" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/account_setting_category_details">
+
+        <Preference
+            android:key="email"
+            android:title="@string/account_setting_email"
+            tools:summary="wiz@wiz.biz" />
+
+        <Preference
+            android:key="password"
+            android:title="@string/account_setting_password" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/account_setting_category_more">
+
+        <Preference
+            android:key="contact_us"
+            android:title="@string/account_setting_contact" />
+
+        <Preference
+            android:key="log_out"
+            android:title="@string/account_setting_logout" />
+
+    </PreferenceCategory>
+
+</PreferenceScreen>

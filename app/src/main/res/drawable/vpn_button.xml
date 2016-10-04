@@ -1,9 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:id="@+id/button_frame"
-        android:drawable="@drawable/vpn_button_frame" />
-    <item
         android:bottom="7dp"
         android:left="7dp"
         android:right="7dp"

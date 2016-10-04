@@ -4,6 +4,10 @@
 
     <data>
 
+        <import type="android.view.View" />
+
+        <import type="android.text.TextUtils" />
+
         <variable
             name="setting"
             type="com.cypherpunk.android.vpn.model.SettingItem" />
@@ -17,9 +21,10 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:button="@drawable/radio_setting_item"
             android:clickable="false"
-            android:focusable="false"
-            android:layout_marginRight="16dp" />
+            android:focusable="false" />
 
         <com.cypherpunk.android.vpn.widget.TypefaceTextView
             android:id="@+id/title"
@@ -40,11 +45,13 @@
             android:layout_marginBottom="8dp"
             android:layout_toRightOf="@id/button"
             android:text="@{setting.description}"
-            android:textColor="#4dffffff"
+            android:textColor="#99ffffff"
+            android:visibility="@{TextUtils.isEmpty(setting.description) ? View.GONE : View.VISIBLE}"
             tools:text="(Default) - Firewall will be enabled when you
 connect and disables when you disconnect from
 a location. It will remain on if your connection
 suddenly drops" />
+
     </merge>
 
 </layout>

@@ -1,0 +1,11 @@
+<level-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:drawable="@drawable/io_btn_big_red"
+        android:maxLevel="0" />
+    <item
+        android:maxLevel="1"
+        android:drawable="@android:color/transparent"/>
+    <item
+        android:drawable="@drawable/io_btn_big_green"
+        android:maxLevel="2" />
+</level-list>

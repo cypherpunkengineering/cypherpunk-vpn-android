@@ -4,27 +4,30 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/background"
         android:orientation="vertical">
 
         <include
             android:id="@+id/toolbar"
             layout="@layout/toolbar" />
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/divider" />
+        <include layout="@layout/divider" />
 
-        <android.support.v7.widget.AppCompatEditText
-            android:id="@+id/contact_text"
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:hint="@string/contact_us_hint"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
-            android:textColorHint="@color/edit_text_hint" />
+            android:background="@color/background"
+            android:layout_height="match_parent">
+
+            <android.support.v7.widget.AppCompatEditText
+                android:id="@+id/contact_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginTop="16dp"
+                android:hint="@string/contact_us_hint"
+                android:textColorHint="@color/edit_text_hint" />
+
+        </FrameLayout>
 
     </LinearLayout>
 

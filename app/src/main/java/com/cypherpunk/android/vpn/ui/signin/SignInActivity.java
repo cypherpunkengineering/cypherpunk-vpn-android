@@ -141,9 +141,8 @@ public class SignInActivity extends AppCompatActivity {
                         @Override
                         public void onSuccess(ResponseBody value) {
                             dialogFragment.dismiss();
-                            UserManager manager = UserManager.getInstance(SignInActivity.this);
-                            manager.saveMailAddress(email);
-                            manager.savePassword(password);
+                            UserManager.saveMailAddress(email);
+                            UserManager.savePassword(password);
                             Intent intent = new Intent(SignInActivity.this, MainActivity.class);
                             TaskStackBuilder builder = TaskStackBuilder.create(SignInActivity.this);
                             builder.addNextIntent(intent);

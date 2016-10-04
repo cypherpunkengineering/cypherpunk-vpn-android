@@ -10,10 +10,7 @@
             android:id="@+id/toolbar"
             layout="@layout/toolbar" />
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/divider" />
+        <include layout="@layout/divider" />
 
         <android.support.design.widget.TextInputLayout
             style="@style/Widget.Cypherpunk.TextInputLayout"
@@ -32,8 +29,7 @@
                 android:hint="@string/email_hint"
                 android:imeOptions="actionNext"
                 android:inputType="textEmailAddress"
-                android:maxLines="1"
-                android:singleLine="true" />
+                android:maxLines="1" />
 
         </android.support.design.widget.TextInputLayout>
 
@@ -52,8 +48,7 @@
                 android:layout_marginBottom="16dp"
                 android:hint="@string/confirm_hint"
                 android:inputType="textEmailAddress"
-                android:maxLines="1"
-                android:singleLine="true" />
+                android:maxLines="1" />
 
         </android.support.design.widget.TextInputLayout>
 
@@ -74,8 +69,7 @@
                 android:layout_height="wrap_content"
                 android:hint="@string/current_password_hint"
                 android:inputType="textPassword"
-                android:maxLines="1"
-                android:singleLine="true" />
+                android:maxLines="1" />
 
         </android.support.design.widget.TextInputLayout>
 

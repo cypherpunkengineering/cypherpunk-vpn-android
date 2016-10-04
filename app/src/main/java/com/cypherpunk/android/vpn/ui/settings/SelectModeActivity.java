@@ -15,6 +15,9 @@ import com.cypherpunk.android.vpn.databinding.ActivitySelectModeBinding;
 import com.cypherpunk.android.vpn.ui.main.MainActivity;
 
 
+/**
+ * (Unused)
+ */
 public class SelectModeActivity extends AppCompatActivity implements RadioGroup.OnCheckedChangeListener {
 
     private ActivitySelectModeBinding binding;

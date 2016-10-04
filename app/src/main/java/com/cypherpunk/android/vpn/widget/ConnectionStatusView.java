@@ -117,7 +117,7 @@ public class ConnectionStatusView extends LinearLayout {
         switch (status) {
             case DISCONNECTED:
                 animatorSet.cancel();
-                statusText.setText(R.string.status_disconnected);
+                statusText.setText(R.string.main_status_disconnected);
                 break;
             case CONNECTING:
                 statusText.setText(R.string.status_connecting);
@@ -125,7 +125,7 @@ public class ConnectionStatusView extends LinearLayout {
                 break;
             case CONNECTED:
                 animatorSet.cancel();
-                statusText.setText(R.string.status_connected);
+                statusText.setText(R.string.main_status_connected);
                 break;
         }
     }

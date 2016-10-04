@@ -64,7 +64,7 @@ class LogFileHandler extends Handler {
                 flushToDisk();
             }
 
-        } catch (IOException| BufferOverflowException e) {
+        } catch (IOException | BufferOverflowException e) {
             e.printStackTrace();
             VpnStatus.logError("Error during log cache: " + msg.what);
             VpnStatus.logException(e);
@@ -136,7 +136,7 @@ class LogFileHandler extends Handler {
 
             readCacheContents(new FileInputStream(logfile));
 
-        } catch (java.io.IOException | java.lang.RuntimeException e) {
+        } catch (java.io.IOException | java.lang.RuntimeException e ) {
             VpnStatus.logError("Reading cached logfile failed");
             VpnStatus.logException(e);
             e.printStackTrace();

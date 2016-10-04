@@ -1,0 +1,58 @@
+#!/bin/bash -x
+set -e
+
+# submodules
+git submodule update --init
+
+# start with ovpn3
+cd openvpn/main/openvpn3
+
+# vars
+export O3="${PWD}"
+export DEP_DIR="${HOME}/src/android"
+#export SDK="${HOME}/Library/Android/sdk"
+export SDK="${ANDROID_HOME}"
+#export NDK="${HOME}/Library/Android/ndk"
+export NDK="${ANDROID_NDK_HOME}"
+export TC="$DEP_DIR/tc-arm"
+export PLATFORM_FLAGS="--sysroot=$TC/sysroot"
+export ORIGPATH="${PATH}"
+export PATH="$SDK/tools:$SDK/platform-tools:$PATH"
+export PATH="$TC/bin:$TC/arm-linux-androideabi/bin:$VARS_SAVE_PATH:$PATH"
+
+# prep
+mkdir -p "${DEP_DIR}"
+cd "${O3}"
+rm -f core
+ln -s . core
+
+# patch
+echo -n '' > ./vars/android-sdk-path
+sed -i -e 's/4.8/4.9/' scripts/android/build-toolchain
+sed -i -e 's!OpenVPNClient(const!//OpenVPNClient(const!' client/ovpncli.hpp
+sed -i -e 's!OpenVPNClient& oper!//OpenVPNClient& oper!' client/ovpncli.hpp
+
+# build toolchains
+./scripts/android/build-toolchain
+
+# restore PATH
+export PATH="$ORIGPATH"
+export PATH="$SDK/tools:$SDK/platform-tools:$NDK:$PATH"
+
+# run build scripts
+cd ../
+./misc/prepareovpn3.sh
+./misc/build-native.sh
+cd ../../
+
+# more building
+#./gradlew -PdisablePreDex --project-cache-dir=$WERCKER_CACHE_DIR build
+./gradlew -PdisablePreDex build
+
+# cleanup
+#rm -rf .git
+#rm -rf ${ANDROID_NDK_HOME}
+#rm -rf openvpn
+
+# done
+exit 0

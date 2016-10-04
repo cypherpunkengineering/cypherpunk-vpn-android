@@ -1,48 +1,57 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <PreferenceCategory
+        android:title="@string/setting_category_startup"
+        app:layout="@layout/custom_preference_category">
 
-    <Preference
-        android:key="mode"
-        android:layout="@layout/preference_account"
-        android:title="mode" />
-
-    <PreferenceCategory android:title="Account Type">
-
-        <Preference
-            android:key="plan"
-            android:summary="Renews On 02/02/2016"
-            android:title="Monthly Premium" />
-
-        <Preference
-            android:key="upgrade"
-            android:title="Upgrade" />
+        <SwitchPreferenceCompat
+            android:key="vpn_auto_start_connect"
+            android:title="@string/setting_vpn_auto_start_connect" />
 
     </PreferenceCategory>
 
-    <PreferenceCategory android:title="Account Details">
+    <PreferenceCategory android:title="@string/setting_category_privacy">
+
+        <com.cypherpunk.android.vpn.ui.settings.EncryptionPreference
+            android:id="@+id/preference"
+            android:key="vpn_crypto_profile"
+            android:title="@string/setting_vpn_crypto_profile" />
 
         <Preference
-            android:key="email"
-            android:summary="wiz@wiz.biz"
-            android:title="Email" />
-
-        <Preference
-            android:key="password"
-            android:title="Password" />
-
+            android:key="privacy_firewall_mode"
+            android:title="@string/setting_privacy_firewall_mode" />
     </PreferenceCategory>
 
-    <PreferenceCategory android:title="More">
+    <PreferenceCategory android:title="@string/setting_category_advanced">
 
         <Preference
-            android:key="contact_us"
-            android:title="Contact us" />
+            android:key="vpn_protocol"
+            android:title="@string/setting_vpn_protocol" />
 
         <Preference
-            android:key="log_out"
-            android:title="Log out" />
+            android:key="trusted_network"
+            android:summary="@string/setting_network_summary"
+            android:title="@string/setting_network" />
 
+        <Preference
+            android:key="application"
+            android:summary="@string/setting_application_summary"
+            android:title="@string/setting_application" />
+
+        <Preference
+            android:key="vpn_port_remote"
+            android:title="@string/setting_vpn_port_remote" />
+
+        <Preference
+            android:key="vpn_port_local"
+            android:title="@string/setting_vpn_port_local" />
+
+        <SwitchPreferenceCompat
+            android:key="vpn_port_forwarding"
+            android:summary="@string/setting_vpn_port_forwarding_summary"
+            android:title="@string/setting_vpn_port_forwarding" />
     </PreferenceCategory>
 
 </PreferenceScreen>

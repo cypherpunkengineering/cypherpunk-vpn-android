@@ -1,5 +1,6 @@
 package com.cypherpunk.android.vpn.ui.settings;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -9,6 +10,7 @@ import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 
 import com.cypherpunk.android.vpn.R;
 
@@ -54,6 +56,14 @@ public class RateDialogFragment extends DialogFragment {
             }
         });
         return view;
+    }
+
+    @NonNull
+    @Override
+    public Dialog onCreateDialog(Bundle savedInstanceState) {
+        Dialog dialog = super.onCreateDialog(savedInstanceState);
+        dialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
+        return dialog;
     }
 
     public void show(@NonNull FragmentManager fragmentManager) {

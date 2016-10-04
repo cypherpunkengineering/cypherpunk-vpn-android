@@ -17,7 +17,7 @@ android {
     }
     sourceSets {
         main {
-            java.srcDirs += '../openvpn/main/src/main/java'
+            java.srcDirs += [ '../openvpn/main/src/main/java', '../openvpn/main/src/ovpn3/java' ]
             res.srcDirs += '../openvpn/main/src/main/res'
             assets.srcDirs += [ '../openvpn/main/src/main/assets', '../openvpn/main/ovpnlibs/assets' ]
             jniLibs.srcDirs += '../openvpn/main/ovpnlibs/jniLibs'
@@ -61,7 +61,7 @@ dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     testCompile 'junit:junit:4.12'
 
-    def supportLibraryVersion = '24.2.0'
+    def supportLibraryVersion = '24.2.1'
     def daggerVersion = '2.6'
 
     compile "com.android.support:appcompat-v7:${supportLibraryVersion}"
@@ -77,13 +77,13 @@ dependencies {
     compile 'io.reactivex:rxandroid:1.1.0'
     compile 'com.squareup.okhttp3:logging-interceptor:3.4.1'
     compile 'com.github.orhanobut:hawk:1.21'
-    compile 'com.github.operando:garum:0.1.1'
-
+    compile 'com.os.operando.garum:garum:0.9.0'
     compile "com.google.dagger:dagger:${daggerVersion}"
     apt "com.google.dagger:dagger-compiler:${daggerVersion}"
     apt 'com.google.guava:guava:19.0' // dagger compiler requires Guava
     provided 'javax.annotation:jsr250-api:1.0'
     compile 'com.commonsware.cwac:merge:1.0.1'
+    compile 'com.squareup.picasso:picasso:2.5.2'
 
     compile 'com.deploygate:sdk:3.1'
 

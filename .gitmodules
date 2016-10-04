@@ -4,3 +4,9 @@
 [submodule "openvpn/main/openvpn"]
 	path = openvpn/main/openvpn
 	url = ssh://git@github.com/cypherpunkengineering/android-openvpn
+[submodule "openvpn/main/asio"]
+	path = openvpn/main/asio
+	url = ssh://git@github.com/cypherpunkengineering/asio
+[submodule "openvpn/main/openvpn3"]
+	path = openvpn/main/openvpn3
+	url = ssh://git@github.com/cypherpunkengineering/openvpn3

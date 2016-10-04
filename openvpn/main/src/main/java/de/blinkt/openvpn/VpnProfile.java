@@ -73,7 +73,7 @@ public class VpnProfile implements Serializable, Cloneable {
     private static final long serialVersionUID = 7085688938959334563L;
     public static final int MAXLOGLEVEL = 4;
     public static final int CURRENT_PROFILE_VERSION = 6;
-    public static final int DEFAULT_MSSFIX_SIZE = 1450;
+    public static final int DEFAULT_MSSFIX_SIZE = 1280;
     public static String DEFAULT_DNS1 = "8.8.8.8";
     public static String DEFAULT_DNS2 = "8.8.4.4";
 
@@ -137,11 +137,14 @@ public class VpnProfile implements Serializable, Cloneable {
     public String mCustomRoutesv6 = "";
     public String mKeyPassword = "";
     public boolean mPersistTun = false;
-    public String mConnectRetryMax = "5";
-    public String mConnectRetry = "5";
+    public String mConnectRetryMax = "-1";
+    public String mConnectRetry = "2";
+    public String mConnectRetryMaxTime = "300";
     public boolean mUserEditable = true;
     public String mAuth = "";
     public int mX509AuthType = X509_VERIFY_TLSREMOTE_RDN;
+    public String mx509UsernameField = null;
+
     private transient PrivateKey mPrivateKey;
     // Public attributes, since I got mad with getter/setter
     // set members to default values
@@ -299,18 +302,24 @@ public class VpnProfile implements Serializable, Cloneable {
         cfg += "verb " + MAXLOGLEVEL + "\n";
 
         if (mConnectRetryMax == null) {
-            mConnectRetryMax = "5";
+            mConnectRetryMax = "-1";
         }
 
         if (!mConnectRetryMax.equals("-1"))
             cfg += "connect-retry-max " + mConnectRetryMax + "\n";
 
-        if (mConnectRetry == null)
-            mConnectRetry = "5";
+        if (TextUtils.isEmpty(mConnectRetry))
+            mConnectRetry = "2";
+
+        if (TextUtils.isEmpty(mConnectRetryMaxTime))
+            mConnectRetryMaxTime="300";
 
 
-        if (!mIsOpenVPN22 || !mUseUdp)
+        if (!mIsOpenVPN22)
+            cfg += "connect-retry " + mConnectRetry + " " + mConnectRetryMaxTime + "\n";
+        else if (mIsOpenVPN22 && mUseUdp)
             cfg += "connect-retry " + mConnectRetry + "\n";
+
 
         cfg += "resolv-retry 60\n";
 
@@ -465,7 +474,7 @@ public class VpnProfile implements Serializable, Cloneable {
         if (mAuthenticationType != TYPE_STATICKEYS) {
             if (mCheckRemoteCN) {
                 if (mRemoteCN == null || mRemoteCN.equals(""))
-                    cfg += "verify-x509-name " + mConnections[0].mServerName + " name\n";
+                    cfg += "verify-x509-name " + openVpnEscape(mConnections[0].mServerName) + " name\n";
                 else
                     switch (mX509AuthType) {
 
@@ -488,6 +497,8 @@ public class VpnProfile implements Serializable, Cloneable {
                             cfg += "verify-x509-name " + openVpnEscape(mRemoteCN) + "\n";
                             break;
                     }
+                if (!TextUtils.isEmpty(mx509UsernameField))
+                    cfg+= "x509-username-field " + openVpnEscape(mx509UsernameField) +"\n";
             }
             if (mExpectTLSCert)
                 cfg += "remote-cert-tls server\n";
@@ -738,6 +749,10 @@ public class VpnProfile implements Serializable, Cloneable {
     }
 
     synchronized String[] getKeyStoreCertificates(Context context, int tries) {
+        // Force application context- KeyChain methods will block long enough that by the time they
+        // are finished and try to unbind, the original activity context might have been destroyed.
+        context = context.getApplicationContext();
+
         try {
             PrivateKey privateKey = KeyChain.getPrivateKey(context, mAlias);
             mPrivateKey = privateKey;
