@@ -55,6 +55,7 @@ public class MainActivity extends AppCompatActivity
         implements VpnStatus.StateListener, RateDialogFragment.RateDialogListener {
 
     public static final String AUTO_START = "com.cypherpunk.android.vpn.AUTO_START";
+    public static final String TILE_CLICK = "com.cypherpunk.android.vpn.TILE_CLICK";
     private static final int REQUEST_VPN_START = 0;
     private static final int REQUEST_SELECT_REGION = 1;
     private static final int REQUEST_STATUS = 2;
@@ -112,21 +113,7 @@ public class MainActivity extends AppCompatActivity
         binding.connectionButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
-                if (status.isDisconnected()) {
-                    startVpn();
-                }
-                if (status.isConnected()) {
-                    stopVpn();
-                    /*
-                    RateDialogFragment dialogFragment = RateDialogFragment.newInstance();
-                    dialogFragment.show(getSupportFragmentManager());
-                    */
-                }
-                if (!status.isConnected() && !status.isDisconnected()) {
-                    // connecting
-                    stopVpn();
-                }
-
+                toggleVpn();
             }
         });
 
@@ -156,6 +143,21 @@ public class MainActivity extends AppCompatActivity
         });
 
         VpnStatus.addStateListener(this);
+    }
+
+
+    private void toggleVpn()
+    {
+        if (status.isDisconnected()) {
+            startVpn();
+        }
+        if (status.isConnected()) {
+            stopVpn();
+        }
+        if (!status.isConnected() && !status.isDisconnected()) {
+            // connecting
+            stopVpn();
+        }
     }
 
     @Override
@@ -235,6 +237,7 @@ public class MainActivity extends AppCompatActivity
 
         Intent intent = getIntent();
         checkIfAutoStart(intent);
+        checkIfTileClick(intent);
         setIntent(null);
     }
 
@@ -280,6 +283,7 @@ public class MainActivity extends AppCompatActivity
         log("onNewIntent()");
         super.onNewIntent(intent);
         checkIfAutoStart(intent);
+        checkIfTileClick(intent);
         setIntent(null);
     }
 
@@ -299,6 +303,16 @@ public class MainActivity extends AppCompatActivity
             {
                 finish();
             }
+        }
+    }
+
+    private void checkIfTileClick(Intent i)
+    {
+        log("checkIfTileClick()");
+        if (i != null && i.getBooleanExtra(TILE_CLICK, false))
+        {
+            toggleVpn();
+            moveTaskToBack(true);
         }
     }
 
