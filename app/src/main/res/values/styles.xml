@@ -9,7 +9,7 @@
 
         <item name="android:textColorPrimary">@android:color/white</item>
         <item name="android:textColorSecondary">@android:color/white</item>
-        <item name="android:windowBackground">@drawable/main_indigo_gradation</item>
+        <item name="android:windowBackground">@drawable/window_background_indigo</item>
         <item name="preferenceTheme">@style/CypherpunkPreference</item>
     </style>
 
@@ -22,7 +22,7 @@
 
         <item name="android:textColorPrimary">@android:color/white</item>
         <item name="android:textColorSecondary">@android:color/white</item>
-        <item name="android:windowBackground">@drawable/main_indigo_gradation</item>
+        <item name="android:windowBackground">@drawable/window_background</item>
         <item name="preferenceTheme">@style/CypherpunkPreference</item>
         <item name="switchStyle">@style/Widget.Cypherpunk.Switch</item>
         <item name="android:windowAnimationStyle">@style/Animation.Activity.Slide</item>

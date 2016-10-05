@@ -30,6 +30,10 @@ public class SettingsActivity extends AppCompatActivity
             actionBar.setDisplayHomeAsUpEnabled(true);
             actionBar.setDisplayShowTitleEnabled(false);
             binding.toolbar.title.setText(R.string.title_activity_settings);
+
+            if (getResources().getBoolean(R.bool.is_tablet)) {
+                actionBar.setHomeAsUpIndicator(R.drawable.close_vector);
+            }
         }
 
         PagerAdapter adapter = new PagerAdapter(getSupportFragmentManager());
