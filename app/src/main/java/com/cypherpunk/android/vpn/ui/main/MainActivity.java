@@ -70,6 +70,7 @@ public class MainActivity extends AppCompatActivity
     private CypherpunkVpnStatus status;
     private Subscription subscription = Subscriptions.empty();
     private IpStatus ipStatus = new IpStatus();
+    private String locationId;
     private Realm realm;
 
     @Inject
@@ -117,11 +118,9 @@ public class MainActivity extends AppCompatActivity
             location = realm.where(Location.class).equalTo("selected", true).findFirst();
         }
 
+        locationId = location.getId();
         binding.region.setText(location.getCity());
         Picasso.with(this).load(location.getNationalFlagUrl()).into(binding.nationalFlag);
-        CypherpunkVPN.location = location;
-        ipStatus.setLocation(location.getCity());
-        ipStatus.setMapPosition(location.getMapX(), location.getMapY());
 
         binding.connectionButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -187,7 +186,7 @@ public class MainActivity extends AppCompatActivity
                 startActivityForResult(new Intent(this, SettingsActivity.class), REQUEST_SETTINGS);
                 break;
             case R.id.action_status:
-                startActivityForResult(StatusActivity.createIntent(this, ipStatus), REQUEST_STATUS);
+                startActivityForResult(StatusActivity.createIntent(this, locationId, ipStatus), REQUEST_STATUS);
                 break;
         }
         return false;
@@ -205,16 +204,12 @@ public class MainActivity extends AppCompatActivity
                     ipStatus = data.getParcelableExtra(StatusActivity.EXTRA_STATUS);
                     break;
                 case REQUEST_SELECT_REGION:
-                    String locationId = data.getStringExtra(LocationsActivity.EXTRA_LOCATION_ID);
-                    Realm realm = Realm.getDefaultInstance();
+                    locationId = data.getStringExtra(LocationsActivity.EXTRA_LOCATION_ID);
                     Location location = realm.where(Location.class).equalTo("id", locationId).findFirst();
                     binding.region.setText(location.getCity());
                     Picasso.with(this).load(location.getNationalFlagUrl()).into(binding.nationalFlag);
                     if (CypherpunkVPN.location != location) {
                         CypherpunkVPN.location = location;
-                        ipStatus.setLocation(location.getCity());
-                        ipStatus.setMapPosition(location.getMapX(), location.getMapY());
-                        realm.close();
 
                         if (data.getBooleanExtra(LocationsActivity.EXTRA_CONNECT, false)) {
                             startVpn();
