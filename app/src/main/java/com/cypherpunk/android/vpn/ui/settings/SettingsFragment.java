@@ -153,21 +153,55 @@ public class SettingsFragment extends PreferenceFragmentCompat {
                     cypherpunkSetting.vpnCryptoProfile = data.getStringExtra(ListPreferenceActivity.EXTRA_SELECTED_VALUE);
                     String stringExtra = data.getStringExtra(ListPreferenceActivity.EXTRA_SELECTED_VALUE);
                     vpnCryptoProfile.setSummary(getStringByKey(stringExtra));
+                    String cipher;
+                    String auth;
+                    String keylen;
                     // TODO:
                     switch (stringExtra) {
                         case "setting_vpn_crypto_profile_default":
-                        case "setting_vpn_crypto_profile_none":
-                        case "setting_vpn_crypto_profile_strong":
-                        case "setting_vpn_crypto_profile_stealth":
-                            String cipher = getStringByKey("setting_vpn_crypto_cipher_aes256");
-                            String auth = getStringByKey("setting_vpn_crypto_auth_sha1");
-                            String keylen = getStringByKey("setting_vpn_crypto_keylen_rsa2048");
+                            cipher = getStringByKey("setting_vpn_crypto_cipher_aes128cbc");
+                            auth = getStringByKey("setting_vpn_crypto_auth_sha256");
+                            keylen = getStringByKey("setting_vpn_crypto_keylen_rsa4096");
                             cypherpunkSetting.vpnCryptoProfileCipher = cipher;
                             cypherpunkSetting.vpnCryptoProfileAuth = auth;
                             cypherpunkSetting.vpnCryptoProfileKeylen = keylen;
                             vpnCryptoProfile.setCipherText(cipher);
                             vpnCryptoProfile.setAuthText(auth);
                             vpnCryptoProfile.setKeyText(keylen);
+                            break;
+                        case "setting_vpn_crypto_profile_none":
+                            cipher = getStringByKey("setting_vpn_crypto_cipher_none");
+                            auth = getStringByKey("setting_vpn_crypto_auth_sha1");
+                            keylen = getStringByKey("setting_vpn_crypto_keylen_rsa4096");
+                            cypherpunkSetting.vpnCryptoProfileCipher = cipher;
+                            cypherpunkSetting.vpnCryptoProfileAuth = auth;
+                            cypherpunkSetting.vpnCryptoProfileKeylen = keylen;
+                            vpnCryptoProfile.setCipherText(cipher);
+                            vpnCryptoProfile.setAuthText(auth);
+                            vpnCryptoProfile.setKeyText(keylen);
+                            break;
+                        case "setting_vpn_crypto_profile_strong":
+                            cipher = getStringByKey("setting_vpn_crypto_cipher_aes256cbc");
+                            auth = getStringByKey("setting_vpn_crypto_auth_sha512");
+                            keylen = getStringByKey("setting_vpn_crypto_keylen_rsa4096");
+                            cypherpunkSetting.vpnCryptoProfileCipher = cipher;
+                            cypherpunkSetting.vpnCryptoProfileAuth = auth;
+                            cypherpunkSetting.vpnCryptoProfileKeylen = keylen;
+                            vpnCryptoProfile.setCipherText(cipher);
+                            vpnCryptoProfile.setAuthText(auth);
+                            vpnCryptoProfile.setKeyText(keylen);
+                            break;
+                        case "setting_vpn_crypto_profile_stealth":
+                            cipher = getStringByKey("setting_vpn_crypto_cipher_aes128cbc");
+                            auth = getStringByKey("setting_vpn_crypto_auth_sha256");
+                            keylen = getStringByKey("setting_vpn_crypto_keylen_rsa4096");
+                            cypherpunkSetting.vpnCryptoProfileCipher = cipher;
+                            cypherpunkSetting.vpnCryptoProfileAuth = auth;
+                            cypherpunkSetting.vpnCryptoProfileKeylen = keylen;
+                            vpnCryptoProfile.setCipherText(cipher);
+                            vpnCryptoProfile.setAuthText(auth);
+                            vpnCryptoProfile.setKeyText(keylen);
+                            break;
                     }
                     break;
                 case "vpn_port_local":

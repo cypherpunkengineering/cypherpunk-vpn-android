@@ -24,12 +24,24 @@ public class Location implements RealmModel {
     private String city;
     @Required
     private String countryCode;
+
     @Required
-    private String ipAddress;
+    private String hostname;
+
+    @Required
+    private String ipDefault;
+    @Required
+    private String ipNone;
+    @Required
+    private String ipStrong;
+    @Required
+    private String ipStealth;
+
     @Required
     private String nationalFlagUrl;
     private boolean favorited;
     private boolean selected;
+
     private int mapX;
     private int mapY;
 
@@ -37,42 +49,60 @@ public class Location implements RealmModel {
     public Location() {
     }
 
-    public Location(
-            @NonNull String city,
-            @NonNull String countryCode,
-            @NonNull String ipAddress,
-            @NonNull String nationalFlagUrl,
-            int mapX,
-            int mapY) {
+    public Location
+    (
+         @NonNull String city,
+         @NonNull String countryCode,
+
+         @NonNull String hostname,
+
+         @NonNull String ipDefault,
+         @NonNull String ipNone,
+         @NonNull String ipStrong,
+         @NonNull String ipStealth,
+
+         @NonNull String nationalFlagUrl,
+
+         int mapX,
+         int mapY
+    )
+    {
         this.city = city;
         this.countryCode = countryCode;
-        this.ipAddress = ipAddress;
+
+        this.hostname = hostname;
+
+        this.ipDefault = ipDefault;
+        this.ipNone = ipNone;
+        this.ipStrong = ipStrong;
+        this.ipStealth = ipStealth;
+
         this.nationalFlagUrl = nationalFlagUrl;
+
         this.mapX = mapX;
         this.mapY = mapY;
 
         id = calcId(countryCode, city);
     }
 
-    public String getId() {
-        return id;
-    }
+    public String getId() { return id; }
 
-    public String getCity() {
-        return city;
-    }
+    public String getCity() { return city; }
+    public String getCountryCode() { return countryCode; }
 
-    public String getCountryCode() {
-        return countryCode;
-    }
+    public String getHostname() { return hostname; }
+    public void setHostname(String hostname) { this.hostname = hostname; }
 
-    public String getIpAddress() {
-        return ipAddress;
-    }
+    public String getIpDefault() { return ipDefault; }
+    public void setIpDefault(String ipDefault) { this.ipDefault = ipDefault; }
+    public String getIpNone() { return ipNone; }
+    public void setIpNone(String ipNone) { this.ipNone = ipNone; }
+    public String getIpStrong() { return ipStrong; }
+    public void setIpStrong(String ipStrong) { this.ipStrong = ipStrong; }
+    public String getIpStealth() { return ipStealth; }
+    public void setIpStealth(String ipStealth) { this.ipStealth = ipStealth; }
 
-    public String getNationalFlagUrl() {
-        return nationalFlagUrl;
-    }
+    public String getNationalFlagUrl() { return nationalFlagUrl; }
 
     public boolean isFavorited() {
         return favorited;
@@ -104,7 +134,10 @@ public class Location implements RealmModel {
                 "id='" + id + '\'' +
                 ", city='" + city + '\'' +
                 ", countryCode='" + countryCode + '\'' +
-                ", ipAddress='" + ipAddress + '\'' +
+                ", ipDefault='" + ipDefault + '\'' +
+                ", ipNone='" + ipNone + '\'' +
+                ", ipStrong='" + ipStrong + '\'' +
+                ", ipStealth='" + ipStealth + '\'' +
                 ", nationalFlagUrl='" + nationalFlagUrl + '\'' +
                 ", favorited=" + favorited +
                 ", selected=" + selected +

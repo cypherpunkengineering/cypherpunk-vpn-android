@@ -119,7 +119,7 @@ public class MainActivity extends AppCompatActivity
 
         binding.region.setText(location.getCity());
         Picasso.with(this).load(location.getNationalFlagUrl()).into(binding.nationalFlag);
-        CypherpunkVPN.address = location.getIpAddress();
+        CypherpunkVPN.location = location;
         ipStatus.setLocation(location.getCity());
         ipStatus.setMapPosition(location.getMapX(), location.getMapY());
 
@@ -210,8 +210,8 @@ public class MainActivity extends AppCompatActivity
                     Location location = realm.where(Location.class).equalTo("id", locationId).findFirst();
                     binding.region.setText(location.getCity());
                     Picasso.with(this).load(location.getNationalFlagUrl()).into(binding.nationalFlag);
-                    if (!CypherpunkVPN.address.equals(location.getIpAddress())) {
-                        CypherpunkVPN.address = location.getIpAddress();
+                    if (CypherpunkVPN.location != location) {
+                        CypherpunkVPN.location = location;
                         ipStatus.setLocation(location.getCity());
                         ipStatus.setMapPosition(location.getMapX(), location.getMapY());
                         realm.close();
@@ -246,7 +246,8 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
-    protected void onResume() {
+    protected void onResume()
+    {
         super.onResume();
 
         binding.binaryTextureView.startAnimation();
@@ -295,7 +296,8 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
-    protected void onNewIntent(Intent intent) {
+    protected void onNewIntent(Intent intent)
+    {
         log("onNewIntent()");
         super.onNewIntent(intent);
         checkIfAutoStart(intent);
@@ -303,15 +305,20 @@ public class MainActivity extends AppCompatActivity
         setIntent(null);
     }
 
-    private void checkIfAutoStart(Intent i) {
+    private void checkIfAutoStart(Intent i)
+    {
         log("checkIfAutoStart()");
-        if (i != null && i.getBooleanExtra(AUTO_START, false)) {
+        if (i != null && i.getBooleanExtra(AUTO_START, false))
+        {
             CypherpunkSetting cypherpunkSetting = new CypherpunkSetting();
-            if (cypherpunkSetting.vpnAutoStartConnect) {
+            if (cypherpunkSetting.vpnAutoStartConnect)
+            {
                 log("auto starting VPN");
                 startVpn();
                 moveTaskToBack(true);
-            } else {
+            }
+            else
+            {
                 finish();
             }
         }
@@ -399,9 +406,9 @@ public class MainActivity extends AppCompatActivity
         realm.beginTransaction();
         List<Location> locations = new ArrayList<>();
         // TODO: serverList api
-        locations.add(new Location("Tokyo 1", "", "208.111.52.1", "http://flags.fmcdn.net/data/flags/normal/jp.png", 305, 56));
-        locations.add(new Location("Tokyo 2", "", "208.111.52.2", "http://flags.fmcdn.net/data/flags/normal/jp.png", 305, 56));
-        locations.add(new Location("Honolulu", "", "199.68.252.203", "http://flags.fmcdn.net/data/flags/normal/us.png", 305, 56));
+        locations.add(new Location("Tokyo Dev", "JP", "freebsd-test.tokyo.vpn.cypherpunk.network", "208.111.52.34", "208.111.52.35", "208.111.52.36", "208.111.52.37", "http://flags.fmcdn.net/data/flags/normal/jp.png", 305, 56));
+        locations.add(new Location("Tokyo", "JP", "freebsd2.tokyo.vpn.cypherpunk.network", "208.111.52.2", "208.111.52.12", "208.111.52.22", "208.111.52.32", "http://flags.fmcdn.net/data/flags/normal/jp.png", 305, 56));
+        locations.add(new Location("Honolulu", "US", "honolulu.vpn.cypherpunk.network", "199.68.252.203", "199.68.252.203", "199.68.252.203", "199.68.252.203", "http://flags.fmcdn.net/data/flags/normal/us.png", 355, 66));
         realm.copyToRealm(locations);
         Location first = realm.where(Location.class).findFirst();
         first.setSelected(true);

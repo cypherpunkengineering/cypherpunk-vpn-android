@@ -25,7 +25,7 @@ public class ClientModule {
         builder.cookieJar(new CookieManager());
         HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
         logging.setLevel(HttpLoggingInterceptor.Level.BODY);
-        builder.addInterceptor(logging);
+        //builder.addInterceptor(logging);
         return builder.build();
     }
 
@@ -53,7 +53,7 @@ public class ClientModule {
         HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
         logging.setLevel(HttpLoggingInterceptor.Level.BODY);
         builder.readTimeout(3, TimeUnit.SECONDS);
-        builder.addInterceptor(logging);
+        //builder.addInterceptor(logging);
 
         Retrofit build = new Retrofit.Builder().client(builder.build())
                 .baseUrl(JsonipService.ENDPOINT)

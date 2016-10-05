@@ -9,6 +9,7 @@ import android.text.TextUtils;
 import android.util.Log;
 
 import com.cypherpunk.android.vpn.model.CypherpunkSetting;
+import com.cypherpunk.android.vpn.model.Location;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
@@ -32,7 +33,7 @@ public class CypherpunkVPN {
     private static ConfigParser cp;
     private static VpnProfile vpnProfile;
     private static String conf;
-    public static String address;
+    public static Location location;
 
     private static OpenVPNService service = null;
 
@@ -119,6 +120,7 @@ public class CypherpunkVPN {
         log("vpnCryptoProfileCipher: "+ cypherpunkSetting.vpnCryptoProfileCipher);
         log("vpnCryptoProfileKeylen: "+ cypherpunkSetting.vpnCryptoProfileKeylen);
         log("privacyFirewallMode: "+ cypherpunkSetting.privacyFirewallMode);
+        log("privacyFirewallExemptLAN: "+ cypherpunkSetting.privacyFirewallExemptLAN);
         log("vpnProtocol: "+ cypherpunkSetting.vpnProtocol);
         log("vpnPortLocal: "+ cypherpunkSetting.vpnPortLocal);
         log("vpnPortRemote: "+ cypherpunkSetting.vpnPortRemote);
@@ -127,8 +129,14 @@ public class CypherpunkVPN {
         // standard options
         list.add("client\n");
         list.add("dev tun\n");
+        list.add("tls-client\n");
         list.add("resolv-retry infinite\n");
         list.add("route-delay 0\n");
+
+        // security/privacy options
+        list.add("tls-version-min 1.2\n");
+        list.add("remote-cert-eku \"TLS Web Server Authentication\"\n");
+        list.add("verify-x509-name " + location.getHostname() + " name\n");
 
         // vpn protocol
         String proto = "udp";
@@ -148,29 +156,6 @@ public class CypherpunkVPN {
         }
         list.add("proto " + proto + " \n");
 
-        // vpn crypto profile
-        if (cypherpunkSetting.vpnCryptoProfile != null && cypherpunkSetting.vpnCryptoProfile.length() > 0)
-        {
-            switch (cypherpunkSetting.vpnCryptoProfile)
-            {
-                case "setting_vpn_crypto_profile_default":
-                    list.add("cipher AES-128-CBC\n");
-                    break;
-                case "setting_vpn_crypto_profile_none":
-                    list.add("cipher AES-128-CBC\n");
-                    break;
-                case "setting_vpn_crypto_profile_strong":
-                    list.add("cipher AES-128-CBC\n");
-                    break;
-                case "setting_vpn_crypto_profile_stealth":
-                    list.add("cipher AES-128-CBC\n");
-                    break;
-                default:
-                    list.add("cipher AES-128-CBC\n");
-                    break;
-            }
-        }
-
         // remote port
         int rport = 7133;
         if (cypherpunkSetting.vpnPortRemote != null && cypherpunkSetting.vpnPortRemote.length() > 0)
@@ -178,8 +163,38 @@ public class CypherpunkVPN {
         if (rport < 1 && rport > 65535)
             rport = 7133;
 
-        // remote server ip + remote port
-        list.add("remote " + address + " " + rport + "\n");
+        // vpn crypto profile
+        if (cypherpunkSetting.vpnCryptoProfile != null && cypherpunkSetting.vpnCryptoProfile.length() > 0)
+        {
+            switch (cypherpunkSetting.vpnCryptoProfile)
+            {
+                case "setting_vpn_crypto_profile_none":
+                    list.add("remote " + location.getIpNone() + " " + rport + "\n");
+                    list.add("tls-cipher TLS-DHE-RSA-WITH-AES-128-GCM-SHA256:TLS-DHE-RSA-WITH-AES-128-CBC-SHA256\n");
+                    list.add("cipher none\n");
+                    list.add("auth SHA1\n");
+                    break;
+                case "setting_vpn_crypto_profile_strong":
+                    list.add("remote " + location.getIpStrong() + " " + rport + "\n");
+                    list.add("tls-cipher TLS-DHE-RSA-WITH-AES-256-GCM-SHA384:TLS-DHE-RSA-WITH-AES-256-CBC-SHA256\n");
+                    list.add("cipher AES-256-CBC\n");
+                    list.add("auth SHA512\n");
+                    break;
+                case "setting_vpn_crypto_profile_stealth":
+                    list.add("remote " + location.getIpStealth() + " " + rport + "\n");
+                    list.add("tls-cipher TLS-DHE-RSA-WITH-AES-128-GCM-SHA256:TLS-DHE-RSA-WITH-AES-128-CBC-SHA256\n");
+                    list.add("cipher AES-128-CBC\n");
+                    list.add("auth SHA256\n");
+                    break;
+                case "setting_vpn_crypto_profile_default":
+                default:
+                    list.add("remote " + location.getIpDefault() + " " + rport + "\n");
+                    list.add("tls-cipher TLS-DHE-RSA-WITH-AES-128-GCM-SHA256:TLS-DHE-RSA-WITH-AES-128-CBC-SHA256\n");
+                    list.add("cipher AES-128-CBC\n");
+                    list.add("auth SHA256\n");
+                    break;
+            }
+        }
 
         // local port
         int lport = 0;
