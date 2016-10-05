@@ -185,6 +185,8 @@ public class CypherpunkVPN {
                     list.add("tls-cipher TLS-DHE-RSA-WITH-AES-128-GCM-SHA256:TLS-DHE-RSA-WITH-AES-128-CBC-SHA256\n");
                     list.add("cipher AES-128-CBC\n");
                     list.add("auth SHA256\n");
+                    // requires xorpatch'd openvpn
+                    list.add("scramble obfuscate cypherpunk-xor-key\n");
                     break;
                 case "setting_vpn_crypto_profile_default":
                 default:
