@@ -25,7 +25,10 @@ public class GetPremiumActivity extends AppCompatActivity {
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
             actionBar.setDisplayShowTitleEnabled(false);
-            binding.toolbar.title.setText(R.string.title_activity_get_premium);
+
+            if (!getResources().getBoolean(R.bool.is_tablet)) {
+                binding.toolbar.title.setText(R.string.title_activity_get_premium);
+            }
         }
 
         binding.monthPlan.setPlan("1 MONTH", "$ 9.99", false);
