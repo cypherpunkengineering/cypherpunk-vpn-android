@@ -1,5 +1,6 @@
 package com.cypherpunk.android.vpn.ui.setup;
 
+import android.content.pm.ActivityInfo;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -16,6 +17,10 @@ public class GetPremiumActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        if (!getResources().getBoolean(R.bool.is_tablet)) {
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        }
 
         ActivityGetPremiumBinding binding =
                 DataBindingUtil.setContentView(this, R.layout.activity_get_premium);
