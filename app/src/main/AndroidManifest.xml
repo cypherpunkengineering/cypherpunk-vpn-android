@@ -68,7 +68,7 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".ui.setup.GetPremiumActivity"
-            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".ui.settings.SettingsActivity"
