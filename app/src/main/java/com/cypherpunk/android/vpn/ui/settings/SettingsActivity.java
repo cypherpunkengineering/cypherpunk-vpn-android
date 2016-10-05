@@ -1,5 +1,6 @@
 package com.cypherpunk.android.vpn.ui.settings;
 
+import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
@@ -13,7 +14,10 @@ import android.view.MenuItem;
 import com.cypherpunk.android.vpn.R;
 import com.cypherpunk.android.vpn.databinding.ActivitySettingsBinding;
 
-public class SettingsActivity extends AppCompatActivity {
+public class SettingsActivity extends AppCompatActivity
+        implements SettingConnectDialogFragment.ConnectDialogListener {
+
+    public static final String EXTRA_CONNECT = "connect";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,6 +30,10 @@ public class SettingsActivity extends AppCompatActivity {
             actionBar.setDisplayHomeAsUpEnabled(true);
             actionBar.setDisplayShowTitleEnabled(false);
             binding.toolbar.title.setText(R.string.title_activity_settings);
+
+            if (getResources().getBoolean(R.bool.is_tablet)) {
+                actionBar.setHomeAsUpIndicator(R.drawable.close_vector);
+            }
         }
 
         PagerAdapter adapter = new PagerAdapter(getSupportFragmentManager());
@@ -47,6 +55,14 @@ public class SettingsActivity extends AppCompatActivity {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onConnectDialogButtonClick() {
+        Intent intent = new Intent();
+        intent.putExtra(EXTRA_CONNECT, true);
+        setResult(RESULT_OK, intent);
+        finish();
     }
 
     private class PagerAdapter extends FragmentPagerAdapter {

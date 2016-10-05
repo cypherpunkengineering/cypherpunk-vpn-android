@@ -10,36 +10,42 @@
         android:clickable="true"
         android:orientation="horizontal">
 
+        <ImageView
+            android:id="@id/national_flag"
+            android:layout_width="28dp"
+            android:layout_height="20dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            tools:ignore="ContentDescription"
+            tools:src="@drawable/national_flag_placeholder" />
+
         <com.cypherpunk.android.vpn.widget.TypefaceTextView
             android:id="@+id/location"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_centerVertical="true"
             android:layout_gravity="center_vertical"
+            android:layout_toRightOf="@id/national_flag"
             android:background="?android:selectableItemBackground"
-            android:drawableLeft="@drawable/national_flag_placeholder"
-            android:drawablePadding="16dp"
             android:gravity="center_vertical"
-            android:paddingLeft="20dp"
             android:textColor="?android:attr/textColorPrimary"
             android:textSize="18sp"
             app:fontName="DosisMedium"
             tools:ignore="RtlHardcoded,RtlSymmetry"
             tools:text="US" />
 
-        <android.support.v7.widget.AppCompatRadioButton
+        <android.support.v7.widget.AppCompatCheckBox
             android:id="@+id/favorite"
             android:layout_width="28dp"
             android:layout_height="28dp"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:layout_gravity="center_vertical"
             android:layout_marginEnd="8dp"
-            android:layout_marginRight="8dp"
+            android:layout_marginRight="16dp"
             android:button="@drawable/location_star"
-            android:gravity="center"
-            android:padding="8dp" />
+            android:gravity="center" />
 
     </RelativeLayout>
 

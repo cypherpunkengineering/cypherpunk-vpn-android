@@ -41,10 +41,15 @@ import com.cypherpunk.android.vpn.vpn.CypherpunkVpnStatus;
 import com.cypherpunk.android.vpn.widget.BinaryTextureView;
 import com.cypherpunk.android.vpn.widget.ConnectionStatusView;
 import com.cypherpunk.android.vpn.widget.VpnFlatButton;
+import com.squareup.picasso.Picasso;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.inject.Inject;
 
 import de.blinkt.openvpn.core.VpnStatus;
+import io.realm.Realm;
 import rx.SingleSubscriber;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
@@ -55,14 +60,17 @@ public class MainActivity extends AppCompatActivity
         implements VpnStatus.StateListener, RateDialogFragment.RateDialogListener {
 
     public static final String AUTO_START = "com.cypherpunk.android.vpn.AUTO_START";
+    public static final String TILE_CLICK = "com.cypherpunk.android.vpn.TILE_CLICK";
     private static final int REQUEST_VPN_START = 0;
     private static final int REQUEST_SELECT_REGION = 1;
     private static final int REQUEST_STATUS = 2;
+    private static final int REQUEST_SETTINGS = 3;
 
     private ActivityMainBinding binding;
     private CypherpunkVpnStatus status;
     private Subscription subscription = Subscriptions.empty();
     private IpStatus ipStatus = new IpStatus();
+    private Realm realm;
 
     @Inject
     JsonipService webService;
@@ -101,31 +109,24 @@ public class MainActivity extends AppCompatActivity
 
         // showSignUpButton();
 
-        // TODO:
-        Location location = new Location("honolulu.vpn.cypherpunk.network", "Honolulu", 355, 66, "199.68.252.203", "199.68.252.203", "199.68.252.203", "199.68.252.203");
-        binding.region.setText(location.getRegion());
+        // TODO;
+        realm = Realm.getDefaultInstance();
+        Location location = realm.where(Location.class).equalTo("selected", true).findFirst();
+        if (location == null) {
+            getServerList();
+            location = realm.where(Location.class).equalTo("selected", true).findFirst();
+        }
+
+        binding.region.setText(location.getCity());
+        Picasso.with(this).load(location.getNationalFlagUrl()).into(binding.nationalFlag);
         CypherpunkVPN.location = location;
-        ipStatus.setLocation(location.getRegion());
+        ipStatus.setLocation(location.getCity());
         ipStatus.setMapPosition(location.getMapX(), location.getMapY());
 
         binding.connectionButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
-                if (status.isDisconnected()) {
-                    startVpn();
-                }
-                if (status.isConnected()) {
-                    stopVpn();
-                    /*
-                    RateDialogFragment dialogFragment = RateDialogFragment.newInstance();
-                    dialogFragment.show(getSupportFragmentManager());
-                    */
-                }
-                if (!status.isConnected() && !status.isDisconnected()) {
-                    // connecting
-                    stopVpn();
-                }
-
+                toggleVpn();
             }
         });
 
@@ -157,6 +158,21 @@ public class MainActivity extends AppCompatActivity
         VpnStatus.addStateListener(this);
     }
 
+
+    private void toggleVpn()
+    {
+        if (status.isDisconnected()) {
+            startVpn();
+        }
+        if (status.isConnected()) {
+            stopVpn();
+        }
+        if (!status.isConnected() && !status.isDisconnected()) {
+            // connecting
+            stopVpn();
+        }
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main_right, menu);
@@ -168,7 +184,7 @@ public class MainActivity extends AppCompatActivity
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_setting:
-                startActivity(new Intent(this, SettingsActivity.class));
+                startActivityForResult(new Intent(this, SettingsActivity.class), REQUEST_SETTINGS);
                 break;
             case R.id.action_status:
                 startActivityForResult(StatusActivity.createIntent(this, ipStatus), REQUEST_STATUS);
@@ -189,21 +205,30 @@ public class MainActivity extends AppCompatActivity
                     ipStatus = data.getParcelableExtra(StatusActivity.EXTRA_STATUS);
                     break;
                 case REQUEST_SELECT_REGION:
-                    Location location = (Location) data.getSerializableExtra(LocationsActivity.EXTRA_LOCATION);
-                    binding.region.setText(location.getRegion());
+                    String locationId = data.getStringExtra(LocationsActivity.EXTRA_LOCATION_ID);
+                    Realm realm = Realm.getDefaultInstance();
+                    Location location = realm.where(Location.class).equalTo("id", locationId).findFirst();
+                    binding.region.setText(location.getCity());
+                    Picasso.with(this).load(location.getNationalFlagUrl()).into(binding.nationalFlag);
                     if (CypherpunkVPN.location != location) {
                         CypherpunkVPN.location = location;
-                        ipStatus.setLocation(location.getRegion());
+                        ipStatus.setLocation(location.getCity());
                         ipStatus.setMapPosition(location.getMapX(), location.getMapY());
+                        realm.close();
 
                         if (data.getBooleanExtra(LocationsActivity.EXTRA_CONNECT, false)) {
                             startVpn();
                         } else {
                             stopVpn();
                         }
-
                     }
                     break;
+                case REQUEST_SETTINGS:
+                    if (data.getBooleanExtra(LocationsActivity.EXTRA_CONNECT, false)) {
+                        startVpn();
+                    } else {
+                        stopVpn();
+                    }
             }
         }
     }
@@ -229,6 +254,7 @@ public class MainActivity extends AppCompatActivity
 
         Intent intent = getIntent();
         checkIfAutoStart(intent);
+        checkIfTileClick(intent);
         setIntent(null);
     }
 
@@ -242,6 +268,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onDestroy() {
         subscription.unsubscribe();
+        realm.close();
         super.onDestroy();
     }
 
@@ -274,6 +301,7 @@ public class MainActivity extends AppCompatActivity
         log("onNewIntent()");
         super.onNewIntent(intent);
         checkIfAutoStart(intent);
+        checkIfTileClick(intent);
         setIntent(null);
     }
 
@@ -283,7 +311,7 @@ public class MainActivity extends AppCompatActivity
         if (i != null && i.getBooleanExtra(AUTO_START, false))
         {
             CypherpunkSetting cypherpunkSetting = new CypherpunkSetting();
-            if (cypherpunkSetting.vpnAutoStartConnect == true)
+            if (cypherpunkSetting.vpnAutoStartConnect)
             {
                 log("auto starting VPN");
                 startVpn();
@@ -293,6 +321,16 @@ public class MainActivity extends AppCompatActivity
             {
                 finish();
             }
+        }
+    }
+
+    private void checkIfTileClick(Intent i)
+    {
+        log("checkIfTileClick()");
+        if (i != null && i.getBooleanExtra(TILE_CLICK, false))
+        {
+            toggleVpn();
+            moveTaskToBack(true);
         }
     }
 
@@ -362,6 +400,19 @@ public class MainActivity extends AppCompatActivity
                         error.printStackTrace();
                     }
                 });
+    }
+
+    private void getServerList() {
+        realm.beginTransaction();
+        List<Location> locations = new ArrayList<>();
+        // TODO: serverList api
+        locations.add(new Location("Tokyo Dev", "JP", "freebsd-test.tokyo.vpn.cypherpunk.network", "208.111.52.34", "208.111.52.35", "208.111.52.36", "208.111.52.37", "http://flags.fmcdn.net/data/flags/normal/jp.png", 305, 56));
+        locations.add(new Location("Tokyo", "JP", "freebsd2.tokyo.vpn.cypherpunk.network", "208.111.52.2", "208.111.52.12", "208.111.52.22", "208.111.52.32", "http://flags.fmcdn.net/data/flags/normal/jp.png", 305, 56));
+        locations.add(new Location("Honolulu", "US", "honolulu.vpn.cypherpunk.network", "199.68.252.203", "199.68.252.203", "199.68.252.203", "199.68.252.203", "http://flags.fmcdn.net/data/flags/normal/us.png", 355, 66));
+        realm.copyToRealm(locations);
+        Location first = realm.where(Location.class).findFirst();
+        first.setSelected(true);
+        realm.commitTransaction();
     }
 
     private String getSimOperatorName() {
