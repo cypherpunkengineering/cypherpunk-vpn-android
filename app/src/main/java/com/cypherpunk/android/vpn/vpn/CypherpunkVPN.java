@@ -23,6 +23,7 @@ import de.blinkt.openvpn.core.ConfigParser;
 import de.blinkt.openvpn.core.OpenVPNService;
 import de.blinkt.openvpn.core.ProfileManager;
 import de.blinkt.openvpn.core.VPNLaunchHelper;
+import io.realm.Realm;
 
 /**
  * Created by jmaurice on 7/12/16.
@@ -33,7 +34,7 @@ public class CypherpunkVPN {
     private static ConfigParser cp;
     private static VpnProfile vpnProfile;
     private static String conf;
-    public static Location location;
+    public static Location location = null;
 
     private static OpenVPNService service = null;
 
@@ -112,6 +113,10 @@ public class CypherpunkVPN {
 
         // get user prefs
         CypherpunkSetting cypherpunkSetting = new CypherpunkSetting();
+
+        // get currently selected location
+        Realm realm = Realm.getDefaultInstance();
+        location = realm.where(Location.class).equalTo("selected", true).findFirst();
 
         // debug print
         /*
