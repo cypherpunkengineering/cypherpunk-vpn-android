@@ -42,8 +42,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_horizontal"
-                        tools:text="Connected"
-                        android:textSize="16sp" />
+                        android:textSize="16sp"
+                        tools:text="Connected" />
 
                     <com.cypherpunk.android.vpn.widget.TimeTexView
                         android:id="@+id/time"
@@ -52,11 +52,11 @@
                         android:layout_gravity="center_horizontal"
                         android:layout_marginLeft="16dp"
                         android:drawableLeft="@drawable/time_vector"
-                        app:fontName="InconsolataRegular"
                         android:drawablePadding="8dp"
                         android:drawableStart="@drawable/time_vector"
-                        tools:text="00:14:25"
-                        android:textSize="16sp" />
+                        android:textSize="16sp"
+                        app:fontName="InconsolataRegular"
+                        tools:text="00:14:25" />
 
                 </LinearLayout>
 
@@ -74,6 +74,7 @@
                     android:paddingTop="12dp">
 
                     <com.cypherpunk.android.vpn.widget.TypefaceTextView
+                        android:id="@+id/original_label"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="4dp"
@@ -91,14 +92,26 @@
                         app:fontName="InconsolataRegular"
                         tools:text="181.41.221.60" />
 
-                    <com.cypherpunk.android.vpn.widget.TypefaceTextView
+                    <LinearLayout
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:drawableLeft="@drawable/national_flag_placeholder"
-                        android:drawablePadding="12dp"
-                        android:drawableStart="@drawable/national_flag_placeholder"
-                        android:text="Japan"
-                        android:textSize="16sp" />
+                        android:layout_height="wrap_content">
+
+                        <ImageView
+                            android:id="@+id/original_national_flag"
+                            android:layout_width="28dp"
+                            android:layout_height="20dp"
+                            android:layout_marginRight="12dp"
+                            android:src="@drawable/national_flag_placeholder" />
+
+                        <com.cypherpunk.android.vpn.widget.TypefaceTextView
+                            android:id="@+id/original_location"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:drawablePadding="12dp"
+                            android:text="Japan"
+                            android:textSize="16sp" />
+
+                    </LinearLayout>
 
                 </LinearLayout>
 
@@ -133,16 +146,27 @@
                         android:textSize="28sp"
                         app:fontName="InconsolataRegular" />
 
-                    <com.cypherpunk.android.vpn.widget.TypefaceTextView
-                        android:id="@+id/new_location"
+                    <LinearLayout
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:drawableLeft="@drawable/national_flag_placeholder"
-                        android:drawablePadding="12dp"
-                        android:drawableStart="@drawable/national_flag_placeholder"
-                        android:textSize="16sp"
-                        tools:text="USA WEST" />
+                        android:layout_height="wrap_content">
 
+                        <ImageView
+                            android:id="@+id/new_national_flag"
+                            android:layout_width="28dp"
+                            android:layout_height="20dp"
+                            android:layout_marginRight="12dp"
+                            android:src="@drawable/national_flag_placeholder"
+                            tools:ignore="ContentDescription" />
+
+                        <com.cypherpunk.android.vpn.widget.TypefaceTextView
+                            android:id="@+id/new_location"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:drawablePadding="12dp"
+                            android:textSize="16sp"
+                            tools:text="Japan" />
+
+                    </LinearLayout>
                 </LinearLayout>
 
                 <com.cypherpunk.android.vpn.widget.TypefaceButton

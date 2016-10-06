@@ -21,6 +21,7 @@ import com.cypherpunk.android.vpn.databinding.ActivityStatusBinding;
 import com.cypherpunk.android.vpn.model.IpStatus;
 import com.cypherpunk.android.vpn.model.Location;
 import com.cypherpunk.android.vpn.vpn.CypherpunkVpnStatus;
+import com.squareup.picasso.Picasso;
 
 import javax.inject.Inject;
 
@@ -141,6 +142,7 @@ public class StatusActivity extends AppCompatActivity implements VpnStatus.State
                 if (connected) {
                     binding.map.setNewPosition(location.getMapX(), location.getMapY());
                     binding.newLocation.setText(location.getCity());
+                    Picasso.with(StatusActivity.this).load(location.getNationalFlagUrl()).into(binding.newNationalFlag);
                 }
                 binding.map.setNewPositionVisibility(connected);
             }
