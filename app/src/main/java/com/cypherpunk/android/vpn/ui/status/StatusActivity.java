@@ -19,11 +19,14 @@ import com.cypherpunk.android.vpn.data.api.JsonipService;
 import com.cypherpunk.android.vpn.data.api.json.JsonipResult;
 import com.cypherpunk.android.vpn.databinding.ActivityStatusBinding;
 import com.cypherpunk.android.vpn.model.IpStatus;
+import com.cypherpunk.android.vpn.model.Location;
 import com.cypherpunk.android.vpn.vpn.CypherpunkVpnStatus;
+import com.squareup.picasso.Picasso;
 
 import javax.inject.Inject;
 
 import de.blinkt.openvpn.core.VpnStatus;
+import io.realm.Realm;
 import rx.SingleSubscriber;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
@@ -34,18 +37,21 @@ import rx.subscriptions.Subscriptions;
 public class StatusActivity extends AppCompatActivity implements VpnStatus.StateListener {
 
     public static String EXTRA_STATUS = "ip_status";
+    public static String EXTRA_LOCATION_ID = "location_id";
 
     private ActivityStatusBinding binding;
     private CypherpunkVpnStatus status;
     private Subscription subscription = Subscriptions.empty();
     private IpStatus ipStatus = new IpStatus();
+    private Location location;
 
     @Inject
     JsonipService webService;
 
     @NonNull
-    public static Intent createIntent(@NonNull Context context, @NonNull IpStatus ipStatus) {
+    public static Intent createIntent(@NonNull Context context, @NonNull String locationId, @NonNull IpStatus ipStatus) {
         Intent intent = new Intent(context, StatusActivity.class);
+        intent.putExtra(EXTRA_LOCATION_ID, locationId);
         intent.putExtra(EXTRA_STATUS, ipStatus);
         return intent;
     }
@@ -66,7 +72,8 @@ public class StatusActivity extends AppCompatActivity implements VpnStatus.State
         }
 
         status = CypherpunkVpnStatus.getInstance();
-        ipStatus = getIntent().getParcelableExtra(EXTRA_STATUS);
+        Intent intent = getIntent();
+        ipStatus = intent.getParcelableExtra(EXTRA_STATUS);
 
         binding.time.setBaseTime(status.getConnectedTime());
         if (!TextUtils.isEmpty(ipStatus.getOriginalIp())) {
@@ -77,6 +84,10 @@ public class StatusActivity extends AppCompatActivity implements VpnStatus.State
         } else if (status.isConnected()) {
             getIpAddress();
         }
+
+        Realm realm = Realm.getDefaultInstance();
+        location = realm.where(Location.class).equalTo("id", intent.getStringExtra(EXTRA_LOCATION_ID)).findFirst();
+        realm.close();
 
         binding.map.setOriginalPosition(305, 56);
 
@@ -129,8 +140,9 @@ public class StatusActivity extends AppCompatActivity implements VpnStatus.State
                         connected ? R.color.status_connected : R.color.status_disconnected));
 
                 if (connected) {
-                    binding.map.setNewPosition(ipStatus.getMapX(), ipStatus.getMapY());
-                    binding.newLocation.setText(ipStatus.getLocation());
+                    binding.map.setNewPosition(location.getMapX(), location.getMapY());
+                    binding.newLocation.setText(location.getCity());
+                    Picasso.with(StatusActivity.this).load(location.getNationalFlagUrl()).into(binding.newNationalFlag);
                 }
                 binding.map.setNewPositionVisibility(connected);
             }
