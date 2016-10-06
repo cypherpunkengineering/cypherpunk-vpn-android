@@ -68,7 +68,6 @@ public class ApplicationSettingsActivity extends AppCompatActivity {
         TextView textView = (TextView) searchView.findViewById(android.support.v7.appcompat.R.id.search_src_text);
         textView.setTypeface(FontUtil.getDosisMedium(this));
         textView.setHintTextColor(ContextCompat.getColor(this, R.color.search_view_hint_text));
-
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
@@ -90,6 +89,19 @@ public class ApplicationSettingsActivity extends AppCompatActivity {
                     }
                     adapter.addAll(filteredList);
                 }
+                return false;
+            }
+        });
+        searchView.setOnSearchClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                binding.toolbar.title.setText("");
+            }
+        });
+        searchView.setOnCloseListener(new SearchView.OnCloseListener() {
+            @Override
+            public boolean onClose() {
+                binding.toolbar.title.setText(R.string.title_activity_application_settings);
                 return false;
             }
         });
