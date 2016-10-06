@@ -11,6 +11,9 @@ public class CypherpunkVpnStatus implements VpnStatus.StateListener {
             = VpnStatus.ConnectionStatus.LEVEL_NOTCONNECTED;
     private static CypherpunkVpnStatus singleton;
     private long connectedTime;
+    private String originalIp;
+    private String newIp;
+
 
     @NonNull
     public static synchronized CypherpunkVpnStatus getInstance() {
@@ -40,5 +43,21 @@ public class CypherpunkVpnStatus implements VpnStatus.StateListener {
 
     public long getConnectedTime() {
         return connectedTime;
+    }
+
+    public String getOriginalIp() {
+        return originalIp;
+    }
+
+    public void setOriginalIp(String originalIp) {
+        this.originalIp = originalIp;
+    }
+
+    public String getNewIp() {
+        return newIp;
+    }
+
+    public void setNewIp(String newIp) {
+        this.newIp = newIp;
     }
 }
