@@ -75,7 +75,7 @@ suddenly drops" />
                 android:layout_height="wrap_content"
                 android:layout_marginRight="16dp"
                 android:textColor="#fff"
-                tools:text="AES-256" />
+                tools:text="XXX-123" />
 
             <com.cypherpunk.android.vpn.widget.TypefaceTextView
                 android:layout_width="wrap_content"
@@ -90,7 +90,7 @@ suddenly drops" />
                 android:layout_height="wrap_content"
                 android:layout_marginRight="16dp"
                 android:textColor="#fff"
-                tools:text="SHA512" />
+                tools:text="XXX-123" />
 
             <com.cypherpunk.android.vpn.widget.TypefaceTextView
                 android:layout_width="wrap_content"
@@ -104,7 +104,7 @@ suddenly drops" />
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="#fff"
-                tools:text="4096-bit" />
+                tools:text="XXX-1234" />
 
         </LinearLayout>
     </merge>
