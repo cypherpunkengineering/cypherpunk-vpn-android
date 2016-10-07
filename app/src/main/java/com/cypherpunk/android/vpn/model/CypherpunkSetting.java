@@ -1,7 +1,6 @@
 package com.cypherpunk.android.vpn.model;
 
 import com.os.operando.garum.annotations.DefaultBoolean;
-import com.os.operando.garum.annotations.DefaultInt;
 import com.os.operando.garum.annotations.DefaultString;
 import com.os.operando.garum.annotations.Pref;
 import com.os.operando.garum.annotations.PrefKey;
@@ -54,4 +53,12 @@ public class CypherpunkSetting extends PrefModel {
     @PrefKey("vpn_port_forwarding")
     @DefaultBoolean(false)
     public boolean portForwarding;
+
+    @PrefKey("vpn_network_auto_secure_untrusted")
+    @DefaultBoolean(false)
+    public boolean autoSecureUntrusted;
+
+    @PrefKey("vpn_network_auto_secure_other")
+    @DefaultBoolean(false)
+    public boolean autoSecureOther;
 }
