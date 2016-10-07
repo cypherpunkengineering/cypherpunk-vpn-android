@@ -52,6 +52,61 @@ connect and disables when you disconnect from
 a location. It will remain on if your connection
 suddenly drops" />
 
+        <LinearLayout
+            android:id="@+id/detail_container"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/description"
+            android:layout_marginBottom="8dp"
+            android:layout_toRightOf="@id/button"
+            android:orientation="horizontal"
+            android:visibility="@{TextUtils.isEmpty(setting.cipher) ? View.GONE : View.VISIBLE}">
+
+            <com.cypherpunk.android.vpn.widget.TypefaceTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="4dp"
+                android:text="@string/setting_vpn_crypto_cipher"
+                android:textColor="#99ffffff" />
+
+            <com.cypherpunk.android.vpn.widget.TypefaceTextView
+                android:id="@+id/cipher"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="16dp"
+                android:textColor="#fff"
+                tools:text="AES-256" />
+
+            <com.cypherpunk.android.vpn.widget.TypefaceTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="4dp"
+                android:text="@string/setting_vpn_crypto_auth"
+                android:textColor="#99ffffff" />
+
+            <com.cypherpunk.android.vpn.widget.TypefaceTextView
+                android:id="@+id/auth"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="16dp"
+                android:textColor="#fff"
+                tools:text="SHA512" />
+
+            <com.cypherpunk.android.vpn.widget.TypefaceTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="4dp"
+                android:text="@string/setting_vpn_crypto_keylen"
+                android:textColor="#99ffffff" />
+
+            <com.cypherpunk.android.vpn.widget.TypefaceTextView
+                android:id="@+id/key"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#fff"
+                tools:text="4096-bit" />
+
+        </LinearLayout>
     </merge>
 
 </layout>
