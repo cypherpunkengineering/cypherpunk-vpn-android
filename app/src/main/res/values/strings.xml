@@ -210,4 +210,13 @@
     <!-- quick settings tile -->
     <string name="qs_tile_title">Privacy VPN</string>
 
+    <!-- trusted network -->
+    <string name="network_auto_secure">AUTO-SECURE</string>
+    <string name="network_auto_secure_description">Cypherpunk can automatically secure connections to untrusted networks.</string>
+    <string name="newt_work_auto_secure_connections">Auto secure connections</string>
+    <string name="network_wifi_networks">WI-FI NETWORKS</string>
+    <string name="network_wifi_description">Add the networks you trust so Cypherpunk will now when connections should be secured.</string>
+    <string name="network_other_networks">OTHER NETWORKS</string>
+    <string name="network_other_auto_secure_connections">Auto secure connections</string>
+
 </resources>

@@ -3,11 +3,15 @@ package com.cypherpunk.android.vpn.ui.settings;
 import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.graphics.drawable.ColorDrawable;
+import android.net.wifi.WifiInfo;
+import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.SwitchCompat;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -36,8 +40,15 @@ public class NetworkActivity extends AppCompatActivity {
         }
 
         MergeAdapter mergeAdapter = new MergeAdapter();
-        View header = LayoutInflater.from(this)
+        final View header = LayoutInflater.from(this)
                 .inflate(R.layout.list_item_header_neteork_secure, binding.list, false);
+        final SwitchCompat autoSecureSwitch = (SwitchCompat) header.findViewById(R.id.auto_secure_switch);
+        header.findViewById(R.id.auto_secure_container).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                autoSecureSwitch.toggle();
+            }
+        });
         mergeAdapter.addView(header);
 
         ArrayAdapter<String> wifiAdapter = new WifiAdapter(this);
@@ -48,6 +59,13 @@ public class NetworkActivity extends AppCompatActivity {
 
         View footer = LayoutInflater.from(this)
                 .inflate(R.layout.list_item_footer_network_other, binding.list, false);
+        final SwitchCompat otherAutoSecureSwitch = (SwitchCompat) footer.findViewById(R.id.other_auto_secure_switch);
+        footer.findViewById(R.id.other_auto_secure_container).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                otherAutoSecureSwitch.toggle();
+            }
+        });
         mergeAdapter.addView(footer);
 
         binding.list.setAdapter(mergeAdapter);

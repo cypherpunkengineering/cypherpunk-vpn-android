@@ -12,7 +12,7 @@
         android:layout_marginTop="16dp"
         android:paddingLeft="16dp"
         android:paddingRight="16dp"
-        android:text="AUTO-SECURE"
+        android:text="@string/network_auto_secure"
         android:textColor="@color/colorAccent"
         android:textSize="16sp"
         app:fontName="DosisMedium" />
@@ -23,18 +23,37 @@
         android:layout_marginBottom="16dp"
         android:paddingLeft="16dp"
         android:paddingRight="16dp"
-        android:text="Cypherpunk can automatically secure connections to untrusted networks."
+        android:text="@string/network_auto_secure_description"
         android:textColor="@color/sub_text"
         android:textSize="14sp"
         app:fontName="DosisMedium" />
 
-    <android.support.v7.widget.SwitchCompat
+    <RelativeLayout
+        android:id="@+id/auto_secure_container"
         android:layout_width="match_parent"
-        android:layout_height="48dp"
+        android:layout_height="56dp"
         android:background="@drawable/list_item_background"
         android:paddingLeft="16dp"
-        android:paddingRight="16dp"
-        android:text="Auto secure connections" />
+        android:paddingRight="16dp">
+
+        <com.cypherpunk.android.vpn.widget.TypefaceTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:text="@string/newt_work_auto_secure_connections"
+            android:textSize="18sp"
+            app:fontName="DosisMedium" />
+
+        <android.support.v7.widget.SwitchCompat
+            android:id="@+id/auto_secure_switch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:clickable="false"
+            android:focusable="false" />
+
+    </RelativeLayout>
 
     <com.cypherpunk.android.vpn.widget.TypefaceTextView
         android:layout_width="match_parent"
@@ -43,7 +62,7 @@
         android:layout_marginTop="16dp"
         android:paddingLeft="16dp"
         android:paddingRight="16dp"
-        android:text="WI-FI NETWORKS"
+        android:text="@string/network_wifi_networks"
         android:textColor="@color/colorAccent"
         android:textSize="16sp"
         app:fontName="DosisMedium" />
@@ -54,7 +73,7 @@
         android:layout_marginBottom="16dp"
         android:paddingLeft="16dp"
         android:paddingRight="16dp"
-        android:text="Add the networks you trust so Cypherpunk will now when connections should be secured."
+        android:text="@string/network_wifi_description"
         android:textColor="@color/sub_text"
         android:textSize="14sp"
         app:fontName="DosisMedium" />
