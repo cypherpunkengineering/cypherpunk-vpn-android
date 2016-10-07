@@ -122,7 +122,7 @@ public class SettingsFragment extends PreferenceFragmentCompat {
             public boolean onPreferenceClick(Preference preference) {
                 startActivityForResult(ListPreferenceActivity.createIntent(getActivity(),
                         "vpn_crypto_profile", vpnCryptoProfile.getTitle(),
-                        new CypherpunkSetting().vpnCryptoProfile, getSettingItemList(
+                        new CypherpunkSetting().vpnCryptoProfile, getEncryptingSettingItemList(
                                 R.array.vpn_crypto_profile_value, R.array.vpn_crypto_profile_description)),
                         REQUEST_LIST_SETTING);
                 return true;
@@ -219,17 +219,13 @@ public class SettingsFragment extends PreferenceFragmentCompat {
         }
     }
 
-    private String getStringByKey(String key)
-    {
+    private String getStringByKey(String key) {
         String packageName = getContext().getPackageName();
         int id = getResources().getIdentifier(key, "string", packageName);
         String str;
-        try
-        {
+        try {
             str = getResources().getString(id);
-        }
-        catch (Exception NotFoundException)
-        {
+        } catch (Exception NotFoundException) {
             str = key;
         }
         return str;
@@ -243,7 +239,48 @@ public class SettingsFragment extends PreferenceFragmentCompat {
         }
         ArrayList<SettingItem> list = new ArrayList<>();
         for (int i = 0; i < keyList.length; i++) {
-            list.add(new SettingItem(keyList[i], getStringByKey(keyList[i]), descriptionListRes != 0 ? getStringByKey(descriptionList[i]) : ""));
+            list.add(new SettingItem(keyList[i],
+                    getStringByKey(keyList[i]), descriptionListRes != 0 ? getStringByKey(descriptionList[i]) : ""));
+        }
+        return list;
+    }
+
+    private ArrayList<SettingItem> getEncryptingSettingItemList(@ArrayRes int keyListRes, @ArrayRes int descriptionListRes) {
+        String[] keyList = getResources().getStringArray(keyListRes);
+        String[] descriptionList = new String[0];
+        if (descriptionListRes != 0) {
+            descriptionList = getResources().getStringArray(descriptionListRes);
+        }
+
+        ArrayList<SettingItem> list = new ArrayList<>();
+        String cipher = null;
+        String auth = null;
+        String keylen = null;
+        for (int i = 0; i < keyList.length; i++) {
+            switch (keyList[i]) {
+                case "setting_vpn_crypto_profile_default":
+                    cipher = "setting_vpn_crypto_cipher_aes128cbc";
+                    auth = "setting_vpn_crypto_auth_sha512";
+                    keylen = "setting_vpn_crypto_keylen_rsa4096";
+                    break;
+                case "setting_vpn_crypto_profile_none":
+                    cipher = "setting_vpn_crypto_cipher_none";
+                    auth = "setting_vpn_crypto_auth_sha512";
+                    keylen = "setting_vpn_crypto_keylen_rsa4096";
+                    break;
+                case "setting_vpn_crypto_profile_strong":
+                    cipher = "setting_vpn_crypto_cipher_aes128cbc";
+                    auth = "setting_vpn_crypto_auth_sha512";
+                    keylen = "setting_vpn_crypto_keylen_rsa4096";
+                    break;
+                case "setting_vpn_crypto_profile_stealth":
+                    cipher = "setting_vpn_crypto_cipher_aes128cbc";
+                    auth = "setting_vpn_crypto_auth_sha512";
+                    keylen = "setting_vpn_crypto_keylen_rsa4096";
+            }
+            list.add(new SettingItem(
+                    keyList[i], getStringByKey(keyList[i]), descriptionListRes != 0 ? getStringByKey(descriptionList[i]) : "",
+                    getStringByKey(cipher), getStringByKey(auth), getStringByKey(keylen)));
         }
         return list;
     }

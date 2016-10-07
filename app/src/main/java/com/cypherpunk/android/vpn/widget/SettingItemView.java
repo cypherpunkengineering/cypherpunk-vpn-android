@@ -3,6 +3,7 @@ package com.cypherpunk.android.vpn.widget;
 
 import android.content.Context;
 import android.databinding.DataBindingUtil;
+import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.widget.Checkable;
@@ -46,5 +47,10 @@ public class SettingItemView extends RelativeLayout implements Checkable {
 
     public void setSetting(SettingItem settingItem) {
         binding.setSetting(settingItem);
+        if (!TextUtils.isEmpty(settingItem.cipher)) {
+            binding.cipher.setText(settingItem.cipher);
+            binding.auth.setText(settingItem.auth);
+            binding.key.setText(settingItem.keylen);
+        }
     }
 }
