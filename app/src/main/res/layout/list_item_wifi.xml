@@ -1,22 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <com.cypherpunk.android.vpn.widget.TypefaceTextView
-        android:id="@+id/text"
+    <com.cypherpunk.android.vpn.widget.NetworkItemView
+        android:id="@+id/network_item"
         android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:layout_gravity="center_vertical"
-        android:background="@drawable/list_item_background"
-        android:drawableRight="@drawable/information_vector"
-        android:gravity="center_vertical"
-        android:paddingLeft="16dp"
-        android:paddingRight="16dp"
-        android:textColor="?android:attr/textColorPrimary"
-        android:textSize="18sp"
-        app:fontName="DosisMedium"
-        tools:ignore="RtlHardcoded,RtlSymmetry"
-        tools:text="ssid" />
+        android:layout_height="56dp"
+        android:background="?selectableItemBackground" />
 
 </layout>
