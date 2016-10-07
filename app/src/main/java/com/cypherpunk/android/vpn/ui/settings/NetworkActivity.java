@@ -76,7 +76,7 @@ public class NetworkActivity extends AppCompatActivity {
 
         @NonNull
         @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
+        public View getView(int position, View convertView, @NonNull ViewGroup parent) {
             ListItemWifiBinding binding;
             if (convertView == null) {
                 binding = DataBindingUtil.inflate(inflater, R.layout.list_item_wifi, parent, false);
@@ -85,7 +85,7 @@ public class NetworkActivity extends AppCompatActivity {
             } else {
                 binding = (ListItemWifiBinding) convertView.getTag();
             }
-            binding.text.setText(getItem(position));
+            binding.networkItem.setText(getItem(position));
 
 
             return convertView;
