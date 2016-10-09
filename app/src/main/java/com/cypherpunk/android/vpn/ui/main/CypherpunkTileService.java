@@ -1,6 +1,5 @@
 package com.cypherpunk.android.vpn.ui.main;
 
-import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.content.Intent;
 import android.os.Build;
@@ -8,8 +7,6 @@ import android.service.quicksettings.Tile;
 import android.service.quicksettings.TileService;
 import android.util.Log;
 
-import de.blinkt.openvpn.VpnProfile;
-import de.blinkt.openvpn.core.ProfileManager;
 import de.blinkt.openvpn.core.VpnStatus;
 
 /**
@@ -47,10 +44,10 @@ public class CypherpunkTileService extends TileService implements VpnStatus.Stat
         log("CypherpunkTileService.onClick()");
 
         // TODO: check if logged in, permission granted, region selected, etc.
-        Intent i = new Intent(MainActivity.TILE_CLICK);
-        i.setClass(this, MainActivity.class);
+        Intent i = new Intent(CypherpunkLaunchVPN.TILE_CLICK);
+        i.setClass(this, CypherpunkLaunchVPN.class);
         //i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        i.putExtra(MainActivity.TILE_CLICK, true);
+        i.putExtra(CypherpunkLaunchVPN.TILE_CLICK, true);
         this.startActivity(i);
     }
 

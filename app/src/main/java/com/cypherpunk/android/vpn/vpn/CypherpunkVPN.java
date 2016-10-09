@@ -4,12 +4,16 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.net.VpnService;
 import android.os.IBinder;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.android.annotations.NonNull;
 import com.cypherpunk.android.vpn.model.CypherpunkSetting;
 import com.cypherpunk.android.vpn.model.Location;
+import com.cypherpunk.android.vpn.ui.main.CypherpunkLaunchVPN;
+import com.cypherpunk.android.vpn.ui.main.MainActivity;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
@@ -29,33 +33,65 @@ import io.realm.Realm;
  * Created by jmaurice on 7/12/16.
  */
 public class CypherpunkVPN {
-    private static String username;
-    private static String password;
-    private static ConfigParser cp;
-    private static VpnProfile vpnProfile;
-    private static String conf;
-    public static Location location = null;
+    private static CypherpunkVPN singleton;
 
-    private static OpenVPNService service = null;
+    private String username;
+    private String password;
+    private ConfigParser cp;
+    private VpnProfile vpnProfile;
+    private String conf;
+    private Location location = null;
 
-    private static ServiceConnection connection = new ServiceConnection() {
+    private OpenVPNService service = null;
+
+    @NonNull
+    public static synchronized CypherpunkVPN getInstance()
+    {
+        if (singleton == null)
+            singleton = new CypherpunkVPN();
+        return singleton;
+    }
+
+    public Location getLocation() { return location; }
+    public void setLocation(Location location) { this.location = location; }
+
+    private ServiceConnection connection = new ServiceConnection()
+    {
         @Override
-        public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
+        public void onServiceConnected(ComponentName componentName, IBinder iBinder)
+        {
             OpenVPNService.LocalBinder binder = (OpenVPNService.LocalBinder) iBinder;
             service = binder.getService();
         }
 
         @Override
-        public void onServiceDisconnected(ComponentName componentName) {
+        public void onServiceDisconnected(ComponentName componentName)
+        {
             service = null;
         }
     };
 
-    private static void log(String str) {
+    private void log(String str) {
         Log.w("CypherpunkVPN", str);
     }
 
-    public static void start(final Context context, final Context baseContext)
+    public void toggle(final Context context, final Context baseContext)
+    {
+        CypherpunkVpnStatus status = CypherpunkVpnStatus.getInstance();
+
+        if (status.isDisconnected()) {
+            start(context, baseContext);
+        }
+        if (status.isConnected()) {
+            stop(context, baseContext);
+        }
+        if (!status.isConnected() && !status.isDisconnected()) {
+            // connecting
+            stop(context, baseContext);
+        }
+    }
+
+    public void start(final Context context, final Context baseContext)
     {
         log("start()");
 
@@ -63,14 +99,17 @@ public class CypherpunkVPN {
         intent.setAction(OpenVPNService.START_SERVICE);
         context.bindService(intent, connection, Context.BIND_AUTO_CREATE);
 
-        try {
+        try
+        {
             conf = generateConfig(context);
             cp = new ConfigParser();
             cp.parseConfig(new StringReader(conf));
             vpnProfile = cp.convertProfile();
             ProfileManager.setTemporaryProfile(vpnProfile);
             //log("vpn profile check: "+vpnProfile.checkProfile(context));
-        } catch (Exception E) {
+        }
+        catch (Exception e)
+        {
             return;
         }
 
@@ -83,9 +122,11 @@ public class CypherpunkVPN {
         }.start();
     }
 
-    public static void stop(final Context context, final Context baseContext) {
+    public void stop(final Context context, final Context baseContext)
+    {
         log("stop()");
-        if (service != null) {
+        if (service != null)
+        {
             service.getManagement().stopVPN(false);
             // privacy firewall killswitch
             CypherpunkSetting cypherpunkSetting = new CypherpunkSetting();
@@ -106,7 +147,8 @@ public class CypherpunkVPN {
         }
     }
 
-    private static String generateConfig(Context context) {
+    private String generateConfig(Context context)
+    {
         log("generateConfig()");
 
         List<String> list = new ArrayList<String>();
