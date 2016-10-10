@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.v7.preference.PreferenceManager;
 import android.util.Log;
 
+import com.cypherpunk.android.vpn.data.api.UserManager;
 import com.cypherpunk.android.vpn.model.CypherpunkSetting;
 import com.cypherpunk.android.vpn.ui.main.CypherpunkLaunchVPN;
 import com.cypherpunk.android.vpn.vpn.CypherpunkVPN;
@@ -36,13 +37,8 @@ public class CypherpunkLaunchVPN extends Activity
     {
         log("onCreate()");
         super.onCreate(savedInstanceState);
-        //status = CypherpunkVpnStatus.getInstance();
-        //CypherpunkVPN.getInstance().start(this, this);
         Intent intent = getIntent();
-        checkIfAutoStart(intent);
-        checkIfTileClick(intent);
-        setIntent(null);
-        finish();
+        launch(intent);
     }
 
     @Override
@@ -50,56 +46,102 @@ public class CypherpunkLaunchVPN extends Activity
     {
         log("onNewIntent()");
         super.onNewIntent(intent);
-        checkIfAutoStart(intent);
-        checkIfTileClick(intent);
-        setIntent(null);
+        launch(intent);
     }
 
-    private void checkIfAutoStart(Intent i)
+    private void launch(Intent intent)
     {
-        log("checkIfAutoStart()");
-        if (i != null && i.getBooleanExtra(AUTO_START, false))
+        log("launch()");
+
+        // check if user is signed in
+        if (!UserManager.isSignedIn() || intent == null)
         {
-            CypherpunkSetting cypherpunkSetting = new CypherpunkSetting();
-            if (cypherpunkSetting.vpnAutoStartConnect)
-            {
-                log("auto starting VPN");
-                openPermissionDialogIfNeeded();
-                CypherpunkVPN.getInstance().start(getApplicationContext(), getBaseContext());
-            }
+            log("user not logged in, ignoring launch intent");
+            setIntent(null);
             finish();
+            return;
         }
-    }
 
-    private void checkIfTileClick(Intent i)
-    {
-        log("checkIfTileClick()");
-        if (i != null && i.getBooleanExtra(TILE_CLICK, false))
+        // called from CypherpunkBootReceiver
+        if (intent.getBooleanExtra(AUTO_START, false))
         {
-            openPermissionDialogIfNeeded();
-            CypherpunkVPN.getInstance().toggle(getApplicationContext(), getBaseContext());
+            // get user settings
+            CypherpunkSetting cypherpunkSetting = new CypherpunkSetting();
+
+            // immediately exit unless user setting for auto start is enabled
+            if (!cypherpunkSetting.vpnAutoStartConnect)
+            {
+                finish();
+                return;
+            }
+
+            // prepare vpn service and wait for callback
+            log("auto starting VPN");
+            prepareVpnService();
+
+            // done
+            setIntent(null);
+            moveTaskToBack(true);
+        }
+        else if (intent.getBooleanExtra(TILE_CLICK, false))
+        {
+            // get vpn status
+            CypherpunkVpnStatus status = CypherpunkVpnStatus.getInstance();
+
+            // already connected, just disconnect and finish
+            if (status.isConnected())
+            {
+                CypherpunkVPN.getInstance().stop(getApplicationContext(), getBaseContext());
+                finish();
+                return;
+            }
+
+            // prepare vpn service, wait for callback, then connect
+            prepareVpnService();
+
+            // done
+            setIntent(null);
             moveTaskToBack(true);
         }
     }
 
-    private void openPermissionDialogIfNeeded()
+    private void prepareVpnService()
     {
+        log("prepareVpnService()");
+
+        // returns intent if permission dialog is needed
         Intent permissionIntent = VpnService.prepare(this);
-        if (permissionIntent != null)
+
+        // no dialog needed, start vpn immediately
+        if (permissionIntent == null)
+        {
+            onActivityResult(START_VPN_PROFILE, Activity.RESULT_OK, null);
+        }
+        else // dialog needed, start intent and wait for callback
         {
             try
             {
                 startActivityForResult(permissionIntent, START_VPN_PROFILE);
             }
-            catch (ActivityNotFoundException e)
+            catch (ActivityNotFoundException e) // buggy sony devices
             {
-                finish();
+                e.printStackTrace();
             }
-        }
-        else
-        {
-            onActivityResult(START_VPN_PROFILE, Activity.RESULT_OK, null);
         }
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
+        log("onActivityResult()");
+        super.onActivityResult(requestCode, resultCode, data);
+        switch (requestCode)
+        {
+            case START_VPN_PROFILE:
+                if (resultCode == RESULT_OK)
+                    CypherpunkVPN.getInstance().start(getApplicationContext(), getBaseContext());
+                finish();
+                break;
+        }
+    }
 }

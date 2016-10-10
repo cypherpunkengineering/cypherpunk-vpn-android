@@ -122,7 +122,7 @@ public class MainActivity extends AppCompatActivity
         binding.connectionButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
-                CypherpunkVPN.getInstance().toggle(getApplicationContext(), getBaseContext());
+                toggleVpn();
             }
         });
 
@@ -261,6 +261,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void startVpn() {
+        log("startVpn()");
         Intent intent = VpnService.prepare(MainActivity.this);
         if (intent != null) {
             startActivityForResult(intent, REQUEST_VPN_START);
@@ -274,10 +275,19 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void stopVpn() {
+        log("stopVpn()");
         if (status.isDisconnected()) {
             return;
         }
         CypherpunkVPN.getInstance().stop(getApplicationContext(), getBaseContext());
+    }
+
+    private void toggleVpn()
+    {
+        if (CypherpunkVpnStatus.getInstance().isDisconnected())
+            startVpn();
+        else
+            stopVpn();
     }
 
     private void onVpnConnected() {

@@ -95,9 +95,9 @@ public class CypherpunkVPN {
     {
         log("start()");
 
-        Intent intent = new Intent(baseContext, OpenVPNService.class);
-        intent.setAction(OpenVPNService.START_SERVICE);
-        context.bindService(intent, connection, Context.BIND_AUTO_CREATE);
+        Intent serviceIntent = new Intent(baseContext, OpenVPNService.class);
+        serviceIntent.setAction(OpenVPNService.START_SERVICE);
+        context.bindService(serviceIntent, connection, Context.BIND_AUTO_CREATE);
 
         try
         {

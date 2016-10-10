@@ -28,9 +28,12 @@ public class CypherpunkBootReceiver extends BroadcastReceiver
         if (action.equals(Intent.ACTION_BOOT_COMPLETED) || action.equals(Intent.ACTION_MY_PACKAGE_REPLACED))
         {
             log("onReceive() -> startActivity()");
-            Intent i = new Intent(CypherpunkLaunchVPN.AUTO_START);
+            Intent i = new Intent(Intent.ACTION_MAIN);
             i.setClass(context, CypherpunkLaunchVPN.class);
             i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            i.setFlags(Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS);
+            i.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+            i.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
             i.putExtra(CypherpunkLaunchVPN.AUTO_START, true);
             context.startActivity(i);
         }
