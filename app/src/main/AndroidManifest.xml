@@ -40,7 +40,7 @@
             android:excludeFromRecents="true"
             android:label="@string/vpn_launch_title"
             android:taskAffinity=".ui.main.CypherpunkLaunchVPN"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:theme="@android:style/Theme.NoDisplay">
             tools:ignore="ExportedActivity">
         </activity>
         <service
