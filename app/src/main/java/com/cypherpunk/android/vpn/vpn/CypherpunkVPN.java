@@ -95,6 +95,7 @@ public class CypherpunkVPN {
     {
         log("start()");
 
+        CypherpunkSetting cypherpunkSetting = new CypherpunkSetting();
         Intent serviceIntent = new Intent(baseContext, OpenVPNService.class);
         serviceIntent.setAction(OpenVPNService.START_SERVICE);
         context.bindService(serviceIntent, connection, Context.BIND_AUTO_CREATE);
@@ -106,6 +107,8 @@ public class CypherpunkVPN {
             cp.parseConfig(new StringReader(conf));
             vpnProfile = cp.convertProfile();
             ProfileManager.setTemporaryProfile(vpnProfile);
+            vpnProfile.mName = location.getCity() + ", " + location.getCountryCode();
+
             //log("vpn profile check: "+vpnProfile.checkProfile(context));
         }
         catch (Exception e)
