@@ -18,7 +18,6 @@ import com.cypherpunk.android.vpn.R;
 import com.cypherpunk.android.vpn.data.api.JsonipService;
 import com.cypherpunk.android.vpn.data.api.json.JsonipResult;
 import com.cypherpunk.android.vpn.databinding.ActivityStatusBinding;
-import com.cypherpunk.android.vpn.model.IpStatus;
 import com.cypherpunk.android.vpn.model.Location;
 import com.cypherpunk.android.vpn.vpn.CypherpunkVpnStatus;
 import com.squareup.picasso.Picasso;
@@ -36,23 +35,20 @@ import rx.subscriptions.Subscriptions;
 
 public class StatusActivity extends AppCompatActivity implements VpnStatus.StateListener {
 
-    public static String EXTRA_STATUS = "ip_status";
     public static String EXTRA_LOCATION_ID = "location_id";
 
     private ActivityStatusBinding binding;
     private CypherpunkVpnStatus status;
     private Subscription subscription = Subscriptions.empty();
-    private IpStatus ipStatus = new IpStatus();
     private Location location;
 
     @Inject
     JsonipService webService;
 
     @NonNull
-    public static Intent createIntent(@NonNull Context context, @NonNull String locationId, @NonNull IpStatus ipStatus) {
+    public static Intent createIntent(@NonNull Context context, @NonNull String locationId) {
         Intent intent = new Intent(context, StatusActivity.class);
         intent.putExtra(EXTRA_LOCATION_ID, locationId);
-        intent.putExtra(EXTRA_STATUS, ipStatus);
         return intent;
     }
 
@@ -73,14 +69,13 @@ public class StatusActivity extends AppCompatActivity implements VpnStatus.State
 
         status = CypherpunkVpnStatus.getInstance();
         Intent intent = getIntent();
-        ipStatus = intent.getParcelableExtra(EXTRA_STATUS);
 
         binding.time.setBaseTime(status.getConnectedTime());
-        if (!TextUtils.isEmpty(ipStatus.getOriginalIp())) {
-            binding.originalIp.setText(ipStatus.getOriginalIp());
+        if (!TextUtils.isEmpty(status.getOriginalIp())) {
+            binding.originalIp.setText(status.getOriginalIp());
         }
-        if (!TextUtils.isEmpty(ipStatus.getNewIp())) {
-            binding.newIp.setText(ipStatus.getNewIp());
+        if (!TextUtils.isEmpty(status.getNewIp())) {
+            binding.newIp.setText(status.getNewIp());
         } else if (status.isConnected()) {
             getIpAddress();
         }
@@ -102,18 +97,6 @@ public class StatusActivity extends AppCompatActivity implements VpnStatus.State
             return true;
         }
         return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        outState.putParcelable("ip_status", ipStatus);
-    }
-
-    @Override
-    protected void onRestoreInstanceState(Bundle savedInstanceState) {
-        super.onRestoreInstanceState(savedInstanceState);
-        ipStatus = savedInstanceState.getParcelable("ip_status");
     }
 
     @Override
@@ -158,12 +141,8 @@ public class StatusActivity extends AppCompatActivity implements VpnStatus.State
                     @Override
                     public void onSuccess(JsonipResult jsonipResult) {
                         if (status.isConnected()) {
-                            ipStatus.setNewIp(jsonipResult.getIp());
-                            binding.newIp.setText(ipStatus.getNewIp());
-
-                            Intent intent = new Intent();
-                            intent.putExtra(EXTRA_STATUS, ipStatus);
-                            setResult(RESULT_OK, intent);
+                            status.setNewIp(jsonipResult.getIp());
+                            binding.newIp.setText(status.getNewIp());
                         }
                     }
 
@@ -171,12 +150,8 @@ public class StatusActivity extends AppCompatActivity implements VpnStatus.State
                     public void onError(Throwable error) {
                         error.printStackTrace();
                         if (status.isConnected()) {
-                            ipStatus.setNewIp("");
+                            status.setNewIp("");
                             binding.newIp.setText("-");
-
-                            Intent intent = new Intent();
-                            intent.putExtra(EXTRA_STATUS, ipStatus);
-                            setResult(RESULT_OK, intent);
                         }
                     }
                 });

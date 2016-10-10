@@ -1,7 +1,6 @@
 package com.cypherpunk.android.vpn.model;
 
 import com.os.operando.garum.annotations.DefaultBoolean;
-import com.os.operando.garum.annotations.DefaultInt;
 import com.os.operando.garum.annotations.DefaultString;
 import com.os.operando.garum.annotations.Pref;
 import com.os.operando.garum.annotations.PrefKey;
@@ -27,18 +26,6 @@ public class CypherpunkSetting extends PrefModel {
     @DefaultString("setting_vpn_crypto_profile_default")
     public String vpnCryptoProfile;
 
-    @PrefKey("vpn_crypto_profile_cipher")
-    @DefaultString("setting_vpn_crypto_cipher_aes128cbc")
-    public String vpnCryptoProfileCipher;
-
-    @PrefKey("vpn_crypto_profile_auth")
-    @DefaultString("setting_vpn_crypto_auth_sha256")
-    public String vpnCryptoProfileAuth;
-
-    @PrefKey("vpn_crypto_profile_keylen")
-    @DefaultString("setting_vpn_crypto_keylen_rsa4096")
-    public String vpnCryptoProfileKeylen;
-
     @PrefKey("vpn_protocol")
     @DefaultString("setting_vpn_protocol_openvpn23_udp")
     public String vpnProtocol;
@@ -54,4 +41,12 @@ public class CypherpunkSetting extends PrefModel {
     @PrefKey("vpn_port_forwarding")
     @DefaultBoolean(false)
     public boolean portForwarding;
+
+    @PrefKey("vpn_network_auto_secure_untrusted")
+    @DefaultBoolean(false)
+    public boolean autoSecureUntrusted;
+
+    @PrefKey("vpn_network_auto_secure_other")
+    @DefaultBoolean(false)
+    public boolean autoSecureOther;
 }

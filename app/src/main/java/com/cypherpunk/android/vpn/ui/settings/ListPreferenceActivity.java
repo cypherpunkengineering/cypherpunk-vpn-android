@@ -80,7 +80,7 @@ public class ListPreferenceActivity extends AppCompatActivity
         }
         // if saved preferences no longer exist due to app upgrade,
         // or if default pref not found, select 0th option
-        if (prefSelected == false)
+        if (!prefSelected)
             binding.list.setItemChecked(0, true);
     }
 
@@ -119,8 +119,9 @@ public class ListPreferenceActivity extends AppCompatActivity
             this.inflater = LayoutInflater.from(context);
         }
 
+        @NonNull
         @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
+        public View getView(int position, View convertView, @NonNull ViewGroup parent) {
             ListItemListPreferenceBinding binding;
             if (convertView == null) {
                 binding = DataBindingUtil.inflate(inflater, R.layout.list_item_list_preference, parent, false);

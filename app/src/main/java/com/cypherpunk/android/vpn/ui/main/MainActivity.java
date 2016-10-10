@@ -29,7 +29,6 @@ import com.cypherpunk.android.vpn.data.api.UserManager;
 import com.cypherpunk.android.vpn.data.api.json.JsonipResult;
 import com.cypherpunk.android.vpn.databinding.ActivityMainBinding;
 import com.cypherpunk.android.vpn.model.CypherpunkSetting;
-import com.cypherpunk.android.vpn.model.IpStatus;
 import com.cypherpunk.android.vpn.model.Location;
 import com.cypherpunk.android.vpn.ui.region.LocationsActivity;
 import com.cypherpunk.android.vpn.ui.settings.RateDialogFragment;
@@ -60,16 +59,14 @@ public class MainActivity extends AppCompatActivity
         implements VpnStatus.StateListener, RateDialogFragment.RateDialogListener {
 
     public static final String AUTO_START = "com.cypherpunk.android.vpn.AUTO_START";
-    public static final String TILE_CLICK = "com.cypherpunk.android.vpn.TILE_CLICK";
-    private static final int REQUEST_VPN_START = 0;
-    private static final int REQUEST_SELECT_REGION = 1;
-    private static final int REQUEST_STATUS = 2;
-    private static final int REQUEST_SETTINGS = 3;
+
+    public static final int REQUEST_VPN_START = 0;
+    public static final int REQUEST_SELECT_REGION = 1;
+    public static final int REQUEST_SETTINGS = 3;
 
     private ActivityMainBinding binding;
     private CypherpunkVpnStatus status;
     private Subscription subscription = Subscriptions.empty();
-    private IpStatus ipStatus = new IpStatus();
     private String locationId;
     private Realm realm;
 
@@ -158,20 +155,6 @@ public class MainActivity extends AppCompatActivity
     }
 
 
-    private void toggleVpn()
-    {
-        if (status.isDisconnected()) {
-            startVpn();
-        }
-        if (status.isConnected()) {
-            stopVpn();
-        }
-        if (!status.isConnected() && !status.isDisconnected()) {
-            // connecting
-            stopVpn();
-        }
-    }
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main_right, menu);
@@ -186,7 +169,7 @@ public class MainActivity extends AppCompatActivity
                 startActivityForResult(new Intent(this, SettingsActivity.class), REQUEST_SETTINGS);
                 break;
             case R.id.action_status:
-                startActivityForResult(StatusActivity.createIntent(this, locationId, ipStatus), REQUEST_STATUS);
+                startActivity(StatusActivity.createIntent(this, locationId));
                 break;
         }
         return false;
@@ -200,16 +183,13 @@ public class MainActivity extends AppCompatActivity
                 case REQUEST_VPN_START:
                     startVpn();
                     break;
-                case REQUEST_STATUS:
-                    ipStatus = data.getParcelableExtra(StatusActivity.EXTRA_STATUS);
-                    break;
                 case REQUEST_SELECT_REGION:
                     locationId = data.getStringExtra(LocationsActivity.EXTRA_LOCATION_ID);
                     Location location = realm.where(Location.class).equalTo("id", locationId).findFirst();
                     binding.region.setText(location.getCity());
                     Picasso.with(this).load(location.getNationalFlagUrl()).into(binding.nationalFlag);
-                    if (CypherpunkVPN.location != location) {
-                        CypherpunkVPN.location = location;
+                    if (CypherpunkVPN.getInstance().getLocation() != location) {
+                        CypherpunkVPN.getInstance().setLocation(location);
 
                         if (data.getBooleanExtra(LocationsActivity.EXTRA_CONNECT, false)) {
                             startVpn();
@@ -229,28 +209,18 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        outState.putParcelable("ip_status", ipStatus);
-    }
-
-    @Override
-    protected void onRestoreInstanceState(Bundle savedInstanceState) {
-        super.onRestoreInstanceState(savedInstanceState);
-        ipStatus = savedInstanceState.getParcelable("ip_status");
-    }
-
-    @Override
     protected void onResume()
     {
         super.onResume();
 
         binding.binaryTextureView.startAnimation();
 
+        /*
         Intent intent = getIntent();
         checkIfAutoStart(intent);
         checkIfTileClick(intent);
         setIntent(null);
+        */
     }
 
     @Override
@@ -290,46 +260,8 @@ public class MainActivity extends AppCompatActivity
         Log.w("CypherpunkVPN", str);
     }
 
-    @Override
-    protected void onNewIntent(Intent intent)
-    {
-        log("onNewIntent()");
-        super.onNewIntent(intent);
-        checkIfAutoStart(intent);
-        checkIfTileClick(intent);
-        setIntent(null);
-    }
-
-    private void checkIfAutoStart(Intent i)
-    {
-        log("checkIfAutoStart()");
-        if (i != null && i.getBooleanExtra(AUTO_START, false))
-        {
-            CypherpunkSetting cypherpunkSetting = new CypherpunkSetting();
-            if (cypherpunkSetting.vpnAutoStartConnect)
-            {
-                log("auto starting VPN");
-                startVpn();
-                moveTaskToBack(true);
-            }
-            else
-            {
-                finish();
-            }
-        }
-    }
-
-    private void checkIfTileClick(Intent i)
-    {
-        log("checkIfTileClick()");
-        if (i != null && i.getBooleanExtra(TILE_CLICK, false))
-        {
-            toggleVpn();
-            moveTaskToBack(true);
-        }
-    }
-
     private void startVpn() {
+        log("startVpn()");
         Intent intent = VpnService.prepare(MainActivity.this);
         if (intent != null) {
             startActivityForResult(intent, REQUEST_VPN_START);
@@ -338,15 +270,24 @@ public class MainActivity extends AppCompatActivity
             binding.connectionStatus.setStatus(ConnectionStatusView.CONNECTING);
             binding.connectionButton.setStatus(VpnFlatButton.CONNECTING);
             binding.connectingCancelButton.setVisibility(View.VISIBLE);
-            CypherpunkVPN.start(getApplicationContext(), getBaseContext());
+            CypherpunkVPN.getInstance().start(getApplicationContext(), getBaseContext());
         }
     }
 
     private void stopVpn() {
+        log("stopVpn()");
         if (status.isDisconnected()) {
             return;
         }
-        CypherpunkVPN.stop(getApplicationContext(), getBaseContext());
+        CypherpunkVPN.getInstance().stop(getApplicationContext(), getBaseContext());
+    }
+
+    private void toggleVpn()
+    {
+        if (CypherpunkVpnStatus.getInstance().isDisconnected())
+            startVpn();
+        else
+            stopVpn();
     }
 
     private void onVpnConnected() {
@@ -383,10 +324,10 @@ public class MainActivity extends AppCompatActivity
                     @Override
                     public void onSuccess(JsonipResult jsonipResult) {
                         if (status.isDisconnected()) {
-                            ipStatus.setOriginalIp(jsonipResult.getIp());
-                        } else if (!TextUtils.isEmpty(ipStatus.getNewIp())
-                                && !ipStatus.getNewIp().equals(jsonipResult.getIp())) {
-                            ipStatus.setNewIp(jsonipResult.getIp());
+                            status.setOriginalIp(jsonipResult.getIp());
+                        } else if (!TextUtils.isEmpty(status.getNewIp())
+                                && !status.getNewIp().equals(jsonipResult.getIp())) {
+                            status.setNewIp(jsonipResult.getIp());
                         }
                     }
 
