@@ -248,7 +248,7 @@ public class OpenVPNService extends VpnService implements StateListener, Callbac
     }
 
     private int getIconByConnectionStatus(ConnectionStatus level) {
-        switch (level) {
+        /*switch (level) {
             case LEVEL_CONNECTED:
                 return R.drawable.ic_stat_vpn;
             case LEVEL_AUTH_FAILED:
@@ -266,7 +266,8 @@ public class OpenVPNService extends VpnService implements StateListener, Callbac
             default:
                 return R.drawable.ic_stat_vpn;
 
-        }
+        }*/
+        return R.drawable.ic_quick;
     }
 
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
