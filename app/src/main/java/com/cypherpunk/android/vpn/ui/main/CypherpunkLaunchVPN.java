@@ -88,8 +88,8 @@ public class CypherpunkLaunchVPN extends Activity
             // get vpn status
             CypherpunkVpnStatus status = CypherpunkVpnStatus.getInstance();
 
-            // already connected, just disconnect and finish
-            if (status.isConnected())
+            // either connecting or already connected, stop vpn and finish activity
+            if (!status.isDisconnected())
             {
                 CypherpunkVPN.getInstance().stop(getApplicationContext(), getBaseContext());
                 finish();
