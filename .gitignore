@@ -42,6 +42,9 @@ Thumbs.db
 # Gradle cache
 .gradle
 
+# vim
+*.swp
+
 # Sandbox stuff
 _sandbox
 
