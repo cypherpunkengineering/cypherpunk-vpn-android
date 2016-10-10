@@ -85,7 +85,7 @@ public class AccountSettingsFragment extends PreferenceFragmentCompat {
     }
 
     private void signOut() {
-        CypherpunkVPN.stop(getActivity().getApplicationContext(), getActivity().getBaseContext());
+        CypherpunkVPN.getInstance().stop(getActivity().getApplicationContext(), getActivity().getBaseContext());
         UserManager.clearUser();
         Intent intent = new Intent(getActivity(), IntroductionActivity.class);
         TaskStackBuilder builder = TaskStackBuilder.create(getActivity());

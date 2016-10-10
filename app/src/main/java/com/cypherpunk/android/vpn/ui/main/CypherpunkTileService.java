@@ -1,6 +1,5 @@
 package com.cypherpunk.android.vpn.ui.main;
 
-import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.content.Intent;
 import android.os.Build;
@@ -8,8 +7,8 @@ import android.service.quicksettings.Tile;
 import android.service.quicksettings.TileService;
 import android.util.Log;
 
-import de.blinkt.openvpn.VpnProfile;
-import de.blinkt.openvpn.core.ProfileManager;
+import com.cypherpunk.android.vpn.vpn.CypherpunkVpnStatus;
+
 import de.blinkt.openvpn.core.VpnStatus;
 
 /**
@@ -25,7 +24,8 @@ public class CypherpunkTileService extends TileService implements VpnStatus.Stat
     @Override
     public void onTileAdded() {
         super.onTileAdded();
-        // TODO: check if logged in, permission granted, region selected, etc.
+        CypherpunkVpnStatus status = CypherpunkVpnStatus.getInstance();
+        //t.setState(Tile.STATE_UNAVAILABLE);
     }
 
     @Override
@@ -46,11 +46,12 @@ public class CypherpunkTileService extends TileService implements VpnStatus.Stat
         super.onClick();
         log("CypherpunkTileService.onClick()");
 
-        // TODO: check if logged in, permission granted, region selected, etc.
-        Intent i = new Intent(MainActivity.TILE_CLICK);
-        i.setClass(this, MainActivity.class);
-        //i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        i.putExtra(MainActivity.TILE_CLICK, true);
+        Intent i = new Intent(CypherpunkLaunchVPN.TILE_CLICK);
+        i.setClass(this, CypherpunkLaunchVPN.class);
+        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        i.setFlags(Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS);
+        i.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+        i.putExtra(CypherpunkLaunchVPN.TILE_CLICK, true);
         this.startActivity(i);
     }
 
@@ -60,7 +61,6 @@ public class CypherpunkTileService extends TileService implements VpnStatus.Stat
         Tile t = getQsTile();
         if (level == VpnStatus.ConnectionStatus.LEVEL_AUTH_FAILED || level == VpnStatus.ConnectionStatus.LEVEL_NOTCONNECTED)
         {
-            //t.setState(Tile.STATE_UNAVAILABLE);
             t.setState(Tile.STATE_INACTIVE);
         }
         else
