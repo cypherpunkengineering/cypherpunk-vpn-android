@@ -48,9 +48,12 @@ public class CypherpunkTileService extends TileService implements VpnStatus.Stat
 
         Intent i = new Intent(CypherpunkLaunchVPN.TILE_CLICK);
         i.setClass(this, CypherpunkLaunchVPN.class);
-        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        i.setFlags(Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS);
-        i.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+        i.setFlags(
+                Intent.FLAG_ACTIVITY_NEW_TASK
+                | Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS
+                | Intent.FLAG_ACTIVITY_NO_HISTORY
+                | Intent.FLAG_ACTIVITY_NO_ANIMATION
+        );
         i.putExtra(CypherpunkLaunchVPN.TILE_CLICK, true);
         this.startActivity(i);
     }
