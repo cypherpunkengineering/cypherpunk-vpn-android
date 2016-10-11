@@ -49,4 +49,8 @@ public class CypherpunkSetting extends PrefModel {
     @PrefKey("vpn_network_auto_secure_other")
     @DefaultBoolean(false)
     public boolean autoSecureOther;
+
+    @PrefKey("vpn_disable_package_name")
+    @DefaultString("")
+    public String disableAppPackageName;
 }
