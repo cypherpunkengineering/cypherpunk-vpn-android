@@ -7,10 +7,10 @@ import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Checkable;
+import android.widget.CompoundButton;
 import android.widget.RelativeLayout;
 
 import com.cypherpunk.android.vpn.R;
-import com.cypherpunk.android.vpn.databinding.ViewApplicationItemBinding;
 import com.cypherpunk.android.vpn.databinding.ViewNetworkItemBinding;
 
 public class NetworkItemView extends RelativeLayout implements Checkable, View.OnClickListener {
@@ -56,5 +56,9 @@ public class NetworkItemView extends RelativeLayout implements Checkable, View.O
     @Override
     public void onClick(View view) {
         toggle();
+    }
+
+    public void setOnCheckedChangeListener(CompoundButton.OnCheckedChangeListener listener) {
+        binding.button.setOnCheckedChangeListener(listener);
     }
 }
