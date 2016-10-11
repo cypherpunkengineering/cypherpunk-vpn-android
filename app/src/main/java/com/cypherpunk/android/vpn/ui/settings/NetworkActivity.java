@@ -3,6 +3,7 @@ package com.cypherpunk.android.vpn.ui.settings;
 import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.graphics.drawable.ColorDrawable;
+import android.net.wifi.SupplicantState;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
@@ -60,7 +61,7 @@ public class NetworkActivity extends AppCompatActivity {
         ArrayAdapter<Network> adapter = new WifiAdapter(this);
         realm = Realm.getDefaultInstance();
 
-        String connectingSSID = getConnectedSSID();
+        String connectingSSID = getCurrentConnectedSSID();
         Network network = realm.where(Network.class).equalTo("ssid", connectingSSID).findFirst();
         if (!TextUtils.isEmpty(connectingSSID) && network == null) {
             realm.beginTransaction();
@@ -92,9 +93,10 @@ public class NetworkActivity extends AppCompatActivity {
     }
 
     @Nullable
-    private String getConnectedSSID() {
+    private String getCurrentConnectedSSID() {
         WifiManager wifiManager = (WifiManager) getSystemService(WIFI_SERVICE);
-        if (!wifiManager.isWifiEnabled()) {
+        if (!wifiManager.isWifiEnabled() ||
+                wifiManager.getConnectionInfo().getSupplicantState() != SupplicantState.COMPLETED) {
             return null;
         }
         WifiInfo wifiInfo = wifiManager.getConnectionInfo();
