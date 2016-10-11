@@ -3,6 +3,7 @@ package com.cypherpunk.android.vpn.ui.settings;
 import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.graphics.drawable.ColorDrawable;
+import android.net.wifi.SupplicantState;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
@@ -18,16 +19,23 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.CompoundButton;
 
-import com.commonsware.cwac.merge.MergeAdapter;
 import com.cypherpunk.android.vpn.R;
 import com.cypherpunk.android.vpn.databinding.ActivityNetworkBinding;
 import com.cypherpunk.android.vpn.databinding.ListItemWifiBinding;
 import com.cypherpunk.android.vpn.model.CypherpunkSetting;
+import com.cypherpunk.android.vpn.model.Network;
+
+import java.util.ArrayList;
+
+import io.realm.Realm;
+import io.realm.RealmResults;
 
 public class NetworkActivity extends AppCompatActivity {
 
     private ActivityNetworkBinding binding;
+    private Realm realm;
     private CypherpunkSetting cypherpunkSetting;
 
     @Override
@@ -47,18 +55,25 @@ public class NetworkActivity extends AppCompatActivity {
 
         binding.list.setDivider(new ColorDrawable(ContextCompat.getColor(this, R.color.divider)));
         binding.list.setDividerHeight(getResources().getDimensionPixelSize(R.dimen.divider));
-        MergeAdapter mergeAdapter = new MergeAdapter();
-        mergeAdapter.addView(buildListHeader());
+        binding.list.addHeaderView(buildListHeader());
+        binding.list.addFooterView(buildListFooter());
 
-        ArrayAdapter<String> wifiAdapter = new WifiAdapter(this);
-        String connectingSSID = getConnectedSSID();
-        if (!TextUtils.isEmpty(connectingSSID)) {
-            wifiAdapter.add(connectingSSID);
-            mergeAdapter.addAdapter(wifiAdapter);
+        ArrayAdapter<Network> adapter = new WifiAdapter(this);
+        realm = Realm.getDefaultInstance();
+
+        String connectingSSID = getCurrentConnectedSSID();
+        Network network = realm.where(Network.class).equalTo("ssid", connectingSSID).findFirst();
+        if (!TextUtils.isEmpty(connectingSSID) && network == null) {
+            realm.beginTransaction();
+            Network currentNetwork = realm.createObject(Network.class);
+            currentNetwork.setSsid(connectingSSID);
+            realm.commitTransaction();
         }
 
-        mergeAdapter.addView(buildListFooter());
-        binding.list.setAdapter(mergeAdapter);
+        RealmResults<Network> networks = realm.where(Network.class).findAll();
+        adapter.addAll(new ArrayList<>(networks));
+
+        binding.list.setAdapter(adapter);
     }
 
     @Override
@@ -71,10 +86,17 @@ public class NetworkActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    protected void onDestroy() {
+        realm.close();
+        super.onDestroy();
+    }
+
     @Nullable
-    private String getConnectedSSID() {
+    private String getCurrentConnectedSSID() {
         WifiManager wifiManager = (WifiManager) getSystemService(WIFI_SERVICE);
-        if (!wifiManager.isWifiEnabled()) {
+        if (!wifiManager.isWifiEnabled() ||
+                wifiManager.getConnectionInfo().getSupplicantState() != SupplicantState.COMPLETED) {
             return null;
         }
         WifiInfo wifiInfo = wifiManager.getConnectionInfo();
@@ -115,7 +137,7 @@ public class NetworkActivity extends AppCompatActivity {
         return footer;
     }
 
-    private class WifiAdapter extends ArrayAdapter<String> {
+    private class WifiAdapter extends ArrayAdapter<Network> {
 
         private LayoutInflater inflater;
 
@@ -126,7 +148,7 @@ public class NetworkActivity extends AppCompatActivity {
 
         @NonNull
         @Override
-        public View getView(int position, View convertView, @NonNull ViewGroup parent) {
+        public View getView(final int position, View convertView, @NonNull ViewGroup parent) {
             ListItemWifiBinding binding;
             if (convertView == null) {
                 binding = DataBindingUtil.inflate(inflater, R.layout.list_item_wifi, parent, false);
@@ -135,7 +157,20 @@ public class NetworkActivity extends AppCompatActivity {
             } else {
                 binding = (ListItemWifiBinding) convertView.getTag();
             }
-            binding.networkItem.setText(getItem(position));
+            final Network item = getItem(position);
+            binding.networkItem.setText(item.getSsid());
+            binding.networkItem.setChecked(item.isCheck());
+            binding.networkItem.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, final boolean isChecked) {
+                    realm.executeTransaction(new Realm.Transaction() {
+                        @Override
+                        public void execute(Realm realm) {
+                            getItem(position).setCheck(isChecked);
+                        }
+                    });
+                }
+            });
 
             return convertView;
         }
