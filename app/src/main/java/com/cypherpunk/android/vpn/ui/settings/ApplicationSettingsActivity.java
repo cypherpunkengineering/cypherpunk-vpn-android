@@ -17,15 +17,18 @@ import android.widget.TextView;
 import com.cypherpunk.android.vpn.R;
 import com.cypherpunk.android.vpn.databinding.ActivityApplicationSettingsBinding;
 import com.cypherpunk.android.vpn.model.AppData;
+import com.cypherpunk.android.vpn.model.CypherpunkSetting;
 import com.cypherpunk.android.vpn.utils.FontUtil;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import rx.Observable;
 import rx.Subscriber;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Func1;
 import rx.functions.Func2;
 import rx.schedulers.Schedulers;
 import rx.subscriptions.Subscriptions;
@@ -121,10 +124,21 @@ public class ApplicationSettingsActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         subscription.unsubscribe();
+        ArrayList<String> offList = new ArrayList<>();
+        for (AppData item : items) {
+            if (!item.check) {
+                offList.add(item.packageName);
+            }
+        }
+        CypherpunkSetting cypherpunkSetting = new CypherpunkSetting();
+        cypherpunkSetting.disableAppPackageName = TextUtils.join(",", offList);
+        cypherpunkSetting.save();
         super.onDestroy();
     }
 
     private void getApplicationList() {
+        CypherpunkSetting cypherpunkSetting = new CypherpunkSetting();
+        final List<String> offList = Arrays.asList(cypherpunkSetting.disableAppPackageName.split(","));
         subscription = Observable
                 .create(new Observable.OnSubscribe<AppData>() {
                     @Override
@@ -135,6 +149,15 @@ public class ApplicationSettingsActivity extends AppCompatActivity {
                             subscriber.onNext(new AppData(app.loadLabel(pm).toString(), app.loadIcon(pm), app.packageName));
                         }
                         subscriber.onCompleted();
+                    }
+                })
+                .map(new Func1<AppData, AppData>() {
+                    @Override
+                    public AppData call(AppData appData) {
+                        if (offList.contains(appData.packageName)) {
+                            appData.check = false;
+                        }
+                        return appData;
                     }
                 })
                 .toSortedList(new Func2<AppData, AppData, Integer>() {
