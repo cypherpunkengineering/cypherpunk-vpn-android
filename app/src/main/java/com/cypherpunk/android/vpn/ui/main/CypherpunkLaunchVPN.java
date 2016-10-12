@@ -51,6 +51,14 @@ public class CypherpunkLaunchVPN extends Activity
         handleIntent(intent);
     }
 
+    @Override
+    protected void onStart()
+    {
+        super.onStart();
+        // crash fix for invisible dialog, in case perm dialog needs to be shown
+        setVisible(true);
+    }
+
     private void handleIntent(Intent intent)
     {
         log("handleIntent()");
