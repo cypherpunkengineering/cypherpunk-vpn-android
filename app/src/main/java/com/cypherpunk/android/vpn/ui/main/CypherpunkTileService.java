@@ -18,7 +18,7 @@ import de.blinkt.openvpn.core.VpnStatus;
 @TargetApi(Build.VERSION_CODES.N)
 public class CypherpunkTileService extends TileService implements VpnStatus.StateListener
 {
-    private static void log(String str) { Log.w("CypherpunkVPN", str); }
+    private static void log(String str) { Log.w("CypherpunkTileService", str); }
 
     @TargetApi(Build.VERSION_CODES.N)
     @Override
@@ -44,7 +44,7 @@ public class CypherpunkTileService extends TileService implements VpnStatus.Stat
     public void onClick()
     {
         super.onClick();
-        log("CypherpunkTileService.onClick()");
+        log("onClick()");
 
         Intent i = new Intent(CypherpunkLaunchVPN.TILE_CLICK);
         i.setClass(this, CypherpunkLaunchVPN.class);

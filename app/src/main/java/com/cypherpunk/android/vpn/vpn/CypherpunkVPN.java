@@ -12,6 +12,7 @@ import android.util.Log;
 import com.android.annotations.NonNull;
 import com.cypherpunk.android.vpn.model.CypherpunkSetting;
 import com.cypherpunk.android.vpn.model.Location;
+import com.cypherpunk.android.vpn.model.Network;
 import com.cypherpunk.android.vpn.ui.main.CypherpunkLaunchVPN;
 import com.cypherpunk.android.vpn.ui.main.MainActivity;
 
@@ -24,10 +25,12 @@ import java.util.List;
 
 import de.blinkt.openvpn.VpnProfile;
 import de.blinkt.openvpn.core.ConfigParser;
+import de.blinkt.openvpn.core.OpenVPNManagement;
 import de.blinkt.openvpn.core.OpenVPNService;
 import de.blinkt.openvpn.core.ProfileManager;
 import de.blinkt.openvpn.core.VPNLaunchHelper;
 import io.realm.Realm;
+import io.realm.RealmResults;
 
 /**
  * Created by jmaurice on 7/12/16.
@@ -71,9 +74,7 @@ public class CypherpunkVPN {
         }
     };
 
-    private void log(String str) {
-        Log.w("CypherpunkVPN", str);
-    }
+    private void log(String str) { Log.w("CypherpunkVPN", str); }
 
     public void toggle(final Context context, final Context baseContext)
     {
@@ -130,7 +131,11 @@ public class CypherpunkVPN {
         log("stop()");
         if (service != null)
         {
-            service.getManagement().stopVPN(false);
+            OpenVPNManagement manager = service.getManagement();
+            if (manager == null)
+                return;
+
+            manager.stopVPN(false);
             // privacy firewall killswitch
             CypherpunkSetting cypherpunkSetting = new CypherpunkSetting();
             if (cypherpunkSetting.privacyFirewallMode != null && cypherpunkSetting.privacyFirewallMode.length() > 0)
@@ -167,14 +172,12 @@ public class CypherpunkVPN {
         // debug print
         /*
         log("vpnCryptoProfile: "+ cypherpunkSetting.vpnCryptoProfile);
-        log("vpnCryptoProfileAuth: "+ cypherpunkSetting.vpnCryptoProfileAuth);
-        log("vpnCryptoProfileCipher: "+ cypherpunkSetting.vpnCryptoProfileCipher);
-        log("vpnCryptoProfileKeylen: "+ cypherpunkSetting.vpnCryptoProfileKeylen);
         log("privacyFirewallMode: "+ cypherpunkSetting.privacyFirewallMode);
         log("privacyFirewallExemptLAN: "+ cypherpunkSetting.privacyFirewallExemptLAN);
         log("vpnProtocol: "+ cypherpunkSetting.vpnProtocol);
         log("vpnPortLocal: "+ cypherpunkSetting.vpnPortLocal);
         log("vpnPortRemote: "+ cypherpunkSetting.vpnPortRemote);
+        log("disableAppPackageName: "+ cypherpunkSetting.disableAppPackageName);
         */
 
         // standard options
