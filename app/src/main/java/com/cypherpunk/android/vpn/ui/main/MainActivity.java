@@ -28,7 +28,6 @@ import com.cypherpunk.android.vpn.data.api.JsonipService;
 import com.cypherpunk.android.vpn.data.api.UserManager;
 import com.cypherpunk.android.vpn.data.api.json.JsonipResult;
 import com.cypherpunk.android.vpn.databinding.ActivityMainBinding;
-import com.cypherpunk.android.vpn.model.CypherpunkSetting;
 import com.cypherpunk.android.vpn.model.Location;
 import com.cypherpunk.android.vpn.ui.region.LocationsActivity;
 import com.cypherpunk.android.vpn.ui.settings.RateDialogFragment;
@@ -60,9 +59,9 @@ public class MainActivity extends AppCompatActivity
 
     public static final String AUTO_START = "com.cypherpunk.android.vpn.AUTO_START";
 
-    public static final int REQUEST_VPN_START = 0;
     public static final int REQUEST_SELECT_REGION = 1;
     public static final int REQUEST_SETTINGS = 3;
+    private static final int REQUEST_VPN_START = 0;
 
     private ActivityMainBinding binding;
     private CypherpunkVpnStatus status;
@@ -199,7 +198,7 @@ public class MainActivity extends AppCompatActivity
                     }
                     break;
                 case REQUEST_SETTINGS:
-                    if (data.getBooleanExtra(LocationsActivity.EXTRA_CONNECT, false)) {
+                    if (data.getBooleanExtra(SettingsActivity.EXTRA_CONNECT, false)) {
                         startVpn();
                     } else {
                         stopVpn();

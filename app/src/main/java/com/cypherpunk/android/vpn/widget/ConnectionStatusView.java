@@ -33,7 +33,7 @@ public class ConnectionStatusView extends LinearLayout {
 
     private final TypefaceTextView statusText;
     private final TypefaceTextView[] textViews = new TypefaceTextView[3];
-    AnimatorSet animatorSet = new AnimatorSet();
+    private AnimatorSet animatorSet = new AnimatorSet();
 
     @ColorInt
     private final int notConnectedColor;

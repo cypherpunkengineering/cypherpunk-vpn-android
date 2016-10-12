@@ -35,7 +35,7 @@ import rx.subscriptions.Subscriptions;
 
 public class StatusActivity extends AppCompatActivity implements VpnStatus.StateListener {
 
-    public static String EXTRA_LOCATION_ID = "location_id";
+    private static String EXTRA_LOCATION_ID = "location_id";
 
     private ActivityStatusBinding binding;
     private CypherpunkVpnStatus status;
