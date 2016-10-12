@@ -115,8 +115,8 @@ public class CypherpunkLaunchVPN extends Activity
         }
 
         // done
-        setIntent(null);
-        moveTaskToBack(true);
+        //setIntent(null);
+        //moveTaskToBack(true);
     }
 
     private void prepareVpnService()
