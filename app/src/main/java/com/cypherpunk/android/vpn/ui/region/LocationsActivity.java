@@ -88,16 +88,12 @@ public class LocationsActivity extends AppCompatActivity
     }
 
     private ArrayList<Location> getLocation() {
-        realm.beginTransaction();
         RealmResults<Location> locationList = realm.where(Location.class).findAll();
-        realm.commitTransaction();
         return new ArrayList<>(locationList);
     }
 
     private ArrayList<Location> getFavoriteLocation() {
-        realm.beginTransaction();
         RealmResults<Location> favoritedList = realm.where(Location.class).equalTo("favorited", true).findAll();
-        realm.commitTransaction();
         return new ArrayList<>(favoritedList);
     }
 

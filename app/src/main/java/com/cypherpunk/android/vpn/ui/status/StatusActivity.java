@@ -68,8 +68,6 @@ public class StatusActivity extends AppCompatActivity implements VpnStatus.State
         }
 
         status = CypherpunkVpnStatus.getInstance();
-        Intent intent = getIntent();
-
         binding.time.setBaseTime(status.getConnectedTime());
         if (!TextUtils.isEmpty(status.getOriginalIp())) {
             binding.originalIp.setText(status.getOriginalIp());
@@ -81,7 +79,8 @@ public class StatusActivity extends AppCompatActivity implements VpnStatus.State
         }
 
         Realm realm = Realm.getDefaultInstance();
-        location = realm.where(Location.class).equalTo("id", intent.getStringExtra(EXTRA_LOCATION_ID)).findFirst();
+        location = realm.where(Location.class).equalTo(
+                "id", getIntent().getStringExtra(EXTRA_LOCATION_ID)).findFirst();
         realm.close();
 
         binding.map.setOriginalPosition(305, 56);

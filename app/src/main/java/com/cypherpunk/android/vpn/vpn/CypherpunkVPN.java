@@ -162,6 +162,7 @@ public class CypherpunkVPN {
         // get currently selected location
         Realm realm = Realm.getDefaultInstance();
         location = realm.where(Location.class).equalTo("selected", true).findFirst();
+        realm.close();
 
         // debug print
         /*
