@@ -29,11 +29,11 @@ import com.cypherpunk.android.vpn.data.api.UserManager;
 import com.cypherpunk.android.vpn.data.api.json.JsonipResult;
 import com.cypherpunk.android.vpn.databinding.ActivityMainBinding;
 import com.cypherpunk.android.vpn.model.Location;
+import com.cypherpunk.android.vpn.ui.account.AccountActivity;
 import com.cypherpunk.android.vpn.ui.region.LocationsActivity;
 import com.cypherpunk.android.vpn.ui.settings.RateDialogFragment;
 import com.cypherpunk.android.vpn.ui.settings.SettingsActivity;
 import com.cypherpunk.android.vpn.ui.setup.IntroductionActivity;
-import com.cypherpunk.android.vpn.ui.status.StatusActivity;
 import com.cypherpunk.android.vpn.vpn.CypherpunkVPN;
 import com.cypherpunk.android.vpn.vpn.CypherpunkVpnStatus;
 import com.cypherpunk.android.vpn.widget.BinaryTextureView;
@@ -167,8 +167,8 @@ public class MainActivity extends AppCompatActivity
             case R.id.action_setting:
                 startActivityForResult(new Intent(this, SettingsActivity.class), REQUEST_SETTINGS);
                 break;
-            case R.id.action_status:
-                startActivity(StatusActivity.createIntent(this, locationId));
+            case R.id.action_account:
+                startActivity(new Intent(this, AccountActivity.class));
                 break;
         }
         return false;
@@ -208,8 +208,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
-    protected void onResume()
-    {
+    protected void onResume() {
         super.onResume();
 
         binding.binaryTextureView.startAnimation();
@@ -281,8 +280,7 @@ public class MainActivity extends AppCompatActivity
         CypherpunkVPN.getInstance().stop(getApplicationContext(), getBaseContext());
     }
 
-    private void toggleVpn()
-    {
+    private void toggleVpn() {
         if (CypherpunkVpnStatus.getInstance().isDisconnected())
             startVpn();
         else

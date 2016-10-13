@@ -40,6 +40,8 @@
     <string name="action_done">done</string>
     <string name="setting_connect_dialog_message">Do you reconnect now?</string>
 
+    <!-- account -->
+    <string name="title_activity_account">Account</string>
 
     <!-- startup settings -->
     <string name="setting_category_startup">Startup</string>
