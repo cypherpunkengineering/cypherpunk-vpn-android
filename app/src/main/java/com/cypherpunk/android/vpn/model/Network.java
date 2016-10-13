@@ -18,9 +18,8 @@ public class Network implements RealmModel {
     public Network() {
     }
 
-    public Network(@NonNull String ssid, boolean check) {
+    public Network(@NonNull String ssid) {
         this.ssid = ssid;
-        this.check = check;
     }
 
     public String getSsid() {
