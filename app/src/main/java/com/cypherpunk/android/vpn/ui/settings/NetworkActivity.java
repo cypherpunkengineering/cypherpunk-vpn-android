@@ -53,10 +53,9 @@ public class NetworkActivity extends AppCompatActivity {
         }
         cypherpunkSetting = new CypherpunkSetting();
 
-        binding.list.setDivider(new ColorDrawable(ContextCompat.getColor(this, R.color.divider)));
+        binding.list.setDivider(new ColorDrawable(ContextCompat.getColor(this, R.color.background)));
         binding.list.setDividerHeight(getResources().getDimensionPixelSize(R.dimen.divider));
         binding.list.addHeaderView(buildListHeader());
-        binding.list.addFooterView(buildListFooter());
 
         ArrayAdapter<Network> adapter = new WifiAdapter(this);
         realm = Realm.getDefaultInstance();
@@ -117,16 +116,10 @@ public class NetworkActivity extends AppCompatActivity {
                 cypherpunkSetting.save();
             }
         });
-        return header;
-    }
-
-    private View buildListFooter() {
-        View footer = LayoutInflater.from(this)
-                .inflate(R.layout.list_item_footer_network_other, binding.list, false);
         final SwitchCompat otherAutoSecureSwitch =
-                (SwitchCompat) footer.findViewById(R.id.other_auto_secure_switch);
+                (SwitchCompat) header.findViewById(R.id.other_auto_secure_switch);
         otherAutoSecureSwitch.setChecked(cypherpunkSetting.autoSecureOther);
-        footer.findViewById(R.id.other_auto_secure_container).setOnClickListener(new View.OnClickListener() {
+        header.findViewById(R.id.other_auto_secure_container).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 otherAutoSecureSwitch.toggle();
@@ -134,7 +127,7 @@ public class NetworkActivity extends AppCompatActivity {
                 cypherpunkSetting.save();
             }
         });
-        return footer;
+        return header;
     }
 
     private class WifiAdapter extends ArrayAdapter<Network> {
