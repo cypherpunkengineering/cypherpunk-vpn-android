@@ -12,7 +12,7 @@ public class Network implements RealmModel {
     @PrimaryKey
     private String ssid;
 
-    private boolean check;
+    private boolean trusted;
 
     @SuppressWarnings("unused")
     public Network() {
@@ -30,12 +30,11 @@ public class Network implements RealmModel {
         this.ssid = ssid;
     }
 
-    public boolean isCheck() {
-        return check;
+    public boolean isTrusted() {
+        return trusted;
     }
 
-    public void setCheck(boolean check) {
-        this.check = check;
+    public void setTrusted(boolean trusted) {
+        this.trusted = trusted;
     }
-
 }

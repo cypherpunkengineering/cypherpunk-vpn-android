@@ -153,14 +153,14 @@ public class NetworkActivity extends AppCompatActivity {
             }
             final Network item = getItem(position);
             binding.networkItem.setText(item.getSsid());
-            binding.networkItem.setChecked(item.isCheck());
+            binding.networkItem.setChecked(item.isTrusted());
             binding.networkItem.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, final boolean isChecked) {
                     realm.executeTransaction(new Realm.Transaction() {
                         @Override
                         public void execute(Realm realm) {
-                            getItem(position).setCheck(isChecked);
+                            getItem(position).setTrusted(isChecked);
                         }
                     });
                 }
