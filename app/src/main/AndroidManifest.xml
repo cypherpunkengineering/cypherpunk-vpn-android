@@ -89,6 +89,10 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.DialogWhenLarge" />
         <activity
+            android:name=".ui.account.AccountActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
             android:name=".ui.settings.ListPreferenceActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.DialogWhenLarge" />
@@ -104,10 +108,6 @@
             android:name=".ui.settings.NetworkActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.DialogWhenLarge" />
-        <activity
-            android:name=".ui.status.StatusActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".ui.settings.ContactActivity"
             android:screenOrientation="portrait"

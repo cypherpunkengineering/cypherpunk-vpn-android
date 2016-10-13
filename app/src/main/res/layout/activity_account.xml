@@ -13,8 +13,8 @@
         <include layout="@layout/divider" />
 
         <fragment
-            android:id="@+id/settings_fragment"
-            android:name="com.cypherpunk.android.vpn.ui.settings.SettingsFragment"
+            android:id="@+id/account_fragment"
+            android:name="com.cypherpunk.android.vpn.ui.settings.AccountSettingsFragment"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 
