@@ -7,6 +7,7 @@ import android.net.Uri;
 import android.net.VpnService;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.TaskStackBuilder;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -39,7 +40,6 @@ import com.cypherpunk.android.vpn.vpn.CypherpunkVpnStatus;
 import com.cypherpunk.android.vpn.widget.BinaryTextureView;
 import com.cypherpunk.android.vpn.widget.ConnectionStatusView;
 import com.cypherpunk.android.vpn.widget.VpnFlatButton;
-import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -115,8 +115,8 @@ public class MainActivity extends AppCompatActivity
         }
 
         locationId = location.getId();
-        binding.region.setText(location.getCity());
-        Picasso.with(this).load(location.getNationalFlagUrl()).into(binding.nationalFlag);
+//        binding.region.setText(location.getCity());
+//        Picasso.with(this).load(location.getNationalFlagUrl()).into(binding.nationalFlag);
 
         binding.connectionButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -128,12 +128,12 @@ public class MainActivity extends AppCompatActivity
         binding.connectingCancelButton.setPaintFlags(
                 binding.connectingCancelButton.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
 
-        binding.regionContainer.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivityForResult(new Intent(MainActivity.this, LocationsActivity.class), REQUEST_SELECT_REGION);
-            }
-        });
+//        binding.regionContainer.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                startActivityForResult(new Intent(MainActivity.this, LocationsActivity.class), REQUEST_SELECT_REGION);
+//            }
+//        });
 
         binding.actionMenuLeft.setOnMenuItemClickListener(new ActionMenuView.OnMenuItemClickListener() {
             @Override
@@ -151,6 +151,11 @@ public class MainActivity extends AppCompatActivity
         });
 
         VpnStatus.addStateListener(this);
+
+        FragmentTransaction fm = getSupportFragmentManager().beginTransaction();
+        LocationFragment locationFragment = new LocationFragment();
+        fm.add(R.id.bottom, locationFragment);
+        fm.commit();
     }
 
 
@@ -185,17 +190,17 @@ public class MainActivity extends AppCompatActivity
                 case REQUEST_SELECT_REGION:
                     locationId = data.getStringExtra(LocationsActivity.EXTRA_LOCATION_ID);
                     Location location = realm.where(Location.class).equalTo("id", locationId).findFirst();
-                    binding.region.setText(location.getCity());
-                    Picasso.with(this).load(location.getNationalFlagUrl()).into(binding.nationalFlag);
-                    if (CypherpunkVPN.getInstance().getLocation() != location) {
-                        CypherpunkVPN.getInstance().setLocation(location);
-
-                        if (data.getBooleanExtra(LocationsActivity.EXTRA_CONNECT, false)) {
-                            startVpn();
-                        } else {
-                            stopVpn();
-                        }
-                    }
+//                    binding.region.setText(location.getCity());
+//                    Picasso.with(this).load(location.getNationalFlagUrl()).into(binding.nationalFlag);
+//                    if (CypherpunkVPN.getInstance().getLocation() != location) {
+//                        CypherpunkVPN.getInstance().setLocation(location);
+//
+//                        if (data.getBooleanExtra(LocationsActivity.EXTRA_CONNECT, false)) {
+//                            startVpn();
+//                        } else {
+//                            stopVpn();
+//                        }
+//                    }
                     break;
                 case REQUEST_SETTINGS:
                     if (data.getBooleanExtra(SettingsActivity.EXTRA_CONNECT, false)) {
@@ -294,7 +299,7 @@ public class MainActivity extends AppCompatActivity
                 binding.binaryTextureView.setState(BinaryTextureView.CONNECTED);
                 binding.connectionStatus.setStatus(ConnectionStatusView.CONNECTED);
                 binding.connectionButton.setStatus(VpnFlatButton.CONNECTED);
-                binding.connectingCancelButton.setVisibility(View.INVISIBLE);
+                binding.connectingCancelButton.setVisibility(View.GONE);
             }
         });
     }
@@ -307,7 +312,7 @@ public class MainActivity extends AppCompatActivity
                 binding.binaryTextureView.setState(BinaryTextureView.DISCONNECTED);
                 binding.connectionStatus.setStatus(ConnectionStatusView.DISCONNECTED);
                 binding.connectionButton.setStatus(VpnFlatButton.DISCONNECTED);
-                binding.connectingCancelButton.setVisibility(View.INVISIBLE);
+                binding.connectingCancelButton.setVisibility(View.GONE);
             }
         });
     }
@@ -356,7 +361,7 @@ public class MainActivity extends AppCompatActivity
     private void showSignUpButton() {
         SpannableStringBuilder sb = new SpannableStringBuilder(getString(R.string.main_sign_up));
         sb.setSpan(new TextAppearanceSpan(this, R.style.TextAppearance_Cypherpunk_Yellow), 0, 7, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-        binding.signUpButton.setText(sb);
-        binding.signUpButton.setVisibility(View.VISIBLE);
+//        binding.signUpButton.setText(sb);
+//        binding.signUpButton.setVisibility(View.VISIBLE);
     }
 }
