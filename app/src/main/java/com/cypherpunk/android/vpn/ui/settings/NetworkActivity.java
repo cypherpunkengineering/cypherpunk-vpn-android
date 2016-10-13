@@ -1,21 +1,19 @@
 package com.cypherpunk.android.vpn.ui.settings;
 
-import android.content.Context;
 import android.databinding.DataBindingUtil;
-import android.graphics.drawable.ColorDrawable;
 import android.net.wifi.WifiConfiguration;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.v4.content.ContextCompat;
+import android.support.annotation.Nullable;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SwitchCompat;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.CompoundButton;
 
 import com.cypherpunk.android.vpn.R;
@@ -23,6 +21,7 @@ import com.cypherpunk.android.vpn.databinding.ActivityNetworkBinding;
 import com.cypherpunk.android.vpn.databinding.ListItemWifiBinding;
 import com.cypherpunk.android.vpn.model.CypherpunkSetting;
 import com.cypherpunk.android.vpn.model.Network;
+import com.cypherpunk.android.vpn.widget.NetworkItemView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -51,14 +50,16 @@ public class NetworkActivity extends AppCompatActivity {
         }
         cypherpunkSetting = new CypherpunkSetting();
 
-        binding.list.setDivider(new ColorDrawable(ContextCompat.getColor(this, R.color.background)));
-        binding.list.setDividerHeight(getResources().getDimensionPixelSize(R.dimen.divider));
-        binding.list.addHeaderView(buildListHeader());
-
         realm = Realm.getDefaultInstance();
 
-        ArrayAdapter<Network> adapter = new WifiAdapter(this);
-        adapter.addAll(getNetworks());
+        NetworkAdapter adapter = new NetworkAdapter(getNetworks(), buildListHeader()) {
+            @Override
+            protected void onNetworkCheckedChanged(Network network, boolean isChecked) {
+                realm.beginTransaction();
+                network.setTrusted(isChecked);
+                realm.commitTransaction();
+            }
+        };
         binding.list.setAdapter(adapter);
     }
 
@@ -129,42 +130,89 @@ public class NetworkActivity extends AppCompatActivity {
         return header;
     }
 
-    private class WifiAdapter extends ArrayAdapter<Network> {
+    public static class NetworkAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-        private LayoutInflater inflater;
+        private static final int ITEM_VIEW_TYPE_HEADER = 0;
+        private static final int ITEM_VIEW_TYPE_ITEM = 1;
 
-        WifiAdapter(Context context) {
-            super(context, 0);
-            this.inflater = LayoutInflater.from(context);
+        private List<Network> items = new ArrayList<>();
+        private final View headerView;
+
+        protected void onNetworkCheckedChanged(Network network, boolean isChecked) {
         }
 
-        @NonNull
+        NetworkAdapter(List<Network> items, @Nullable View headerView) {
+            this.items = items;
+            this.headerView = headerView;
+            notifyDataSetChanged();
+        }
+
         @Override
-        public View getView(final int position, View convertView, @NonNull ViewGroup parent) {
-            ListItemWifiBinding binding;
-            if (convertView == null) {
-                binding = DataBindingUtil.inflate(inflater, R.layout.list_item_wifi, parent, false);
-                convertView = binding.getRoot();
-                convertView.setTag(binding);
-            } else {
-                binding = (ListItemWifiBinding) convertView.getTag();
+        public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+            switch (viewType) {
+                case ITEM_VIEW_TYPE_HEADER:
+                    return new HeaderViewHolder(headerView);
+                case ITEM_VIEW_TYPE_ITEM:
+                    return new NetworkAdapter.ItemViewHolder(LayoutInflater.from(parent.getContext())
+                            .inflate(R.layout.list_item_wifi, parent, false));
             }
-            final Network item = getItem(position);
-            binding.networkItem.setText(item.getSsid());
-            binding.networkItem.setChecked(item.isTrusted());
-            binding.networkItem.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                @Override
-                public void onCheckedChanged(CompoundButton buttonView, final boolean isChecked) {
-                    realm.executeTransaction(new Realm.Transaction() {
+            return null;
+        }
+
+        @Override
+        public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+            final int viewType = holder.getItemViewType();
+            switch (viewType) {
+                case ITEM_VIEW_TYPE_HEADER:
+                    break;
+                case ITEM_VIEW_TYPE_ITEM:
+                    ItemViewHolder viewHolder = (ItemViewHolder) holder;
+                    NetworkItemView itemView = viewHolder.getBinding().networkItem;
+                    final Network network = items.get(position - 1);
+                    itemView.setNetwork(network);
+                    itemView.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                         @Override
-                        public void execute(Realm realm) {
-                            getItem(position).setTrusted(isChecked);
+                        public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                            onNetworkCheckedChanged(network, isChecked);
                         }
                     });
-                }
-            });
+                    viewHolder.getBinding().executePendingBindings();
+            }
+        }
 
-            return convertView;
+        @Override
+        public int getItemCount() {
+            return items.size() + 1;
+        }
+
+        @Override
+        public int getItemViewType(int position) {
+            if (position == 0) {
+                return ITEM_VIEW_TYPE_HEADER;
+            } else {
+                return ITEM_VIEW_TYPE_ITEM;
+            }
+        }
+
+        static class ItemViewHolder extends RecyclerView.ViewHolder {
+
+            private ListItemWifiBinding binding;
+
+            ItemViewHolder(View view) {
+                super(view);
+                binding = DataBindingUtil.bind(view);
+            }
+
+            public ListItemWifiBinding getBinding() {
+                return binding;
+            }
+        }
+
+        static class HeaderViewHolder extends RecyclerView.ViewHolder {
+
+            HeaderViewHolder(View view) {
+                super(view);
+            }
         }
     }
 }

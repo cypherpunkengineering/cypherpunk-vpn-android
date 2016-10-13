@@ -12,6 +12,8 @@ import android.widget.RelativeLayout;
 
 import com.cypherpunk.android.vpn.R;
 import com.cypherpunk.android.vpn.databinding.ViewNetworkItemBinding;
+import com.cypherpunk.android.vpn.model.AppData;
+import com.cypherpunk.android.vpn.model.Network;
 
 public class NetworkItemView extends RelativeLayout implements Checkable, View.OnClickListener {
 
@@ -49,8 +51,8 @@ public class NetworkItemView extends RelativeLayout implements Checkable, View.O
         binding.button.toggle();
     }
 
-    public void setText(String name) {
-        binding.name.setText(name);
+    public void setNetwork(Network network) {
+        binding.setNetwork(network);
     }
 
     @Override

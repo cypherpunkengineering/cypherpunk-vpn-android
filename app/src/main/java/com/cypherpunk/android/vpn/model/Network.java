@@ -10,9 +10,9 @@ import io.realm.annotations.RealmClass;
 public class Network implements RealmModel {
 
     @PrimaryKey
-    private String ssid;
+    public String ssid;
 
-    private boolean trusted;
+    public boolean trusted;
 
     @SuppressWarnings("unused")
     public Network() {
