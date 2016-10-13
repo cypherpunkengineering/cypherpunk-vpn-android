@@ -3,17 +3,14 @@ package com.cypherpunk.android.vpn.ui.settings;
 import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.graphics.drawable.ColorDrawable;
-import android.net.wifi.SupplicantState;
-import android.net.wifi.WifiInfo;
+import android.net.wifi.WifiConfiguration;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SwitchCompat;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -28,6 +25,7 @@ import com.cypherpunk.android.vpn.model.CypherpunkSetting;
 import com.cypherpunk.android.vpn.model.Network;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import io.realm.Realm;
 import io.realm.RealmResults;
@@ -57,21 +55,10 @@ public class NetworkActivity extends AppCompatActivity {
         binding.list.setDividerHeight(getResources().getDimensionPixelSize(R.dimen.divider));
         binding.list.addHeaderView(buildListHeader());
 
-        ArrayAdapter<Network> adapter = new WifiAdapter(this);
         realm = Realm.getDefaultInstance();
 
-        String connectingSSID = getCurrentConnectedSSID();
-        Network network = realm.where(Network.class).equalTo("ssid", connectingSSID).findFirst();
-        if (!TextUtils.isEmpty(connectingSSID) && network == null) {
-            realm.beginTransaction();
-            Network currentNetwork = realm.createObject(Network.class);
-            currentNetwork.setSsid(connectingSSID);
-            realm.commitTransaction();
-        }
-
-        RealmResults<Network> networks = realm.where(Network.class).findAll();
-        adapter.addAll(new ArrayList<>(networks));
-
+        ArrayAdapter<Network> adapter = new WifiAdapter(this);
+        adapter.addAll(getNetworks());
         binding.list.setAdapter(adapter);
     }
 
@@ -91,16 +78,28 @@ public class NetworkActivity extends AppCompatActivity {
         super.onDestroy();
     }
 
-    @Nullable
-    private String getCurrentConnectedSSID() {
-        WifiManager wifiManager = (WifiManager) getSystemService(WIFI_SERVICE);
-        if (!wifiManager.isWifiEnabled() ||
-                wifiManager.getConnectionInfo().getSupplicantState() != SupplicantState.COMPLETED) {
-            return null;
+    @NonNull
+    private List<Network> getNetworks() {
+        List<WifiConfiguration> configuredNetworks = getConfiguredNetworks();
+        for (WifiConfiguration configuredNetwork : configuredNetworks) {
+            String ssid = configuredNetwork.SSID.replace("\"", "");
+            Network network = realm.where(Network.class)
+                    .equalTo("ssid", ssid).findFirst();
+            if (network == null) {
+                realm.beginTransaction();
+                realm.copyToRealm(new Network(ssid));
+                realm.commitTransaction();
+            }
         }
-        WifiInfo wifiInfo = wifiManager.getConnectionInfo();
-        String ssid = wifiInfo.getSSID();
-        return ssid.replace("\"", "");
+
+        RealmResults<Network> networks = realm.where(Network.class).findAll();
+        return new ArrayList<>(networks);
+    }
+
+    @NonNull
+    private List<WifiConfiguration> getConfiguredNetworks() {
+        WifiManager wifiManager = (WifiManager) getSystemService(WIFI_SERVICE);
+        return wifiManager.getConfiguredNetworks();
     }
 
     private View buildListHeader() {
@@ -152,14 +151,14 @@ public class NetworkActivity extends AppCompatActivity {
             }
             final Network item = getItem(position);
             binding.networkItem.setText(item.getSsid());
-            binding.networkItem.setChecked(item.isCheck());
+            binding.networkItem.setChecked(item.isTrusted());
             binding.networkItem.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, final boolean isChecked) {
                     realm.executeTransaction(new Realm.Transaction() {
                         @Override
                         public void execute(Realm realm) {
-                            getItem(position).setCheck(isChecked);
+                            getItem(position).setTrusted(isChecked);
                         }
                     });
                 }
