@@ -96,14 +96,17 @@ public class CypherpunkWifiReceiver extends BroadcastReceiver
             String quotedSSID = '"' + network.getSsid() + '"';
             if (quotedSSID.equals(ssid))
             {
-                if (network.isCheck())
+                if (network.isTrusted())
                 {
                     log("SSID " + ssid + " is trusted");
                     trustedNetwork = true;
+                    break;
                 }
                 else
                 {
                     log("SSID " + ssid + " is NOT trusted");
+                    trustedNetwork = false;
+                    break;
                 }
             }
         }
