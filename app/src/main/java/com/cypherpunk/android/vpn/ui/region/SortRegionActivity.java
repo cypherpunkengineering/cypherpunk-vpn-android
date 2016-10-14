@@ -59,7 +59,7 @@ public class SortRegionActivity extends AppCompatActivity
     }
 
     @Override
-    public void onDialogPositiveButtonClick() {
+    public void onReconnectButtonClick() {
         Intent intent = new Intent();
         intent.putExtra(SelectCityActivity.EXTRA_CITY, selectedItem);
         intent.putExtra(SelectCityActivity.EXTRA_CONNECT, true);
@@ -68,7 +68,7 @@ public class SortRegionActivity extends AppCompatActivity
     }
 
     @Override
-    public void onDialogNegativeButtonClick() {
+    public void onNoReconnectButtonClick() {
         Intent intent = new Intent();
         intent.putExtra(SelectCityActivity.EXTRA_CITY, selectedItem);
         setResult(RESULT_OK, intent);

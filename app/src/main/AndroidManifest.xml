@@ -124,10 +124,6 @@
             android:name=".ui.settings.UpgradePlanActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.DialogWhenLarge" />
-        <activity
-            android:name=".ui.region.LocationsActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar" />
     </application>
 
 </manifest>

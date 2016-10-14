@@ -24,12 +24,11 @@ public class ConnectConfirmationDialogFragment extends DialogFragment {
     private static final String ARGS_LOCATION_ID = "location_id";
 
     public interface ConnectDialogListener {
-        void onDialogPositiveButtonClick();
+        void onReconnectButtonClick();
 
-        void onDialogNegativeButtonClick();
+        void onNoReconnectButtonClick();
     }
 
-    // TODO: and national flag image url
     public static ConnectConfirmationDialogFragment newInstance(@NonNull String locationId) {
         ConnectConfirmationDialogFragment f = new ConnectConfirmationDialogFragment();
         Bundle args = new Bundle();
@@ -63,16 +62,18 @@ public class ConnectConfirmationDialogFragment extends DialogFragment {
             @Override
             public void onClick(View view) {
                 if (listener != null) {
-                    listener.onDialogPositiveButtonClick();
+                    listener.onReconnectButtonClick();
                 }
+                dismiss();
             }
         });
         view.findViewById(R.id.later_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (listener != null) {
-                    listener.onDialogNegativeButtonClick();
+                    listener.onNoReconnectButtonClick();
                 }
+                dismiss();
             }
         });
         return view;

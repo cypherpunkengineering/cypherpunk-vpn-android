@@ -6,7 +6,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="48dp"
-        android:background="@color/background_dark"
+        android:background="@drawable/list_item_background_dark"
         android:clickable="true"
         android:orientation="horizontal">
 
@@ -27,7 +27,6 @@
             android:layout_centerVertical="true"
             android:layout_gravity="center_vertical"
             android:layout_toRightOf="@id/national_flag"
-            android:background="?android:selectableItemBackground"
             android:gravity="center_vertical"
             android:textColor="?android:attr/textColorPrimary"
             android:textSize="18sp"
