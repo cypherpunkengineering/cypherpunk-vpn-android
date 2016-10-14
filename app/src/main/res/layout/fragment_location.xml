@@ -1,15 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@drawable/window_background_indigo"
-    android:orientation="vertical">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <LinearLayout
-        android:id="@+id/bottom_container"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
+        android:background="@drawable/window_background_indigo"
         android:orientation="vertical">
 
         <include layout="@layout/divider" />
@@ -17,7 +14,7 @@
         <RelativeLayout
             android:id="@+id/region_container"
             android:layout_width="match_parent"
-            android:layout_height="60dp"
+            android:layout_height="44dp"
             android:background="@drawable/button_main_location"
             android:clickable="true">
 
@@ -57,5 +54,15 @@
                 tools:ignore="ContentDescription" />
 
         </RelativeLayout>
+
+        <include layout="@layout/divider" />
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scrollbars="vertical"
+            app:layoutManager="LinearLayoutManager" />
+
     </LinearLayout>
-</LinearLayout>
+
+</layout>

@@ -7,6 +7,7 @@ import android.net.Uri;
 import android.net.VpnService;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.design.widget.BottomSheetBehavior;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.TaskStackBuilder;
 import android.support.v7.app.ActionBar;
@@ -29,9 +30,8 @@ import com.cypherpunk.android.vpn.data.api.JsonipService;
 import com.cypherpunk.android.vpn.data.api.UserManager;
 import com.cypherpunk.android.vpn.data.api.json.JsonipResult;
 import com.cypherpunk.android.vpn.databinding.ActivityMainBinding;
-import com.cypherpunk.android.vpn.model.Location;
 import com.cypherpunk.android.vpn.ui.account.AccountActivity;
-import com.cypherpunk.android.vpn.ui.region.LocationsActivity;
+import com.cypherpunk.android.vpn.ui.region.ConnectConfirmationDialogFragment;
 import com.cypherpunk.android.vpn.ui.settings.RateDialogFragment;
 import com.cypherpunk.android.vpn.ui.settings.SettingsActivity;
 import com.cypherpunk.android.vpn.ui.setup.IntroductionActivity;
@@ -40,9 +40,6 @@ import com.cypherpunk.android.vpn.vpn.CypherpunkVpnStatus;
 import com.cypherpunk.android.vpn.widget.BinaryTextureView;
 import com.cypherpunk.android.vpn.widget.ConnectionStatusView;
 import com.cypherpunk.android.vpn.widget.VpnFlatButton;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.inject.Inject;
 
@@ -55,7 +52,8 @@ import rx.schedulers.Schedulers;
 import rx.subscriptions.Subscriptions;
 
 public class MainActivity extends AppCompatActivity
-        implements VpnStatus.StateListener, RateDialogFragment.RateDialogListener {
+        implements VpnStatus.StateListener, RateDialogFragment.RateDialogListener,
+        ConnectConfirmationDialogFragment.ConnectDialogListener {
 
     public static final String AUTO_START = "com.cypherpunk.android.vpn.AUTO_START";
 
@@ -66,7 +64,6 @@ public class MainActivity extends AppCompatActivity
     private ActivityMainBinding binding;
     private CypherpunkVpnStatus status;
     private Subscription subscription = Subscriptions.empty();
-    private String locationId;
     private Realm realm;
 
     @Inject
@@ -108,15 +105,7 @@ public class MainActivity extends AppCompatActivity
 
         // TODO;
         realm = Realm.getDefaultInstance();
-        Location location = realm.where(Location.class).equalTo("selected", true).findFirst();
-        if (location == null) {
-            getServerList();
-            location = realm.where(Location.class).equalTo("selected", true).findFirst();
-        }
 
-        locationId = location.getId();
-//        binding.region.setText(location.getCity());
-//        Picasso.with(this).load(location.getNationalFlagUrl()).into(binding.nationalFlag);
 
         binding.connectionButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -127,13 +116,6 @@ public class MainActivity extends AppCompatActivity
 
         binding.connectingCancelButton.setPaintFlags(
                 binding.connectingCancelButton.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
-
-//        binding.regionContainer.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                startActivityForResult(new Intent(MainActivity.this, LocationsActivity.class), REQUEST_SELECT_REGION);
-//            }
-//        });
 
         binding.actionMenuLeft.setOnMenuItemClickListener(new ActionMenuView.OnMenuItemClickListener() {
             @Override
@@ -154,10 +136,9 @@ public class MainActivity extends AppCompatActivity
 
         FragmentTransaction fm = getSupportFragmentManager().beginTransaction();
         LocationFragment locationFragment = new LocationFragment();
-        fm.add(R.id.bottom, locationFragment);
+        fm.add(R.id.bottom_sheet, locationFragment);
         fm.commit();
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -186,21 +167,6 @@ public class MainActivity extends AppCompatActivity
             switch (requestCode) {
                 case REQUEST_VPN_START:
                     startVpn();
-                    break;
-                case REQUEST_SELECT_REGION:
-                    locationId = data.getStringExtra(LocationsActivity.EXTRA_LOCATION_ID);
-                    Location location = realm.where(Location.class).equalTo("id", locationId).findFirst();
-//                    binding.region.setText(location.getCity());
-//                    Picasso.with(this).load(location.getNationalFlagUrl()).into(binding.nationalFlag);
-//                    if (CypherpunkVPN.getInstance().getLocation() != location) {
-//                        CypherpunkVPN.getInstance().setLocation(location);
-//
-//                        if (data.getBooleanExtra(LocationsActivity.EXTRA_CONNECT, false)) {
-//                            startVpn();
-//                        } else {
-//                            stopVpn();
-//                        }
-//                    }
                     break;
                 case REQUEST_SETTINGS:
                     if (data.getBooleanExtra(SettingsActivity.EXTRA_CONNECT, false)) {
@@ -340,19 +306,6 @@ public class MainActivity extends AppCompatActivity
                 });
     }
 
-    private void getServerList() {
-        realm.beginTransaction();
-        List<Location> locations = new ArrayList<>();
-        // TODO: serverList api
-        locations.add(new Location("Tokyo Dev", "JP", "freebsd-test.tokyo.vpn.cypherpunk.network", "208.111.52.34", "208.111.52.35", "208.111.52.36", "208.111.52.37", "http://flags.fmcdn.net/data/flags/normal/jp.png", 305, 56));
-        locations.add(new Location("Tokyo", "JP", "freebsd2.tokyo.vpn.cypherpunk.network", "208.111.52.2", "208.111.52.12", "208.111.52.22", "208.111.52.32", "http://flags.fmcdn.net/data/flags/normal/jp.png", 305, 56));
-        locations.add(new Location("Honolulu", "US", "honolulu.vpn.cypherpunk.network", "199.68.252.203", "199.68.252.203", "199.68.252.203", "199.68.252.203", "http://flags.fmcdn.net/data/flags/normal/us.png", 355, 66));
-        realm.copyToRealm(locations);
-        Location first = realm.where(Location.class).findFirst();
-        first.setSelected(true);
-        realm.commitTransaction();
-    }
-
     private String getSimOperatorName() {
         TelephonyManager telephonyManager = (TelephonyManager) getSystemService(TELEPHONY_SERVICE);
         return telephonyManager.getSimOperatorName();
@@ -363,5 +316,19 @@ public class MainActivity extends AppCompatActivity
         sb.setSpan(new TextAppearanceSpan(this, R.style.TextAppearance_Cypherpunk_Yellow), 0, 7, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
 //        binding.signUpButton.setText(sb);
 //        binding.signUpButton.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void onReconnectButtonClick() {
+        BottomSheetBehavior behavior = BottomSheetBehavior.from(binding.bottomSheet);
+        behavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+        startVpn();
+    }
+
+    @Override
+    public void onNoReconnectButtonClick() {
+        BottomSheetBehavior behavior = BottomSheetBehavior.from(binding.bottomSheet);
+        behavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+        stopVpn();
     }
 }

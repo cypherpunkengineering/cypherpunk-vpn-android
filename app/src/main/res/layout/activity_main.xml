@@ -11,6 +11,7 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_marginBottom="230dp"
             tools:ignore="RtlHardcoded">
 
             <android.support.v7.widget.Toolbar
@@ -83,10 +84,9 @@
         </RelativeLayout>
 
         <LinearLayout
-            android:id="@+id/bottom"
+            android:id="@+id/bottom_sheet"
             android:layout_width="match_parent"
-            android:layout_height="600dp"
-            android:background="@android:color/white"
+            android:layout_height="wrap_content"
             android:orientation="vertical"
             app:behavior_peekHeight="230dp"
             app:layout_behavior="@string/bottom_sheet_behavior" />

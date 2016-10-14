@@ -64,7 +64,7 @@ public class SelectCityActivity extends AppCompatActivity
     }
 
     @Override
-    public void onDialogPositiveButtonClick() {
+    public void onReconnectButtonClick() {
         Intent intent = new Intent();
         intent.putExtra(EXTRA_CITY, selectedItem);
         intent.putExtra(EXTRA_CONNECT, true);
@@ -73,7 +73,7 @@ public class SelectCityActivity extends AppCompatActivity
     }
 
     @Override
-    public void onDialogNegativeButtonClick() {
+    public void onNoReconnectButtonClick() {
         Intent intent = new Intent();
         intent.putExtra(EXTRA_CITY, selectedItem);
         setResult(RESULT_OK, intent);
