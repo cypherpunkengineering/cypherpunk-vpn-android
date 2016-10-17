@@ -25,11 +25,11 @@ public class IntroductionActivity extends AppCompatActivity {
 
         ActivityIntroductionBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_introduction);
 
-        binding.startFreeButton.setOnClickListener(
+        binding.loginButton.setOnClickListener(
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        startActivity(new Intent(IntroductionActivity.this, SignUpActivity.class));
+                        startActivity(new Intent(IntroductionActivity.this, SignInActivity.class));
                     }
                 });
 
@@ -46,14 +46,6 @@ public class IntroductionActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View view) {
                         startActivity(new Intent(IntroductionActivity.this, GetPremiumActivity.class));
-                    }
-                });
-
-        binding.moveSignInButton.setOnClickListener(
-                new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        startActivity(new Intent(IntroductionActivity.this, SignInActivity.class));
                     }
                 });
 
