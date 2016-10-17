@@ -42,9 +42,6 @@ public class Location implements RealmModel {
     private boolean favorited;
     private boolean selected;
 
-    private int mapX;
-    private int mapY;
-
     @SuppressWarnings("unused")
     public Location() {
     }
@@ -61,10 +58,7 @@ public class Location implements RealmModel {
          @NonNull String ipStrong,
          @NonNull String ipStealth,
 
-         @NonNull String nationalFlagUrl,
-
-         int mapX,
-         int mapY
+         @NonNull String nationalFlagUrl
     )
     {
         this.city = city;
@@ -78,9 +72,6 @@ public class Location implements RealmModel {
         this.ipStealth = ipStealth;
 
         this.nationalFlagUrl = nationalFlagUrl;
-
-        this.mapX = mapX;
-        this.mapY = mapY;
 
         id = calcId(countryCode, city);
     }
@@ -120,14 +111,6 @@ public class Location implements RealmModel {
         this.selected = selected;
     }
 
-    public int getMapX() {
-        return mapX;
-    }
-
-    public int getMapY() {
-        return mapY;
-    }
-
     @Override
     public String toString() {
         return "Region{" +
@@ -141,8 +124,6 @@ public class Location implements RealmModel {
                 ", nationalFlagUrl='" + nationalFlagUrl + '\'' +
                 ", favorited=" + favorited +
                 ", selected=" + selected +
-                ", mapX=" + mapX +
-                ", mapY=" + mapY +
                 '}';
     }
 

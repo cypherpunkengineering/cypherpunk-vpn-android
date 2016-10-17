@@ -98,9 +98,9 @@ public class LocationFragment extends Fragment {
         realm.beginTransaction();
         List<Location> locations = new ArrayList<>();
         // TODO: serverList api
-        locations.add(new Location("Tokyo Dev", "JP", "freebsd-test.tokyo.vpn.cypherpunk.network", "208.111.52.34", "208.111.52.35", "208.111.52.36", "208.111.52.37", "http://flags.fmcdn.net/data/flags/normal/jp.png", 305, 56));
-        locations.add(new Location("Tokyo", "JP", "freebsd2.tokyo.vpn.cypherpunk.network", "208.111.52.2", "208.111.52.12", "208.111.52.22", "208.111.52.32", "http://flags.fmcdn.net/data/flags/normal/jp.png", 305, 56));
-        locations.add(new Location("Honolulu", "US", "honolulu.vpn.cypherpunk.network", "199.68.252.203", "199.68.252.203", "199.68.252.203", "199.68.252.203", "http://flags.fmcdn.net/data/flags/normal/us.png", 355, 66));
+        locations.add(new Location("Tokyo Dev", "JP", "freebsd-test.tokyo.vpn.cypherpunk.network", "208.111.52.34", "208.111.52.35", "208.111.52.36", "208.111.52.37", "http://flags.fmcdn.net/data/flags/normal/jp.png"));
+        locations.add(new Location("Tokyo", "JP", "freebsd2.tokyo.vpn.cypherpunk.network", "208.111.52.2", "208.111.52.12", "208.111.52.22", "208.111.52.32", "http://flags.fmcdn.net/data/flags/normal/jp.png"));
+        locations.add(new Location("Honolulu", "US", "honolulu.vpn.cypherpunk.network", "199.68.252.203", "199.68.252.203", "199.68.252.203", "199.68.252.203", "http://flags.fmcdn.net/data/flags/normal/us.png"));
         realm.copyToRealm(locations);
         Location first = realm.where(Location.class).findFirst();
         first.setSelected(true);
