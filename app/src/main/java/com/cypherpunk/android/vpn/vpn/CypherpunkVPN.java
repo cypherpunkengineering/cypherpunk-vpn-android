@@ -10,6 +10,7 @@ import android.text.TextUtils;
 import android.util.Log;
 
 import com.android.annotations.NonNull;
+import com.cypherpunk.android.vpn.data.api.UserManager;
 import com.cypherpunk.android.vpn.model.CypherpunkSetting;
 import com.cypherpunk.android.vpn.model.Location;
 import com.cypherpunk.android.vpn.ui.main.CypherpunkLaunchVPN;
@@ -277,6 +278,16 @@ public class CypherpunkVPN {
             list.add("redirect-gateway autolocal unblock-local\n");
         else
             list.add("redirect-gateway autolocal block-local\n");
+
+        // append username/password
+        /*
+        log("password is "+ UserManager.getPassword());
+        log("username is "+ UserManager.getMailAddress());
+        */
+        list.add("<auth-user-pass>");
+        list.add(UserManager.getMailAddress());
+        list.add(UserManager.getPassword());
+        list.add("</auth-user-pass>");
 
         // append contents of openvpn.conf
         try
