@@ -37,7 +37,7 @@ import com.cypherpunk.android.vpn.ui.settings.SettingsActivity;
 import com.cypherpunk.android.vpn.ui.setup.IntroductionActivity;
 import com.cypherpunk.android.vpn.vpn.CypherpunkVPN;
 import com.cypherpunk.android.vpn.vpn.CypherpunkVpnStatus;
-import com.cypherpunk.android.vpn.widget.BinaryTextureView;
+import com.cypherpunk.android.vpn.widget.BinarySurfaceView;
 import com.cypherpunk.android.vpn.widget.ConnectionStatusView;
 import com.cypherpunk.android.vpn.widget.VpnFlatButton;
 
@@ -95,10 +95,10 @@ public class MainActivity extends AppCompatActivity
         String operatorName = getSimOperatorName();
         if (TextUtils.isEmpty(operatorName)) {
             String[] text = {Build.BRAND.toUpperCase(), Build.MODEL.toUpperCase()};
-            binding.binaryTextureView.setText(text);
+            binding.binaryView.setText(text);
         } else {
             String[] text = {Build.BRAND.toUpperCase(), Build.MODEL.toUpperCase(), operatorName};
-            binding.binaryTextureView.setText(text);
+            binding.binaryView.setText(text);
         }
 
         // showSignUpButton();
@@ -179,30 +179,10 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
-    protected void onResume() {
-        super.onResume();
-
-        binding.binaryTextureView.startAnimation();
-
-        /*
-        Intent intent = getIntent();
-        checkIfAutoStart(intent);
-        checkIfTileClick(intent);
-        setIntent(null);
-        */
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        // 画面が黒くなってしまうから、アニメーションを止める
-        binding.binaryTextureView.stopAnimation();
-    }
-
-    @Override
     protected void onDestroy() {
         subscription.unsubscribe();
         realm.close();
+        realm = null;
         super.onDestroy();
     }
 
@@ -235,7 +215,7 @@ public class MainActivity extends AppCompatActivity
         if (intent != null) {
             startActivityForResult(intent, REQUEST_VPN_START);
         } else {
-            binding.binaryTextureView.setState(BinaryTextureView.CONNECTING);
+            binding.binaryView.setState(BinarySurfaceView.CONNECTING);
             binding.connectionStatus.setStatus(ConnectionStatusView.CONNECTING);
             binding.connectionButton.setStatus(VpnFlatButton.CONNECTING);
             binding.connectingCancelButton.setVisibility(View.VISIBLE);
@@ -262,7 +242,7 @@ public class MainActivity extends AppCompatActivity
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                binding.binaryTextureView.setState(BinaryTextureView.CONNECTED);
+                binding.binaryView.setState(BinarySurfaceView.CONNECTED);
                 binding.connectionStatus.setStatus(ConnectionStatusView.CONNECTED);
                 binding.connectionButton.setStatus(VpnFlatButton.CONNECTED);
                 binding.connectingCancelButton.setVisibility(View.GONE);
@@ -275,7 +255,7 @@ public class MainActivity extends AppCompatActivity
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                binding.binaryTextureView.setState(BinaryTextureView.DISCONNECTED);
+                binding.binaryView.setState(BinarySurfaceView.DISCONNECTED);
                 binding.connectionStatus.setStatus(ConnectionStatusView.DISCONNECTED);
                 binding.connectionButton.setStatus(VpnFlatButton.DISCONNECTED);
                 binding.connectingCancelButton.setVisibility(View.GONE);
