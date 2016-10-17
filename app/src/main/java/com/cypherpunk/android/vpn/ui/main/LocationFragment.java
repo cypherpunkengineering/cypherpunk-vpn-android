@@ -8,7 +8,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.cypherpunk.android.vpn.CypherpunkApplication;
 import com.cypherpunk.android.vpn.R;
+import com.cypherpunk.android.vpn.data.api.CypherpunkService;
+import com.cypherpunk.android.vpn.data.api.UserManager;
+import com.cypherpunk.android.vpn.data.api.json.LocationResult;
+import com.cypherpunk.android.vpn.data.api.json.LoginRequest;
 import com.cypherpunk.android.vpn.databinding.FragmentLocationBinding;
 import com.cypherpunk.android.vpn.model.Location;
 import com.cypherpunk.android.vpn.ui.region.ConnectConfirmationDialogFragment;
@@ -16,15 +21,32 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import javax.inject.Inject;
 
 import io.realm.Realm;
 import io.realm.RealmResults;
+import okhttp3.ResponseBody;
+import rx.Single;
+import rx.SingleSubscriber;
+import rx.Subscription;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Func1;
+import rx.schedulers.Schedulers;
+import rx.subscriptions.Subscriptions;
 
 
 public class LocationFragment extends Fragment {
 
     private Realm realm;
     private FragmentLocationBinding binding;
+    private Subscription subscription = Subscriptions.empty();
+    private LocationAdapter adapter;
+
+    @Inject
+    CypherpunkService webService;
 
     @Nullable
     @Override
@@ -36,20 +58,19 @@ public class LocationFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        ((CypherpunkApplication) getActivity().getApplication()).getAppComponent().inject(this);
         binding = DataBindingUtil.bind(getView());
 
         realm = Realm.getDefaultInstance();
 
+        getServerList();
         Location location = realm.where(Location.class).equalTo("selected", true).findFirst();
-        if (location == null) {
-            getServerList();
-            location = realm.where(Location.class).equalTo("selected", true).findFirst();
+        if (location != null) {
+            binding.region.setText(location.getCity());
+            Picasso.with(getActivity()).load(location.getNationalFlagUrl()).into(binding.nationalFlag);
         }
 
-        binding.region.setText(location.getCity());
-        Picasso.with(getActivity()).load(location.getNationalFlagUrl()).into(binding.nationalFlag);
-
-        LocationAdapter adapter = new LocationAdapter(getLocation()) {
+        adapter = new LocationAdapter(getLocation()) {
             @Override
             protected void onFavorite(final Location location, final boolean favorite) {
                 realm.executeTransaction(new Realm.Transaction() {
@@ -87,6 +108,7 @@ public class LocationFragment extends Fragment {
     public void onDestroy() {
         super.onDestroy();
         realm.close();
+        subscription.unsubscribe();
     }
 
     private ArrayList<Location> getLocation() {
@@ -95,15 +117,54 @@ public class LocationFragment extends Fragment {
     }
 
     private void getServerList() {
-        realm.beginTransaction();
-        List<Location> locations = new ArrayList<>();
-        // TODO: serverList api
-        locations.add(new Location("Tokyo Dev", "JP", "freebsd-test.tokyo.vpn.cypherpunk.network", "208.111.52.34", "208.111.52.35", "208.111.52.36", "208.111.52.37", "http://flags.fmcdn.net/data/flags/normal/jp.png", 305, 56));
-        locations.add(new Location("Tokyo", "JP", "freebsd2.tokyo.vpn.cypherpunk.network", "208.111.52.2", "208.111.52.12", "208.111.52.22", "208.111.52.32", "http://flags.fmcdn.net/data/flags/normal/jp.png", 305, 56));
-        locations.add(new Location("Honolulu", "US", "honolulu.vpn.cypherpunk.network", "199.68.252.203", "199.68.252.203", "199.68.252.203", "199.68.252.203", "http://flags.fmcdn.net/data/flags/normal/us.png", 355, 66));
-        realm.copyToRealm(locations);
-        Location first = realm.where(Location.class).findFirst();
-        first.setSelected(true);
-        realm.commitTransaction();
+        subscription = webService
+                .login(new LoginRequest(UserManager.getMailAddress(), UserManager.getPassword()))
+                .flatMap(new Func1<ResponseBody, Single<Map<String, Map<String, LocationResult[]>>>>() {
+                    @Override
+                    public Single<Map<String, Map<String, LocationResult[]>>> call(ResponseBody responseBody) {
+                        return webService.serverList();
+                    }
+                })
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new SingleSubscriber<Map<String, Map<String, LocationResult[]>>>() {
+                               @Override
+                               public void onSuccess(Map<String, Map<String, LocationResult[]>> result) {
+                                   List<Location> locations = new ArrayList<>();
+                                   for (Map.Entry<String, Map<String, LocationResult[]>> area : result.entrySet()) {
+                                       Set<Map.Entry<String, LocationResult[]>> areaSet = area.getValue().entrySet();
+                                       for (Map.Entry<String, LocationResult[]> country : areaSet) {
+                                           LocationResult[] cities = country.getValue();
+                                           for (LocationResult city : cities) {
+                                               // TODO: hostname, flag url
+                                               locations.add(new Location(city.getCity(),
+                                                       country.getKey(), "",
+                                                       city.getIpDefault(),
+                                                       city.getIpNone(),
+                                                       city.getIpStrong(),
+                                                       city.getIpStealth(),
+                                                       "http://flags.fmcdn.net/data/flags/normal/jp.png"));
+                                           }
+                                       }
+                                   }
+                                   realm.beginTransaction();
+                                   realm.copyToRealmOrUpdate(locations);
+                                   Location first = realm.where(Location.class).findFirst();
+                                   first.setSelected(true);
+                                   realm.commitTransaction();
+
+                                   binding.region.setText(first.getCity());
+                                   Picasso.with(getActivity()).load(first.getNationalFlagUrl()).into(binding.nationalFlag);
+                                   adapter.addAll(getLocation());
+                               }
+
+                               @Override
+                               public void onError(Throwable error) {
+                                   error.printStackTrace();
+                               }
+                           }
+                );
+
+
     }
 }
