@@ -3,11 +3,11 @@ package com.cypherpunk.android.vpn.widget;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PixelFormat;
-import android.graphics.PorterDuff;
+import android.graphics.Point;
 import android.graphics.Typeface;
+import android.graphics.drawable.Drawable;
 import android.os.SystemClock;
 import android.support.annotation.ColorInt;
 import android.support.annotation.IntDef;
@@ -32,7 +32,11 @@ import java.util.Random;
 
 public class BinarySurfaceView extends SurfaceView implements SurfaceHolder.Callback {
 
+    private static final String TAG = "BinarySurfaceView";
+    private static final int FPS = 60;
     private static final float SCROLL_DISTANCE_PER_SEC_IN_DP = 6f;
+
+    private static final boolean DUMP_FPS = false;
 
     private volatile RenderingThread renderingThread;
 
@@ -47,13 +51,12 @@ public class BinarySurfaceView extends SurfaceView implements SurfaceHolder.Call
     }
 
     @ConnectionState
-    private int connectionState = DISCONNECTED;
-    private final Object stateMonitor = new Object();
-    private SurfaceHolder surfaceHolder;
+    private volatile int connectionState = DISCONNECTED;
 
     private final class RenderingThread extends Thread {
         private final float scrollDistancePerMilliSec;
         private final TileDrawable tileDrawable;
+        private final Drawable background;
 
         private long baseTime;
 
@@ -80,40 +83,54 @@ public class BinarySurfaceView extends SurfaceView implements SurfaceHolder.Call
 
             tileDrawable = new TileDrawable(tileWidth, tileHeight, rowCount, columnCount,
                     keyItemGenerator, keyItemDrawer);
+            background = ContextCompat.getDrawable(context, R.drawable.window_background_indigo);
+
+            final Point displaySize = new Point();
+            getDisplay().getSize(displaySize);
+            background.setBounds(0, 0, displaySize.x, displaySize.y);
         }
 
         @Override
         public void run() {
-            baseTime = SystemClock.uptimeMillis();
+            final long minDrawingTime = 1000L / FPS;
+            long lastDrawTime = SystemClock.uptimeMillis();
+            baseTime = lastDrawTime;
+            int actualFps = 0;
             while (renderingThread == this) {
                 drawTiles();
+                final long now = SystemClock.uptimeMillis();
+                final long elapsed = now - lastDrawTime;
+                if (elapsed < minDrawingTime) {
+                    SystemClock.sleep(minDrawingTime - elapsed);
+                }
+                if (DUMP_FPS) {
+                    actualFps++;
+                    if (now % 1000 < lastDrawTime % 1000) {
+                        Log.d(TAG, "fps: " + actualFps);
+                        actualFps = 0;
+                    }
+                }
+                lastDrawTime = SystemClock.uptimeMillis();
+                yield(); // this solved the hangup issue.
             }
         }
 
-        private void drawTiles()
-        {
-            Canvas canvas = surfaceHolder.lockCanvas();
-            try
-            {
-                synchronized (stateMonitor)
-                {
-                    final long elapsedTime = SystemClock.uptimeMillis() - baseTime;
-                    final float distance = elapsedTime * scrollDistancePerMilliSec;
-                    if (canvas != null)
-                    {
-                        canvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR);
-                        tileDrawable.draw(canvas, distance, connectionState);
-                    }
-                }
+        private void drawTiles() {
+            final SurfaceHolder holder = getHolder();
+            Canvas canvas = holder.lockCanvas();
+            if (canvas == null) {
+                return;
             }
-            catch (Exception e)
-            {
-                Log.e("", "drawTiles() exception: "+e);
-            }
-            finally
-            {
-                if (canvas != null)
-                    surfaceHolder.unlockCanvasAndPost(canvas);
+            try {
+                final int state = BinarySurfaceView.this.connectionState;
+                final long elapsedTime = SystemClock.uptimeMillis() - baseTime;
+                final float distance = elapsedTime * scrollDistancePerMilliSec;
+                background.draw(canvas);
+                tileDrawable.draw(canvas, distance, state);
+            } catch (Exception e) {
+                Log.e(TAG, "exception thrown in drawTiles()", e);
+            } finally {
+                holder.unlockCanvasAndPost(canvas);
             }
         }
     }
@@ -128,10 +145,11 @@ public class BinarySurfaceView extends SurfaceView implements SurfaceHolder.Call
 
     public BinarySurfaceView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        surfaceHolder = getHolder();
-        surfaceHolder.setFormat(PixelFormat.TRANSLUCENT);
-        setZOrderOnTop(true);
-        surfaceHolder.addCallback(this);
+        setZOrderOnTop(false);
+
+        final SurfaceHolder holder = getHolder();
+        holder.setFormat(PixelFormat.RGBA_8888);
+        holder.addCallback(this);
     }
 
     @Override
@@ -144,7 +162,6 @@ public class BinarySurfaceView extends SurfaceView implements SurfaceHolder.Call
 
     @Override
     public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
-
     }
 
     @Override
@@ -153,9 +170,6 @@ public class BinarySurfaceView extends SurfaceView implements SurfaceHolder.Call
         if (t != null) {
             renderingThread = null;
 
-            synchronized (stateMonitor) {
-                stateMonitor.notifyAll();
-            }
             try {
                 /*
                  * onSurfaceTextureDestroyed が true を返したあとで Texture に操作を行わないようにするため

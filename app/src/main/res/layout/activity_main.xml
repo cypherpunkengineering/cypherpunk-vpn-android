@@ -41,8 +41,8 @@
                 android:layout_below="@id/toolbar"
                 android:background="@color/divider" />
 
-            <com.cypherpunk.android.vpn.widget.BinaryTextureView
-                android:id="@+id/binary_texture_view"
+            <com.cypherpunk.android.vpn.widget.BinarySurfaceView
+                android:id="@+id/binary_view"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_below="@id/toolbar" />
