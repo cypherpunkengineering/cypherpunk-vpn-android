@@ -32,7 +32,7 @@ public class AccountSettingsFragment extends PreferenceFragmentCompat {
 
         // TODO: set username
         AccountPreference account = (AccountPreference) findPreference("account");
-        account.setUsernameText("wiz");
+        account.setUsernameText(UserManager.getMailAddress());
 
         // TODO: set plan
         Preference plan = findPreference("plan");
