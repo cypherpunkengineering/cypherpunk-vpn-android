@@ -3,15 +3,19 @@
     <string-array name="vpn_protocol_value">
         <item>setting_vpn_protocol_openvpn23_udp</item>
         <item>setting_vpn_protocol_openvpn23_tcp</item>
+		<!--
         <item>setting_vpn_protocol_openvpn31_udp</item>
         <item>setting_vpn_protocol_openvpn31_tcp</item>
+		-->
     </string-array>
 
     <string-array name="vpn_protocol_description">
         <item>setting_vpn_protocol_openvpn23_udp_desc</item>
         <item>setting_vpn_protocol_openvpn23_tcp_desc</item>
+		<!--
         <item>setting_vpn_protocol_openvpn31_udp_desc</item>
         <item>setting_vpn_protocol_openvpn31_tcp_desc</item>
+		-->
     </string-array>
 
     <string-array name="vpn_port_remote_value">
