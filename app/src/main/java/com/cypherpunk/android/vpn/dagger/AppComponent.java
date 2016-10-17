@@ -1,5 +1,6 @@
 package com.cypherpunk.android.vpn.dagger;
 
+import com.cypherpunk.android.vpn.ui.main.LocationFragment;
 import com.cypherpunk.android.vpn.ui.main.MainActivity;
 import com.cypherpunk.android.vpn.ui.signin.SignInActivity;
 import com.cypherpunk.android.vpn.ui.status.StatusActivity;
@@ -17,4 +18,6 @@ public interface AppComponent {
     void inject(SignInActivity target);
 
     void inject(StatusActivity target);
+
+    void inject(LocationFragment target);
 }

@@ -1,6 +1,9 @@
 package com.cypherpunk.android.vpn.data.api;
 
+import com.cypherpunk.android.vpn.data.api.json.LocationResult;
 import com.cypherpunk.android.vpn.data.api.json.LoginRequest;
+
+import java.util.Map;
 
 import okhttp3.ResponseBody;
 import retrofit2.http.Body;
@@ -20,5 +23,5 @@ public interface CypherpunkService {
             @Body LoginRequest loginRequest);
 
     @GET("api/vpn/serverList")
-    Single<ResponseBody> serverList();
+    Single<Map<String, Map<String, LocationResult[]>>> serverList();
 }

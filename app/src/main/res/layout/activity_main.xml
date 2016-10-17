@@ -86,7 +86,7 @@
         <LinearLayout
             android:id="@+id/bottom_sheet"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="1000dp"
             android:orientation="vertical"
             app:behavior_peekHeight="230dp"
             app:layout_behavior="@string/bottom_sheet_behavior" />
