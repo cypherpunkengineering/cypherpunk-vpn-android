@@ -179,16 +179,16 @@ public class CypherpunkVPN {
         */
 
         // standard options
-        list.add("client\n");
-        list.add("dev tun\n");
-        list.add("tls-client\n");
-        list.add("resolv-retry infinite\n");
-        list.add("route-delay 0\n");
+        list.add("client");
+        list.add("dev tun");
+        list.add("tls-client");
+        list.add("resolv-retry infinite");
+        list.add("route-delay 0");
 
         // security/privacy options
-        list.add("tls-version-min 1.2\n");
-        list.add("remote-cert-eku \"TLS Web Server Authentication\"\n");
-        list.add("verify-x509-name " + location.getHostname() + " name\n");
+        list.add("tls-version-min 1.2");
+        list.add("remote-cert-eku \"TLS Web Server Authentication\"");
+        list.add("verify-x509-name " + location.getHostname() + " name");
 
         // vpn protocol
         String proto = "udp";
@@ -206,7 +206,7 @@ public class CypherpunkVPN {
                     break;
             }
         }
-        list.add("proto " + proto + " \n");
+        list.add("proto " + proto);
 
         // remote port
         int rport = 7133;
@@ -221,31 +221,31 @@ public class CypherpunkVPN {
             switch (cypherpunkSetting.vpnCryptoProfile)
             {
                 case "setting_vpn_crypto_profile_none":
-                    list.add("remote " + location.getIpNone() + " " + rport + "\n");
-                    list.add("tls-cipher TLS-DHE-RSA-WITH-AES-128-GCM-SHA256:TLS-DHE-RSA-WITH-AES-128-CBC-SHA256\n");
-                    list.add("cipher none\n");
-                    list.add("auth SHA1\n");
+                    list.add("remote " + location.getIpNone() + " " + rport);
+                    list.add("tls-cipher TLS-DHE-RSA-WITH-AES-128-GCM-SHA256:TLS-DHE-RSA-WITH-AES-128-CBC-SHA256");
+                    list.add("cipher none");
+                    list.add("auth SHA1");
                     break;
                 case "setting_vpn_crypto_profile_strong":
-                    list.add("remote " + location.getIpStrong() + " " + rport + "\n");
-                    list.add("tls-cipher TLS-DHE-RSA-WITH-AES-256-GCM-SHA384:TLS-DHE-RSA-WITH-AES-256-CBC-SHA256\n");
-                    list.add("cipher AES-256-CBC\n");
-                    list.add("auth SHA512\n");
+                    list.add("remote " + location.getIpStrong() + " " + rport);
+                    list.add("tls-cipher TLS-DHE-RSA-WITH-AES-256-GCM-SHA384:TLS-DHE-RSA-WITH-AES-256-CBC-SHA256");
+                    list.add("cipher AES-256-CBC");
+                    list.add("auth SHA512");
                     break;
                 case "setting_vpn_crypto_profile_stealth":
-                    list.add("remote " + location.getIpStealth() + " " + rport + "\n");
-                    list.add("tls-cipher TLS-DHE-RSA-WITH-AES-128-GCM-SHA256:TLS-DHE-RSA-WITH-AES-128-CBC-SHA256\n");
-                    list.add("cipher AES-128-CBC\n");
-                    list.add("auth SHA256\n");
+                    list.add("remote " + location.getIpStealth() + " " + rport);
+                    list.add("tls-cipher TLS-DHE-RSA-WITH-AES-128-GCM-SHA256:TLS-DHE-RSA-WITH-AES-128-CBC-SHA256");
+                    list.add("cipher AES-128-CBC");
+                    list.add("auth SHA256");
                     // requires xorpatch'd openvpn
-                    list.add("scramble obfuscate cypherpunk-xor-key\n");
+                    list.add("scramble obfuscate cypherpunk-xor-key");
                     break;
                 case "setting_vpn_crypto_profile_default":
                 default:
-                    list.add("remote " + location.getIpDefault() + " " + rport + "\n");
-                    list.add("tls-cipher TLS-DHE-RSA-WITH-AES-128-GCM-SHA256:TLS-DHE-RSA-WITH-AES-128-CBC-SHA256\n");
-                    list.add("cipher AES-128-CBC\n");
-                    list.add("auth SHA256\n");
+                    list.add("remote " + location.getIpDefault() + " " + rport);
+                    list.add("tls-cipher TLS-DHE-RSA-WITH-AES-128-GCM-SHA256:TLS-DHE-RSA-WITH-AES-128-CBC-SHA256");
+                    list.add("cipher AES-128-CBC");
+                    list.add("auth SHA256");
                     break;
             }
         }
@@ -255,9 +255,14 @@ public class CypherpunkVPN {
         if (cypherpunkSetting.vpnPortLocal != null && cypherpunkSetting.vpnPortLocal.length() > 0)
             lport = Integer.parseInt(cypherpunkSetting.vpnPortLocal);
         if (lport > 0 && lport < 65535)
-            list.add("lport " + lport + " \n" + "bind\n");
+        {
+            list.add("lport " + lport);
+            list.add("bind");
+        }
         else
-            list.add("nobind\n");
+        {
+            list.add("nobind");
+        }
 
         // privacy firewall killswitch
         if (cypherpunkSetting.privacyFirewallMode != null && cypherpunkSetting.privacyFirewallMode.length() > 0)
@@ -266,7 +271,7 @@ public class CypherpunkVPN {
             {
                 case "setting_privacy_firewall_mode_auto":
                 case "setting_privacy_firewall_mode_always":
-                    list.add("persist-tun\n");
+                    list.add("persist-tun");
                     break;
                 case "setting_privacy_firewall_mode_never":
                     break;
@@ -275,9 +280,9 @@ public class CypherpunkVPN {
 
         // privacy firewall exempt LAN from killswitch
         if (cypherpunkSetting.privacyFirewallExemptLAN)
-            list.add("redirect-gateway autolocal unblock-local\n");
+            list.add("redirect-gateway autolocal unblock-local");
         else
-            list.add("redirect-gateway autolocal block-local\n");
+            list.add("redirect-gateway autolocal block-local");
 
         // append username/password
         /*
