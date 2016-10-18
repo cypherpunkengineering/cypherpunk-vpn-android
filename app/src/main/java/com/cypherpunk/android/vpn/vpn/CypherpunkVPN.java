@@ -188,7 +188,7 @@ public class CypherpunkVPN {
         // security/privacy options
         list.add("tls-version-min 1.2");
         list.add("remote-cert-eku \"TLS Web Server Authentication\"");
-        list.add("verify-x509-name " + location.getHostname() + " name");
+        list.add("verify-x509-name " + location.getCommonName() + " name");
 
         // vpn protocol
         String proto = "udp";

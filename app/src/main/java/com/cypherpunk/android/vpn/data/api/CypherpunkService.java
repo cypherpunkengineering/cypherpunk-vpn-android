@@ -14,14 +14,14 @@ import rx.Single;
 /**
  * Cypherpunk API
  */
-public interface CypherpunkService {
+public interface CypherpunkService
+{
+    String ENDPOINT = "https://cypherpunk.engineering";
 
-    String ENDPOINT = "https://cypherpunk.engineering/";
-
-    @POST("account/authenticate/userpasswd")
+    @POST("/account/authenticate/userpasswd")
     Single<ResponseBody> login(
             @Body LoginRequest loginRequest);
 
-    @GET("api/vpn/serverList")
+    @GET("/api/vpn/serverList")
     Single<Map<String, Map<String, LocationResult[]>>> serverList();
 }

@@ -26,7 +26,7 @@ public class Location implements RealmModel {
     private String countryCode;
 
     @Required
-    private String hostname;
+    private String commonName;
 
     @Required
     private String ipDefault;
@@ -51,7 +51,7 @@ public class Location implements RealmModel {
          @NonNull String city,
          @NonNull String countryCode,
 
-         @NonNull String hostname,
+         @NonNull String commonName,
 
          @NonNull String ipDefault,
          @NonNull String ipNone,
@@ -64,7 +64,7 @@ public class Location implements RealmModel {
         this.city = city;
         this.countryCode = countryCode;
 
-        this.hostname = hostname;
+        this.commonName = commonName;
 
         this.ipDefault = ipDefault;
         this.ipNone = ipNone;
@@ -81,8 +81,8 @@ public class Location implements RealmModel {
     public String getCity() { return city; }
     public String getCountryCode() { return countryCode; }
 
-    public String getHostname() { return hostname; }
-    public void setHostname(String hostname) { this.hostname = hostname; }
+    public String getCommonName() { return commonName; }
+    public void setCommonName(String commonName) { this.commonName = commonName; }
 
     public String getIpDefault() { return ipDefault; }
     public void setIpDefault(String ipDefault) { this.ipDefault = ipDefault; }
@@ -117,6 +117,7 @@ public class Location implements RealmModel {
                 "id='" + id + '\'' +
                 ", city='" + city + '\'' +
                 ", countryCode='" + countryCode + '\'' +
+                ", commonName='" + commonName + '\'' +
                 ", ipDefault='" + ipDefault + '\'' +
                 ", ipNone='" + ipNone + '\'' +
                 ", ipStrong='" + ipStrong + '\'' +
