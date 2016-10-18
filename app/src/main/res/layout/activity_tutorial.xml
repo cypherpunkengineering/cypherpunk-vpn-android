@@ -2,71 +2,53 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="?android:actionBarSize">
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="?android:actionBarSize"
-                android:layout_gravity="center"
-                android:src="@drawable/header_logo_vector"
-                tools:ignore="ContentDescription" />
-
-        </android.support.v7.widget.Toolbar>
-
         <android.support.v4.view.ViewPager
             android:id="@+id/pager"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
+            android:layout_height="match_parent"
             android:layout_marginBottom="16dp"
-            android:layout_marginTop="16dp"
-            android:layout_weight="1" />
+            android:layout_marginTop="16dp" />
 
-        <com.cypherpunk.android.vpn.widget.PageIndicator
-            android:id="@+id/indicator"
+        <com.cypherpunk.android.vpn.widget.TypefaceButton
+            android:id="@id/ok_button"
+            style="@style/Widget.Cypherpunk.YellowButton"
+            android:layout_width="220dp"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/do_not_allow_button"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="16dp"
+            tools:text="Start Cypherpunk" />
+
+        <com.cypherpunk.android.vpn.widget.TypefaceTextView
+            android:id="@id/do_not_allow_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_above="@+id/indicator"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="8dp"
+            android:background="?android:selectableItemBackground"
+            android:clickable="true"
+            android:padding="8dp"
+            android:text="Don’t allow"
+            android:textSize="16sp"
+            android:visibility="invisible"
+            tools:visibility="visible" />
+
+        <com.cypherpunk.android.vpn.widget.PageIndicator
+            android:id="@id/indicator"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
             android:layout_gravity="center"
-            android:layout_marginBottom="32dp" />
+            android:layout_marginBottom="32dp"
+            android:padding="10dp" />
 
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="58dp"
-            android:layout_marginBottom="16dp">
-
-            <com.cypherpunk.android.vpn.widget.TypefaceTextView
-                android:id="@+id/skip_button"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="?android:attr/selectableItemBackground"
-                android:clickable="true"
-                android:drawableRight="@drawable/chevron_vector"
-                android:gravity="center_vertical"
-                android:padding="16dp"
-                android:text="@string/tutorial_skip"
-                android:textSize="18sp" />
-
-            <com.cypherpunk.android.vpn.widget.TypefaceButton
-                android:id="@+id/tutorial_finish_button"
-                style="@style/Widget.Cypherpunk.TransparentButton"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
-                android:layout_marginLeft="32dp"
-                android:layout_marginRight="32dp"
-                android:layout_marginTop="8dp"
-                android:text="@string/tutorial_finish"
-                android:visibility="gone" />
-
-        </FrameLayout>
-
-    </LinearLayout>
+    </RelativeLayout>
 
 </layout>

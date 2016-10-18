@@ -193,8 +193,8 @@
     <string name="select_mode_skip">Skip</string>
 
     <!-- tutorial -->
-    <string name="tutorial_skip">SKIP</string>
-    <string name="tutorial_finish">USE CYPHERPUNK NOW</string>
+    <string name="tutorial_allow">Allow</string>
+    <string name="tutorial_start">Start Cypherpunk</string>
 
     <!-- select region -->
     <string name="title_activity_locations">Locations</string>
