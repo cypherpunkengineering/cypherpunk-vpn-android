@@ -21,21 +21,21 @@ public class Location implements RealmModel {
     private String id;
 
     @Required
-    private String city;
+    private String regionName;
     @Required
     private String countryCode;
 
     @Required
-    private String commonName;
+    private String ovHostname;
 
     @Required
-    private String ipDefault;
+    private String ovDefault;
     @Required
-    private String ipNone;
+    private String ovNone;
     @Required
-    private String ipStrong;
+    private String ovStrong;
     @Required
-    private String ipStealth;
+    private String ovStealth;
 
     @Required
     private String nationalFlagUrl;
@@ -48,50 +48,50 @@ public class Location implements RealmModel {
 
     public Location
     (
-         @NonNull String city,
          @NonNull String countryCode,
+         @NonNull String regionName,
 
-         @NonNull String commonName,
+         @NonNull String ovHostname,
 
-         @NonNull String ipDefault,
-         @NonNull String ipNone,
-         @NonNull String ipStrong,
-         @NonNull String ipStealth,
+         @NonNull String ovDefault,
+         @NonNull String ovNone,
+         @NonNull String ovStrong,
+         @NonNull String ovStealth,
 
          @NonNull String nationalFlagUrl
     )
     {
-        this.city = city;
         this.countryCode = countryCode;
+        this.regionName = regionName;
 
-        this.commonName = commonName;
+        this.ovHostname = ovHostname;
 
-        this.ipDefault = ipDefault;
-        this.ipNone = ipNone;
-        this.ipStrong = ipStrong;
-        this.ipStealth = ipStealth;
+        this.ovDefault = ovDefault;
+        this.ovNone = ovNone;
+        this.ovStrong = ovStrong;
+        this.ovStealth = ovStealth;
 
         this.nationalFlagUrl = nationalFlagUrl;
 
-        id = calcId(countryCode, city);
+        id = calcId(countryCode, regionName);
     }
 
     public String getId() { return id; }
 
-    public String getCity() { return city; }
     public String getCountryCode() { return countryCode; }
+    public String getRegionName() { return regionName; }
 
-    public String getCommonName() { return commonName; }
-    public void setCommonName(String commonName) { this.commonName = commonName; }
+    public String getOvHostname() { return ovHostname; }
+    public void setOvHostname(String ovHostname) { this.ovHostname = ovHostname; }
 
-    public String getIpDefault() { return ipDefault; }
-    public void setIpDefault(String ipDefault) { this.ipDefault = ipDefault; }
-    public String getIpNone() { return ipNone; }
-    public void setIpNone(String ipNone) { this.ipNone = ipNone; }
-    public String getIpStrong() { return ipStrong; }
-    public void setIpStrong(String ipStrong) { this.ipStrong = ipStrong; }
-    public String getIpStealth() { return ipStealth; }
-    public void setIpStealth(String ipStealth) { this.ipStealth = ipStealth; }
+    public String getOvDefault() { return ovDefault; }
+    public void setOvDefault(String ovDefault) { this.ovDefault = ovDefault; }
+    public String getOvNone() { return ovNone; }
+    public void setOvNone(String ovNone) { this.ovNone = ovNone; }
+    public String getOvStrong() { return ovStrong; }
+    public void setOvStrong(String ovStrong) { this.ovStrong = ovStrong; }
+    public String getOvStealth() { return ovStealth; }
+    public void setOvStealth(String ovStealth) { this.ovStealth = ovStealth; }
 
     public String getNationalFlagUrl() { return nationalFlagUrl; }
 
@@ -115,13 +115,13 @@ public class Location implements RealmModel {
     public String toString() {
         return "Region{" +
                 "id='" + id + '\'' +
-                ", city='" + city + '\'' +
                 ", countryCode='" + countryCode + '\'' +
-                ", commonName='" + commonName + '\'' +
-                ", ipDefault='" + ipDefault + '\'' +
-                ", ipNone='" + ipNone + '\'' +
-                ", ipStrong='" + ipStrong + '\'' +
-                ", ipStealth='" + ipStealth + '\'' +
+                ", regionName='" + regionName + '\'' +
+                ", ovHostname='" + ovHostname + '\'' +
+                ", ovDefault='" + ovDefault + '\'' +
+                ", ovNone='" + ovNone + '\'' +
+                ", ovStrong='" + ovStrong + '\'' +
+                ", ovStealth='" + ovStealth + '\'' +
                 ", nationalFlagUrl='" + nationalFlagUrl + '\'' +
                 ", favorited=" + favorited +
                 ", selected=" + selected +
@@ -142,8 +142,8 @@ public class Location implements RealmModel {
         return id != null ? id.hashCode() : 0;
     }
 
-    private static String calcId(String countryCode, String city) {
-        final String str = countryCode + "##" + city;
+    private static String calcId(String countryCode, String regionName) {
+        final String str = countryCode + "##" + regionName;
 
         try {
             final MessageDigest md = MessageDigest.getInstance("SHA-256");

@@ -59,7 +59,8 @@ import rx.subscriptions.Subscriptions;
 
 public class MainActivity extends AppCompatActivity
         implements VpnStatus.StateListener, RateDialogFragment.RateDialogListener,
-        ConnectConfirmationDialogFragment.ConnectDialogListener {
+        ConnectConfirmationDialogFragment.ConnectDialogListener,
+        LocationFragment.LocationFragmentListener {
 
     public static final String AUTO_START = "com.cypherpunk.android.vpn.AUTO_START";
 
@@ -71,6 +72,7 @@ public class MainActivity extends AppCompatActivity
     private CypherpunkVpnStatus status;
     private Subscription subscription = Subscriptions.empty();
     private LocationFragment locationFragment;
+    private BottomSheetBehavior behavior;
     private Realm realm;
 
     @Inject
@@ -146,7 +148,7 @@ public class MainActivity extends AppCompatActivity
         fm.add(R.id.bottom_sheet, locationFragment);
         fm.commit();
 
-        BottomSheetBehavior behavior = BottomSheetBehavior.from(binding.bottomSheet);
+        behavior = BottomSheetBehavior.from(binding.bottomSheet);
         behavior.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
             @Override
             public void onStateChanged(@NonNull View bottomSheet, int newState) {
@@ -356,5 +358,16 @@ public class MainActivity extends AppCompatActivity
         BottomSheetBehavior behavior = BottomSheetBehavior.from(binding.bottomSheet);
         behavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
         stopVpn();
+    }
+
+    @Override
+    public void toggleBottomSheetState() {
+        switch (behavior.getState()) {
+            case BottomSheetBehavior.STATE_COLLAPSED:
+                behavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+                break;
+            case BottomSheetBehavior.STATE_EXPANDED:
+                behavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+        }
     }
 }

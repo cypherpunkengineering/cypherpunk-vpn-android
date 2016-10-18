@@ -1,5 +1,6 @@
 package com.cypherpunk.android.vpn.ui.main;
 
+import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -47,6 +48,19 @@ public class LocationFragment extends Fragment {
 
     @Inject
     CypherpunkService webService;
+    private LocationFragmentListener listener;
+
+    public interface LocationFragmentListener {
+        void toggleBottomSheetState();
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (context instanceof LocationFragmentListener) {
+            listener = (LocationFragmentListener) context;
+        }
+    }
 
     @Nullable
     @Override
@@ -66,7 +80,7 @@ public class LocationFragment extends Fragment {
         getServerList();
         Location location = realm.where(Location.class).equalTo("selected", true).findFirst();
         if (location != null) {
-            binding.region.setText(location.getCity());
+            binding.region.setText(location.getRegionName());
             Picasso.with(getActivity()).load(location.getNationalFlagUrl()).into(binding.nationalFlag);
         }
 
@@ -97,11 +111,18 @@ public class LocationFragment extends Fragment {
                         ConnectConfirmationDialogFragment.newInstance(location.getId());
                 dialogFragment.show(getChildFragmentManager());
 
-                binding.region.setText(location.getCity());
+                binding.region.setText(location.getRegionName());
                 Picasso.with(getActivity()).load(location.getNationalFlagUrl()).into(binding.nationalFlag);
             }
         };
         binding.list.setAdapter(adapter);
+
+        binding.regionContainer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                listener.toggleBottomSheetState();
+            }
+        });
     }
 
     @Override
@@ -138,18 +159,18 @@ public class LocationFragment extends Fragment {
                                    for (Map.Entry<String, Map<String, LocationResult[]>> area : result.entrySet()) {
                                        Set<Map.Entry<String, LocationResult[]>> areaSet = area.getValue().entrySet();
                                        for (Map.Entry<String, LocationResult[]> country : areaSet) {
-                                           LocationResult[] cities = country.getValue();
-                                           for (LocationResult city : cities) {
+                                           LocationResult[] regions = country.getValue();
+                                           for (LocationResult region : regions) {
                                                // TODO: hostname, flag url
                                                locations.add(new Location(
-                                                       city.getCity(),
                                                        country.getKey(),
-                                                       city.getCommonName(),
-                                                       city.getIpDefault(),
-                                                       city.getIpNone(),
-                                                       city.getIpStrong(),
-                                                       city.getIpStealth(),
-                                                       "http://flags.fmcdn.net/data/flags/normal/jp.png"));
+                                                       region.getRegionName(),
+                                                       region.getOvHostname(),
+                                                       region.getOvDefault(),
+                                                       region.getOvNone(),
+                                                       region.getOvStrong(),
+                                                       region.getOvStealth(),
+                                                       "http://flags.fmcdn.net/data/flags/normal/" + country.getKey().toLowerCase() + ".png"));
                                            }
                                        }
                                    }
@@ -159,7 +180,7 @@ public class LocationFragment extends Fragment {
                                    first.setSelected(true);
                                    realm.commitTransaction();
 
-                                   binding.region.setText(first.getCity());
+                                   binding.region.setText(first.getRegionName());
                                    Picasso.with(getActivity()).load(first.getNationalFlagUrl()).into(binding.nationalFlag);
                                    adapter.addAll(getLocation());
                                }
