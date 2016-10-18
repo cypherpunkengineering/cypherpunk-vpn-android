@@ -1,12 +1,15 @@
 package com.cypherpunk.android.vpn.ui.main;
 
 import android.content.Intent;
+import android.content.res.Resources;
 import android.databinding.DataBindingUtil;
 import android.graphics.Paint;
+import android.graphics.Rect;
 import android.net.Uri;
 import android.net.VpnService;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.BottomSheetBehavior;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.TaskStackBuilder;
@@ -18,10 +21,13 @@ import android.text.SpannableStringBuilder;
 import android.text.Spanned;
 import android.text.TextUtils;
 import android.text.style.TextAppearanceSpan;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.CompoundButton;
 
 import com.cypherpunk.android.vpn.CypherpunkApplication;
@@ -64,6 +70,7 @@ public class MainActivity extends AppCompatActivity
     private ActivityMainBinding binding;
     private CypherpunkVpnStatus status;
     private Subscription subscription = Subscriptions.empty();
+    private LocationFragment locationFragment;
     private Realm realm;
 
     @Inject
@@ -135,9 +142,35 @@ public class MainActivity extends AppCompatActivity
         VpnStatus.addStateListener(this);
 
         FragmentTransaction fm = getSupportFragmentManager().beginTransaction();
-        LocationFragment locationFragment = new LocationFragment();
+        locationFragment = new LocationFragment();
         fm.add(R.id.bottom_sheet, locationFragment);
         fm.commit();
+
+        BottomSheetBehavior behavior = BottomSheetBehavior.from(binding.bottomSheet);
+        behavior.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
+            @Override
+            public void onStateChanged(@NonNull View bottomSheet, int newState) {
+                switch (newState) {
+                    case BottomSheetBehavior.STATE_COLLAPSED:
+                        locationFragment.toggleAllowIcon(false);
+                        break;
+                    case BottomSheetBehavior.STATE_EXPANDED:
+                        locationFragment.toggleAllowIcon(true);
+                }
+            }
+
+            @Override
+            public void onSlide(@NonNull View bottomSheet, float slideOffset) {
+
+            }
+        });
+    }
+
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+        super.onWindowFocusChanged(hasFocus);
+        ViewGroup.LayoutParams layoutParams = binding.bottomSheet.getLayoutParams();
+        layoutParams.height = getBottomSheetMaximumHeight();
     }
 
     @Override
@@ -296,6 +329,19 @@ public class MainActivity extends AppCompatActivity
         sb.setSpan(new TextAppearanceSpan(this, R.style.TextAppearance_Cypherpunk_Yellow), 0, 7, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
 //        binding.signUpButton.setText(sb);
 //        binding.signUpButton.setVisibility(View.VISIBLE);
+    }
+
+    private int getStatusBarHeight() {
+        final Rect rect = new Rect();
+        Window window = getWindow();
+        window.getDecorView().getWindowVisibleDisplayFrame(rect);
+        return rect.top;
+    }
+
+    private int getBottomSheetMaximumHeight() {
+        DisplayMetrics dm = Resources.getSystem().getDisplayMetrics();
+        int toolbarHeight = binding.toolbar.getHeight();
+        return dm.heightPixels - toolbarHeight - getStatusBarHeight();
     }
 
     @Override

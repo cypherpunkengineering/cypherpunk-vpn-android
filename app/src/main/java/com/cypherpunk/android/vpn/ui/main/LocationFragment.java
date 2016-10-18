@@ -111,6 +111,10 @@ public class LocationFragment extends Fragment {
         subscription.unsubscribe();
     }
 
+    public void toggleAllowIcon(boolean more) {
+        binding.allow.setImageResource(more ? R.drawable.expand_more_vector : R.drawable.expand_less_vector);
+    }
+
     private ArrayList<Location> getLocation() {
         RealmResults<Location> locationList = realm.where(Location.class).findAll();
         return new ArrayList<>(locationList);
