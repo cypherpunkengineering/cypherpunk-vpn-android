@@ -99,7 +99,8 @@ public class BinarySurfaceView extends SurfaceView implements SurfaceHolder.Call
              */
             if (android.os.Build.BRAND.equalsIgnoreCase("google") &&
                     android.os.Build.MANUFACTURER.equalsIgnoreCase("asus") &&
-                    android.os.Build.MODEL.equalsIgnoreCase("Nexus 7")) {
+                    android.os.Build.MODEL.equalsIgnoreCase("Nexus 7"))
+            {
                 SystemClock.sleep(500);
             }
 
@@ -126,33 +127,42 @@ public class BinarySurfaceView extends SurfaceView implements SurfaceHolder.Call
             }
         }
 
-        private void drawTiles() {
-            final SurfaceHolder holder = getHolder();
+        private void drawTiles()
+        {
             // see http://stackoverflow.com/questions/15770467/drawing-surface-unlockcanvasandpost-and-illegalargumentexception
+
+            final SurfaceHolder holder = getHolder();
             final Surface surface = holder.getSurface();
-            try {
-                if (surface == null || !surface.isValid()) {
-                    return;
-                }
-            } catch (Exception e) {
-                Log.e(TAG, "exception thrown in drawTiles()", e);
+
+            if (surface == null || !surface.isValid())
                 return;
-            }
+
             final Canvas canvas = holder.lockCanvas();
-            if (canvas == null) {
-                return;
-            }
-            try {
+
+            try
+            {
                 //noinspection SynchronizationOnLocalVariableOrMethodParameter
-                synchronized (holder) {
+                synchronized (holder)
+                {
                     final int state = BinarySurfaceView.this.connectionState;
                     final long elapsedTime = SystemClock.uptimeMillis() - baseTime;
                     final float distance = elapsedTime * scrollDistancePerMilliSec;
-                    background.draw(canvas);
-                    tileDrawable.draw(canvas, distance, state);
+                    if (canvas != null)
+                    {
+                        background.draw(canvas);
+                        tileDrawable.draw(canvas, distance, state);
+                    }
                 }
-            } finally {
-                holder.unlockCanvasAndPost(canvas);
+            }
+            catch (Exception e)
+            {
+                Log.e(TAG, "exception thrown in drawTiles()", e);
+                return;
+            }
+            finally
+            {
+                if (canvas != null)
+                    holder.unlockCanvasAndPost(canvas);
             }
         }
     }
