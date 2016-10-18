@@ -9,6 +9,7 @@ import android.net.Uri;
 import android.net.VpnService;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.BottomSheetBehavior;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.TaskStackBuilder;
@@ -69,6 +70,7 @@ public class MainActivity extends AppCompatActivity
     private ActivityMainBinding binding;
     private CypherpunkVpnStatus status;
     private Subscription subscription = Subscriptions.empty();
+    private LocationFragment locationFragment;
     private Realm realm;
 
     @Inject
@@ -140,9 +142,28 @@ public class MainActivity extends AppCompatActivity
         VpnStatus.addStateListener(this);
 
         FragmentTransaction fm = getSupportFragmentManager().beginTransaction();
-        LocationFragment locationFragment = new LocationFragment();
+        locationFragment = new LocationFragment();
         fm.add(R.id.bottom_sheet, locationFragment);
         fm.commit();
+
+        BottomSheetBehavior behavior = BottomSheetBehavior.from(binding.bottomSheet);
+        behavior.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
+            @Override
+            public void onStateChanged(@NonNull View bottomSheet, int newState) {
+                switch (newState) {
+                    case BottomSheetBehavior.STATE_COLLAPSED:
+                        locationFragment.toggleAllowIcon(false);
+                        break;
+                    case BottomSheetBehavior.STATE_EXPANDED:
+                        locationFragment.toggleAllowIcon(true);
+                }
+            }
+
+            @Override
+            public void onSlide(@NonNull View bottomSheet, float slideOffset) {
+
+            }
+        });
     }
 
     @Override
