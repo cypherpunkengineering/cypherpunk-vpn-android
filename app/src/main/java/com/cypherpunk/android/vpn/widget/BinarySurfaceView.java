@@ -100,9 +100,8 @@ public class BinarySurfaceView extends SurfaceView implements SurfaceHolder.Call
                 drawTiles();
                 final long now = SystemClock.uptimeMillis();
                 final long elapsed = now - lastDrawTime;
-                if (elapsed < minDrawingTime) {
-                    SystemClock.sleep(minDrawingTime - elapsed);
-                }
+
+                SystemClock.sleep(Math.max(minDrawingTime - elapsed, 10));
                 if (DUMP_FPS) {
                     actualFps++;
                     if (now % 1000 < lastDrawTime % 1000) {
