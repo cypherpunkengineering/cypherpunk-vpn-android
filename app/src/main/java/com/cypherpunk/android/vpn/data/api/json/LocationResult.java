@@ -3,63 +3,63 @@ package com.cypherpunk.android.vpn.data.api.json;
 
 public class LocationResult
 {
-    private String city;
+    private String regionName;
 
-    private String commonName;
+    private String ovHostname;
 
-    private String ipDefault;
+    private String ovDefault;
 
-    private String ipNone;
+    private String ovNone;
 
-    private String ipStrong;
+    private String ovStrong;
 
-    private String ipStealth;
+    private String ovStealth;
 
-    public String getCity() {
-        return city;
+    public String getRegionName() {
+        return regionName;
     }
 
-    public void setCity(String city) {
-        this.city = city;
+    public void setRegionName(String regionName) {
+        this.regionName = regionName;
     }
 
-    public String getCommonName() {
-        return commonName;
+    public String getOvHostname() {
+        return ovHostname;
     }
 
-    public void setCommonName(String commonName) {
-        this.commonName = commonName;
+    public void setOvHostname(String ovHostname) {
+        this.ovHostname = ovHostname;
     }
 
-    public String getIpDefault() {
-        return ipDefault;
+    public String getOvDefault() {
+        return ovDefault;
     }
 
-    public void setIpDefault(String ipDefault) {
-        this.ipDefault = ipDefault;
+    public void setOvDefault(String ovDefault) {
+        this.ovDefault = ovDefault;
     }
 
-    public String getIpNone() {
-        return ipNone;
+    public String getOvNone() {
+        return ovNone;
     }
 
-    public void setIpNone(String ipNone) {
-        this.ipNone = ipNone;
+    public void setOvNone(String ovNone) {
+        this.ovNone = ovNone;
     }
 
-    public String getIpStrong() {
-        return ipStrong;
+    public String getOvStrong() {
+        return ovStrong;
     }
 
-    public void setIpStrong(String ipStrong) {
-        this.ipStrong = ipStrong;
+    public void setOvStrong(String ovStrong) {
+        this.ovStrong = ovStrong;
     }
 
-    public String getIpStealth() {
-        return ipStealth;
+    public String getOvStealth() {
+        return ovStealth;
     }
 
-    public void setIpStealth(String ipStealth) {
-        this.ipStealth = ipStealth;
+    public void setOvStealth(String ovStealth) {
+        this.ovStealth = ovStealth;
     }
 }

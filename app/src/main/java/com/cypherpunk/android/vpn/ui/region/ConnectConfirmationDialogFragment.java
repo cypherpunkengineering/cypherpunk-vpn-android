@@ -56,7 +56,7 @@ public class ConnectConfirmationDialogFragment extends DialogFragment {
         String locationId = getArguments().getString(ARGS_LOCATION_ID);
         Realm realm = Realm.getDefaultInstance();
         Location location = realm.where(Location.class).equalTo("id", locationId).findFirst();
-        textView.setText(location.getCity());
+        textView.setText(location.getRegionName());
         realm.close();
         view.findViewById(R.id.rate_button).setOnClickListener(new View.OnClickListener() {
             @Override
