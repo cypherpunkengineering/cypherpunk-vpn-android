@@ -7,7 +7,7 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <android.support.v4.view.ViewPager
+        <com.cypherpunk.android.vpn.widget.UnswipeablePager
             android:id="@+id/pager"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -22,7 +22,7 @@
             android:layout_above="@+id/do_not_allow_button"
             android:layout_centerHorizontal="true"
             android:layout_marginBottom="16dp"
-            tools:text="Start Cypherpunk" />
+            android:text="@string/tutorial_allow" />
 
         <com.cypherpunk.android.vpn.widget.TypefaceTextView
             android:id="@id/do_not_allow_button"

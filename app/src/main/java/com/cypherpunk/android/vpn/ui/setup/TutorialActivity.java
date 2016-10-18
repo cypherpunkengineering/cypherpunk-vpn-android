@@ -21,6 +21,7 @@ import com.cypherpunk.android.vpn.ui.main.MainActivity;
 public class TutorialActivity extends AppCompatActivity {
 
     private ActivityTutorialBinding binding;
+    private IntroductionPagerAdapter adapter;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -28,7 +29,7 @@ public class TutorialActivity extends AppCompatActivity {
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_tutorial);
 
-        final IntroductionPagerAdapter adapter = new IntroductionPagerAdapter(this);
+        adapter = new IntroductionPagerAdapter(this);
         binding.pager.setAdapter(adapter);
         binding.indicator.setViewPager(binding.pager);
         binding.pager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
@@ -63,6 +64,14 @@ public class TutorialActivity extends AppCompatActivity {
                 binding.pager.setCurrentItem(++currentItem);
             }
         });
+    }
+
+    @Override
+    public void onBackPressed() {
+        int currentItem = binding.pager.getCurrentItem();
+        if (currentItem != 0) {
+            binding.pager.setCurrentItem(--currentItem);
+        }
     }
 
     private static class IntroductionPagerAdapter extends PagerAdapter {
