@@ -1,8 +1,10 @@
 package com.cypherpunk.android.vpn.ui.main;
 
 import android.content.Intent;
+import android.content.res.Resources;
 import android.databinding.DataBindingUtil;
 import android.graphics.Paint;
+import android.graphics.Rect;
 import android.net.Uri;
 import android.net.VpnService;
 import android.os.Build;
@@ -18,10 +20,13 @@ import android.text.SpannableStringBuilder;
 import android.text.Spanned;
 import android.text.TextUtils;
 import android.text.style.TextAppearanceSpan;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.CompoundButton;
 
 import com.cypherpunk.android.vpn.CypherpunkApplication;
@@ -138,6 +143,13 @@ public class MainActivity extends AppCompatActivity
         LocationFragment locationFragment = new LocationFragment();
         fm.add(R.id.bottom_sheet, locationFragment);
         fm.commit();
+    }
+
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+        super.onWindowFocusChanged(hasFocus);
+        ViewGroup.LayoutParams layoutParams = binding.bottomSheet.getLayoutParams();
+        layoutParams.height = getBottomSheetMaximumHeight();
     }
 
     @Override
@@ -296,6 +308,19 @@ public class MainActivity extends AppCompatActivity
         sb.setSpan(new TextAppearanceSpan(this, R.style.TextAppearance_Cypherpunk_Yellow), 0, 7, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
 //        binding.signUpButton.setText(sb);
 //        binding.signUpButton.setVisibility(View.VISIBLE);
+    }
+
+    private int getStatusBarHeight() {
+        final Rect rect = new Rect();
+        Window window = getWindow();
+        window.getDecorView().getWindowVisibleDisplayFrame(rect);
+        return rect.top;
+    }
+
+    private int getBottomSheetMaximumHeight() {
+        DisplayMetrics dm = Resources.getSystem().getDisplayMetrics();
+        int toolbarHeight = binding.toolbar.getHeight();
+        return dm.heightPixels - toolbarHeight - getStatusBarHeight();
     }
 
     @Override
