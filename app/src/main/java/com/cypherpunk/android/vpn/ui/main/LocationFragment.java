@@ -1,5 +1,6 @@
 package com.cypherpunk.android.vpn.ui.main;
 
+import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -47,6 +48,19 @@ public class LocationFragment extends Fragment {
 
     @Inject
     CypherpunkService webService;
+    private LocationFragmentListener listener;
+
+    public interface LocationFragmentListener {
+        void toggleBottomSheetState();
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (context instanceof LocationFragmentListener) {
+            listener = (LocationFragmentListener) context;
+        }
+    }
 
     @Nullable
     @Override
@@ -102,6 +116,13 @@ public class LocationFragment extends Fragment {
             }
         };
         binding.list.setAdapter(adapter);
+
+        binding.regionContainer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                listener.toggleBottomSheetState();
+            }
+        });
     }
 
     @Override
