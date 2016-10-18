@@ -1,5 +1,6 @@
 package com.cypherpunk.android.vpn.dagger;
 
+import com.cypherpunk.android.vpn.BuildConfig;
 import com.cypherpunk.android.vpn.CypherpunkApplication;
 
 import javax.inject.Singleton;
@@ -19,7 +20,11 @@ public class RealmModule {
     @Provides
     @Singleton
     public RealmConfiguration provideRealmConfiguration(CypherpunkApplication app) {
-        return new RealmConfiguration.Builder(app).build();
+        final RealmConfiguration.Builder builder = new RealmConfiguration.Builder(app);
+        if (BuildConfig.DEBUG) {
+            builder.deleteRealmIfMigrationNeeded();
+        }
+        return builder.build();
     }
 
     @Provides
