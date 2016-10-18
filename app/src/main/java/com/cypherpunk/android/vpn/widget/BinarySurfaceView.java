@@ -18,6 +18,7 @@ import android.support.v4.util.Pair;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.util.SparseArray;
+import android.view.Surface;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
@@ -92,6 +93,16 @@ public class BinarySurfaceView extends SurfaceView implements SurfaceHolder.Call
 
         @Override
         public void run() {
+            /**
+             * In order to work reliable on Nexus 7, we place ~500ms delay at the start of drawing thread
+             * (AOSP - Issue 58385)
+             */
+            if (android.os.Build.BRAND.equalsIgnoreCase("google") &&
+                    android.os.Build.MANUFACTURER.equalsIgnoreCase("asus") &&
+                    android.os.Build.MODEL.equalsIgnoreCase("Nexus 7")) {
+                SystemClock.sleep(500);
+            }
+
             final long minDrawingTime = 1000L / FPS;
             long lastDrawTime = SystemClock.uptimeMillis();
             baseTime = lastDrawTime;
@@ -117,18 +128,29 @@ public class BinarySurfaceView extends SurfaceView implements SurfaceHolder.Call
 
         private void drawTiles() {
             final SurfaceHolder holder = getHolder();
-            Canvas canvas = holder.lockCanvas();
+            // see http://stackoverflow.com/questions/15770467/drawing-surface-unlockcanvasandpost-and-illegalargumentexception
+            final Surface surface = holder.getSurface();
+            try {
+                if (surface == null || !surface.isValid()) {
+                    return;
+                }
+            } catch (Exception e) {
+                Log.e(TAG, "exception thrown in drawTiles()", e);
+                return;
+            }
+            final Canvas canvas = holder.lockCanvas();
             if (canvas == null) {
                 return;
             }
             try {
-                final int state = BinarySurfaceView.this.connectionState;
-                final long elapsedTime = SystemClock.uptimeMillis() - baseTime;
-                final float distance = elapsedTime * scrollDistancePerMilliSec;
-                background.draw(canvas);
-                tileDrawable.draw(canvas, distance, state);
-            } catch (Exception e) {
-                Log.e(TAG, "exception thrown in drawTiles()", e);
+                //noinspection SynchronizationOnLocalVariableOrMethodParameter
+                synchronized (holder) {
+                    final int state = BinarySurfaceView.this.connectionState;
+                    final long elapsedTime = SystemClock.uptimeMillis() - baseTime;
+                    final float distance = elapsedTime * scrollDistancePerMilliSec;
+                    background.draw(canvas);
+                    tileDrawable.draw(canvas, distance, state);
+                }
             } finally {
                 holder.unlockCanvasAndPost(canvas);
             }
