@@ -17,12 +17,11 @@ import com.cypherpunk.android.vpn.R;
 import com.cypherpunk.android.vpn.databinding.ActivityTutorialBinding;
 import com.cypherpunk.android.vpn.ui.main.MainActivity;
 
-/**
- * (Unused)
- */
+
 public class TutorialActivity extends AppCompatActivity {
 
     private ActivityTutorialBinding binding;
+    private IntroductionPagerAdapter adapter;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -30,42 +29,55 @@ public class TutorialActivity extends AppCompatActivity {
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_tutorial);
 
-        final IntroductionPagerAdapter adapter = new IntroductionPagerAdapter(this);
+        adapter = new IntroductionPagerAdapter(this);
         binding.pager.setAdapter(adapter);
         binding.indicator.setViewPager(binding.pager);
         binding.pager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
             @Override
             public void onPageSelected(int position) {
                 super.onPageSelected(position);
-                binding.skipButton.setVisibility(position == adapter.getCount() - 1 ? View.GONE : View.VISIBLE);
-                binding.tutorialFinishButton.setVisibility(
-                        position == adapter.getCount() - 1 ? View.VISIBLE : View.GONE);
+                binding.doNotAllowButton.setVisibility(position == 1 ? View.VISIBLE : View.INVISIBLE);
+                binding.okButton.setText(
+                        position == adapter.getCount() - 1 ? R.string.tutorial_start : R.string.tutorial_allow);
             }
         });
 
-        binding.tutorialFinishButton.setOnClickListener(new View.OnClickListener() {
+        binding.okButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(TutorialActivity.this, MainActivity.class);
-                TaskStackBuilder builder = TaskStackBuilder.create(TutorialActivity.this);
-                builder.addNextIntent(intent);
-                builder.startActivities();
+                int currentItem = binding.pager.getCurrentItem();
+                if (currentItem == adapter.getCount() - 1) {
+                    Intent intent = new Intent(TutorialActivity.this, MainActivity.class);
+                    TaskStackBuilder builder = TaskStackBuilder.create(TutorialActivity.this);
+                    builder.addNextIntent(intent);
+                    builder.startActivities();
+                } else {
+                    binding.pager.setCurrentItem(++currentItem);
+                }
             }
         });
 
-        binding.skipButton.setOnClickListener(new View.OnClickListener() {
+        binding.doNotAllowButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
+            public void onClick(View v) {
                 int currentItem = binding.pager.getCurrentItem();
                 binding.pager.setCurrentItem(++currentItem);
             }
         });
     }
 
+    @Override
+    public void onBackPressed() {
+        int currentItem = binding.pager.getCurrentItem();
+        if (currentItem != 0) {
+            binding.pager.setCurrentItem(--currentItem);
+        }
+    }
+
     private static class IntroductionPagerAdapter extends PagerAdapter {
 
-        private static final int[] layouts = {R.layout.introduction, R.layout.introduction,
-                R.layout.introduction};
+        private static final int[] layouts = {R.layout.tutorial_1, R.layout.tutorial_2,
+                R.layout.tutorial_1};
 
         private final LayoutInflater inflater;
 
