@@ -137,8 +137,10 @@ public class LocationFragment extends Fragment {
                                            LocationResult[] cities = country.getValue();
                                            for (LocationResult city : cities) {
                                                // TODO: hostname, flag url
-                                               locations.add(new Location(city.getCity(),
-                                                       country.getKey(), "",
+                                               locations.add(new Location(
+                                                       city.getCity(),
+                                                       country.getKey(),
+                                                       city.getCommonName(),
                                                        city.getIpDefault(),
                                                        city.getIpNone(),
                                                        city.getIpStrong(),

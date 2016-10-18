@@ -1,24 +1,42 @@
 package com.cypherpunk.android.vpn.data.api.json;
 
 
-public class LocationResult {
+public class LocationResult
+{
+    private String city;
 
-    private String ipStealth;
+    private String commonName;
+
+    private String ipDefault;
 
     private String ipNone;
 
     private String ipStrong;
 
-    private String ipDefault;
+    private String ipStealth;
 
-    private String city;
-
-    public String getIpStealth() {
-        return ipStealth;
+    public String getCity() {
+        return city;
     }
 
-    public void setIpStealth(String ipStealth) {
-        this.ipStealth = ipStealth;
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public String getCommonName() {
+        return commonName;
+    }
+
+    public void setCommonName(String commonName) {
+        this.commonName = commonName;
+    }
+
+    public String getIpDefault() {
+        return ipDefault;
+    }
+
+    public void setIpDefault(String ipDefault) {
+        this.ipDefault = ipDefault;
     }
 
     public String getIpNone() {
@@ -37,19 +55,11 @@ public class LocationResult {
         this.ipStrong = ipStrong;
     }
 
-    public String getIpDefault() {
-        return ipDefault;
+    public String getIpStealth() {
+        return ipStealth;
     }
 
-    public void setIpDefault(String ipDefault) {
-        this.ipDefault = ipDefault;
-    }
-
-    public String getCity() {
-        return city;
-    }
-
-    public void setCity(String city) {
-        this.city = city;
+    public void setIpStealth(String ipStealth) {
+        this.ipStealth = ipStealth;
     }
 }
