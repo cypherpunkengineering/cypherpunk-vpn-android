@@ -44,7 +44,7 @@ public class LocationAdapter extends RecyclerView.Adapter<LocationAdapter.ViewHo
         ListItemLocationBinding binding = holder.getBinding();
 
         final Location item = items.get(position);
-        binding.location.setText(item.getCity());
+        binding.location.setText(item.getRegionName());
         binding.favorite.setChecked(item.isFavorited());
         binding.favorite.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
