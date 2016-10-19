@@ -5,6 +5,7 @@ import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +17,7 @@ import com.cypherpunk.android.vpn.data.api.UserManager;
 import com.cypherpunk.android.vpn.data.api.json.LocationResult;
 import com.cypherpunk.android.vpn.data.api.json.LoginRequest;
 import com.cypherpunk.android.vpn.databinding.FragmentLocationBinding;
+import com.cypherpunk.android.vpn.model.CypherpunkSetting;
 import com.cypherpunk.android.vpn.model.FavoriteRegion;
 import com.cypherpunk.android.vpn.model.Location;
 import com.cypherpunk.android.vpn.ui.region.ConnectConfirmationDialogFragment;
@@ -79,8 +81,9 @@ public class LocationFragment extends Fragment {
         realm = Realm.getDefaultInstance();
 
         getServerList();
-        Location location = realm.where(Location.class).equalTo("selected", true).findFirst();
-        if (location != null) {
+        CypherpunkSetting setting = new CypherpunkSetting();
+        if (!TextUtils.isEmpty(setting.locationId)) {
+            Location location = realm.where(Location.class).equalTo("id", setting.locationId).findFirst();
             binding.region.setText(location.getRegionName());
             Picasso.with(getActivity()).load(location.getNationalFlagUrl()).into(binding.nationalFlag);
         }
@@ -104,21 +107,20 @@ public class LocationFragment extends Fragment {
             }
 
             @Override
-            protected void onItemClick(final Location location) {
-                Location selected = realm.where(Location.class).equalTo("selected", true).findFirst();
-                if (selected.getId().equals(location.getId())) {
+            protected void onItemClick(final String locationId) {
+                CypherpunkSetting setting = new CypherpunkSetting();
+                if (setting.locationId.equals(locationId)) {
                     // 既に選択されている
                     return;
                 }
-                realm.beginTransaction();
-                selected.setSelected(false);
-                location.setSelected(true);
-                realm.commitTransaction();
+                setting.locationId = locationId;
+                setting.save();
 
                 ConnectConfirmationDialogFragment dialogFragment =
-                        ConnectConfirmationDialogFragment.newInstance(location.getId());
+                        ConnectConfirmationDialogFragment.newInstance(locationId);
                 dialogFragment.show(getChildFragmentManager());
 
+                Location location = realm.where(Location.class).equalTo("id", locationId).findFirst();
                 binding.region.setText(location.getRegionName());
                 Picasso.with(getActivity()).load(location.getNationalFlagUrl()).into(binding.nationalFlag);
             }
@@ -193,13 +195,19 @@ public class LocationFragment extends Fragment {
                                    locationList.deleteAllFromRealm();
 
                                    realm.copyToRealm(locations);
-                                   Location first = realm.where(Location.class).findFirst();
-                                   first.setSelected(true);
                                    realm.commitTransaction();
 
-                                   binding.region.setText(first.getRegionName());
-                                   Picasso.with(getActivity()).load(first.getNationalFlagUrl()).into(binding.nationalFlag);
-                                   adapter.addAll(getLocation());
+                                   // TODO: 一番上のを選択している
+                                   CypherpunkSetting setting = new CypherpunkSetting();
+                                   if (TextUtils.isEmpty(setting.locationId)) {
+                                       Location first = realm.where(Location.class).findFirst();
+                                       setting.locationId = first.getId();
+                                       setting.save();
+
+                                       binding.region.setText(first.getRegionName());
+                                       Picasso.with(getActivity()).load(first.getNationalFlagUrl()).into(binding.nationalFlag);
+                                       adapter.addAll(getLocation());
+                                   }
                                }
 
                                @Override
