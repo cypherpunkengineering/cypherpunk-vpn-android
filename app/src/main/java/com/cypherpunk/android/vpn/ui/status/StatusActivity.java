@@ -78,7 +78,7 @@ public class StatusActivity extends AppCompatActivity implements VpnStatus.State
             getIpAddress();
         }
 
-        Realm realm = Realm.getDefaultInstance();
+        Realm realm = CypherpunkApplication.instance.getAppComponent().getDefaultRealm();
         location = realm.where(Location.class).equalTo(
                 "id", getIntent().getStringExtra(EXTRA_LOCATION_ID)).findFirst();
         realm.close();

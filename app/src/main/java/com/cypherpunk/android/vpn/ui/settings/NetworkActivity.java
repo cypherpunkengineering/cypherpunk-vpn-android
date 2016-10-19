@@ -16,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CompoundButton;
 
+import com.cypherpunk.android.vpn.CypherpunkApplication;
 import com.cypherpunk.android.vpn.R;
 import com.cypherpunk.android.vpn.databinding.ActivityNetworkBinding;
 import com.cypherpunk.android.vpn.databinding.ListItemWifiBinding;
@@ -50,7 +51,7 @@ public class NetworkActivity extends AppCompatActivity {
         }
         cypherpunkSetting = new CypherpunkSetting();
 
-        realm = Realm.getDefaultInstance();
+        realm = CypherpunkApplication.instance.getAppComponent().getDefaultRealm();
 
         NetworkAdapter adapter = new NetworkAdapter(getNetworks(), buildListHeader()) {
             @Override

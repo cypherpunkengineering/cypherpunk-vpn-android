@@ -8,6 +8,7 @@ import com.cypherpunk.android.vpn.ui.status.StatusActivity;
 import javax.inject.Singleton;
 
 import dagger.Component;
+import io.realm.Realm;
 
 @Component(modules = {RealmModule.class, ClientModule.class})
 @Singleton
@@ -20,4 +21,6 @@ public interface AppComponent {
     void inject(StatusActivity target);
 
     void inject(LocationFragment target);
+
+    Realm getDefaultRealm();
 }

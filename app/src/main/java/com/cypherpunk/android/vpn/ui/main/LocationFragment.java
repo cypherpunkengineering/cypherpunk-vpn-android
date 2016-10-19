@@ -78,7 +78,7 @@ public class LocationFragment extends Fragment {
         ((CypherpunkApplication) getActivity().getApplication()).getAppComponent().inject(this);
         binding = DataBindingUtil.bind(getView());
 
-        realm = Realm.getDefaultInstance();
+        realm = CypherpunkApplication.instance.getAppComponent().getDefaultRealm();
 
         getServerList();
         CypherpunkSetting setting = new CypherpunkSetting();

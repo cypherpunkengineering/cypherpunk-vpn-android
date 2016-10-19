@@ -19,8 +19,8 @@ public class RealmModule {
 
     @Provides
     @Singleton
-    public RealmConfiguration provideRealmConfiguration(CypherpunkApplication app) {
-        final RealmConfiguration.Builder builder = new RealmConfiguration.Builder(app);
+    public RealmConfiguration provideRealmConfiguration() {
+        final RealmConfiguration.Builder builder = new RealmConfiguration.Builder();
         if (BuildConfig.DEBUG) {
             builder.deleteRealmIfMigrationNeeded();
         }
