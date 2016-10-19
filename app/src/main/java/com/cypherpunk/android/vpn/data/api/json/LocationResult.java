@@ -3,6 +3,8 @@ package com.cypherpunk.android.vpn.data.api.json;
 
 public class LocationResult
 {
+    private String id;
+
     private String regionName;
 
     private String ovHostname;
@@ -14,6 +16,14 @@ public class LocationResult
     private String ovStrong;
 
     private String ovStealth;
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
 
     public String getRegionName() {
         return regionName;

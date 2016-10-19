@@ -14,7 +14,6 @@ import io.realm.annotations.Required;
 
 @RealmClass
 public class Location implements RealmModel {
-    private static Charset s = Charset.forName("UTF-8");
 
     @PrimaryKey
     @Required
@@ -48,6 +47,7 @@ public class Location implements RealmModel {
 
     public Location
     (
+         @NonNull String id,
          @NonNull String countryCode,
          @NonNull String regionName,
 
@@ -61,6 +61,7 @@ public class Location implements RealmModel {
          @NonNull String nationalFlagUrl
     )
     {
+        this.countryCode = id;
         this.countryCode = countryCode;
         this.regionName = regionName;
 
@@ -72,8 +73,6 @@ public class Location implements RealmModel {
         this.ovStealth = ovStealth;
 
         this.nationalFlagUrl = nationalFlagUrl;
-
-        id = calcId(countryCode, regionName);
     }
 
     public String getId() { return id; }
@@ -140,18 +139,5 @@ public class Location implements RealmModel {
     @Override
     public int hashCode() {
         return id != null ? id.hashCode() : 0;
-    }
-
-    private static String calcId(String countryCode, String regionName) {
-        final String str = countryCode + "##" + regionName;
-
-        try {
-            final MessageDigest md = MessageDigest.getInstance("SHA-256");
-            md.reset();
-            final byte[] digestBytes = md.digest(str.getBytes(s));
-            return Base64.encodeToString(digestBytes, Base64.NO_WRAP);
-        } catch (NoSuchAlgorithmException e) {
-            throw new RuntimeException(e);
-        }
     }
 }

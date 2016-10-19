@@ -163,6 +163,7 @@ public class LocationFragment extends Fragment {
                                            for (LocationResult region : regions) {
                                                // TODO: hostname, flag url
                                                locations.add(new Location(
+                                                       region.getId(),
                                                        country.getKey(),
                                                        region.getRegionName(),
                                                        region.getOvHostname(),
