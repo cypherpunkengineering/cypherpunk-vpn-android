@@ -23,10 +23,10 @@ public class LocationAdapter extends RecyclerView.Adapter<LocationAdapter.ViewHo
 
     private List<Location> items = new ArrayList<>();
 
-    protected void onFavorite(String locationId, boolean favorite) {
+    protected void onFavorite(@NonNull String locationId, boolean favorite) {
     }
 
-    protected void onItemClick(Location location) {
+    protected void onItemClick(@NonNull String locationId) {
     }
 
     LocationAdapter(List<Location> items) {
@@ -44,12 +44,12 @@ public class LocationAdapter extends RecyclerView.Adapter<LocationAdapter.ViewHo
         ListItemLocationBinding binding = holder.getBinding();
 
         final Location item = items.get(position);
-        final String id = item.getId();
+        final String locationId = item.getId();
         binding.location.setText(item.getRegionName());
         binding.favorite.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, final boolean b) {
-                    onFavorite(id, b);
+                onFavorite(locationId, b);
             }
         });
         binding.favorite.setChecked(item.isFavorited());
@@ -57,7 +57,7 @@ public class LocationAdapter extends RecyclerView.Adapter<LocationAdapter.ViewHo
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                onItemClick(item);
+                onItemClick(locationId);
             }
         });
 

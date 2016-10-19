@@ -53,4 +53,8 @@ public class CypherpunkSetting extends PrefModel {
     @PrefKey("vpn_disable_package_name")
     @DefaultString("")
     public String disableAppPackageName;
+
+    @PrefKey("cpn_location_id")
+    @DefaultString("")
+    public String locationId;
 }

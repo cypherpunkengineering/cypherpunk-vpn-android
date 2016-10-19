@@ -39,7 +39,6 @@ public class Location implements RealmModel {
     @Required
     private String nationalFlagUrl;
     private boolean favorited;
-    private boolean selected;
 
     @SuppressWarnings("unused")
     public Location() {
@@ -102,14 +101,6 @@ public class Location implements RealmModel {
         this.favorited = favorited;
     }
 
-    public boolean isSelected() {
-        return selected;
-    }
-
-    public void setSelected(boolean selected) {
-        this.selected = selected;
-    }
-
     @Override
     public String toString() {
         return "Region{" +
@@ -123,7 +114,6 @@ public class Location implements RealmModel {
                 ", ovStealth='" + ovStealth + '\'' +
                 ", nationalFlagUrl='" + nationalFlagUrl + '\'' +
                 ", favorited=" + favorited +
-                ", selected=" + selected +
                 '}';
     }
 
