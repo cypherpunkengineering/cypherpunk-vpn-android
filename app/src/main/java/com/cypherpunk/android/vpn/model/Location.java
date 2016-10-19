@@ -61,7 +61,7 @@ public class Location implements RealmModel {
          @NonNull String nationalFlagUrl
     )
     {
-        this.countryCode = id;
+        this.id = id;
         this.countryCode = countryCode;
         this.regionName = regionName;
 
