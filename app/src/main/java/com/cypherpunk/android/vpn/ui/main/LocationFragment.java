@@ -16,6 +16,7 @@ import com.cypherpunk.android.vpn.data.api.UserManager;
 import com.cypherpunk.android.vpn.data.api.json.LocationResult;
 import com.cypherpunk.android.vpn.data.api.json.LoginRequest;
 import com.cypherpunk.android.vpn.databinding.FragmentLocationBinding;
+import com.cypherpunk.android.vpn.model.FavoriteRegion;
 import com.cypherpunk.android.vpn.model.Location;
 import com.cypherpunk.android.vpn.ui.region.ConnectConfirmationDialogFragment;
 import com.squareup.picasso.Picasso;
@@ -86,13 +87,20 @@ public class LocationFragment extends Fragment {
 
         adapter = new LocationAdapter(getLocation()) {
             @Override
-            protected void onFavorite(final Location location, final boolean favorite) {
-                realm.executeTransaction(new Realm.Transaction() {
-                    @Override
-                    public void execute(Realm realm) {
-                        location.setFavorited(favorite);
+            protected void onFavorite(final String locationId, final boolean favorite) {
+                RealmResults<FavoriteRegion> result = realm.where(FavoriteRegion.class).equalTo("id", locationId).findAll();
+                Location location = realm.where(Location.class).equalTo("id", locationId).findFirst();
+
+                realm.beginTransaction();
+                location.setFavorited(favorite);
+                if (favorite) {
+                    if (result.size() == 0) {
+                        realm.copyToRealm(new FavoriteRegion(location.getId()));
                     }
-                });
+                } else {
+                    result.deleteAllFromRealm();
+                }
+                realm.commitTransaction();
             }
 
             @Override
@@ -161,8 +169,7 @@ public class LocationFragment extends Fragment {
                                        for (Map.Entry<String, LocationResult[]> country : areaSet) {
                                            LocationResult[] regions = country.getValue();
                                            for (LocationResult region : regions) {
-                                               // TODO: hostname, flag url
-                                               locations.add(new Location(
+                                               Location location = new Location(
                                                        region.getId(),
                                                        country.getKey(),
                                                        region.getRegionName(),
@@ -171,7 +178,13 @@ public class LocationFragment extends Fragment {
                                                        region.getOvNone(),
                                                        region.getOvStrong(),
                                                        region.getOvStealth(),
-                                                       "http://flags.fmcdn.net/data/flags/normal/" + country.getKey().toLowerCase() + ".png"));
+                                                       "http://flags.fmcdn.net/data/flags/normal/" + country.getKey().toLowerCase() + ".png");
+                                               long id = realm.where(FavoriteRegion.class)
+                                                       .equalTo("id", location.getId()).count();
+                                               if (id != 0) {
+                                                   location.setFavorited(true);
+                                               }
+                                               locations.add(location);
                                            }
                                        }
                                    }
