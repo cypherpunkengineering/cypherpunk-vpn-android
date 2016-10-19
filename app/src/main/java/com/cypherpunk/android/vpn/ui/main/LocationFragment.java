@@ -175,7 +175,10 @@ public class LocationFragment extends Fragment {
                                        }
                                    }
                                    realm.beginTransaction();
-                                   realm.copyToRealmOrUpdate(locations);
+                                   RealmResults<Location> locationList = realm.where(Location.class).findAll();
+                                   locationList.deleteAllFromRealm();
+
+                                   realm.copyToRealm(locations);
                                    Location first = realm.where(Location.class).findFirst();
                                    first.setSelected(true);
                                    realm.commitTransaction();
