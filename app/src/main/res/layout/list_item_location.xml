@@ -12,13 +12,13 @@
 
         <ImageView
             android:id="@id/national_flag"
-            android:layout_width="28dp"
-            android:layout_height="20dp"
+            android:layout_width="@dimen/national_flag_width"
+            android:layout_height="@dimen/national_flag_height"
             android:layout_centerVertical="true"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
             tools:ignore="ContentDescription"
-            tools:src="@drawable/national_flag_placeholder" />
+            tools:src="@drawable/flag_us" />
 
         <com.cypherpunk.android.vpn.widget.TypefaceTextView
             android:id="@+id/location"
