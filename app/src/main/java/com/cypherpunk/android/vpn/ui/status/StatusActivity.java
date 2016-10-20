@@ -18,7 +18,7 @@ import com.cypherpunk.android.vpn.R;
 import com.cypherpunk.android.vpn.data.api.JsonipService;
 import com.cypherpunk.android.vpn.data.api.json.JsonipResult;
 import com.cypherpunk.android.vpn.databinding.ActivityStatusBinding;
-import com.cypherpunk.android.vpn.model.Location;
+import com.cypherpunk.android.vpn.model.Region;
 import com.cypherpunk.android.vpn.vpn.CypherpunkVpnStatus;
 
 import javax.inject.Inject;
@@ -39,7 +39,7 @@ public class StatusActivity extends AppCompatActivity implements VpnStatus.State
     private ActivityStatusBinding binding;
     private CypherpunkVpnStatus status;
     private Subscription subscription = Subscriptions.empty();
-    private Location location;
+    private Region region;
 
     @Inject
     JsonipService webService;
@@ -78,7 +78,7 @@ public class StatusActivity extends AppCompatActivity implements VpnStatus.State
         }
 
         Realm realm = CypherpunkApplication.instance.getAppComponent().getDefaultRealm();
-        location = realm.where(Location.class).equalTo(
+        region = realm.where(Region.class).equalTo(
                 "id", getIntent().getStringExtra(EXTRA_LOCATION_ID)).findFirst();
         realm.close();
 
@@ -122,7 +122,7 @@ public class StatusActivity extends AppCompatActivity implements VpnStatus.State
 
                 if (connected) {
 //                    binding.map.setNewPosition(location.getMapX(), location.getMapY());
-                    binding.newLocation.setText(location.getRegionName());
+                    binding.newLocation.setText(region.getRegionName());
 //                    Picasso.with(StatusActivity.this).load(location.getNationalFlagUrl()).into(binding.newNationalFlag);
                 }
                 binding.map.setNewPositionVisibility(connected);

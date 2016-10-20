@@ -11,7 +11,7 @@
         android:orientation="horizontal">
 
         <ImageView
-            android:id="@id/national_flag"
+            android:id="@+id/national_flag"
             android:layout_width="@dimen/national_flag_width"
             android:layout_height="@dimen/national_flag_height"
             android:layout_centerVertical="true"
@@ -21,7 +21,7 @@
             tools:src="@drawable/flag_us" />
 
         <com.cypherpunk.android.vpn.widget.TypefaceTextView
-            android:id="@+id/location"
+            android:id="@+id/region_name"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_centerVertical="true"
@@ -43,7 +43,7 @@
             android:layout_centerVertical="true"
             android:layout_marginEnd="8dp"
             android:layout_marginRight="16dp"
-            android:button="@drawable/location_star"
+            android:button="@drawable/region_star"
             android:gravity="center" />
 
     </RelativeLayout>

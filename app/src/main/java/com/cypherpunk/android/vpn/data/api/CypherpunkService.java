@@ -1,6 +1,6 @@
 package com.cypherpunk.android.vpn.data.api;
 
-import com.cypherpunk.android.vpn.data.api.json.LocationResult;
+import com.cypherpunk.android.vpn.data.api.json.RegionResult;
 import com.cypherpunk.android.vpn.data.api.json.LoginRequest;
 
 import java.util.Map;
@@ -23,5 +23,5 @@ public interface CypherpunkService
             @Body LoginRequest loginRequest);
 
     @GET("/api/vpn/serverList")
-    Single<Map<String, Map<String, LocationResult[]>>> serverList();
+    Single<Map<String, Map<String, RegionResult[]>>> serverList();
 }

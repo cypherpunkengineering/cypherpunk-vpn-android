@@ -15,14 +15,14 @@ import android.widget.TextView;
 
 import com.cypherpunk.android.vpn.CypherpunkApplication;
 import com.cypherpunk.android.vpn.R;
-import com.cypherpunk.android.vpn.model.Location;
+import com.cypherpunk.android.vpn.model.Region;
 
 import io.realm.Realm;
 
 
 public class ConnectConfirmationDialogFragment extends DialogFragment {
 
-    private static final String ARGS_LOCATION_ID = "location_id";
+    private static final String ARGS_REGION_ID = "region_id";
 
     public interface ConnectDialogListener {
         void onReconnectButtonClick();
@@ -30,10 +30,10 @@ public class ConnectConfirmationDialogFragment extends DialogFragment {
         void onNoReconnectButtonClick();
     }
 
-    public static ConnectConfirmationDialogFragment newInstance(@NonNull String locationId) {
+    public static ConnectConfirmationDialogFragment newInstance(@NonNull String regionId) {
         ConnectConfirmationDialogFragment f = new ConnectConfirmationDialogFragment();
         Bundle args = new Bundle();
-        args.putString(ARGS_LOCATION_ID, locationId);
+        args.putString(ARGS_REGION_ID, regionId);
         f.setArguments(args);
         return f;
     }
@@ -52,12 +52,12 @@ public class ConnectConfirmationDialogFragment extends DialogFragment {
     @Override
     public View onCreateView(LayoutInflater inflater,
                              @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = LayoutInflater.from(getActivity()).inflate(R.layout.dialog_location_connect_now, container, false);
+        View view = LayoutInflater.from(getActivity()).inflate(R.layout.dialog_region_connect_now, container, false);
         TextView textView = (TextView) view.findViewById(R.id.city_name);
-        String locationId = getArguments().getString(ARGS_LOCATION_ID);
+        String regionId = getArguments().getString(ARGS_REGION_ID);
         Realm realm = CypherpunkApplication.instance.getAppComponent().getDefaultRealm();
-        Location location = realm.where(Location.class).equalTo("id", locationId).findFirst();
-        textView.setText(location.getRegionName());
+        Region region = realm.where(Region.class).equalTo("id", regionId).findFirst();
+        textView.setText(region.getRegionName());
         realm.close();
         view.findViewById(R.id.rate_button).setOnClickListener(new View.OnClickListener() {
             @Override

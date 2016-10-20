@@ -1,11 +1,6 @@
 package com.cypherpunk.android.vpn.model;
 
 import android.support.annotation.NonNull;
-import android.util.Base64;
-
-import java.nio.charset.Charset;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 
 import io.realm.RealmModel;
 import io.realm.annotations.PrimaryKey;
@@ -13,7 +8,7 @@ import io.realm.annotations.RealmClass;
 import io.realm.annotations.Required;
 
 @RealmClass
-public class Location implements RealmModel {
+public class Region implements RealmModel {
 
     @PrimaryKey
     @Required
@@ -39,10 +34,10 @@ public class Location implements RealmModel {
     private boolean favorited;
 
     @SuppressWarnings("unused")
-    public Location() {
+    public Region() {
     }
 
-    public Location
+    public Region
     (
          @NonNull String id,
          @NonNull String countryCode,
@@ -111,10 +106,10 @@ public class Location implements RealmModel {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Location)) return false;
+        if (!(o instanceof Region)) return false;
 
-        final Location location = (Location) o;
-        return id != null ? id.equals(location.id) : location.id == null;
+        final Region region = (Region) o;
+        return id != null ? id.equals(region.id) : region.id == null;
     }
 
     @Override

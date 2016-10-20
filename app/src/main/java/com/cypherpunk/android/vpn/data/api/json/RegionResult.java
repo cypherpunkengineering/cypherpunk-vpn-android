@@ -1,7 +1,7 @@
 package com.cypherpunk.android.vpn.data.api.json;
 
 
-public class LocationResult
+public class RegionResult
 {
     private String id;
 
