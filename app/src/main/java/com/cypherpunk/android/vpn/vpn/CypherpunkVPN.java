@@ -102,6 +102,11 @@ public class CypherpunkVPN {
         try
         {
             conf = generateConfig(context);
+            if (conf == null)
+            {
+                log("Unable to generate OpenVPN profile!");
+                return;
+            }
             cp = new ConfigParser();
             cp.parseConfig(new StringReader(conf));
             vpnProfile = cp.convertProfile();
@@ -113,6 +118,7 @@ public class CypherpunkVPN {
         catch (Exception e)
         {
             log("Exception while generating OpenVPN profile");
+            log(e.getLocalizedMessage());
             e.printStackTrace();
             return;
         }
@@ -171,11 +177,9 @@ public class CypherpunkVPN {
         {
             log("Exception while getting Location");
             e.printStackTrace();
-        }
-        finally
-        {
             if (realm != null)
                 realm.close();
+            return null;
         }
 
         // debug print
