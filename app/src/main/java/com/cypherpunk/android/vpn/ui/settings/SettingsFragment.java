@@ -76,7 +76,7 @@ public class SettingsFragment extends PreferenceFragmentCompat {
         });
 
         remotePort = findPreference("vpn_port_remote");
-        remotePort.setSummary(getStringByKey(cypherpunkSetting.vpnPortRemote));
+        //remotePort.setSummary(getStringByKey(cypherpunkSetting.vpnPortRemote));
         remotePort.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
@@ -101,6 +101,7 @@ public class SettingsFragment extends PreferenceFragmentCompat {
             }
         });
 
+        /*
         vpnPortLocal = findPreference("vpn_port_local");
         vpnPortLocal.setSummary(String.valueOf(cypherpunkSetting.vpnPortLocal));
         vpnPortLocal.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
@@ -111,6 +112,7 @@ public class SettingsFragment extends PreferenceFragmentCompat {
                 return true;
             }
         });
+        */
 
         vpnCryptoProfile = findPreference("vpn_crypto_profile");
         vpnCryptoProfile.setSummary(getStringByKey(cypherpunkSetting.vpnCryptoProfile));
@@ -140,7 +142,7 @@ public class SettingsFragment extends PreferenceFragmentCompat {
                     break;
                 case "vpn_port_remote":
                     cypherpunkSetting.vpnPortRemote = data.getStringExtra(ListPreferenceActivity.EXTRA_SELECTED_VALUE);
-                    remotePort.setSummary(getStringByKey(data.getStringExtra(ListPreferenceActivity.EXTRA_SELECTED_VALUE)));
+                    //remotePort.setSummary(getStringByKey(data.getStringExtra(ListPreferenceActivity.EXTRA_SELECTED_VALUE)));
                     break;
                 case "privacy_firewall_mode":
                     cypherpunkSetting.privacyFirewallMode = data.getStringExtra(ListPreferenceActivity.EXTRA_SELECTED_VALUE);
@@ -151,10 +153,12 @@ public class SettingsFragment extends PreferenceFragmentCompat {
                     String stringExtra = data.getStringExtra(ListPreferenceActivity.EXTRA_SELECTED_VALUE);
                     vpnCryptoProfile.setSummary(getStringByKey(stringExtra));
                     break;
+                /*
                 case "vpn_port_local":
                     cypherpunkSetting.vpnPortLocal = data.getStringExtra(ListPreferenceActivity.EXTRA_SELECTED_VALUE);
                     vpnPortLocal.setSummary(getStringByKey(data.getStringExtra(ListPreferenceActivity.EXTRA_SELECTED_VALUE)));
                     break;
+                */
             }
             cypherpunkSetting.save();
 

@@ -42,16 +42,20 @@
 
         <Preference
             android:key="vpn_port_remote"
+            android:summary="@string/setting_vpn_port_remote_summary"
             android:title="@string/setting_vpn_port_remote" />
 
+        <!--
         <Preference
             android:key="vpn_port_local"
+            android:summary="@string/setting_vpn_port_local_summary"
             android:title="@string/setting_vpn_port_local" />
 
         <SwitchPreferenceCompat
             android:key="vpn_port_forwarding"
             android:summary="@string/setting_vpn_port_forwarding_summary"
             android:title="@string/setting_vpn_port_forwarding" />
+        -->
     </PreferenceCategory>
 
 </PreferenceScreen>
