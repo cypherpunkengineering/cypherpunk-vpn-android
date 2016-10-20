@@ -10,5 +10,5 @@
     <dimen name="national_flag_width">32dp</dimen>
     <dimen name="national_flag_height">24dp</dimen>
 
-    <dimen name="bottom_sheet_margin_top">20dp</dimen>
+    <dimen name="bottom_sheet_margin_top">55dp</dimen>
 </resources>
