@@ -199,9 +199,10 @@ public class LocationFragment extends Fragment {
                                    realm.beginTransaction();
                                    RealmResults<Location> locationList = realm.where(Location.class).findAll();
                                    locationList.deleteAllFromRealm();
-
                                    realm.copyToRealm(locations);
                                    realm.commitTransaction();
+
+                                   adapter.addAll(getLocation());
 
                                    // TODO: 一番上のを選択している
                                    CypherpunkSetting setting = new CypherpunkSetting();
@@ -212,7 +213,6 @@ public class LocationFragment extends Fragment {
 
                                        binding.region.setText(first.getRegionName());
                                        binding.nationalFlag.setImageResource(getFlagDrawableByKey(first.getCountryCode().toLowerCase()));
-                                       adapter.addAll(getLocation());
                                    }
                                }
 
