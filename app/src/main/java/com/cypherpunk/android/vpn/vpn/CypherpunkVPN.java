@@ -10,6 +10,7 @@ import android.text.TextUtils;
 import android.util.Log;
 
 import com.android.annotations.NonNull;
+import com.cypherpunk.android.vpn.CypherpunkApplication;
 import com.cypherpunk.android.vpn.data.api.UserManager;
 import com.cypherpunk.android.vpn.model.CypherpunkSetting;
 import com.cypherpunk.android.vpn.model.Location;
@@ -161,7 +162,7 @@ public class CypherpunkVPN {
         CypherpunkSetting cypherpunkSetting = new CypherpunkSetting();
 
         // get currently selected location
-        Realm realm = Realm.getDefaultInstance();
+        Realm realm = CypherpunkApplication.instance.getAppComponent().getDefaultRealm();
         location = realm.where(Location.class).equalTo("selected", true).findFirst();
         realm.close();
 

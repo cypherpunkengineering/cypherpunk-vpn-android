@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.TextView;
 
+import com.cypherpunk.android.vpn.CypherpunkApplication;
 import com.cypherpunk.android.vpn.R;
 import com.cypherpunk.android.vpn.model.Location;
 
@@ -54,7 +55,7 @@ public class ConnectConfirmationDialogFragment extends DialogFragment {
         View view = LayoutInflater.from(getActivity()).inflate(R.layout.dialog_location_connect_now, container, false);
         TextView textView = (TextView) view.findViewById(R.id.city_name);
         String locationId = getArguments().getString(ARGS_LOCATION_ID);
-        Realm realm = Realm.getDefaultInstance();
+        Realm realm = CypherpunkApplication.instance.getAppComponent().getDefaultRealm();
         Location location = realm.where(Location.class).equalTo("id", locationId).findFirst();
         textView.setText(location.getRegionName());
         realm.close();

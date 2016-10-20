@@ -73,7 +73,9 @@ public class MainActivity extends AppCompatActivity
     private Subscription subscription = Subscriptions.empty();
     private LocationFragment locationFragment;
     private BottomSheetBehavior behavior;
-    private Realm realm;
+
+    @Inject
+    Realm realm;
 
     @Inject
     JsonipService webService;
@@ -90,7 +92,7 @@ public class MainActivity extends AppCompatActivity
             finish();
         }
 
-        ((CypherpunkApplication) getApplication()).getAppComponent().inject(this);
+        CypherpunkApplication.instance.getAppComponent().inject(this);
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
 
@@ -111,10 +113,6 @@ public class MainActivity extends AppCompatActivity
         }
 
         // showSignUpButton();
-
-        // TODO;
-        realm = Realm.getDefaultInstance();
-
 
         binding.connectionButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
