@@ -106,6 +106,11 @@ public class RegionAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         notifyItemRangeInserted(0, favoriteItems.size() + 1);
     }
 
+    public void addFavoriteItem(@NonNull Region data) {
+        favoriteItems.add(data);
+        notifyItemInserted(favoriteItems.size());
+    }
+
     public void addAllItems(@NonNull List<Region> data) {
         items.addAll(data);
         notifyItemRangeInserted(

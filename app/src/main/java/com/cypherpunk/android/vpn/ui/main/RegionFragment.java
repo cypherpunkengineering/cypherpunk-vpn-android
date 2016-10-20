@@ -101,6 +101,7 @@ public class RegionFragment extends Fragment {
                 if (favorite) {
                     if (result.size() == 0) {
                         realm.copyToRealm(new FavoriteRegion(region.getId()));
+                        adapter.addFavoriteItem(region);
                     }
                 } else {
                     result.deleteAllFromRealm();
