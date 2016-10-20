@@ -90,7 +90,7 @@ public class RegionFragment extends Fragment {
             }
         }
 
-        adapter = new RegionAdapter(getRegionList()) {
+        adapter = new RegionAdapter() {
             @Override
             protected void onFavorite(@NonNull final String regionId, final boolean favorite) {
                 RealmResults<FavoriteRegion> result = realm.where(FavoriteRegion.class).equalTo("id", regionId).findAll();
@@ -128,6 +128,8 @@ public class RegionFragment extends Fragment {
             }
         };
         binding.list.setAdapter(adapter);
+        adapter.addFavoriteItems(getFavoriteRegionList());
+        adapter.addAllItems(getAllRegionList());
 
         binding.regionContainer.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -153,8 +155,13 @@ public class RegionFragment extends Fragment {
         return getContext().getResources().getIdentifier("flag_" + key, "drawable", packageName);
     }
 
-    private ArrayList<Region> getRegionList() {
+    private ArrayList<Region> getAllRegionList() {
         RealmResults<Region> regionList = realm.where(Region.class).findAll();
+        return new ArrayList<>(regionList);
+    }
+
+    private ArrayList<Region> getFavoriteRegionList() {
+        RealmResults<Region> regionList = realm.where(Region.class).equalTo("favorited", true).findAll();
         return new ArrayList<>(regionList);
     }
 
@@ -202,8 +209,10 @@ public class RegionFragment extends Fragment {
                                    oldRegionListResult.deleteAllFromRealm();
                                    realm.copyToRealm(regionList);
                                    realm.commitTransaction();
+                                   adapter.clear();
 
-                                   adapter.addAll(getRegionList());
+                                   adapter.addFavoriteItems(getFavoriteRegionList());
+                                   adapter.addAllItems(getAllRegionList());
 
                                    // TODO: 一番上のを選択している
                                    CypherpunkSetting setting = new CypherpunkSetting();

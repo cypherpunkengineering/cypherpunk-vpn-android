@@ -18,8 +18,13 @@ import java.util.List;
 import static com.os.operando.garum.utils.Cache.getContext;
 
 
-public class RegionAdapter extends RecyclerView.Adapter<RegionAdapter.ViewHolder> {
+public class RegionAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
+    private static final int ITEM_VIEW_TYPE_ITEM = 1;
+    private static final int ITEM_VIEW_TYPE_FAVORITE_ITEM = 3;
+    private static final int ITEM_VIEW_TYPE_DIVIDER = 2;
+
+    private List<Region> favoriteItems = new ArrayList<>();
     private List<Region> items = new ArrayList<>();
 
     protected void onFavorite(@NonNull String regionId, boolean favorite) {
@@ -28,49 +33,88 @@ public class RegionAdapter extends RecyclerView.Adapter<RegionAdapter.ViewHolder
     protected void onItemClick(@NonNull String regionId) {
     }
 
-    RegionAdapter(List<Region> items) {
-        this.items = items;
+    @Override
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        switch (viewType) {
+            case ITEM_VIEW_TYPE_ITEM:
+            case ITEM_VIEW_TYPE_FAVORITE_ITEM:
+                return new ViewHolder(LayoutInflater.from(parent.getContext())
+                        .inflate(R.layout.list_item_region, parent, false));
+            default:
+                return new DividerViewHolder(LayoutInflater.from(parent.getContext())
+                        .inflate(R.layout.list_item_region_divider, parent, false));
+        }
     }
 
     @Override
-    public RegionAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new RegionAdapter.ViewHolder(LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.list_item_region, parent, false));
-    }
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+        final int viewType = holder.getItemViewType();
+        if (viewType == ITEM_VIEW_TYPE_ITEM || viewType == ITEM_VIEW_TYPE_FAVORITE_ITEM) {
 
-    @Override
-    public void onBindViewHolder(RegionAdapter.ViewHolder holder, int position) {
-        ListItemRegionBinding binding = holder.getBinding();
-
-        final Region item = items.get(position);
-        final String regionId = item.getId();
-        binding.regionName.setText(item.getRegionName());
-        binding.favorite.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, final boolean b) {
-                onFavorite(regionId, b);
+            ViewHolder itemHolder = (ViewHolder) holder;
+            ListItemRegionBinding binding = itemHolder.getBinding();
+            final Region item;
+            if (viewType == ITEM_VIEW_TYPE_ITEM) {
+                item = items.get(position - (favoriteItems.size() == 0 ? favoriteItems.size() : favoriteItems.size() + 1));
+            } else {
+                item = favoriteItems.get(position);
             }
-        });
-        binding.favorite.setChecked(item.isFavorited());
+            final String regionId = item.getId();
+            binding.regionName.setText(item.getRegionName());
+            binding.favorite.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton compoundButton, final boolean b) {
+                    onFavorite(regionId, b);
+                }
+            });
+            binding.favorite.setChecked(item.isFavorited());
 
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                onItemClick(regionId);
-            }
-        });
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    onItemClick(regionId);
+                }
+            });
 
-        binding.nationalFlag.setImageResource(getFlagDrawableByKey(item.getCountryCode().toLowerCase()));
+            binding.nationalFlag.setImageResource(getFlagDrawableByKey(item.getCountryCode().toLowerCase()));
+        }
     }
 
     @Override
     public int getItemCount() {
-        return items.size();
+        int size = favoriteItems.size() + items.size();
+        if (favoriteItems.size() != 0) {
+            size += 1;
+        }
+        return size;
     }
 
-    public void addAll(@NonNull List<Region> data) {
-        items.clear();
+    @Override
+    public int getItemViewType(int position) {
+        if (position < favoriteItems.size()) {
+            return ITEM_VIEW_TYPE_FAVORITE_ITEM;
+        }
+
+        if (favoriteItems.size() != 0 && position == favoriteItems.size()) {
+            return ITEM_VIEW_TYPE_DIVIDER;
+        }
+        return ITEM_VIEW_TYPE_ITEM;
+    }
+
+    public void addFavoriteItems(@NonNull List<Region> data) {
+        favoriteItems.addAll(data);
+        notifyItemRangeInserted(0, favoriteItems.size() + 1);
+    }
+
+    public void addAllItems(@NonNull List<Region> data) {
         items.addAll(data);
+        notifyItemRangeInserted(
+                favoriteItems.size() == 0 ? favoriteItems.size() : favoriteItems.size() + 1, items.size());
+    }
+
+    public void clear() {
+        items.clear();
+        favoriteItems.clear();
         notifyDataSetChanged();
     }
 
@@ -90,6 +134,13 @@ public class RegionAdapter extends RecyclerView.Adapter<RegionAdapter.ViewHolder
 
         public ListItemRegionBinding getBinding() {
             return binding;
+        }
+    }
+
+    static class DividerViewHolder extends RecyclerView.ViewHolder {
+
+        DividerViewHolder(View view) {
+            super(view);
         }
     }
 }
