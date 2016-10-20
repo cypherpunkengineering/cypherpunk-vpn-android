@@ -115,6 +115,8 @@ public class CypherpunkVPN {
         }
         catch (Exception e)
         {
+            log("Exception while generating OpenVPN profile");
+            e.printStackTrace();
             return;
         }
 
@@ -162,9 +164,22 @@ public class CypherpunkVPN {
         CypherpunkSetting cypherpunkSetting = new CypherpunkSetting();
 
         // get currently selected location
-        Realm realm = CypherpunkApplication.instance.getAppComponent().getDefaultRealm();
-        location = realm.where(Location.class).equalTo("selected", true).findFirst();
-        realm.close();
+        Realm realm = null;
+        try
+        {
+            realm = CypherpunkApplication.instance.getAppComponent().getDefaultRealm();
+            location = realm.where(Location.class).equalTo("id", cypherpunkSetting.locationId).findFirst();
+        }
+        catch (Exception e)
+        {
+            log("Exception while getting Location");
+            e.printStackTrace();
+        }
+        finally
+        {
+            if (realm != null)
+                realm.close();
+        }
 
         // debug print
         /*
