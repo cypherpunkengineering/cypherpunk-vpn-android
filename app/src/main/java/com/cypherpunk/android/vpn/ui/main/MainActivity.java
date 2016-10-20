@@ -60,7 +60,7 @@ import rx.subscriptions.Subscriptions;
 public class MainActivity extends AppCompatActivity
         implements VpnStatus.StateListener, RateDialogFragment.RateDialogListener,
         ConnectConfirmationDialogFragment.ConnectDialogListener,
-        LocationFragment.LocationFragmentListener {
+        RegionFragment.RegionFragmentListener {
 
     public static final String AUTO_START = "com.cypherpunk.android.vpn.AUTO_START";
 
@@ -71,7 +71,7 @@ public class MainActivity extends AppCompatActivity
     private ActivityMainBinding binding;
     private CypherpunkVpnStatus status;
     private Subscription subscription = Subscriptions.empty();
-    private LocationFragment locationFragment;
+    private RegionFragment regionFragment;
     private BottomSheetBehavior behavior;
 
     @Inject
@@ -142,8 +142,8 @@ public class MainActivity extends AppCompatActivity
         VpnStatus.addStateListener(this);
 
         FragmentTransaction fm = getSupportFragmentManager().beginTransaction();
-        locationFragment = new LocationFragment();
-        fm.add(R.id.bottom_sheet, locationFragment);
+        regionFragment = new RegionFragment();
+        fm.add(R.id.bottom_sheet, regionFragment);
         fm.commit();
 
         behavior = BottomSheetBehavior.from(binding.bottomSheet);
@@ -152,10 +152,10 @@ public class MainActivity extends AppCompatActivity
             public void onStateChanged(@NonNull View bottomSheet, int newState) {
                 switch (newState) {
                     case BottomSheetBehavior.STATE_COLLAPSED:
-                        locationFragment.toggleAllowIcon(false);
+                        regionFragment.toggleAllowIcon(false);
                         break;
                     case BottomSheetBehavior.STATE_EXPANDED:
-                        locationFragment.toggleAllowIcon(true);
+                        regionFragment.toggleAllowIcon(true);
                 }
             }
 

@@ -3,6 +3,7 @@ package com.cypherpunk.android.vpn.ui.main;
 import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
@@ -14,12 +15,12 @@ import com.cypherpunk.android.vpn.CypherpunkApplication;
 import com.cypherpunk.android.vpn.R;
 import com.cypherpunk.android.vpn.data.api.CypherpunkService;
 import com.cypherpunk.android.vpn.data.api.UserManager;
-import com.cypherpunk.android.vpn.data.api.json.LocationResult;
 import com.cypherpunk.android.vpn.data.api.json.LoginRequest;
-import com.cypherpunk.android.vpn.databinding.FragmentLocationBinding;
+import com.cypherpunk.android.vpn.data.api.json.RegionResult;
+import com.cypherpunk.android.vpn.databinding.FragmentRegionBinding;
 import com.cypherpunk.android.vpn.model.CypherpunkSetting;
 import com.cypherpunk.android.vpn.model.FavoriteRegion;
-import com.cypherpunk.android.vpn.model.Location;
+import com.cypherpunk.android.vpn.model.Region;
 import com.cypherpunk.android.vpn.ui.region.ConnectConfirmationDialogFragment;
 
 import java.util.ArrayList;
@@ -41,26 +42,26 @@ import rx.schedulers.Schedulers;
 import rx.subscriptions.Subscriptions;
 
 
-public class LocationFragment extends Fragment {
+public class RegionFragment extends Fragment {
 
     private Realm realm;
-    private FragmentLocationBinding binding;
+    private FragmentRegionBinding binding;
     private Subscription subscription = Subscriptions.empty();
-    private LocationAdapter adapter;
+    private RegionAdapter adapter;
 
     @Inject
     CypherpunkService webService;
-    private LocationFragmentListener listener;
+    private RegionFragmentListener listener;
 
-    public interface LocationFragmentListener {
+    public interface RegionFragmentListener {
         void toggleBottomSheetState();
     }
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof LocationFragmentListener) {
-            listener = (LocationFragmentListener) context;
+        if (context instanceof RegionFragmentListener) {
+            listener = (RegionFragmentListener) context;
         }
     }
 
@@ -68,7 +69,7 @@ public class LocationFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater,
                              @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_location, container, false);
+        return inflater.inflate(R.layout.fragment_region, container, false);
     }
 
     @Override
@@ -81,25 +82,25 @@ public class LocationFragment extends Fragment {
 
         getServerList();
         CypherpunkSetting setting = new CypherpunkSetting();
-        if (!TextUtils.isEmpty(setting.locationId)) {
-            Location location = realm.where(Location.class).equalTo("id", setting.locationId).findFirst();
-            if (location != null) {
-                binding.region.setText(location.getRegionName());
-                binding.nationalFlag.setImageResource(getFlagDrawableByKey(location.getCountryCode().toLowerCase()));
+        if (!TextUtils.isEmpty(setting.regionId)) {
+            Region region = realm.where(Region.class).equalTo("id", setting.regionId).findFirst();
+            if (region != null) {
+                binding.regionName.setText(region.getRegionName());
+                binding.nationalFlag.setImageResource(getFlagDrawableByKey(region.getCountryCode().toLowerCase()));
             }
         }
 
-        adapter = new LocationAdapter(getLocation()) {
+        adapter = new RegionAdapter(getRegionList()) {
             @Override
-            protected void onFavorite(final String locationId, final boolean favorite) {
-                RealmResults<FavoriteRegion> result = realm.where(FavoriteRegion.class).equalTo("id", locationId).findAll();
-                Location location = realm.where(Location.class).equalTo("id", locationId).findFirst();
+            protected void onFavorite(@NonNull final String regionId, final boolean favorite) {
+                RealmResults<FavoriteRegion> result = realm.where(FavoriteRegion.class).equalTo("id", regionId).findAll();
+                Region region = realm.where(Region.class).equalTo("id", regionId).findFirst();
 
                 realm.beginTransaction();
-                location.setFavorited(favorite);
+                region.setFavorited(favorite);
                 if (favorite) {
                     if (result.size() == 0) {
-                        realm.copyToRealm(new FavoriteRegion(location.getId()));
+                        realm.copyToRealm(new FavoriteRegion(region.getId()));
                     }
                 } else {
                     result.deleteAllFromRealm();
@@ -108,22 +109,22 @@ public class LocationFragment extends Fragment {
             }
 
             @Override
-            protected void onItemClick(final String locationId) {
+            protected void onItemClick(@NonNull final String regionId) {
                 CypherpunkSetting setting = new CypherpunkSetting();
-                if (setting.locationId.equals(locationId)) {
+                if (setting.regionId.equals(regionId)) {
                     // 既に選択されている
                     return;
                 }
-                setting.locationId = locationId;
+                setting.regionId = regionId;
                 setting.save();
 
                 ConnectConfirmationDialogFragment dialogFragment =
-                        ConnectConfirmationDialogFragment.newInstance(locationId);
+                        ConnectConfirmationDialogFragment.newInstance(regionId);
                 dialogFragment.show(getChildFragmentManager());
 
-                Location location = realm.where(Location.class).equalTo("id", locationId).findFirst();
-                binding.region.setText(location.getRegionName());
-                binding.nationalFlag.setImageResource(getFlagDrawableByKey(location.getCountryCode().toLowerCase()));
+                Region region = realm.where(Region.class).equalTo("id", regionId).findFirst();
+                binding.regionName.setText(region.getRegionName());
+                binding.nationalFlag.setImageResource(getFlagDrawableByKey(region.getCountryCode().toLowerCase()));
             }
         };
         binding.list.setAdapter(adapter);
@@ -152,66 +153,66 @@ public class LocationFragment extends Fragment {
         return getContext().getResources().getIdentifier("flag_" + key, "drawable", packageName);
     }
 
-    private ArrayList<Location> getLocation() {
-        RealmResults<Location> locationList = realm.where(Location.class).findAll();
-        return new ArrayList<>(locationList);
+    private ArrayList<Region> getRegionList() {
+        RealmResults<Region> regionList = realm.where(Region.class).findAll();
+        return new ArrayList<>(regionList);
     }
 
     private void getServerList() {
         subscription = webService
                 .login(new LoginRequest(UserManager.getMailAddress(), UserManager.getPassword()))
-                .flatMap(new Func1<ResponseBody, Single<Map<String, Map<String, LocationResult[]>>>>() {
+                .flatMap(new Func1<ResponseBody, Single<Map<String, Map<String, RegionResult[]>>>>() {
                     @Override
-                    public Single<Map<String, Map<String, LocationResult[]>>> call(ResponseBody responseBody) {
+                    public Single<Map<String, Map<String, RegionResult[]>>> call(ResponseBody responseBody) {
                         return webService.serverList();
                     }
                 })
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new SingleSubscriber<Map<String, Map<String, LocationResult[]>>>() {
+                .subscribe(new SingleSubscriber<Map<String, Map<String, RegionResult[]>>>() {
                                @Override
-                               public void onSuccess(Map<String, Map<String, LocationResult[]>> result) {
-                                   List<Location> locations = new ArrayList<>();
-                                   for (Map.Entry<String, Map<String, LocationResult[]>> area : result.entrySet()) {
-                                       Set<Map.Entry<String, LocationResult[]>> areaSet = area.getValue().entrySet();
-                                       for (Map.Entry<String, LocationResult[]> country : areaSet) {
-                                           LocationResult[] regions = country.getValue();
-                                           for (LocationResult region : regions) {
-                                               Location location = new Location(
-                                                       region.getId(),
+                               public void onSuccess(Map<String, Map<String, RegionResult[]>> result) {
+                                   List<Region> regionList = new ArrayList<>();
+                                   for (Map.Entry<String, Map<String, RegionResult[]>> area : result.entrySet()) {
+                                       Set<Map.Entry<String, RegionResult[]>> areaSet = area.getValue().entrySet();
+                                       for (Map.Entry<String, RegionResult[]> country : areaSet) {
+                                           RegionResult[] regions = country.getValue();
+                                           for (RegionResult regionResult : regions) {
+                                               Region region = new Region(
+                                                       regionResult.getId(),
                                                        country.getKey(),
-                                                       region.getRegionName(),
-                                                       region.getOvHostname(),
-                                                       region.getOvDefault(),
-                                                       region.getOvNone(),
-                                                       region.getOvStrong(),
-                                                       region.getOvStealth());
+                                                       regionResult.getRegionName(),
+                                                       regionResult.getOvHostname(),
+                                                       regionResult.getOvDefault(),
+                                                       regionResult.getOvNone(),
+                                                       regionResult.getOvStrong(),
+                                                       regionResult.getOvStealth());
 
                                                long id = realm.where(FavoriteRegion.class)
-                                                       .equalTo("id", location.getId()).count();
+                                                       .equalTo("id", regionResult.getId()).count();
                                                if (id != 0) {
-                                                   location.setFavorited(true);
+                                                   region.setFavorited(true);
                                                }
-                                               locations.add(location);
+                                               regionList.add(region);
                                            }
                                        }
                                    }
                                    realm.beginTransaction();
-                                   RealmResults<Location> locationList = realm.where(Location.class).findAll();
-                                   locationList.deleteAllFromRealm();
-                                   realm.copyToRealm(locations);
+                                   RealmResults<Region> oldRegionListResult = realm.where(Region.class).findAll();
+                                   oldRegionListResult.deleteAllFromRealm();
+                                   realm.copyToRealm(regionList);
                                    realm.commitTransaction();
 
-                                   adapter.addAll(getLocation());
+                                   adapter.addAll(getRegionList());
 
                                    // TODO: 一番上のを選択している
                                    CypherpunkSetting setting = new CypherpunkSetting();
-                                   if (TextUtils.isEmpty(setting.locationId)) {
-                                       Location first = realm.where(Location.class).findFirst();
-                                       setting.locationId = first.getId();
+                                   if (TextUtils.isEmpty(setting.regionId)) {
+                                       Region first = realm.where(Region.class).findFirst();
+                                       setting.regionId = first.getId();
                                        setting.save();
 
-                                       binding.region.setText(first.getRegionName());
+                                       binding.regionName.setText(first.getRegionName());
                                        binding.nationalFlag.setImageResource(getFlagDrawableByKey(first.getCountryCode().toLowerCase()));
                                    }
                                }

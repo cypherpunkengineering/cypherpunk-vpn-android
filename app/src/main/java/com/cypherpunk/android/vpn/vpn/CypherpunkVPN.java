@@ -4,7 +4,6 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
-import android.net.VpnService;
 import android.os.IBinder;
 import android.text.TextUtils;
 import android.util.Log;
@@ -13,9 +12,7 @@ import com.android.annotations.NonNull;
 import com.cypherpunk.android.vpn.CypherpunkApplication;
 import com.cypherpunk.android.vpn.data.api.UserManager;
 import com.cypherpunk.android.vpn.model.CypherpunkSetting;
-import com.cypherpunk.android.vpn.model.Location;
-import com.cypherpunk.android.vpn.ui.main.CypherpunkLaunchVPN;
-import com.cypherpunk.android.vpn.ui.main.MainActivity;
+import com.cypherpunk.android.vpn.model.Region;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
@@ -42,7 +39,7 @@ public class CypherpunkVPN {
     private ConfigParser cp;
     private VpnProfile vpnProfile;
     private String conf;
-    private Location location = null;
+    private Region region = null;
 
     private OpenVPNService service = null;
 
@@ -54,8 +51,8 @@ public class CypherpunkVPN {
         return singleton;
     }
 
-    public Location getLocation() { return location; }
-    public void setLocation(Location location) { this.location = location; }
+    public Region getRegion() { return region; }
+    public void setRegion(Region region) { this.region = region; }
 
     private ServiceConnection connection = new ServiceConnection()
     {
@@ -109,7 +106,7 @@ public class CypherpunkVPN {
             cp.parseConfig(new StringReader(conf));
             vpnProfile = cp.convertProfile();
             ProfileManager.setTemporaryProfile(vpnProfile);
-            vpnProfile.mName = location.getRegionName() + ", " + location.getCountryCode();
+            vpnProfile.mName = region.getRegionName() + ", " + region.getCountryCode();
 
             //log("vpn profile check: "+vpnProfile.checkProfile(context));
         }
@@ -168,7 +165,7 @@ public class CypherpunkVPN {
         try
         {
             realm = CypherpunkApplication.instance.getAppComponent().getDefaultRealm();
-            location = realm.where(Location.class).equalTo("id", cypherpunkSetting.locationId).findFirst();
+            region = realm.where(Region.class).equalTo("id", cypherpunkSetting.regionId).findFirst();
         }
         catch (Exception e)
         {
@@ -204,7 +201,7 @@ public class CypherpunkVPN {
         // security/privacy options
         list.add("tls-version-min 1.2");
         list.add("remote-cert-eku \"TLS Web Server Authentication\"");
-        list.add("verify-x509-name " + location.getOvHostname() + " name");
+        list.add("verify-x509-name " + region.getOvHostname() + " name");
 
         // vpn protocol
         String proto = "udp";
@@ -237,19 +234,19 @@ public class CypherpunkVPN {
             switch (cypherpunkSetting.vpnCryptoProfile)
             {
                 case "setting_vpn_crypto_profile_none":
-                    list.add("remote " + location.getOvNone() + " " + rport);
+                    list.add("remote " + region.getOvNone() + " " + rport);
                     list.add("tls-cipher TLS-DHE-RSA-WITH-AES-128-GCM-SHA256:TLS-DHE-RSA-WITH-AES-128-CBC-SHA256");
                     list.add("cipher none");
                     list.add("auth SHA1");
                     break;
                 case "setting_vpn_crypto_profile_strong":
-                    list.add("remote " + location.getOvStrong() + " " + rport);
+                    list.add("remote " + region.getOvStrong() + " " + rport);
                     list.add("tls-cipher TLS-DHE-RSA-WITH-AES-256-GCM-SHA384:TLS-DHE-RSA-WITH-AES-256-CBC-SHA256");
                     list.add("cipher AES-256-CBC");
                     list.add("auth SHA512");
                     break;
                 case "setting_vpn_crypto_profile_stealth":
-                    list.add("remote " + location.getOvStealth() + " " + rport);
+                    list.add("remote " + region.getOvStealth() + " " + rport);
                     list.add("tls-cipher TLS-DHE-RSA-WITH-AES-128-GCM-SHA256:TLS-DHE-RSA-WITH-AES-128-CBC-SHA256");
                     list.add("cipher AES-128-CBC");
                     list.add("auth SHA256");
@@ -258,7 +255,7 @@ public class CypherpunkVPN {
                     break;
                 case "setting_vpn_crypto_profile_default":
                 default:
-                    list.add("remote " + location.getOvDefault() + " " + rport);
+                    list.add("remote " + region.getOvDefault() + " " + rport);
                     list.add("tls-cipher TLS-DHE-RSA-WITH-AES-128-GCM-SHA256:TLS-DHE-RSA-WITH-AES-128-CBC-SHA256");
                     list.add("cipher AES-128-CBC");
                     list.add("auth SHA256");

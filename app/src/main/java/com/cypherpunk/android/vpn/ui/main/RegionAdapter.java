@@ -9,8 +9,8 @@ import android.view.ViewGroup;
 import android.widget.CompoundButton;
 
 import com.cypherpunk.android.vpn.R;
-import com.cypherpunk.android.vpn.databinding.ListItemLocationBinding;
-import com.cypherpunk.android.vpn.model.Location;
+import com.cypherpunk.android.vpn.databinding.ListItemRegionBinding;
+import com.cypherpunk.android.vpn.model.Region;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,37 +18,37 @@ import java.util.List;
 import static com.os.operando.garum.utils.Cache.getContext;
 
 
-public class LocationAdapter extends RecyclerView.Adapter<LocationAdapter.ViewHolder> {
+public class RegionAdapter extends RecyclerView.Adapter<RegionAdapter.ViewHolder> {
 
-    private List<Location> items = new ArrayList<>();
+    private List<Region> items = new ArrayList<>();
 
-    protected void onFavorite(@NonNull String locationId, boolean favorite) {
+    protected void onFavorite(@NonNull String regionId, boolean favorite) {
     }
 
-    protected void onItemClick(@NonNull String locationId) {
+    protected void onItemClick(@NonNull String regionId) {
     }
 
-    LocationAdapter(List<Location> items) {
+    RegionAdapter(List<Region> items) {
         this.items = items;
     }
 
     @Override
-    public LocationAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new LocationAdapter.ViewHolder(LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.list_item_location, parent, false));
+    public RegionAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        return new RegionAdapter.ViewHolder(LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.list_item_region, parent, false));
     }
 
     @Override
-    public void onBindViewHolder(LocationAdapter.ViewHolder holder, int position) {
-        ListItemLocationBinding binding = holder.getBinding();
+    public void onBindViewHolder(RegionAdapter.ViewHolder holder, int position) {
+        ListItemRegionBinding binding = holder.getBinding();
 
-        final Location item = items.get(position);
-        final String locationId = item.getId();
-        binding.location.setText(item.getRegionName());
+        final Region item = items.get(position);
+        final String regionId = item.getId();
+        binding.regionName.setText(item.getRegionName());
         binding.favorite.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, final boolean b) {
-                onFavorite(locationId, b);
+                onFavorite(regionId, b);
             }
         });
         binding.favorite.setChecked(item.isFavorited());
@@ -56,7 +56,7 @@ public class LocationAdapter extends RecyclerView.Adapter<LocationAdapter.ViewHo
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                onItemClick(locationId);
+                onItemClick(regionId);
             }
         });
 
@@ -68,7 +68,7 @@ public class LocationAdapter extends RecyclerView.Adapter<LocationAdapter.ViewHo
         return items.size();
     }
 
-    public void addAll(@NonNull List<Location> data) {
+    public void addAll(@NonNull List<Region> data) {
         items.clear();
         items.addAll(data);
         notifyDataSetChanged();
@@ -81,14 +81,14 @@ public class LocationAdapter extends RecyclerView.Adapter<LocationAdapter.ViewHo
 
     static class ViewHolder extends RecyclerView.ViewHolder {
 
-        private ListItemLocationBinding binding;
+        private ListItemRegionBinding binding;
 
         ViewHolder(View view) {
             super(view);
             binding = DataBindingUtil.bind(view);
         }
 
-        public ListItemLocationBinding getBinding() {
+        public ListItemRegionBinding getBinding() {
             return binding;
         }
     }
