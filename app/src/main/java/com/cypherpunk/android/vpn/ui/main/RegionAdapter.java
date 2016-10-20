@@ -69,8 +69,12 @@ public class RegionAdapter extends RecyclerView.Adapter<RegionAdapter.ViewHolder
     }
 
     public void addAll(@NonNull List<Region> data) {
-        items.clear();
         items.addAll(data);
+        notifyDataSetChanged();
+    }
+
+    public void clear() {
+        items.clear();
         notifyDataSetChanged();
     }
 
