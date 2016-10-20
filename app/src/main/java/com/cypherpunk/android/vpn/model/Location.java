@@ -36,8 +36,6 @@ public class Location implements RealmModel {
     @Required
     private String ovStealth;
 
-    @Required
-    private String nationalFlagUrl;
     private boolean favorited;
 
     @SuppressWarnings("unused")
@@ -55,9 +53,7 @@ public class Location implements RealmModel {
          @NonNull String ovDefault,
          @NonNull String ovNone,
          @NonNull String ovStrong,
-         @NonNull String ovStealth,
-
-         @NonNull String nationalFlagUrl
+         @NonNull String ovStealth
     )
     {
         this.id = id;
@@ -70,8 +66,6 @@ public class Location implements RealmModel {
         this.ovNone = ovNone;
         this.ovStrong = ovStrong;
         this.ovStealth = ovStealth;
-
-        this.nationalFlagUrl = nationalFlagUrl;
     }
 
     public String getId() { return id; }
@@ -90,8 +84,6 @@ public class Location implements RealmModel {
     public void setOvStrong(String ovStrong) { this.ovStrong = ovStrong; }
     public String getOvStealth() { return ovStealth; }
     public void setOvStealth(String ovStealth) { this.ovStealth = ovStealth; }
-
-    public String getNationalFlagUrl() { return nationalFlagUrl; }
 
     public boolean isFavorited() {
         return favorited;
@@ -112,7 +104,6 @@ public class Location implements RealmModel {
                 ", ovNone='" + ovNone + '\'' +
                 ", ovStrong='" + ovStrong + '\'' +
                 ", ovStealth='" + ovStealth + '\'' +
-                ", nationalFlagUrl='" + nationalFlagUrl + '\'' +
                 ", favorited=" + favorited +
                 '}';
     }

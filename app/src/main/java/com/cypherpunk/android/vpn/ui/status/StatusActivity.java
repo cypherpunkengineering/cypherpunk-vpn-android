@@ -124,7 +124,7 @@ public class StatusActivity extends AppCompatActivity implements VpnStatus.State
                 if (connected) {
 //                    binding.map.setNewPosition(location.getMapX(), location.getMapY());
                     binding.newLocation.setText(location.getRegionName());
-                    Picasso.with(StatusActivity.this).load(location.getNationalFlagUrl()).into(binding.newNationalFlag);
+//                    Picasso.with(StatusActivity.this).load(location.getNationalFlagUrl()).into(binding.newNationalFlag);
                 }
                 binding.map.setNewPositionVisibility(connected);
             }
