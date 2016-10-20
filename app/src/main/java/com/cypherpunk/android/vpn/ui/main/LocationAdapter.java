@@ -60,7 +60,7 @@ public class LocationAdapter extends RecyclerView.Adapter<LocationAdapter.ViewHo
             }
         });
 
-        binding.nationalFlag.setImageResource(getDrawableByKey(item.getCountryCode().toLowerCase()));
+        binding.nationalFlag.setImageResource(getFlagDrawableByKey(item.getCountryCode().toLowerCase()));
     }
 
     @Override
@@ -74,9 +74,9 @@ public class LocationAdapter extends RecyclerView.Adapter<LocationAdapter.ViewHo
         notifyDataSetChanged();
     }
 
-    private int getDrawableByKey(String key) {
+    private int getFlagDrawableByKey(String key) {
         String packageName = getContext().getPackageName();
-        return getContext().getResources().getIdentifier(key, "drawable", packageName);
+        return getContext().getResources().getIdentifier("flag_" + key, "drawable", packageName);
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {
