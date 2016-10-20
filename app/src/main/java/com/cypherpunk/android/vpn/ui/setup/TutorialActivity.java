@@ -9,25 +9,65 @@ import android.support.v4.app.TaskStackBuilder;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.cypherpunk.android.vpn.CypherpunkApplication;
 import com.cypherpunk.android.vpn.R;
+import com.cypherpunk.android.vpn.data.api.CypherpunkService;
+import com.cypherpunk.android.vpn.data.api.UserManager;
+import com.cypherpunk.android.vpn.data.api.json.LoginRequest;
+import com.cypherpunk.android.vpn.data.api.json.RegionResult;
 import com.cypherpunk.android.vpn.databinding.ActivityTutorialBinding;
+import com.cypherpunk.android.vpn.model.CypherpunkSetting;
+import com.cypherpunk.android.vpn.model.FavoriteRegion;
+import com.cypherpunk.android.vpn.model.Region;
 import com.cypherpunk.android.vpn.ui.main.MainActivity;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import javax.inject.Inject;
+
+import io.realm.Realm;
+import okhttp3.ResponseBody;
+import rx.Single;
+import rx.SingleSubscriber;
+import rx.Subscription;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Func1;
+import rx.schedulers.Schedulers;
+import rx.subscriptions.Subscriptions;
 
 
 public class TutorialActivity extends AppCompatActivity {
 
     private ActivityTutorialBinding binding;
     private IntroductionPagerAdapter adapter;
+    private Subscription subscription = Subscriptions.empty();
+
+    @Inject
+    Realm realm;
+
+    @Inject
+    CypherpunkService webService;
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        CypherpunkApplication.instance.getAppComponent().inject(this);
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_tutorial);
+
+        long count = realm.where(Region.class).count();
+        if (count == 0) {
+            getServerList();
+        }
 
         adapter = new IntroductionPagerAdapter(this);
         binding.pager.setAdapter(adapter);
@@ -66,12 +106,80 @@ public class TutorialActivity extends AppCompatActivity {
         });
     }
 
+    private void getServerList() {
+        subscription = webService
+                .login(new LoginRequest(UserManager.getMailAddress(), UserManager.getPassword()))
+                .flatMap(new Func1<ResponseBody, Single<Map<String, Map<String, RegionResult[]>>>>() {
+                    @Override
+                    public Single<Map<String, Map<String, RegionResult[]>>> call(ResponseBody responseBody) {
+                        return webService.serverList();
+                    }
+                })
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new SingleSubscriber<Map<String, Map<String, RegionResult[]>>>() {
+                               @Override
+                               public void onSuccess(Map<String, Map<String, RegionResult[]>> result) {
+                                   List<Region> regionList = new ArrayList<>();
+                                   for (Map.Entry<String, Map<String, RegionResult[]>> area : result.entrySet()) {
+                                       Set<Map.Entry<String, RegionResult[]>> areaSet = area.getValue().entrySet();
+                                       for (Map.Entry<String, RegionResult[]> country : areaSet) {
+                                           RegionResult[] regions = country.getValue();
+                                           for (RegionResult regionResult : regions) {
+                                               Region region = new Region(
+                                                       regionResult.getId(),
+                                                       country.getKey(),
+                                                       regionResult.getRegionName(),
+                                                       regionResult.getOvHostname(),
+                                                       regionResult.getOvDefault(),
+                                                       regionResult.getOvNone(),
+                                                       regionResult.getOvStrong(),
+                                                       regionResult.getOvStealth());
+
+                                               long id = realm.where(FavoriteRegion.class)
+                                                       .equalTo("id", regionResult.getId()).count();
+                                               if (id != 0) {
+                                                   region.setFavorited(true);
+                                               }
+                                               regionList.add(region);
+                                           }
+                                       }
+                                   }
+                                   realm.beginTransaction();
+                                   realm.copyToRealm(regionList);
+                                   realm.commitTransaction();
+
+                                   // TODO: 一番上のを選択している
+                                   CypherpunkSetting setting = new CypherpunkSetting();
+                                   if (TextUtils.isEmpty(setting.regionId)) {
+                                       Region first = realm.where(Region.class).findFirst();
+                                       setting.regionId = first.getId();
+                                       setting.save();
+                                   }
+                               }
+
+                               @Override
+                               public void onError(Throwable error) {
+                                   error.printStackTrace();
+                               }
+                           }
+                );
+
+    }
+
     @Override
     public void onBackPressed() {
         int currentItem = binding.pager.getCurrentItem();
         if (currentItem != 0) {
             binding.pager.setCurrentItem(--currentItem);
         }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        realm.close();
+        subscription.unsubscribe();
     }
 
     private static class IntroductionPagerAdapter extends PagerAdapter {
