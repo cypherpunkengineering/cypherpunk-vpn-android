@@ -19,6 +19,7 @@ import com.cypherpunk.android.vpn.R;
 import com.cypherpunk.android.vpn.data.api.CypherpunkService;
 import com.cypherpunk.android.vpn.data.api.UserManager;
 import com.cypherpunk.android.vpn.data.api.json.LoginRequest;
+import com.cypherpunk.android.vpn.data.api.json.LoginResult;
 import com.cypherpunk.android.vpn.data.api.json.RegionResult;
 import com.cypherpunk.android.vpn.databinding.ActivityTutorialBinding;
 import com.cypherpunk.android.vpn.model.CypherpunkSetting;
@@ -34,7 +35,6 @@ import java.util.Set;
 import javax.inject.Inject;
 
 import io.realm.Realm;
-import okhttp3.ResponseBody;
 import rx.Single;
 import rx.SingleSubscriber;
 import rx.Subscription;
@@ -109,9 +109,9 @@ public class TutorialActivity extends AppCompatActivity {
     private void getServerList() {
         subscription = webService
                 .login(new LoginRequest(UserManager.getMailAddress(), UserManager.getPassword()))
-                .flatMap(new Func1<ResponseBody, Single<Map<String, Map<String, RegionResult[]>>>>() {
+                .flatMap(new Func1<LoginResult, Single<Map<String, Map<String, RegionResult[]>>>>() {
                     @Override
-                    public Single<Map<String, Map<String, RegionResult[]>>> call(ResponseBody responseBody) {
+                    public Single<Map<String, Map<String, RegionResult[]>>> call(LoginResult result) {
                         return webService.serverList();
                     }
                 })

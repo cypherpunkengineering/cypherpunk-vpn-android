@@ -22,15 +22,14 @@ import com.cypherpunk.android.vpn.R;
 import com.cypherpunk.android.vpn.data.api.CypherpunkService;
 import com.cypherpunk.android.vpn.data.api.UserManager;
 import com.cypherpunk.android.vpn.data.api.json.LoginRequest;
+import com.cypherpunk.android.vpn.data.api.json.LoginResult;
 import com.cypherpunk.android.vpn.databinding.ActivitySignInBinding;
-import com.cypherpunk.android.vpn.ui.main.MainActivity;
 import com.cypherpunk.android.vpn.ui.setup.TutorialActivity;
 
 import java.net.UnknownHostException;
 
 import javax.inject.Inject;
 
-import okhttp3.ResponseBody;
 import retrofit2.adapter.rxjava.HttpException;
 import rx.SingleSubscriber;
 import rx.Subscription;
@@ -138,12 +137,13 @@ public class SignInActivity extends AppCompatActivity {
                     .login(new LoginRequest(email, password))
                     .subscribeOn(Schedulers.newThread())
                     .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(new SingleSubscriber<ResponseBody>() {
+                    .subscribe(new SingleSubscriber<LoginResult>() {
                         @Override
-                        public void onSuccess(ResponseBody value) {
+                        public void onSuccess(LoginResult result) {
                             dialogFragment.dismiss();
                             UserManager.saveMailAddress(email);
                             UserManager.savePassword(password);
+                            UserManager.saveSecret(result.getSecret());
                             Intent intent = new Intent(SignInActivity.this, TutorialActivity.class);
                             TaskStackBuilder builder = TaskStackBuilder.create(SignInActivity.this);
                             builder.addNextIntent(intent);
