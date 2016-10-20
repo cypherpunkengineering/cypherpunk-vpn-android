@@ -171,6 +171,14 @@ public class MainActivity extends AppCompatActivity
         super.onWindowFocusChanged(hasFocus);
         ViewGroup.LayoutParams layoutParams = binding.bottomSheet.getLayoutParams();
         layoutParams.height = getBottomSheetMaximumHeight();
+
+        // bottom sheet peek height
+        int[] position = new int[2];
+        binding.connectionStatus.getLocationOnScreen(position);
+        int connectionStatusPosition = position[1] + binding.connectionStatus.getHeight();
+        int marginTop = getResources().getDimensionPixelSize(R.dimen.bottom_sheet_margin_top);
+        DisplayMetrics dm = Resources.getSystem().getDisplayMetrics();
+        behavior.setPeekHeight(dm.heightPixels - (connectionStatusPosition + marginTop));
     }
 
     @Override
