@@ -20,7 +20,6 @@ import com.cypherpunk.android.vpn.data.api.json.JsonipResult;
 import com.cypherpunk.android.vpn.databinding.ActivityStatusBinding;
 import com.cypherpunk.android.vpn.model.Location;
 import com.cypherpunk.android.vpn.vpn.CypherpunkVpnStatus;
-import com.squareup.picasso.Picasso;
 
 import javax.inject.Inject;
 
