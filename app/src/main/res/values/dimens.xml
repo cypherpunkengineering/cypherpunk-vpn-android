@@ -7,4 +7,6 @@
     <dimen name="world_map_margin">8dp</dimen>
     <dimen name="list_divider">10dp</dimen>
     <dimen name="divider">1dp</dimen>
+    <dimen name="national_flag_width">32dp</dimen>
+    <dimen name="national_flag_height">24dp</dimen>
 </resources>

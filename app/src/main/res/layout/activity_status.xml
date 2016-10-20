@@ -98,10 +98,10 @@
 
                         <ImageView
                             android:id="@+id/original_national_flag"
-                            android:layout_width="28dp"
-                            android:layout_height="20dp"
+                            android:layout_width="@dimen/national_flag_width"
+                            android:layout_height="@dimen/national_flag_height"
                             android:layout_marginRight="12dp"
-                            android:src="@drawable/national_flag_placeholder" />
+                            android:src="@drawable/flag_us" />
 
                         <com.cypherpunk.android.vpn.widget.TypefaceTextView
                             android:id="@+id/original_location"
@@ -152,10 +152,10 @@
 
                         <ImageView
                             android:id="@+id/new_national_flag"
-                            android:layout_width="28dp"
-                            android:layout_height="20dp"
+                            android:layout_width="@dimen/national_flag_width"
+                            android:layout_height="@dimen/national_flag_height"
                             android:layout_marginRight="12dp"
-                            android:src="@drawable/national_flag_placeholder"
+                            android:src="@drawable/flag_us"
                             tools:ignore="ContentDescription" />
 
                         <com.cypherpunk.android.vpn.widget.TypefaceTextView

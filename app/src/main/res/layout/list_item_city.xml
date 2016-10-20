@@ -5,7 +5,7 @@
     android:id="@+id/city"
     android:layout_width="match_parent"
     android:layout_height="48dp"
-    android:drawableLeft="@drawable/national_flag_placeholder"
+    android:drawableLeft="@drawable/flag_us"
     android:drawablePadding="16dp"
     android:gravity="center_vertical"
     android:paddingLeft="32dp"
