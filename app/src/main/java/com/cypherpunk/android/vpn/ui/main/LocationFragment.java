@@ -85,7 +85,7 @@ public class LocationFragment extends Fragment {
             Location location = realm.where(Location.class).equalTo("id", setting.locationId).findFirst();
             if (location != null) {
                 binding.region.setText(location.getRegionName());
-                binding.nationalFlag.setImageResource(getDrawableByKey(location.getCountryCode().toLowerCase()));
+                binding.nationalFlag.setImageResource(getFlagDrawableByKey(location.getCountryCode().toLowerCase()));
             }
         }
 
@@ -123,7 +123,7 @@ public class LocationFragment extends Fragment {
 
                 Location location = realm.where(Location.class).equalTo("id", locationId).findFirst();
                 binding.region.setText(location.getRegionName());
-                binding.nationalFlag.setImageResource(getDrawableByKey(location.getCountryCode().toLowerCase()));
+                binding.nationalFlag.setImageResource(getFlagDrawableByKey(location.getCountryCode().toLowerCase()));
             }
         };
         binding.list.setAdapter(adapter);
@@ -147,9 +147,9 @@ public class LocationFragment extends Fragment {
         binding.allow.setImageResource(more ? R.drawable.expand_more_vector : R.drawable.expand_less_vector);
     }
 
-    private int getDrawableByKey(String key) {
+    private int getFlagDrawableByKey(String key) {
         String packageName = getContext().getPackageName();
-        return getContext().getResources().getIdentifier(key, "drawable", packageName);
+        return getContext().getResources().getIdentifier("flag_" + key, "drawable", packageName);
     }
 
     private ArrayList<Location> getLocation() {
@@ -211,7 +211,7 @@ public class LocationFragment extends Fragment {
                                        setting.save();
 
                                        binding.region.setText(first.getRegionName());
-                                       binding.nationalFlag.setImageResource(getDrawableByKey(first.getCountryCode().toLowerCase()));
+                                       binding.nationalFlag.setImageResource(getFlagDrawableByKey(first.getCountryCode().toLowerCase()));
                                        adapter.addAll(getLocation());
                                    }
                                }
