@@ -90,7 +90,7 @@ public class RegionFragment extends Fragment {
             }
         }
 
-        adapter = new RegionAdapter(getAllRegionList()) {
+        adapter = new RegionAdapter() {
             @Override
             protected void onFavorite(@NonNull final String regionId, final boolean favorite) {
                 RealmResults<FavoriteRegion> result = realm.where(FavoriteRegion.class).equalTo("id", regionId).findAll();
@@ -128,6 +128,8 @@ public class RegionFragment extends Fragment {
             }
         };
         binding.list.setAdapter(adapter);
+        adapter.addFavoriteItems(getFavoriteRegionList());
+        adapter.addAllItems(getAllRegionList());
 
         binding.regionContainer.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -209,8 +211,8 @@ public class RegionFragment extends Fragment {
                                    realm.commitTransaction();
                                    adapter.clear();
 
-                                   adapter.addAll(getFavoriteRegionList());
-                                   adapter.addAll(getAllRegionList());
+                                   adapter.addFavoriteItems(getFavoriteRegionList());
+                                   adapter.addAllItems(getAllRegionList());
 
                                    // TODO: 一番上のを選択している
                                    CypherpunkSetting setting = new CypherpunkSetting();
