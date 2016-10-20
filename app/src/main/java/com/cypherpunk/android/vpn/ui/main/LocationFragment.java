@@ -21,7 +21,6 @@ import com.cypherpunk.android.vpn.model.CypherpunkSetting;
 import com.cypherpunk.android.vpn.model.FavoriteRegion;
 import com.cypherpunk.android.vpn.model.Location;
 import com.cypherpunk.android.vpn.ui.region.ConnectConfirmationDialogFragment;
-import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -82,10 +81,10 @@ public class LocationFragment extends Fragment {
 
         getServerList();
         CypherpunkSetting setting = new CypherpunkSetting();
+        Location location = realm.where(Location.class).equalTo("id", setting.locationId).findFirst();
         if (!TextUtils.isEmpty(setting.locationId)) {
-            Location location = realm.where(Location.class).equalTo("id", setting.locationId).findFirst();
             binding.region.setText(location.getRegionName());
-            Picasso.with(getActivity()).load(location.getNationalFlagUrl()).into(binding.nationalFlag);
+            binding.nationalFlag.setImageResource(getDrawableByKey(location.getCountryCode().toLowerCase()));
         }
 
         adapter = new LocationAdapter(getLocation()) {
@@ -122,7 +121,7 @@ public class LocationFragment extends Fragment {
 
                 Location location = realm.where(Location.class).equalTo("id", locationId).findFirst();
                 binding.region.setText(location.getRegionName());
-                Picasso.with(getActivity()).load(location.getNationalFlagUrl()).into(binding.nationalFlag);
+                binding.nationalFlag.setImageResource(getDrawableByKey(location.getCountryCode().toLowerCase()));
             }
         };
         binding.list.setAdapter(adapter);
@@ -144,6 +143,11 @@ public class LocationFragment extends Fragment {
 
     public void toggleAllowIcon(boolean more) {
         binding.allow.setImageResource(more ? R.drawable.expand_more_vector : R.drawable.expand_less_vector);
+    }
+
+    private int getDrawableByKey(String key) {
+        String packageName = getContext().getPackageName();
+        return getContext().getResources().getIdentifier(key, "drawable", packageName);
     }
 
     private ArrayList<Location> getLocation() {
@@ -179,8 +183,8 @@ public class LocationFragment extends Fragment {
                                                        region.getOvDefault(),
                                                        region.getOvNone(),
                                                        region.getOvStrong(),
-                                                       region.getOvStealth(),
-                                                       "http://flags.fmcdn.net/data/flags/normal/" + country.getKey().toLowerCase() + ".png");
+                                                       region.getOvStealth());
+
                                                long id = realm.where(FavoriteRegion.class)
                                                        .equalTo("id", location.getId()).count();
                                                if (id != 0) {
@@ -205,7 +209,7 @@ public class LocationFragment extends Fragment {
                                        setting.save();
 
                                        binding.region.setText(first.getRegionName());
-                                       Picasso.with(getActivity()).load(first.getNationalFlagUrl()).into(binding.nationalFlag);
+                                       binding.nationalFlag.setImageResource(getDrawableByKey(first.getCountryCode().toLowerCase()));
                                        adapter.addAll(getLocation());
                                    }
                                }

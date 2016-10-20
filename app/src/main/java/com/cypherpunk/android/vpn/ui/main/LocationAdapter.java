@@ -11,7 +11,6 @@ import android.widget.CompoundButton;
 import com.cypherpunk.android.vpn.R;
 import com.cypherpunk.android.vpn.databinding.ListItemLocationBinding;
 import com.cypherpunk.android.vpn.model.Location;
-import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -61,7 +60,7 @@ public class LocationAdapter extends RecyclerView.Adapter<LocationAdapter.ViewHo
             }
         });
 
-        Picasso.with(getContext()).load(item.getNationalFlagUrl()).into(binding.nationalFlag);
+        binding.nationalFlag.setImageResource(getDrawableByKey(item.getCountryCode().toLowerCase()));
     }
 
     @Override
@@ -73,6 +72,11 @@ public class LocationAdapter extends RecyclerView.Adapter<LocationAdapter.ViewHo
         items.clear();
         items.addAll(data);
         notifyDataSetChanged();
+    }
+
+    private int getDrawableByKey(String key) {
+        String packageName = getContext().getPackageName();
+        return getContext().getResources().getIdentifier(key, "drawable", packageName);
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {
