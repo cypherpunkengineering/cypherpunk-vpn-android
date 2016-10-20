@@ -81,10 +81,12 @@ public class LocationFragment extends Fragment {
 
         getServerList();
         CypherpunkSetting setting = new CypherpunkSetting();
-        Location location = realm.where(Location.class).equalTo("id", setting.locationId).findFirst();
         if (!TextUtils.isEmpty(setting.locationId)) {
-            binding.region.setText(location.getRegionName());
-            binding.nationalFlag.setImageResource(getDrawableByKey(location.getCountryCode().toLowerCase()));
+            Location location = realm.where(Location.class).equalTo("id", setting.locationId).findFirst();
+            if (location != null) {
+                binding.region.setText(location.getRegionName());
+                binding.nationalFlag.setImageResource(getDrawableByKey(location.getCountryCode().toLowerCase()));
+            }
         }
 
         adapter = new LocationAdapter(getLocation()) {
