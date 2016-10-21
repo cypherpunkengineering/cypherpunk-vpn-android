@@ -41,8 +41,8 @@
             android:label="@string/vpn_launch_title"
             android:taskAffinity=".ui.main.CypherpunkLaunchVPN"
             android:theme="@android:style/Theme.NoDisplay">
-            tools:ignore="ExportedActivity">
-        </activity>
+            tools:ignore="ExportedActivity"></activity>
+
         <service
             android:name="de.blinkt.openvpn.core.OpenVPNService"
             android:permission="android.permission.BIND_VPN_SERVICE">
@@ -52,14 +52,15 @@
         </service>
         <service
             android:name=".ui.main.CypherpunkTileService"
-            android:value="true"
-            android:label="@string/qs_tile_title"
             android:icon="@drawable/ic_quick"
-            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
+            android:label="@string/qs_tile_title"
+            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE"
+            android:value="true">
             <intent-filter>
                 <action android:name="android.service.quicksettings.action.QS_TILE" />
             </intent-filter>
-            <meta-data android:name="android.service.quicksettings.ACTIVE_TILE"
+            <meta-data
+                android:name="android.service.quicksettings.ACTIVE_TILE"
                 android:value="false" />
         </service>
 
@@ -78,10 +79,14 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".ui.setup.GetPremiumActivity"
-            android:windowSoftInputMode="adjustResize"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".ui.setup.TutorialActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ui.signin.ResetPasswordActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
