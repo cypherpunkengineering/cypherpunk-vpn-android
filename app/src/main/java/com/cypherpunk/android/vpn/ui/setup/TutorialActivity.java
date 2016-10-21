@@ -215,7 +215,7 @@ public class TutorialActivity extends AppCompatActivity {
     private static class IntroductionPagerAdapter extends PagerAdapter {
 
         private static final int[] layouts = {R.layout.tutorial_1, R.layout.tutorial_2,
-                R.layout.tutorial_1};
+                R.layout.tutorial_3};
 
         private final LayoutInflater inflater;
 
