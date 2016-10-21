@@ -22,8 +22,7 @@
         android:layout_marginLeft="40dp"
         android:layout_marginRight="40dp"
         android:gravity="center_horizontal"
-        android:text="Please tap ‘Allow’. Next, enter your device
-passcode or use Touch ID to complete the configuration."
+        android:text="Please grant permission to Cypherpunk Privacy for connecting a VPN from your device."
         android:textSize="16sp"
         app:fontName="DosisMedium" />
 

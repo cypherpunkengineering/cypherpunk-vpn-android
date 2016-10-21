@@ -3,6 +3,7 @@ package com.cypherpunk.android.vpn.ui.setup;
 import android.content.Context;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
+import android.net.VpnService;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.TaskStackBuilder;
@@ -50,12 +51,13 @@ public class TutorialActivity extends AppCompatActivity {
     private IntroductionPagerAdapter adapter;
     private Subscription subscription = Subscriptions.empty();
 
+    private static final int GRANT_VPN_PERMISSION = 1;
+
     @Inject
     Realm realm;
 
     @Inject
     CypherpunkService webService;
-
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -86,13 +88,24 @@ public class TutorialActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 int currentItem = binding.pager.getCurrentItem();
-                if (currentItem == adapter.getCount() - 1) {
-                    Intent intent = new Intent(TutorialActivity.this, MainActivity.class);
-                    TaskStackBuilder builder = TaskStackBuilder.create(TutorialActivity.this);
-                    builder.addNextIntent(intent);
-                    builder.startActivities();
-                } else {
-                    binding.pager.setCurrentItem(++currentItem);
+                if (currentItem == 0)
+                {
+                    Intent intent = VpnService.prepare(getApplicationContext());
+                    if (intent != null)
+                        startActivityForResult(intent, GRANT_VPN_PERMISSION);
+                    else
+                        onActivityResult(GRANT_VPN_PERMISSION, RESULT_OK, null);
+                }
+                else
+                {
+                    if (currentItem == adapter.getCount() - 1) {
+                        Intent intent = new Intent(TutorialActivity.this, MainActivity.class);
+                        TaskStackBuilder builder = TaskStackBuilder.create(TutorialActivity.this);
+                        builder.addNextIntent(intent);
+                        builder.startActivities();
+                    } else {
+                        binding.pager.setCurrentItem(++currentItem);
+                    }
                 }
             }
         });
@@ -104,6 +117,23 @@ public class TutorialActivity extends AppCompatActivity {
                 binding.pager.setCurrentItem(++currentItem);
             }
         });
+    }
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK)
+        {
+            switch (requestCode)
+            {
+                case GRANT_VPN_PERMISSION:
+                    int currentItem = binding.pager.getCurrentItem();
+                    binding.pager.setCurrentItem(++currentItem);
+                    break;
+            }
+        }
     }
 
     private void getServerList() {
