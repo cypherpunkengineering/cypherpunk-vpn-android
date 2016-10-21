@@ -116,10 +116,10 @@
     <string name="setting_application_summary">Configure apps to connect directly without privacy protection</string>
     <!-- vpn port remote -->
     <string name="setting_vpn_port_remote">VPN server port</string>
-	<string name="setting_vpn_port_remote_summary">Use alternate remote TCP/UDP port for Privacy Tunnel</string>
+    <string name="setting_vpn_port_remote_summary">Use alternate remote TCP/UDP port for Privacy Tunnel</string>
     <!-- vpn port local -->
     <string name="setting_vpn_port_local">VPN local port</string>
-	<string name="setting_vpn_port_local_summary">Use alternate local TCP/UDP port for Privacy Tunnel</string>
+    <string name="setting_vpn_port_local_summary">Use alternate local TCP/UDP port for Privacy Tunnel</string>
     <!-- vpn port forwarding -->
     <string name="setting_vpn_port_forwarding">Port Forwarding</string>
     <string name="setting_vpn_port_forwarding_summary">Allow incoming connection to your mobile device over an external port</string>
@@ -187,6 +187,9 @@
     <string name="plan_per_month">/ month</string>
     <string name="plan_current">Current Plan</string>
 
+    <!-- premium free -->
+    <string name="title_activity_premium_free">Get 30 Days Premium Free</string>
+    <string name="premium_free_text">For every friend who signs up,\n we’ll give you both 30 days free!</string>
 
     <!-- introduction -->
     <string name="introduction_exist_account">Have an account already?</string>
@@ -240,5 +243,8 @@
     <string name="network_other_networks">OTHER NETWORKS</string>
     <string name="network_other_auto_secure_connections">Auto secure connections</string>
     <string name="introduction_login">Log In</string>
+    <string name="premium_free_facebook">Facebook</string>
+    <string name="premium_free_twitter">Twitter</string>
+    <string name="premium_free_email">Email</string>
 
 </resources>
