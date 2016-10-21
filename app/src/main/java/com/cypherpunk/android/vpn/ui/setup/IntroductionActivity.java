@@ -13,8 +13,8 @@ import android.view.ViewGroup;
 
 import com.cypherpunk.android.vpn.R;
 import com.cypherpunk.android.vpn.databinding.ActivityIntroductionBinding;
+import com.cypherpunk.android.vpn.ui.signin.IdentifyEmailActivity;
 import com.cypherpunk.android.vpn.ui.signin.SignInActivity;
-import com.cypherpunk.android.vpn.ui.signin.SignUpActivity;
 
 
 public class IntroductionActivity extends AppCompatActivity {
@@ -37,7 +37,7 @@ public class IntroductionActivity extends AppCompatActivity {
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        startActivity(new Intent(IntroductionActivity.this, SignUpActivity.class));
+                        startActivity(new Intent(IntroductionActivity.this, IdentifyEmailActivity.class));
                     }
                 });
 
