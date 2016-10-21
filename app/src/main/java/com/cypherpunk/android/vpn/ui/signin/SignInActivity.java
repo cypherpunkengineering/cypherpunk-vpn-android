@@ -93,6 +93,12 @@ public class SignInActivity extends AppCompatActivity {
                 startActivity(new Intent(SignInActivity.this, SignUpActivity.class));
             }
         });
+        binding.forgotPasswordButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(SignInActivity.this, ResetPasswordActivity.class));
+            }
+        });
 
         binding.forgotPasswordButton.setPaintFlags(
                 binding.forgotPasswordButton.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);

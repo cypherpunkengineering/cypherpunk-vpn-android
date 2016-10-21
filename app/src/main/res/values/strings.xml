@@ -28,6 +28,11 @@
     <string name="sign_up_free_premium_trial_2_line">Sign up and start your 7 day\n Free Premium Trial now!</string>
     <string name="sign_up_free_premium_trial">Sign up and start your 7 day Free Premium Trial now!</string>
 
+    <!-- reset password -->
+    <string name="reset_password_submit">Submit</string>
+    <string name="reset_password_text">Enter your email address \n to reset your password.</string>
+    <string name="title_activity_reset_password">Reset your password</string>
+
     <!-- setting -->
     <string name="title_activity_settings">Configuration</string>
     <string name="tab_settings_account">Account</string>
