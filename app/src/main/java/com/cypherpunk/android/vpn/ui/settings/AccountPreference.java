@@ -4,10 +4,13 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.preference.Preference;
 import android.support.v7.preference.PreferenceViewHolder;
+import android.text.format.DateFormat;
 import android.util.AttributeSet;
 import android.widget.TextView;
 
 import com.cypherpunk.android.vpn.R;
+
+import java.util.Date;
 
 
 public class AccountPreference extends Preference {
@@ -38,7 +41,7 @@ public class AccountPreference extends Preference {
 
         usernameView.setText(username);
         renewalView.setText(renewal);
-        expirationViewView.setText(expiration);
+        expirationViewView.setText(getContext().getString(R.string.account_plan_expiration, expiration));
     }
 
     public void setUsernameText(@NonNull String username) {
@@ -46,10 +49,23 @@ public class AccountPreference extends Preference {
     }
 
     public void setRenewal(@NonNull String renewal) {
-        this.renewal = renewal;
+        switch (renewal) {
+            case "monthly":
+                this.renewal = getContext().getString(R.string.account_plan_monthly);
+                break;
+            case "semiannually":
+                this.renewal = getContext().getString(R.string.account_plan_semiannually);
+                break;
+            case "annually":
+                this.renewal = getContext().getString(R.string.account_plan_annually);
+                break;
+        }
     }
 
     public void setExpiration(@NonNull String expiration) {
-        this.expiration = expiration;
+        int timeStamp = Integer.parseInt(expiration);
+        Date date = new Date((long) timeStamp * 1000);
+        this.expiration = DateFormat.format(
+                getContext().getString(R.string.account_plan_expiration_format), date).toString();
     }
 }

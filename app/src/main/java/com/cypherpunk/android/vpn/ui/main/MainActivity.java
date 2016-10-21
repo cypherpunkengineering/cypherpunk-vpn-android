@@ -32,10 +32,13 @@ import android.widget.CompoundButton;
 
 import com.cypherpunk.android.vpn.CypherpunkApplication;
 import com.cypherpunk.android.vpn.R;
-import com.cypherpunk.android.vpn.data.api.JsonipService;
+import com.cypherpunk.android.vpn.data.api.CypherpunkService;
 import com.cypherpunk.android.vpn.data.api.UserManager;
-import com.cypherpunk.android.vpn.data.api.json.JsonipResult;
+import com.cypherpunk.android.vpn.data.api.json.LoginRequest;
+import com.cypherpunk.android.vpn.data.api.json.LoginResult;
+import com.cypherpunk.android.vpn.data.api.json.StatusResult;
 import com.cypherpunk.android.vpn.databinding.ActivityMainBinding;
+import com.cypherpunk.android.vpn.model.UserSettingPref;
 import com.cypherpunk.android.vpn.ui.account.AccountActivity;
 import com.cypherpunk.android.vpn.ui.region.ConnectConfirmationDialogFragment;
 import com.cypherpunk.android.vpn.ui.settings.RateDialogFragment;
@@ -51,9 +54,11 @@ import javax.inject.Inject;
 
 import de.blinkt.openvpn.core.VpnStatus;
 import io.realm.Realm;
+import rx.Single;
 import rx.SingleSubscriber;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 import rx.subscriptions.Subscriptions;
 
@@ -78,7 +83,7 @@ public class MainActivity extends AppCompatActivity
     Realm realm;
 
     @Inject
-    JsonipService webService;
+    CypherpunkService webService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -164,6 +169,8 @@ public class MainActivity extends AppCompatActivity
 
             }
         });
+
+        getStatus();
     }
 
     @Override
@@ -292,7 +299,6 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void onVpnDisconnected() {
-        getIpAddress();
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -304,20 +310,25 @@ public class MainActivity extends AppCompatActivity
         });
     }
 
-    private void getIpAddress() {
+    private void getStatus() {
         subscription = webService
-                .getIpAddress()
+                .login(new LoginRequest(UserManager.getMailAddress(), UserManager.getPassword()))
+                .flatMap(new Func1<LoginResult, Single<StatusResult>>() {
+                    @Override
+                    public Single<StatusResult> call(LoginResult result) {
+                        return webService.getStatus();
+                    }
+                })
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new SingleSubscriber<JsonipResult>() {
+                .subscribe(new SingleSubscriber<StatusResult>() {
                     @Override
-                    public void onSuccess(JsonipResult jsonipResult) {
-                        if (status.isDisconnected()) {
-                            status.setOriginalIp(jsonipResult.getIp());
-                        } else if (!TextUtils.isEmpty(status.getNewIp())
-                                && !status.getNewIp().equals(jsonipResult.getIp())) {
-                            status.setNewIp(jsonipResult.getIp());
-                        }
+                    public void onSuccess(StatusResult status) {
+                        UserSettingPref statusPref = new UserSettingPref();
+                        statusPref.userStatusType = status.getType();
+                        statusPref.userStatusRenewal = status.getRenewal();
+                        statusPref.userStatusExpiration = status.getExpiration();
+                        statusPref.save();
                     }
 
                     @Override
