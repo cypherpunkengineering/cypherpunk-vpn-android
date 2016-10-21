@@ -42,7 +42,7 @@
             style="@style/Widget.Cypherpunk.YellowButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="12dp"
+            android:layout_marginBottom="16dp"
             android:layout_marginLeft="28dp"
             android:layout_marginRight="28dp"
             android:text="@string/introduction_sign_up" />
