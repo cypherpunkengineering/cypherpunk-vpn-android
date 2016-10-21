@@ -30,14 +30,11 @@ public class AccountSettingsFragment extends PreferenceFragmentCompat {
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         addPreferencesFromResource(R.xml.preference_account);
 
-        // TODO: set username
+        // TODO: set plan
         AccountPreference account = (AccountPreference) findPreference("account");
         account.setUsernameText(UserManager.getMailAddress());
-
-        // TODO: set plan
-        Preference plan = findPreference("plan");
-        plan.setTitle("Monthly Premium");
-        plan.setSummary("Renews On 02/02/2016");
+        account.setRenewal("Monthly Premium");
+        account.setExpiration("Renews On 02/02/2016");
 
         // email
         Preference email = findPreference("email");

@@ -130,7 +130,11 @@
     <string name="account_setting_email">Email</string>
     <string name="account_setting_password">Password</string>
     <string name="account_setting_category_more">More</string>
-    <string name="account_setting_contact">Contact us</string>
+    <string name="account_setting_premium_free">Get 30 Days Premium Free</string>
+    <string name="account_setting_rate">Rate Our Service</string>
+    <string name="account_setting_contact">Message the Founders</string>
+    <string name="account_setting_contact_summary">We love interacting with our users, all messages are responded within 12 hours.</string>
+    <string name="account_setting_help">Help</string>
     <string name="account_setting_logout">Log out</string>
 
     <!-- edit profile-->

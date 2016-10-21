@@ -13,6 +13,8 @@ import com.cypherpunk.android.vpn.R;
 public class AccountPreference extends Preference {
 
     private String username;
+    private String renewal;
+    private String expiration;
 
     public AccountPreference(Context context) {
         this(context, null);
@@ -30,11 +32,24 @@ public class AccountPreference extends Preference {
     @Override
     public void onBindViewHolder(PreferenceViewHolder holder) {
         super.onBindViewHolder(holder);
-        TextView textView = (TextView) holder.itemView.findViewById(R.id.username);
-        textView.setText(username);
+        TextView usernameView = (TextView) holder.itemView.findViewById(R.id.username);
+        TextView renewalView = (TextView) holder.itemView.findViewById(R.id.renewal);
+        TextView expirationViewView = (TextView) holder.itemView.findViewById(R.id.expiration);
+
+        usernameView.setText(username);
+        renewalView.setText(renewal);
+        expirationViewView.setText(expiration);
     }
 
     public void setUsernameText(@NonNull String username) {
         this.username = username;
+    }
+
+    public void setRenewal(@NonNull String renewal) {
+        this.renewal = renewal;
+    }
+
+    public void setExpiration(@NonNull String expiration) {
+        this.expiration = expiration;
     }
 }
