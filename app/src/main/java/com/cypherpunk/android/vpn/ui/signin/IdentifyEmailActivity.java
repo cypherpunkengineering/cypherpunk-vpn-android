@@ -12,12 +12,12 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.TextView;
 
 import com.cypherpunk.android.vpn.R;
-import com.cypherpunk.android.vpn.databinding.ActivityEmailBinding;
+import com.cypherpunk.android.vpn.databinding.ActivityIdentifyEmailBinding;
 
 
 public class IdentifyEmailActivity extends AppCompatActivity {
 
-    private ActivityEmailBinding binding;
+    private ActivityIdentifyEmailBinding binding;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
