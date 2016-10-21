@@ -44,4 +44,11 @@ public class PlanView extends RelativeLayout {
         binding.price.setTextColor(ContextCompat.getColor(getContext(), badgeVisible ? R.color.plan_badge_text : R.color.plan_price));
         binding.plan.setTextColor(ContextCompat.getColor(getContext(), badgeVisible ? R.color.plan_badge_text : R.color.plan_text));
     }
+
+    public void setCurrentPlan() {
+        binding.card.setAlpha(0.15f);
+        binding.currentPlan.setVisibility(VISIBLE);
+        binding.badge.setVisibility(INVISIBLE);
+        setClickable(false);
+    }
 }
