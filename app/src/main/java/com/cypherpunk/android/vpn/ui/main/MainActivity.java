@@ -108,14 +108,14 @@ public class MainActivity extends AppCompatActivity
         actionBar.setDisplayShowTitleEnabled(false);
 
         // background
-        String operatorName = getSimOperatorName();
-        if (TextUtils.isEmpty(operatorName)) {
-            String[] text = {Build.BRAND.toUpperCase(), Build.MODEL.toUpperCase()};
-            binding.binaryView.setText(text);
-        } else {
-            String[] text = {Build.BRAND.toUpperCase(), Build.MODEL.toUpperCase(), operatorName};
-            binding.binaryView.setText(text);
-        }
+//        String operatorName = getSimOperatorName();
+//        if (TextUtils.isEmpty(operatorName)) {
+//            String[] text = {Build.BRAND.toUpperCase(), Build.MODEL.toUpperCase()};
+//            binding.binaryView.setText(text);
+//        } else {
+//            String[] text = {Build.BRAND.toUpperCase(), Build.MODEL.toUpperCase(), operatorName};
+//            binding.binaryView.setText(text);
+//        }
 
         // showSignUpButton();
 

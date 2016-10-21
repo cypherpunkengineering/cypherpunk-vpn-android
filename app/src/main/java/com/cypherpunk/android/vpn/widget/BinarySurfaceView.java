@@ -99,8 +99,7 @@ public class BinarySurfaceView extends SurfaceView implements SurfaceHolder.Call
              */
             if (android.os.Build.BRAND.equalsIgnoreCase("google") &&
                     android.os.Build.MANUFACTURER.equalsIgnoreCase("asus") &&
-                    android.os.Build.MODEL.equalsIgnoreCase("Nexus 7"))
-            {
+                    android.os.Build.MODEL.equalsIgnoreCase("Nexus 7")) {
                 SystemClock.sleep(500);
             }
 
@@ -126,8 +125,7 @@ public class BinarySurfaceView extends SurfaceView implements SurfaceHolder.Call
             }
         }
 
-        private void drawTiles()
-        {
+        private void drawTiles() {
             // see http://stackoverflow.com/questions/15770467/drawing-surface-unlockcanvasandpost-and-illegalargumentexception
 
             final SurfaceHolder holder = getHolder();
@@ -138,28 +136,21 @@ public class BinarySurfaceView extends SurfaceView implements SurfaceHolder.Call
 
             final Canvas canvas = holder.lockCanvas();
 
-            try
-            {
+            try {
                 //noinspection SynchronizationOnLocalVariableOrMethodParameter
-                synchronized (holder)
-                {
+                synchronized (holder) {
                     final int state = BinarySurfaceView.this.connectionState;
                     final long elapsedTime = SystemClock.uptimeMillis() - baseTime;
                     final float distance = elapsedTime * scrollDistancePerMilliSec;
-                    if (canvas != null)
-                    {
+                    if (canvas != null) {
                         background.draw(canvas);
                         tileDrawable.draw(canvas, distance, state);
                     }
                 }
-            }
-            catch (Exception e)
-            {
+            } catch (Exception e) {
                 Log.e(TAG, "exception thrown in drawTiles()", e);
                 return;
-            }
-            finally
-            {
+            } finally {
                 if (canvas != null)
                     holder.unlockCanvasAndPost(canvas);
             }
@@ -314,14 +305,14 @@ public class BinarySurfaceView extends SurfaceView implements SurfaceHolder.Call
             for (int i = 0; i < columnCount; i++) {
                 positions.add(i);
             }
-            for (String s : strings) {
-                if (positions.isEmpty()) {
-                    break;
-                }
-                int position = random.nextInt(positions.size());
-                int column = positions.remove(position);
-                stringInfo.put(column, new Pair<>(random.nextInt(rowCount), s));
-            }
+//            for (String s : strings) {
+//                if (positions.isEmpty()) {
+//                    break;
+//                }
+//                int position = random.nextInt(positions.size());
+//                int column = positions.remove(position);
+//                stringInfo.put(column, new Pair<>(random.nextInt(rowCount), s));
+//            }
         }
 
         private KeyItem generate(int row, int column) {
