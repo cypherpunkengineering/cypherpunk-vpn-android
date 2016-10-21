@@ -12,6 +12,7 @@ import android.view.View;
 import com.cypherpunk.android.vpn.R;
 import com.cypherpunk.android.vpn.data.api.UserManager;
 import com.cypherpunk.android.vpn.model.UserSettingPref;
+import com.cypherpunk.android.vpn.ui.account.PremiumFreeActivity;
 import com.cypherpunk.android.vpn.ui.setup.IntroductionActivity;
 import com.cypherpunk.android.vpn.vpn.CypherpunkVPN;
 
@@ -46,6 +47,15 @@ public class AccountSettingsFragment extends PreferenceFragmentCompat {
             @Override
             public boolean onPreferenceClick(Preference preference) {
                 signOut();
+                return true;
+            }
+        });
+
+        // TODO: すでに課金していたら表示しなくて良さそう
+        findPreference("premium_free").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                startActivity(new Intent(getActivity(), PremiumFreeActivity.class));
                 return true;
             }
         });
