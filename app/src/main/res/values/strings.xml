@@ -130,8 +130,18 @@
     <string name="account_setting_email">Email</string>
     <string name="account_setting_password">Password</string>
     <string name="account_setting_category_more">More</string>
-    <string name="account_setting_contact">Contact us</string>
+    <string name="account_setting_premium_free">Get 30 Days Premium Free</string>
+    <string name="account_setting_rate">Rate Our Service</string>
+    <string name="account_setting_contact">Message the Founders</string>
+    <string name="account_setting_contact_summary">We love interacting with our users, all messages are responded within 12 hours.</string>
+    <string name="account_setting_help">Help</string>
     <string name="account_setting_logout">Log out</string>
+
+    <string name="account_plan_monthly">Monthly Premium</string>
+    <string name="account_plan_semiannually">Semiannually Premium</string>
+    <string name="account_plan_annually">Annually Premium</string>
+    <string name="account_plan_expiration_format">dd/MM/yyyy</string>
+    <string name="account_plan_expiration">Renews On %1$s</string>
 
     <!-- edit profile-->
     <string name="title_activity_edit_email">Update Email</string>

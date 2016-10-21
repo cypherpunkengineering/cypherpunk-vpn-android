@@ -11,6 +11,7 @@ import android.view.View;
 
 import com.cypherpunk.android.vpn.R;
 import com.cypherpunk.android.vpn.data.api.UserManager;
+import com.cypherpunk.android.vpn.model.UserSettingPref;
 import com.cypherpunk.android.vpn.ui.setup.IntroductionActivity;
 import com.cypherpunk.android.vpn.vpn.CypherpunkVPN;
 
@@ -30,14 +31,12 @@ public class AccountSettingsFragment extends PreferenceFragmentCompat {
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         addPreferencesFromResource(R.xml.preference_account);
 
-        // TODO: set username
-        AccountPreference account = (AccountPreference) findPreference("account");
-        account.setUsernameText(UserManager.getMailAddress());
-
         // TODO: set plan
-        Preference plan = findPreference("plan");
-        plan.setTitle("Monthly Premium");
-        plan.setSummary("Renews On 02/02/2016");
+        UserSettingPref user = new UserSettingPref();
+        AccountPreference account = (AccountPreference) findPreference("account");
+        account.setUsernameText(user.mail);
+        account.setRenewal(user.userStatusRenewal);
+        account.setExpiration(user.userStatusExpiration);
 
         // email
         Preference email = findPreference("email");

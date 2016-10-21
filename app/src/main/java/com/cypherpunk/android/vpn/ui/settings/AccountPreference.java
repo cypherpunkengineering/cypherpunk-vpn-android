@@ -4,15 +4,20 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.preference.Preference;
 import android.support.v7.preference.PreferenceViewHolder;
+import android.text.format.DateFormat;
 import android.util.AttributeSet;
 import android.widget.TextView;
 
 import com.cypherpunk.android.vpn.R;
 
+import java.util.Date;
+
 
 public class AccountPreference extends Preference {
 
     private String username;
+    private String renewal;
+    private String expiration;
 
     public AccountPreference(Context context) {
         this(context, null);
@@ -30,11 +35,37 @@ public class AccountPreference extends Preference {
     @Override
     public void onBindViewHolder(PreferenceViewHolder holder) {
         super.onBindViewHolder(holder);
-        TextView textView = (TextView) holder.itemView.findViewById(R.id.username);
-        textView.setText(username);
+        TextView usernameView = (TextView) holder.itemView.findViewById(R.id.username);
+        TextView renewalView = (TextView) holder.itemView.findViewById(R.id.renewal);
+        TextView expirationViewView = (TextView) holder.itemView.findViewById(R.id.expiration);
+
+        usernameView.setText(username);
+        renewalView.setText(renewal);
+        expirationViewView.setText(getContext().getString(R.string.account_plan_expiration, expiration));
     }
 
     public void setUsernameText(@NonNull String username) {
         this.username = username;
+    }
+
+    public void setRenewal(@NonNull String renewal) {
+        switch (renewal) {
+            case "monthly":
+                this.renewal = getContext().getString(R.string.account_plan_monthly);
+                break;
+            case "semiannually":
+                this.renewal = getContext().getString(R.string.account_plan_semiannually);
+                break;
+            case "annually":
+                this.renewal = getContext().getString(R.string.account_plan_annually);
+                break;
+        }
+    }
+
+    public void setExpiration(@NonNull String expiration) {
+        int timeStamp = Integer.parseInt(expiration);
+        Date date = new Date((long) timeStamp * 1000);
+        this.expiration = DateFormat.format(
+                getContext().getString(R.string.account_plan_expiration_format), date).toString();
     }
 }

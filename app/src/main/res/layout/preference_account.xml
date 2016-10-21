@@ -3,22 +3,40 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="62dp"
+    android:layout_height="wrap_content"
     android:layout_gravity="center"
+    android:layout_marginBottom="8dp"
     android:background="@color/background_dark"
     android:gravity="center_horizontal"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:padding="8dp">
 
     <com.cypherpunk.android.vpn.widget.TypefaceTextView
         android:id="@+id/username"
         android:layout_width="wrap_content"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="2dp"
         android:drawableLeft="@drawable/account_vector"
-        android:drawablePadding="16dp"
+        android:drawablePadding="8dp"
         android:drawableStart="@drawable/account_vector"
         android:gravity="center"
         android:textSize="20sp"
         app:fontName="DosisMedium"
         tools:text="wiz" />
+
+    <com.cypherpunk.android.vpn.widget.TypefaceTextView
+        android:id="@+id/renewal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="18sp"
+        tools:text="Monthly Premium" />
+
+    <com.cypherpunk.android.vpn.widget.TypefaceTextView
+        android:id="@+id/expiration"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="?android:attr/textColorSecondary"
+        android:textSize="14sp"
+        tools:text="Renews On 02/02/2016" />
 
 </LinearLayout>
