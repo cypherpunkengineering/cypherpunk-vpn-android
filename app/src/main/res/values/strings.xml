@@ -190,6 +190,9 @@
     <!-- premium free -->
     <string name="title_activity_premium_free">Get 30 Days Premium Free</string>
     <string name="premium_free_text">For every friend who signs up,\n we’ll give you both 30 days free!</string>
+    <string name="premium_free_facebook">Facebook</string>
+    <string name="premium_free_twitter">Twitter</string>
+    <string name="premium_free_email">Email</string>
 
     <!-- introduction -->
     <string name="introduction_exist_account">Have an account already?</string>
@@ -243,8 +246,5 @@
     <string name="network_other_networks">OTHER NETWORKS</string>
     <string name="network_other_auto_secure_connections">Auto secure connections</string>
     <string name="introduction_login">Log In</string>
-    <string name="premium_free_facebook">Facebook</string>
-    <string name="premium_free_twitter">Twitter</string>
-    <string name="premium_free_email">Email</string>
 
 </resources>

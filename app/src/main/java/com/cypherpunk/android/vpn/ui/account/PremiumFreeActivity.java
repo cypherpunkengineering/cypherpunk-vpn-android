@@ -22,7 +22,7 @@ public class PremiumFreeActivity extends AppCompatActivity {
         setSupportActionBar(binding.toolbar.toolbar);
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
-            actionBar.setDisplayHomeAsUpEnabled(true);Ò
+            actionBar.setDisplayHomeAsUpEnabled(true);
             actionBar.setDisplayShowTitleEnabled(false);
             binding.toolbar.title.setText(R.string.title_activity_premium_free);
         }
