@@ -16,6 +16,7 @@ import com.cypherpunk.android.vpn.billing.IabResult;
 import com.cypherpunk.android.vpn.billing.Inventory;
 import com.cypherpunk.android.vpn.billing.Purchase;
 import com.cypherpunk.android.vpn.databinding.ActivityUpgradePlanBinding;
+import com.cypherpunk.android.vpn.model.UserSettingPref;
 
 public class UpgradePlanActivity extends AppCompatActivity {
 
@@ -37,9 +38,23 @@ public class UpgradePlanActivity extends AppCompatActivity {
         binding.monthly6Plan.setPlan("6 MONTHS", "$ 79.99", false);
         binding.yearlyPlan.setPlan("12 MONTHS", "$ 49.99", true);
 
-        binding.monthly6Plan.setCurrentPlan();
+        UserSettingPref userSettingPref = new UserSettingPref();
+        String renewal = userSettingPref.userStatusRenewal;
 
-        binding.monthlyPlan.setOnClickListener(new View.OnClickListener() {
+        switch (renewal) {
+            case "monthly":
+                binding.monthlyPlan.setCurrentPlan();
+                break;
+            case "semiannually":
+                binding.monthly6Plan.setCurrentPlan();
+                break;
+            case "annually":
+                binding.yearlyPlan.setCurrentPlan();
+                break;
+        }
+
+        // TODO:
+        binding.monthly6Plan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 String payload = "monthly_sample";

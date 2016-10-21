@@ -49,5 +49,6 @@ public class PlanView extends RelativeLayout {
         binding.card.setAlpha(0.15f);
         binding.currentPlan.setVisibility(VISIBLE);
         binding.badge.setVisibility(INVISIBLE);
+        setClickable(false);
     }
 }
