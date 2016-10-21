@@ -79,8 +79,6 @@ public class TutorialActivity extends AppCompatActivity {
             public void onPageSelected(int position) {
                 super.onPageSelected(position);
                 binding.doNotAllowButton.setVisibility(position == 1 ? View.VISIBLE : View.INVISIBLE);
-                binding.okButton.setText(
-                        position == adapter.getCount() - 1 ? R.string.tutorial_start : R.string.tutorial_allow);
             }
         });
 
@@ -214,8 +212,7 @@ public class TutorialActivity extends AppCompatActivity {
 
     private static class IntroductionPagerAdapter extends PagerAdapter {
 
-        private static final int[] layouts = {R.layout.tutorial_1, R.layout.tutorial_2,
-                R.layout.tutorial_3};
+        private static final int[] layouts = {R.layout.tutorial_1, R.layout.tutorial_2};
 
         private final LayoutInflater inflater;
 
