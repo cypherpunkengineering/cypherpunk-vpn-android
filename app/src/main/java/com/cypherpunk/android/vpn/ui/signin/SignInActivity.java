@@ -59,10 +59,6 @@ public class SignInActivity extends AppCompatActivity {
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
             actionBar.setDisplayShowTitleEnabled(false);
-
-            if (!getResources().getBoolean(R.bool.is_tablet)) {
-                binding.toolbar.title.setText(R.string.title_activity_sign_in);
-            }
         }
 
         binding.email.requestFocus();
@@ -77,22 +73,17 @@ public class SignInActivity extends AppCompatActivity {
             }
         });
 
-        if (BuildConfig.DEBUG) {
-            binding.email.setText("test@test.test");
-            binding.password.setText("test123");
-        }
+//        if (BuildConfig.DEBUG) {
+//            binding.email.setText("test@test.test");
+//            binding.password.setText("test123");
+//        }
         binding.signInButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
                 attemptSignIn();
             }
         });
-        binding.moveSignUpButton.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(SignInActivity.this, SignUpActivity.class));
-            }
-        });
+
         binding.forgotPasswordButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -11,7 +11,6 @@
     <string name="main_sign_up">Sign Up and get a 7-Day Free Premium Trial</string>
 
     <!-- sign in-->
-    <string name="title_activity_sign_in">Log In</string>
     <string name="title_activity_sign_up">Sign Up</string>
     <string name="error_field_required">This field is required</string>
     <string name="sign_in_button_sign_in">Log In</string>
@@ -27,6 +26,7 @@
     <string name="sign_up_button_sign_up">Sign Up</string>
     <string name="sign_up_free_premium_trial_2_line">Sign up and start your 7 day\n Free Premium Trial now!</string>
     <string name="sign_up_free_premium_trial">Sign up and start your 7 day Free Premium Trial now!</string>
+    <string name="sign_in_welcome_back">Welcome back!</string>
 
     <!-- reset password -->
     <string name="reset_password_submit">Submit</string>
