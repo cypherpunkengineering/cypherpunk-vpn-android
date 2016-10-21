@@ -219,7 +219,6 @@
 
     <!-- tutorial -->
     <string name="tutorial_allow">Allow</string>
-    <string name="tutorial_start">Start Cypherpunk Privacy</string>
 
     <!-- select region -->
     <string name="title_activity_locations">Locations</string>
