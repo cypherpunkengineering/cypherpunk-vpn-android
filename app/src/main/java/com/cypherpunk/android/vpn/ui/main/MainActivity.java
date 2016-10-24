@@ -7,10 +7,7 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 import android.net.Uri;
 import android.net.VpnService;
-import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.design.widget.BottomSheetBehavior;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.TaskStackBuilder;
 import android.support.v7.app.ActionBar;
@@ -19,7 +16,6 @@ import android.support.v7.widget.ActionMenuView;
 import android.telephony.TelephonyManager;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
-import android.text.TextUtils;
 import android.text.style.TextAppearanceSpan;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -28,6 +24,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.view.animation.Animation;
 import android.widget.CompoundButton;
 
 import com.cypherpunk.android.vpn.CypherpunkApplication;
@@ -77,7 +74,6 @@ public class MainActivity extends AppCompatActivity
     private CypherpunkVpnStatus status;
     private Subscription subscription = Subscriptions.empty();
     private RegionFragment regionFragment;
-    private BottomSheetBehavior behavior;
 
     @Inject
     Realm realm;
@@ -148,27 +144,8 @@ public class MainActivity extends AppCompatActivity
 
         FragmentTransaction fm = getSupportFragmentManager().beginTransaction();
         regionFragment = new RegionFragment();
-        fm.add(R.id.bottom_sheet, regionFragment);
+        fm.add(R.id.region_container, regionFragment);
         fm.commit();
-
-        behavior = BottomSheetBehavior.from(binding.bottomSheet);
-        behavior.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
-            @Override
-            public void onStateChanged(@NonNull View bottomSheet, int newState) {
-                switch (newState) {
-                    case BottomSheetBehavior.STATE_COLLAPSED:
-                        regionFragment.toggleAllowIcon(false);
-                        break;
-                    case BottomSheetBehavior.STATE_EXPANDED:
-                        regionFragment.toggleAllowIcon(true);
-                }
-            }
-
-            @Override
-            public void onSlide(@NonNull View bottomSheet, float slideOffset) {
-
-            }
-        });
 
         getStatus();
     }
@@ -176,16 +153,9 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
         super.onWindowFocusChanged(hasFocus);
-        ViewGroup.LayoutParams layoutParams = binding.bottomSheet.getLayoutParams();
-        layoutParams.height = getBottomSheetMaximumHeight();
-
-        // bottom sheet peek height
-        int[] position = new int[2];
-        binding.connectionStatus.getLocationOnScreen(position);
-        int connectionStatusPosition = position[1] + binding.connectionStatus.getHeight();
-        int marginTop = getResources().getDimensionPixelSize(R.dimen.bottom_sheet_margin_top);
-        DisplayMetrics dm = Resources.getSystem().getDisplayMetrics();
-        behavior.setPeekHeight(dm.heightPixels - (connectionStatusPosition + marginTop));
+        ViewGroup.LayoutParams layoutParams = binding.regionContainer.getLayoutParams();
+        layoutParams.height = getBottomContainerMinimumHeight();
+        binding.regionContainer.requestLayout();
     }
 
     @Override
@@ -350,6 +320,45 @@ public class MainActivity extends AppCompatActivity
 //        binding.signUpButton.setVisibility(View.VISIBLE);
     }
 
+    @Override
+    public void onReconnectButtonClick() {
+        ViewGroup.LayoutParams layoutParams = binding.regionContainer.getLayoutParams();
+        if (layoutParams.height == getBottomContainerMaximumHeight()) {
+            Animation animation = new HeightAnimation(getBottomContainerMinimumHeight(), binding.regionContainer);
+            regionFragment.toggleAllowIcon(false);
+            animation.setDuration(300);
+            binding.regionContainer.startAnimation(animation);
+        }
+        startVpn();
+    }
+
+    @Override
+    public void onNoReconnectButtonClick() {
+        ViewGroup.LayoutParams layoutParams = binding.regionContainer.getLayoutParams();
+        if (layoutParams.height == getBottomContainerMaximumHeight()) {
+            Animation animation = new HeightAnimation(getBottomContainerMinimumHeight(), binding.regionContainer);
+            regionFragment.toggleAllowIcon(false);
+            animation.setDuration(300);
+            binding.regionContainer.startAnimation(animation);
+        }
+        stopVpn();
+    }
+
+    @Override
+    public void toggleBottomSheetState() {
+        ViewGroup.LayoutParams layoutParams = binding.regionContainer.getLayoutParams();
+        HeightAnimation animation;
+        if (layoutParams.height == getBottomContainerMaximumHeight()) {
+            animation = new HeightAnimation(getBottomContainerMinimumHeight(), binding.regionContainer);
+            regionFragment.toggleAllowIcon(false);
+        } else {
+            animation = new HeightAnimation(getBottomContainerMaximumHeight(), binding.regionContainer);
+            regionFragment.toggleAllowIcon(true);
+        }
+        animation.setDuration(300);
+        binding.regionContainer.startAnimation(animation);
+    }
+
     private int getStatusBarHeight() {
         final Rect rect = new Rect();
         Window window = getWindow();
@@ -357,34 +366,18 @@ public class MainActivity extends AppCompatActivity
         return rect.top;
     }
 
-    private int getBottomSheetMaximumHeight() {
+    private int getBottomContainerMaximumHeight() {
         DisplayMetrics dm = Resources.getSystem().getDisplayMetrics();
         int toolbarHeight = binding.toolbar.getHeight();
         return dm.heightPixels - toolbarHeight - getStatusBarHeight();
     }
 
-    @Override
-    public void onReconnectButtonClick() {
-        BottomSheetBehavior behavior = BottomSheetBehavior.from(binding.bottomSheet);
-        behavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
-        startVpn();
-    }
-
-    @Override
-    public void onNoReconnectButtonClick() {
-        BottomSheetBehavior behavior = BottomSheetBehavior.from(binding.bottomSheet);
-        behavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
-        stopVpn();
-    }
-
-    @Override
-    public void toggleBottomSheetState() {
-        switch (behavior.getState()) {
-            case BottomSheetBehavior.STATE_COLLAPSED:
-                behavior.setState(BottomSheetBehavior.STATE_EXPANDED);
-                break;
-            case BottomSheetBehavior.STATE_EXPANDED:
-                behavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
-        }
+    private int getBottomContainerMinimumHeight() {
+        int[] position = new int[2];
+        binding.connectionStatus.getLocationOnScreen(position);
+        int connectionStatusPosition = position[1] + binding.connectionStatus.getHeight();
+        int marginTop = getResources().getDimensionPixelSize(R.dimen.bottom_sheet_margin_top);
+        DisplayMetrics dm = Resources.getSystem().getDisplayMetrics();
+        return dm.heightPixels - (connectionStatusPosition + marginTop);
     }
 }
