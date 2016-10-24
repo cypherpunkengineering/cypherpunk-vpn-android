@@ -5,11 +5,13 @@ public class StatusResult {
 
     private final String type;
     private final String renewal;
+    private final boolean confirmed;
     private final String expiration;
 
-    public StatusResult(String type, String renewal, String expiration) {
+    public StatusResult(String type, String renewal, boolean confirmed, String expiration) {
         this.type = type;
         this.renewal = renewal;
+        this.confirmed = confirmed;
         this.expiration = expiration;
     }
 
@@ -21,6 +23,10 @@ public class StatusResult {
         return renewal;
     }
 
+    public boolean getConfirmed() {
+        return confirmed;
+    }
+
     public String getExpiration() {
         return expiration;
     }
@@ -30,6 +36,7 @@ public class StatusResult {
         return "StatusResult{" +
                 "type='" + type + '\'' +
                 ", renewal='" + renewal + '\'' +
+                ", confirmed='" + confirmed + '\'' +
                 ", expiration='" + expiration + '\'' +
                 '}';
     }
