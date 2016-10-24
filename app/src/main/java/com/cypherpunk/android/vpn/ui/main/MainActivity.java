@@ -10,7 +10,10 @@ import android.net.VpnService;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.TaskStackBuilder;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.ActionMenuView;
 import android.telephony.TelephonyManager;
@@ -38,6 +41,7 @@ import com.cypherpunk.android.vpn.databinding.ActivityMainBinding;
 import com.cypherpunk.android.vpn.model.UserSettingPref;
 import com.cypherpunk.android.vpn.ui.account.AccountActivity;
 import com.cypherpunk.android.vpn.ui.region.ConnectConfirmationDialogFragment;
+import com.cypherpunk.android.vpn.ui.settings.AccountSettingsFragment;
 import com.cypherpunk.android.vpn.ui.settings.RateDialogFragment;
 import com.cypherpunk.android.vpn.ui.settings.SettingsActivity;
 import com.cypherpunk.android.vpn.ui.setup.IntroductionActivity;
@@ -74,6 +78,7 @@ public class MainActivity extends AppCompatActivity
     private CypherpunkVpnStatus status;
     private Subscription subscription = Subscriptions.empty();
     private RegionFragment regionFragment;
+    private ActionBarDrawerToggle drawerToggle;
 
     @Inject
     Realm realm;
@@ -102,6 +107,7 @@ public class MainActivity extends AppCompatActivity
         ActionBar actionBar = getSupportActionBar();
         assert actionBar != null;
         actionBar.setDisplayShowTitleEnabled(false);
+        actionBar.setDisplayHomeAsUpEnabled(true);
 
         // background
 //        String operatorName = getSimOperatorName();
@@ -148,6 +154,25 @@ public class MainActivity extends AppCompatActivity
         fm.commit();
 
         getStatus();
+
+        // navigation drawer
+        drawerToggle = new ActionBarDrawerToggle(this, binding.drawerLayout, binding.toolbar, R.string.drawer_open, R.string.drawer_close) {
+            @Override
+            public void onDrawerOpened(View drawerView) {
+                super.onDrawerOpened(drawerView);
+            }
+
+            @Override
+            public void onDrawerClosed(View drawerView) {
+                super.onDrawerClosed(drawerView);
+            }
+        };
+        binding.drawerLayout.addDrawerListener(drawerToggle);
+        binding.toolbar.setNavigationIcon(R.drawable.account_vector);
+
+        AccountSettingsFragment accountSettingsFragment = new AccountSettingsFragment();
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.left_drawer, accountSettingsFragment).commit();
     }
 
     @Override
@@ -161,7 +186,6 @@ public class MainActivity extends AppCompatActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main_right, menu);
-        getMenuInflater().inflate(R.menu.main_left, binding.actionMenuLeft.getMenu());
         return true;
     }
 
@@ -176,6 +200,16 @@ public class MainActivity extends AppCompatActivity
                 break;
         }
         return false;
+    }
+
+    @Override
+    public void onBackPressed() {
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
+            drawer.closeDrawer(GravityCompat.START);
+        } else {
+            super.onBackPressed();
+        }
     }
 
     @Override
