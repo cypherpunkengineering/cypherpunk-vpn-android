@@ -11,7 +11,6 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.TaskStackBuilder;
 import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
@@ -39,11 +38,11 @@ import com.cypherpunk.android.vpn.data.api.json.LoginResult;
 import com.cypherpunk.android.vpn.data.api.json.StatusResult;
 import com.cypherpunk.android.vpn.databinding.ActivityMainBinding;
 import com.cypherpunk.android.vpn.model.UserSettingPref;
-import com.cypherpunk.android.vpn.ui.account.AccountActivity;
 import com.cypherpunk.android.vpn.ui.region.ConnectConfirmationDialogFragment;
 import com.cypherpunk.android.vpn.ui.settings.AccountSettingsFragment;
 import com.cypherpunk.android.vpn.ui.settings.RateDialogFragment;
-import com.cypherpunk.android.vpn.ui.settings.SettingsActivity;
+import com.cypherpunk.android.vpn.ui.settings.SettingConnectDialogFragment;
+import com.cypherpunk.android.vpn.ui.settings.SettingsFragment;
 import com.cypherpunk.android.vpn.ui.setup.IntroductionActivity;
 import com.cypherpunk.android.vpn.vpn.CypherpunkVPN;
 import com.cypherpunk.android.vpn.vpn.CypherpunkVpnStatus;
@@ -66,6 +65,7 @@ import rx.subscriptions.Subscriptions;
 public class MainActivity extends AppCompatActivity
         implements VpnStatus.StateListener, RateDialogFragment.RateDialogListener,
         ConnectConfirmationDialogFragment.ConnectDialogListener,
+        SettingConnectDialogFragment.ConnectDialogListener,
         RegionFragment.RegionFragmentListener {
 
     public static final String AUTO_START = "com.cypherpunk.android.vpn.AUTO_START";
@@ -156,23 +156,15 @@ public class MainActivity extends AppCompatActivity
         getStatus();
 
         // navigation drawer
-        drawerToggle = new ActionBarDrawerToggle(this, binding.drawerLayout, binding.toolbar, R.string.drawer_open, R.string.drawer_close) {
-            @Override
-            public void onDrawerOpened(View drawerView) {
-                super.onDrawerOpened(drawerView);
-            }
-
-            @Override
-            public void onDrawerClosed(View drawerView) {
-                super.onDrawerClosed(drawerView);
-            }
-        };
+        drawerToggle = new ActionBarDrawerToggle(this, binding.drawerLayout, binding.toolbar, R.string.drawer_open, R.string.drawer_close);
         binding.drawerLayout.addDrawerListener(drawerToggle);
         binding.toolbar.setNavigationIcon(R.drawable.account_vector);
 
-        AccountSettingsFragment accountSettingsFragment = new AccountSettingsFragment();
         getSupportFragmentManager().beginTransaction()
-                .replace(R.id.left_drawer, accountSettingsFragment).commit();
+                .replace(R.id.left_drawer, new AccountSettingsFragment()).commit();
+
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.right_drawer, new SettingsFragment()).commit();
     }
 
     @Override
@@ -193,10 +185,7 @@ public class MainActivity extends AppCompatActivity
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_setting:
-                startActivityForResult(new Intent(this, SettingsActivity.class), REQUEST_SETTINGS);
-                break;
-            case R.id.action_account:
-                startActivity(new Intent(this, AccountActivity.class));
+                binding.drawerLayout.openDrawer(GravityCompat.END);
                 break;
         }
         return false;
@@ -204,9 +193,10 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
-            drawer.closeDrawer(GravityCompat.START);
+        if (binding.drawerLayout.isDrawerOpen(GravityCompat.START)) {
+            binding.drawerLayout.closeDrawer(GravityCompat.START);
+        } else if (binding.drawerLayout.isDrawerOpen(GravityCompat.END)) {
+            binding.drawerLayout.closeDrawer(GravityCompat.END);
         } else {
             super.onBackPressed();
         }
@@ -220,12 +210,6 @@ public class MainActivity extends AppCompatActivity
                 case REQUEST_VPN_START:
                     startVpn();
                     break;
-                case REQUEST_SETTINGS:
-                    if (data.getBooleanExtra(SettingsActivity.EXTRA_CONNECT, false)) {
-                        startVpn();
-                    } else {
-                        stopVpn();
-                    }
             }
         }
     }
@@ -376,6 +360,11 @@ public class MainActivity extends AppCompatActivity
             binding.regionContainer.startAnimation(animation);
         }
         stopVpn();
+    }
+
+    @Override
+    public void onConnectDialogButtonClick() {
+        startVpn();
     }
 
     @Override

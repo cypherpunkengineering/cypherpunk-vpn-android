@@ -104,6 +104,14 @@
             android:background="#0f3c75"
             android:fitsSystemWindows="true" />
 
+        <FrameLayout
+            android:id="@+id/right_drawer"
+            android:layout_width="304dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="end"
+            android:background="#0f3c75"
+            android:fitsSystemWindows="true" />
+
     </android.support.v4.widget.DrawerLayout>
 
 </layout>

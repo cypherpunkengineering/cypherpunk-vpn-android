@@ -10,6 +10,9 @@ import android.view.MenuItem;
 import com.cypherpunk.android.vpn.R;
 import com.cypherpunk.android.vpn.databinding.ActivitySettingsBinding;
 
+/**
+ * unused
+ */
 public class SettingsActivity extends AppCompatActivity
         implements SettingConnectDialogFragment.ConnectDialogListener {
 
