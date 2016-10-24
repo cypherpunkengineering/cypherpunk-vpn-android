@@ -35,9 +35,11 @@ public class AccountSettingsFragment extends PreferenceFragmentCompat {
         // TODO: set plan
         UserSettingPref user = new UserSettingPref();
         AccountPreference account = (AccountPreference) findPreference("account");
+        /*
         account.setUsernameText(user.mail);
         account.setRenewal(user.userStatusRenewal);
         account.setExpiration(user.userStatusExpiration);
+        */
 
         // email
         Preference email = findPreference("email");
