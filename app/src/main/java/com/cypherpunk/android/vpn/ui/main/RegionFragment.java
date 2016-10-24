@@ -104,7 +104,10 @@ public class RegionFragment extends Fragment {
                         adapter.addFavoriteItem(region);
                     }
                 } else {
-                    result.deleteAllFromRealm();
+                    if (result.size() != 0) {
+                        adapter.removeFavoriteItem(region);
+                        result.deleteAllFromRealm();
+                    }
                 }
                 realm.commitTransaction();
             }
@@ -130,7 +133,7 @@ public class RegionFragment extends Fragment {
         };
         binding.list.setAdapter(adapter);
         adapter.addFavoriteItems(getFavoriteRegionList());
-        adapter.addAllItems(getAllRegionList());
+        adapter.addAllItems(getNoFavoriteRegionList());
 
         binding.regionContainer.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -156,8 +159,8 @@ public class RegionFragment extends Fragment {
         return getContext().getResources().getIdentifier("flag_" + key, "drawable", packageName);
     }
 
-    private ArrayList<Region> getAllRegionList() {
-        RealmResults<Region> regionList = realm.where(Region.class).findAll();
+    private ArrayList<Region> getNoFavoriteRegionList() {
+        RealmResults<Region> regionList = realm.where(Region.class).equalTo("favorited", false).findAll();
         return new ArrayList<>(regionList);
     }
 
@@ -214,7 +217,7 @@ public class RegionFragment extends Fragment {
                                    adapter.clear();
 
                                    adapter.addFavoriteItems(getFavoriteRegionList());
-                                   adapter.addAllItems(getAllRegionList());
+                                   adapter.addAllItems(getNoFavoriteRegionList());
 
                                    // TODO: 一番上のを選択している
                                    CypherpunkSetting setting = new CypherpunkSetting();
