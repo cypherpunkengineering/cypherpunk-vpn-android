@@ -9,6 +9,8 @@
     <string name="main_status_connected">You are protected</string>
     <string name="vpn_cancel">Cancel</string>
     <string name="main_sign_up">Sign Up and get a 7-Day Free Premium Trial</string>
+    <string name="drawer_close">close drawer</string>
+    <string name="drawer_open">open drawer</string>
 
     <!-- sign in-->
     <string name="title_activity_sign_up">Sign Up</string>

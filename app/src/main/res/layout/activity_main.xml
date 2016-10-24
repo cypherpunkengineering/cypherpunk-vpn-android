@@ -3,91 +3,107 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <RelativeLayout
+    <android.support.v4.widget.DrawerLayout
+        android:id="@+id/drawer_layout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="true">
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginBottom="100dp"
-            tools:ignore="RtlHardcoded">
+            android:layout_height="match_parent">
 
-            <android.support.v7.widget.Toolbar
-                android:id="@+id/toolbar"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="#1a000000"
-                app:contentInsetStart="0dp">
-
-                <android.support.v7.widget.ActionMenuView
-                    android:id="@+id/action_menu_left"
-                    android:layout_width="wrap_content"
-                    android:layout_height="?attr/actionBarSize" />
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="?android:actionBarSize"
-                    android:layout_gravity="center"
-                    android:src="@drawable/header_logo_vector"
-                    tools:ignore="ContentDescription" />
-
-            </android.support.v7.widget.Toolbar>
-
-            <View
-                android:layout_width="wrap_content"
-                android:layout_height="1dp"
-                android:layout_below="@id/toolbar"
-                android:background="@color/divider" />
-
-            <com.cypherpunk.android.vpn.widget.BinarySurfaceView
-                android:id="@+id/binary_view"
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_below="@id/toolbar" />
+                android:layout_marginBottom="100dp"
+                tools:ignore="RtlHardcoded">
 
-            <com.cypherpunk.android.vpn.widget.VpnFlatButton
-                android:id="@+id/connection_button"
-                android:layout_width="140dp"
-                android:layout_height="190dp"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="74dp" />
+                <android.support.v7.widget.Toolbar
+                    android:id="@+id/toolbar"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="#1a000000"
+                    app:contentInsetStart="0dp">
 
-            <LinearLayout
-                android:layout_width="wrap_content"
+                    <android.support.v7.widget.ActionMenuView
+                        android:id="@+id/action_menu_left"
+                        android:layout_width="wrap_content"
+                        android:layout_height="?attr/actionBarSize" />
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="?android:actionBarSize"
+                        android:layout_gravity="center"
+                        android:src="@drawable/header_logo_vector"
+                        tools:ignore="ContentDescription" />
+
+                </android.support.v7.widget.Toolbar>
+
+                <View
+                    android:layout_width="wrap_content"
+                    android:layout_height="1dp"
+                    android:layout_below="@id/toolbar"
+                    android:background="@color/divider" />
+
+                <com.cypherpunk.android.vpn.widget.BinarySurfaceView
+                    android:id="@+id/binary_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_below="@id/toolbar" />
+
+                <com.cypherpunk.android.vpn.widget.VpnFlatButton
+                    android:id="@+id/connection_button"
+                    android:layout_width="140dp"
+                    android:layout_height="190dp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="74dp" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/connection_button"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="8dp"
+                    android:orientation="horizontal">
+
+                    <com.cypherpunk.android.vpn.widget.ConnectionStatusView
+                        android:id="@+id/connection_status"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:textSize="@dimen/connection_status_text_size" />
+
+                    <com.cypherpunk.android.vpn.widget.TypefaceTextView
+                        android:id="@+id/connecting_cancel_button"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="8dp"
+                        android:background="?android:attr/selectableItemBackground"
+                        android:clickable="true"
+                        android:padding="8dp"
+                        android:text="@string/vpn_cancel"
+                        android:visibility="gone"
+                        tools:visibility="gone" />
+                </LinearLayout>
+
+            </RelativeLayout>
+
+            <FrameLayout
+                android:id="@+id/region_container"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/connection_button"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="8dp"
-                android:orientation="horizontal">
-
-                <com.cypherpunk.android.vpn.widget.ConnectionStatusView
-                    android:id="@+id/connection_status"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    app:textSize="@dimen/connection_status_text_size" />
-
-                <com.cypherpunk.android.vpn.widget.TypefaceTextView
-                    android:id="@+id/connecting_cancel_button"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="8dp"
-                    android:background="?android:attr/selectableItemBackground"
-                    android:clickable="true"
-                    android:padding="8dp"
-                    android:text="@string/vpn_cancel"
-                    android:visibility="gone"
-                    tools:visibility="gone" />
-            </LinearLayout>
+                android:layout_alignParentBottom="true" />
 
         </RelativeLayout>
 
         <FrameLayout
-            android:id="@+id/region_container"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true" />
+            android:id="@+id/left_drawer"
+            android:layout_width="304dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="start"
+            android:background="#0f3c75"
+            android:fitsSystemWindows="true" />
 
-    </RelativeLayout>
+    </android.support.v4.widget.DrawerLayout>
 
 </layout>
