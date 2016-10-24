@@ -10,7 +10,9 @@ import android.view.MenuItem;
 import com.cypherpunk.android.vpn.R;
 import com.cypherpunk.android.vpn.databinding.ActivityAccountBinding;
 
-
+/**
+ * unused
+ */
 public class AccountActivity extends AppCompatActivity {
 
     @Override
