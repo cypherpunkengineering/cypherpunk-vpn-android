@@ -71,10 +71,8 @@
     </style>
 
     <style name="Animation.Activity.Slide" parent="android:Animation.Activity">
-        <item name="android:activityOpenEnterAnimation">@anim/translate_open_enter</item>
-        <item name="android:activityOpenExitAnimation">@anim/translate_open_exit</item>
-        <item name="android:activityCloseEnterAnimation">@anim/translate_close_enter</item>
-        <item name="android:activityCloseExitAnimation">@anim/translate_close_exit</item>
+        <item name="android:activityOpenEnterAnimation">@anim/pop_up_anim_in</item>
+        <item name="android:activityOpenExitAnimation">@anim/no_animation</item>
     </style>
 
     <style name="CypherpunkPreference" parent="@style/PreferenceThemeOverlay.v14.Material">
