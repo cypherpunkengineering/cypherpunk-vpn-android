@@ -7,6 +7,7 @@ import android.support.v4.app.TaskStackBuilder;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.preference.Preference;
 import android.support.v7.preference.PreferenceFragmentCompat;
+import android.text.TextUtils;
 import android.view.View;
 
 import com.cypherpunk.android.vpn.R;
@@ -32,12 +33,14 @@ public class AccountSettingsFragment extends PreferenceFragmentCompat {
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         addPreferencesFromResource(R.xml.preference_account);
 
-        // TODO: set plan
+        //  set plan
         UserSettingPref user = new UserSettingPref();
         AccountPreference account = (AccountPreference) findPreference("account");
-        account.setUsernameText(user.mail);
-        account.setRenewal(user.userStatusRenewal);
-        account.setExpiration(user.userStatusExpiration);
+        if (!TextUtils.isEmpty(user.mail)) {
+            account.setUsernameText(user.mail);
+            account.setRenewal(user.userStatusRenewal);
+            account.setExpiration(user.userStatusExpiration);
+        }
 
         // email
         Preference email = findPreference("email");
