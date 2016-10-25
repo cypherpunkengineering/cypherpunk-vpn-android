@@ -10,15 +10,36 @@ import android.support.v7.preference.PreferenceFragmentCompat;
 import android.text.TextUtils;
 import android.view.View;
 
+import com.cypherpunk.android.vpn.CypherpunkApplication;
 import com.cypherpunk.android.vpn.R;
+import com.cypherpunk.android.vpn.data.api.CypherpunkService;
 import com.cypherpunk.android.vpn.data.api.UserManager;
+import com.cypherpunk.android.vpn.data.api.json.LoginRequest;
+import com.cypherpunk.android.vpn.data.api.json.LoginResult;
+import com.cypherpunk.android.vpn.data.api.json.StatusResult;
 import com.cypherpunk.android.vpn.model.UserSettingPref;
 import com.cypherpunk.android.vpn.ui.account.PremiumFreeActivity;
 import com.cypherpunk.android.vpn.ui.setup.IntroductionActivity;
 import com.cypherpunk.android.vpn.vpn.CypherpunkVPN;
 
+import javax.inject.Inject;
+
+import rx.Single;
+import rx.SingleSubscriber;
+import rx.Subscription;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Func1;
+import rx.schedulers.Schedulers;
+import rx.subscriptions.Subscriptions;
+
 
 public class AccountSettingsFragment extends PreferenceFragmentCompat {
+
+    private AccountPreference accountPreference;
+    private Subscription subscription = Subscriptions.empty();
+
+    @Inject
+    CypherpunkService webService;
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -32,15 +53,18 @@ public class AccountSettingsFragment extends PreferenceFragmentCompat {
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         addPreferencesFromResource(R.xml.preference_account);
+        CypherpunkApplication.instance.getAppComponent().inject(this);
 
         //  set plan
         UserSettingPref user = new UserSettingPref();
-        AccountPreference account = (AccountPreference) findPreference("account");
-        if (!TextUtils.isEmpty(user.mail)) {
-            account.setUsernameText(user.mail);
-            account.setRenewal(user.userStatusRenewal);
-            account.setExpiration(user.userStatusExpiration);
+        accountPreference = (AccountPreference) findPreference("account");
+        if (!TextUtils.isEmpty(user.userStatusRenewal)) {
+            accountPreference.setUsernameText(user.mail);
+            accountPreference.setRenewal(user.userStatusRenewal);
+            accountPreference.setExpiration(user.userStatusExpiration);
         }
+
+        getStatus();
 
         // email
         Preference email = findPreference("email");
@@ -94,6 +118,44 @@ public class AccountSettingsFragment extends PreferenceFragmentCompat {
                 return true;
             }
         });
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        subscription.unsubscribe();
+    }
+
+    private void getStatus() {
+        subscription = webService
+                .login(new LoginRequest(UserManager.getMailAddress(), UserManager.getPassword()))
+                .flatMap(new Func1<LoginResult, Single<StatusResult>>() {
+                    @Override
+                    public Single<StatusResult> call(LoginResult result) {
+                        return webService.getStatus();
+                    }
+                })
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new SingleSubscriber<StatusResult>() {
+                    @Override
+                    public void onSuccess(StatusResult status) {
+                        UserSettingPref statusPref = new UserSettingPref();
+                        statusPref.userStatusType = status.getType();
+                        statusPref.userStatusRenewal = status.getRenewal();
+                        statusPref.userStatusExpiration = status.getExpiration();
+                        statusPref.save();
+
+                        accountPreference.setUsernameText(statusPref.mail);
+                        accountPreference.setRenewal(status.getRenewal());
+                        accountPreference.setExpiration(status.getExpiration());
+                    }
+
+                    @Override
+                    public void onError(Throwable error) {
+                        error.printStackTrace();
+                    }
+                });
     }
 
     private void signOut() {

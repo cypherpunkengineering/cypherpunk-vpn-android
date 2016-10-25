@@ -31,13 +31,8 @@ import android.widget.CompoundButton;
 
 import com.cypherpunk.android.vpn.CypherpunkApplication;
 import com.cypherpunk.android.vpn.R;
-import com.cypherpunk.android.vpn.data.api.CypherpunkService;
 import com.cypherpunk.android.vpn.data.api.UserManager;
-import com.cypherpunk.android.vpn.data.api.json.LoginRequest;
-import com.cypherpunk.android.vpn.data.api.json.LoginResult;
-import com.cypherpunk.android.vpn.data.api.json.StatusResult;
 import com.cypherpunk.android.vpn.databinding.ActivityMainBinding;
-import com.cypherpunk.android.vpn.model.UserSettingPref;
 import com.cypherpunk.android.vpn.ui.region.ConnectConfirmationDialogFragment;
 import com.cypherpunk.android.vpn.ui.settings.AccountSettingsFragment;
 import com.cypherpunk.android.vpn.ui.settings.RateDialogFragment;
@@ -54,13 +49,6 @@ import javax.inject.Inject;
 
 import de.blinkt.openvpn.core.VpnStatus;
 import io.realm.Realm;
-import rx.Single;
-import rx.SingleSubscriber;
-import rx.Subscription;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Func1;
-import rx.schedulers.Schedulers;
-import rx.subscriptions.Subscriptions;
 
 public class MainActivity extends AppCompatActivity
         implements VpnStatus.StateListener, RateDialogFragment.RateDialogListener,
@@ -76,15 +64,11 @@ public class MainActivity extends AppCompatActivity
 
     private ActivityMainBinding binding;
     private CypherpunkVpnStatus status;
-    private Subscription subscription = Subscriptions.empty();
     private RegionFragment regionFragment;
     private ActionBarDrawerToggle drawerToggle;
 
     @Inject
     Realm realm;
-
-    @Inject
-    CypherpunkService webService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -153,8 +137,6 @@ public class MainActivity extends AppCompatActivity
         fm.add(R.id.region_container, regionFragment);
         fm.commit();
 
-        getStatus();
-
         // navigation drawer
         drawerToggle = new ActionBarDrawerToggle(this, binding.drawerLayout, binding.toolbar, R.string.drawer_open, R.string.drawer_close);
         binding.drawerLayout.addDrawerListener(drawerToggle);
@@ -216,7 +198,6 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     protected void onDestroy() {
-        subscription.unsubscribe();
         realm.close();
         realm = null;
         super.onDestroy();
@@ -296,34 +277,6 @@ public class MainActivity extends AppCompatActivity
                 binding.connectingCancelButton.setVisibility(View.GONE);
             }
         });
-    }
-
-    private void getStatus() {
-        subscription = webService
-                .login(new LoginRequest(UserManager.getMailAddress(), UserManager.getPassword()))
-                .flatMap(new Func1<LoginResult, Single<StatusResult>>() {
-                    @Override
-                    public Single<StatusResult> call(LoginResult result) {
-                        return webService.getStatus();
-                    }
-                })
-                .subscribeOn(Schedulers.newThread())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new SingleSubscriber<StatusResult>() {
-                    @Override
-                    public void onSuccess(StatusResult status) {
-                        UserSettingPref statusPref = new UserSettingPref();
-                        statusPref.userStatusType = status.getType();
-                        statusPref.userStatusRenewal = status.getRenewal();
-                        statusPref.userStatusExpiration = status.getExpiration();
-                        statusPref.save();
-                    }
-
-                    @Override
-                    public void onError(Throwable error) {
-                        error.printStackTrace();
-                    }
-                });
     }
 
     private String getSimOperatorName() {

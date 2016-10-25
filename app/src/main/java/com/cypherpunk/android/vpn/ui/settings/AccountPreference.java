@@ -16,9 +16,9 @@ import java.util.Date;
 
 public class AccountPreference extends Preference {
 
-    private String username;
-    private String renewal;
-    private String expiration;
+    private TextView usernameView;
+    private TextView renewalView;
+    private TextView expirationViewView;
 
     public AccountPreference(Context context) {
         this(context, null);
@@ -36,36 +36,32 @@ public class AccountPreference extends Preference {
     @Override
     public void onBindViewHolder(PreferenceViewHolder holder) {
         super.onBindViewHolder(holder);
-        TextView usernameView = (TextView) holder.itemView.findViewById(R.id.username);
-        TextView renewalView = (TextView) holder.itemView.findViewById(R.id.renewal);
-        TextView expirationViewView = (TextView) holder.itemView.findViewById(R.id.expiration);
-
-        usernameView.setText(username);
-        renewalView.setText(renewal);
-        if (!TextUtils.isEmpty(expiration)) {
-            expirationViewView.setText(getContext().getString(R.string.account_plan_expiration, expiration));
-        }
+        usernameView = (TextView) holder.itemView.findViewById(R.id.username);
+        renewalView = (TextView) holder.itemView.findViewById(R.id.renewal);
+        expirationViewView = (TextView) holder.itemView.findViewById(R.id.expiration);
     }
 
     public void setUsernameText(@NonNull String username) {
-        this.username = username;
+        usernameView.setText(username);
     }
 
     public void setRenewal(@NonNull String renewal) {
+        String renewalText = "";
         switch (renewal) {
             case "none":
-                this.renewal = getContext().getString(R.string.account_plan_none);
+                renewalText = getContext().getString(R.string.account_plan_none);
                 break;
             case "monthly":
-                this.renewal = getContext().getString(R.string.account_plan_monthly);
+                renewalText = getContext().getString(R.string.account_plan_monthly);
                 break;
             case "semiannually":
-                this.renewal = getContext().getString(R.string.account_plan_semiannually);
+                renewalText = getContext().getString(R.string.account_plan_semiannually);
                 break;
             case "annually":
-                this.renewal = getContext().getString(R.string.account_plan_annually);
+                renewalText = getContext().getString(R.string.account_plan_annually);
                 break;
         }
+        renewalView.setText(renewalText);
     }
 
     public void setExpiration(@NonNull String expiration) {
@@ -74,7 +70,10 @@ public class AccountPreference extends Preference {
         }
         int timeStamp = Integer.parseInt(expiration);
         Date date = new Date((long) timeStamp * 1000);
-        this.expiration = DateFormat.format(
+        String expirationText = DateFormat.format(
                 getContext().getString(R.string.account_plan_expiration_format), date).toString();
+        if (!TextUtils.isEmpty(expiration)) {
+            expirationViewView.setText(getContext().getString(R.string.account_plan_expiration, expirationText));
+        }
     }
 }
