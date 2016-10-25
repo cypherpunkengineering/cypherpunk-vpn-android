@@ -4,6 +4,7 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.preference.Preference;
 import android.support.v7.preference.PreferenceViewHolder;
+import android.text.TextUtils;
 import android.text.format.DateFormat;
 import android.util.AttributeSet;
 import android.widget.TextView;
@@ -41,7 +42,9 @@ public class AccountPreference extends Preference {
 
         usernameView.setText(username);
         renewalView.setText(renewal);
-        expirationViewView.setText(getContext().getString(R.string.account_plan_expiration, expiration));
+        if (!TextUtils.isEmpty(expiration)) {
+            expirationViewView.setText(getContext().getString(R.string.account_plan_expiration, expiration));
+        }
     }
 
     public void setUsernameText(@NonNull String username) {
@@ -50,6 +53,9 @@ public class AccountPreference extends Preference {
 
     public void setRenewal(@NonNull String renewal) {
         switch (renewal) {
+            case "none":
+                this.renewal = getContext().getString(R.string.account_plan_none);
+                break;
             case "monthly":
                 this.renewal = getContext().getString(R.string.account_plan_monthly);
                 break;
@@ -63,6 +69,9 @@ public class AccountPreference extends Preference {
     }
 
     public void setExpiration(@NonNull String expiration) {
+        if (!TextUtils.isEmpty(expiration)) {
+            return;
+        }
         int timeStamp = Integer.parseInt(expiration);
         Date date = new Date((long) timeStamp * 1000);
         this.expiration = DateFormat.format(

@@ -146,6 +146,7 @@
     <string name="account_setting_help">Help</string>
     <string name="account_setting_logout">Log out</string>
 
+    <string name="account_plan_none">Free</string>
     <string name="account_plan_monthly">Monthly Premium</string>
     <string name="account_plan_semiannually">Semiannually Premium</string>
     <string name="account_plan_annually">Annually Premium</string>
