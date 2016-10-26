@@ -1,5 +1,6 @@
 package com.cypherpunk.android.vpn.data.api;
 
+import com.cypherpunk.android.vpn.data.api.json.IdentifyEmailRequest;
 import com.cypherpunk.android.vpn.data.api.json.LoginRequest;
 import com.cypherpunk.android.vpn.data.api.json.LoginResult;
 import com.cypherpunk.android.vpn.data.api.json.RegionResult;
@@ -7,6 +8,7 @@ import com.cypherpunk.android.vpn.data.api.json.StatusResult;
 
 import java.util.Map;
 
+import okhttp3.ResponseBody;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
@@ -21,6 +23,14 @@ public interface CypherpunkService {
     @POST("/account/authenticate/userpasswd")
     Single<LoginResult> login(
             @Body LoginRequest loginRequest);
+
+    @POST("/account/register/signup")
+    Single<LoginResult> signup(
+            @Body LoginRequest loginRequest);
+
+    @POST("/account/identify/email")
+    Single<ResponseBody> identifyEmail(
+            @Body IdentifyEmailRequest identifyEmailRequest);
 
     @GET("/api/subscription/status")
     Single<StatusResult> getStatus();

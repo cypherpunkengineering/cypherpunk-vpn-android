@@ -15,9 +15,10 @@
     <!-- sign in-->
     <string name="title_activity_sign_up">Sign Up</string>
     <string name="error_field_required">This field is required</string>
+    <string name="error_invalid_email">invalid email</string>
     <string name="sign_in_button_sign_in">Log In</string>
     <string name="no_internet">No internet</string>
-    <string name="invalid_mail_password">invalid mail/password</string>
+    <string name="invalid_mail_password">invalid password</string>
     <string name="sign_in_forgot_password">Forgot password?</string>
     <string name="sign_in_email_hint">Username/Email</string>
     <string name="sign_in_password_hint">Password</string>
@@ -29,6 +30,7 @@
     <string name="sign_up_free_premium_trial_2_line">Sign up and start your 7 day\n Free Premium Trial now!</string>
     <string name="sign_up_free_premium_trial">Sign up and start your 7 day Free Premium Trial now!</string>
     <string name="sign_in_welcome_back">Welcome back!</string>
+    <string name="sign_up_text">Hello! Please set your password</string>
 
     <!-- identify email -->
     <string name="identify_email_text">Welcome to Cypherpunk</string>
@@ -256,5 +258,6 @@
     <string name="network_other_networks">OTHER NETWORKS</string>
     <string name="network_other_auto_secure_connections">Auto secure connections</string>
     <string name="introduction_login">Log In</string>
+    <string name="introduction_type_email">Type your email</string>
 
 </resources>

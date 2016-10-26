@@ -1,58 +1,60 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center_horizontal"
-        android:orientation="vertical"
-        tools:context=".ui.SignUpActivity">
+        tools:context=".ui.signin.SignUpActivity"
+        tools:ignore="RtlHardcoded">
 
         <include
             android:id="@+id/toolbar"
             layout="@layout/toolbar" />
 
-        <include layout="@layout/divider" />
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
             android:orientation="vertical"
             android:paddingLeft="28dp"
             android:paddingRight="28dp">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="?android:actionBarSize"
+                android:layout_gravity="center"
+                android:layout_marginTop="16dp"
+                android:src="@drawable/helmet_color_big_vector"
+                tools:ignore="ContentDescription" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:src="@drawable/header_logo_vector"
+                tools:ignore="ContentDescription" />
 
             <com.cypherpunk.android.vpn.widget.TypefaceTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:text="@string/sign_up_free_premium_trial_2_line"
-                android:textSize="18sp" />
-
-            <android.support.design.widget.TextInputLayout
-                style="@style/Widget.Cypherpunk.TextInputLayout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:theme="@style/TextInputLayoutControl">
-
-                <android.support.design.widget.TextInputEditText
-                    android:id="@+id/email"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="@string/sign_up_email_hint"
-                    android:imeOptions="actionNext"
-                    android:inputType="textEmailAddress"
-                    android:maxLines="1"
-                    android:theme="@style/EditTextColorControl" />
-
-            </android.support.design.widget.TextInputLayout>
+                android:layout_marginBottom="4dp"
+                android:layout_marginTop="20dp"
+                android:gravity="center_horizontal"
+                android:text="@string/sign_up_text"
+                android:textSize="18sp"
+                app:fontName="DosisMedium" />
 
             <android.support.design.widget.TextInputLayout
                 style="@style/Widget.Cypherpunk.TextInputLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"
+                android:layout_marginTop="16dp"
                 android:theme="@style/TextInputLayoutControl">
 
                 <android.support.design.widget.TextInputEditText
@@ -72,11 +74,11 @@
                 style="@style/Widget.Cypherpunk.YellowButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="16dp"
                 android:text="@string/sign_up_button_sign_up" />
 
         </LinearLayout>
 
-    </LinearLayout>
+    </RelativeLayout>
 
 </layout>
