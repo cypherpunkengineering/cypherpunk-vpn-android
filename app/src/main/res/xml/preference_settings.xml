@@ -6,44 +6,40 @@
         android:layout="@layout/preference_header"
         android:title="Basic Settings" />
 
-    <PreferenceCategory
-        android:title="@string/setting_category_startup"
-        app:layout="@layout/custom_preference_category">
+    <SwitchPreferenceCompat
+        android:key="vpn_auto_start_connect"
+        android:title="@string/setting_vpn_auto_start_connect" />
 
-        <SwitchPreferenceCompat
-            android:key="vpn_auto_start_connect"
-            android:title="@string/setting_vpn_auto_start_connect" />
+    <Preference
+        android:key="trusted_network"
+        android:summary="@string/setting_network_summary"
+        android:title="@string/setting_network" />
 
-    </PreferenceCategory>
-
-    <PreferenceCategory android:title="@string/setting_category_privacy">
-
-        <Preference
-            android:id="@+id/preference"
-            android:key="vpn_crypto_profile"
-            android:title="@string/setting_vpn_crypto_profile" />
-
-        <Preference
-            android:key="privacy_firewall_mode"
-            android:title="@string/setting_privacy_firewall_mode" />
-    </PreferenceCategory>
+    <Preference
+        android:id="@+id/preference"
+        android:key="vpn_crypto_profile"
+        android:title="@string/setting_vpn_crypto_profile" />
 
     <Preference
         android:layout="@layout/preference_header"
         android:title="Advanced Settings" />
 
     <PreferenceCategory
-        android:title="@string/setting_category_advanced"
+        android:title="@string/setting_category_privacy_firewall"
         app:layout="@layout/custom_preference_category">
+
+        <Preference
+            android:key="privacy_firewall_mode"
+            android:title="@string/setting_privacy_firewall_mode" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="@string/setting_category_vpn_settings">
 
         <Preference
             android:key="vpn_protocol"
             android:title="@string/setting_vpn_protocol" />
-
-        <Preference
-            android:key="trusted_network"
-            android:summary="@string/setting_network_summary"
-            android:title="@string/setting_network" />
 
         <Preference
             android:key="application"

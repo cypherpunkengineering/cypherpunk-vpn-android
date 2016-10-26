@@ -99,6 +99,9 @@
 
     <!-- advanced setting -->
     <string name="setting_category_advanced">Advanced Settings</string>
+    <string name="setting_category_privacy_firewall">Privacy Firewall</string>
+    <string name="setting_category_vpn_settings">VPN Settings</string>
+
     <!-- protocol settings -->
     <string name="setting_vpn_protocol">VPN Protocol</string>
     <string name="setting_vpn_protocol_openvpn23_udp">OpenVPN 2.3 UDP</string>
