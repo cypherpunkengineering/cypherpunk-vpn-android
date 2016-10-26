@@ -32,6 +32,7 @@ public class UpgradePlanActivity extends AppCompatActivity {
             actionBar.setDisplayHomeAsUpEnabled(true);
             actionBar.setDisplayShowTitleEnabled(false);
             binding.toolbar.title.setText(R.string.title_activity_upgrade_plan);
+            actionBar.setHomeAsUpIndicator(R.drawable.close_vector);
         }
 
         binding.monthlyPlan.setPlan("1 MONTHS", "$ 9.99", false);

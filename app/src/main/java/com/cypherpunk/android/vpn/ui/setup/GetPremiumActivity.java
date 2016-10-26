@@ -30,6 +30,7 @@ public class GetPremiumActivity extends AppCompatActivity {
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
             actionBar.setDisplayShowTitleEnabled(false);
+            actionBar.setHomeAsUpIndicator(R.drawable.close_vector);
 
             if (!getResources().getBoolean(R.bool.is_tablet)) {
                 binding.toolbar.title.setText(R.string.title_activity_get_premium);
