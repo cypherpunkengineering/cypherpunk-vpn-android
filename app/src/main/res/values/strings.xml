@@ -99,6 +99,9 @@
 
     <!-- advanced setting -->
     <string name="setting_category_advanced">Advanced Settings</string>
+    <string name="setting_category_privacy_firewall">Privacy Firewall</string>
+    <string name="setting_category_vpn_settings">VPN Settings</string>
+
     <!-- protocol settings -->
     <string name="setting_vpn_protocol">VPN Protocol</string>
     <string name="setting_vpn_protocol_openvpn23_udp">OpenVPN 2.3 UDP</string>
@@ -135,7 +138,7 @@
     <!-- account setting -->
     <string name="account_setting_category_type">Account Type</string>
     <string name="account_setting_upgrade">Upgrade</string>
-    <string name="account_setting_category_details">Account Details</string>
+    <string name="account_setting_category_settings">Account Settings</string>
     <string name="account_setting_email">Email</string>
     <string name="account_setting_password">Password</string>
     <string name="account_setting_category_more">More</string>
