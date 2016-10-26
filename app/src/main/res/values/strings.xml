@@ -15,6 +15,7 @@
     <!-- sign in-->
     <string name="title_activity_sign_up">Sign Up</string>
     <string name="error_field_required">This field is required</string>
+    <string name="error_invalid_email">invalid email</string>
     <string name="sign_in_button_sign_in">Log In</string>
     <string name="no_internet">No internet</string>
     <string name="invalid_mail_password">invalid mail/password</string>
