@@ -30,6 +30,11 @@
     <string name="sign_up_free_premium_trial">Sign up and start your 7 day Free Premium Trial now!</string>
     <string name="sign_in_welcome_back">Welcome back!</string>
 
+    <!-- identify email -->
+    <string name="identify_email_text">Welcome to Cypherpunk</string>
+    <string name="identify_email_hint_email">Email</string>
+    <string name="identify_email_get_started">Get Started</string>
+
     <!-- reset password -->
     <string name="reset_password_submit">Submit</string>
     <string name="reset_password_text">Enter your email address \n to reset your password.</string>
