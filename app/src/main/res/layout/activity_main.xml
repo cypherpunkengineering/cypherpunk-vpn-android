@@ -41,6 +41,7 @@
                 </android.support.v7.widget.Toolbar>
 
                 <View
+                    android:id="@+id/divider"
                     android:layout_width="wrap_content"
                     android:layout_height="1dp"
                     android:layout_below="@id/toolbar"
@@ -50,7 +51,7 @@
                     android:id="@+id/binary_view"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_below="@id/toolbar" />
+                    android:layout_below="@id/divider" />
 
                 <com.cypherpunk.android.vpn.widget.VpnFlatButton
                     android:id="@+id/connection_button"
