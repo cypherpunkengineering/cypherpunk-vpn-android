@@ -39,6 +39,7 @@ import com.cypherpunk.android.vpn.ui.settings.RateDialogFragment;
 import com.cypherpunk.android.vpn.ui.settings.SettingConnectDialogFragment;
 import com.cypherpunk.android.vpn.ui.settings.SettingsFragment;
 import com.cypherpunk.android.vpn.ui.setup.IntroductionActivity;
+import com.cypherpunk.android.vpn.ui.signin.IdentifyEmailActivity;
 import com.cypherpunk.android.vpn.vpn.CypherpunkVPN;
 import com.cypherpunk.android.vpn.vpn.CypherpunkVpnStatus;
 import com.cypherpunk.android.vpn.widget.BinarySurfaceView;
@@ -75,7 +76,7 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
 
         if (!UserManager.isSignedIn()) {
-            Intent intent = new Intent(this, IntroductionActivity.class);
+            Intent intent = new Intent(this, IdentifyEmailActivity.class);
             TaskStackBuilder builder = TaskStackBuilder.create(this);
             builder.addNextIntent(intent);
             builder.startActivities();

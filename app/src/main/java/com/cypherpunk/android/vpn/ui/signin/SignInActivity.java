@@ -7,6 +7,7 @@ import android.graphics.Paint;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.TaskStackBuilder;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.KeyEvent;
@@ -63,6 +64,13 @@ public class SignInActivity extends AppCompatActivity {
         ((CypherpunkApplication) getApplication()).getAppComponent().inject(this);
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_sign_in);
+
+        setSupportActionBar(binding.toolbar.toolbar);
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+            actionBar.setDisplayShowTitleEnabled(false);
+        }
 
         binding.password.requestFocus();
         binding.password.setOnEditorActionListener(new TextView.OnEditorActionListener() {

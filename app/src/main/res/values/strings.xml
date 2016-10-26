@@ -258,5 +258,6 @@
     <string name="network_other_networks">OTHER NETWORKS</string>
     <string name="network_other_auto_secure_connections">Auto secure connections</string>
     <string name="introduction_login">Log In</string>
+    <string name="introduction_type_email">Type your email</string>
 
 </resources>
