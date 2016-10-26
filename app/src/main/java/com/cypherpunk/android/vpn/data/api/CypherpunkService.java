@@ -24,6 +24,10 @@ public interface CypherpunkService {
     Single<LoginResult> login(
             @Body LoginRequest loginRequest);
 
+    @POST("/account/register/signup")
+    Single<LoginResult> signup(
+            @Body LoginRequest loginRequest);
+
     @POST("/account/identify/email")
     Single<ResponseBody> identifyEmail(
             @Body IdentifyEmailRequest identifyEmailRequest);

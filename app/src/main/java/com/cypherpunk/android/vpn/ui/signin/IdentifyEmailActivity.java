@@ -75,6 +75,8 @@ public class IdentifyEmailActivity extends AppCompatActivity {
         });
 
         dialogFragment = ProgressFragment.newInstance();
+
+        // TODO: fragmentにしたい
     }
 
     @Override
@@ -125,7 +127,7 @@ public class IdentifyEmailActivity extends AppCompatActivity {
                         @Override
                         public void onSuccess(ResponseBody result) {
                             dialogFragment.dismiss();
-                            // TODO: sign in
+                            startActivity(SignInActivity.createIntent(IdentifyEmailActivity.this, email));
                         }
 
                         @Override
@@ -136,7 +138,7 @@ public class IdentifyEmailActivity extends AppCompatActivity {
                             } else if (error instanceof HttpException) {
                                 HttpException httpException = (HttpException) error;
                                 if (httpException.code() == 401 || httpException.code() == 400) {
-                                    // TODO: sign up
+                                    startActivity(SignUpActivity.createIntent(IdentifyEmailActivity.this, email));
                                 }
                             }
                         }

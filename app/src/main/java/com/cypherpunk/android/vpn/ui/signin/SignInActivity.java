@@ -1,11 +1,12 @@
 package com.cypherpunk.android.vpn.ui.signin;
 
+import android.content.Context;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.graphics.Paint;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.TaskStackBuilder;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.KeyEvent;
@@ -16,7 +17,6 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.cypherpunk.android.vpn.BuildConfig;
 import com.cypherpunk.android.vpn.CypherpunkApplication;
 import com.cypherpunk.android.vpn.R;
 import com.cypherpunk.android.vpn.data.api.CypherpunkService;
@@ -40,12 +40,22 @@ import rx.subscriptions.Subscriptions;
 
 public class SignInActivity extends AppCompatActivity {
 
+    private static final String EXTRA_EMAIL = "email";
+
     private ActivitySignInBinding binding;
     private ProgressFragment dialogFragment;
     private Subscription subscription = Subscriptions.empty();
 
     @Inject
     CypherpunkService webService;
+    private String email;
+
+    @NonNull
+    public static Intent createIntent(@NonNull Context context, @NonNull String email) {
+        Intent intent = new Intent(context, SignInActivity.class);
+        intent.putExtra(EXTRA_EMAIL, email);
+        return intent;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,14 +64,7 @@ public class SignInActivity extends AppCompatActivity {
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_sign_in);
 
-        setSupportActionBar(binding.toolbar.toolbar);
-        ActionBar actionBar = getSupportActionBar();
-        if (actionBar != null) {
-            actionBar.setDisplayHomeAsUpEnabled(true);
-            actionBar.setDisplayShowTitleEnabled(false);
-        }
-
-        binding.email.requestFocus();
+        binding.password.requestFocus();
         binding.password.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
@@ -72,6 +75,7 @@ public class SignInActivity extends AppCompatActivity {
                 return false;
             }
         });
+
 
 //        if (BuildConfig.DEBUG) {
 //            binding.email.setText("test@test.test");
@@ -95,6 +99,8 @@ public class SignInActivity extends AppCompatActivity {
                 binding.forgotPasswordButton.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
 
         dialogFragment = ProgressFragment.newInstance();
+
+        email = getIntent().getStringExtra(EXTRA_EMAIL);
     }
 
     @Override
@@ -104,10 +110,8 @@ public class SignInActivity extends AppCompatActivity {
     }
 
     private void attemptSignIn() {
-        binding.email.setError(null);
         binding.password.setError(null);
 
-        final String email = binding.email.getText().toString();
         final String password = binding.password.getText().toString();
 
         boolean cancel = false;
@@ -116,12 +120,6 @@ public class SignInActivity extends AppCompatActivity {
         if (TextUtils.isEmpty(password)) {
             binding.password.setError(getString(R.string.error_field_required));
             focusView = binding.password;
-            cancel = true;
-        }
-
-        if (TextUtils.isEmpty(email)) {
-            binding.email.setError(getString(R.string.error_field_required));
-            focusView = binding.email;
             cancel = true;
         }
 
