@@ -138,7 +138,7 @@
     <!-- account setting -->
     <string name="account_setting_category_type">Account Type</string>
     <string name="account_setting_upgrade">Upgrade</string>
-    <string name="account_setting_category_details">Account Details</string>
+    <string name="account_setting_category_settings">Account Settings</string>
     <string name="account_setting_email">Email</string>
     <string name="account_setting_password">Password</string>
     <string name="account_setting_category_more">More</string>
