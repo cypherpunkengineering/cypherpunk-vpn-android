@@ -60,6 +60,7 @@ public class ListPreferenceActivity extends AppCompatActivity
             actionBar.setDisplayHomeAsUpEnabled(true);
             actionBar.setDisplayShowTitleEnabled(false);
             binding.toolbar.title.setText(getIntent().getCharSequenceExtra(EXTRA_TITLE));
+            actionBar.setHomeAsUpIndicator(R.drawable.close_vector);
         }
 
         SettingItemAdapter adapter = new SettingItemAdapter(this);

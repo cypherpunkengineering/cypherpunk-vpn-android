@@ -48,6 +48,7 @@ public class NetworkActivity extends AppCompatActivity {
             actionBar.setDisplayHomeAsUpEnabled(true);
             actionBar.setDisplayShowTitleEnabled(false);
             binding.toolbar.title.setText(R.string.title_activity_network);
+            actionBar.setHomeAsUpIndicator(R.drawable.close_vector);
         }
         cypherpunkSetting = new CypherpunkSetting();
 

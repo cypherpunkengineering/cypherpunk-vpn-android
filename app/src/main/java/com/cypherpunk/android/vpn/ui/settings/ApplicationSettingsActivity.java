@@ -52,6 +52,7 @@ public class ApplicationSettingsActivity extends AppCompatActivity {
             actionBar.setDisplayHomeAsUpEnabled(true);
             actionBar.setDisplayShowTitleEnabled(false);
             binding.toolbar.title.setText(R.string.title_activity_application_settings);
+            actionBar.setHomeAsUpIndicator(R.drawable.close_vector);
         }
 
         // TODO: scroll bar

@@ -39,6 +39,7 @@ public class LocalPortActivity extends AppCompatActivity {
             actionBar.setDisplayHomeAsUpEnabled(true);
             actionBar.setDisplayShowTitleEnabled(false);
             binding.toolbar.title.setText(R.string.title_activity_local_port);
+            actionBar.setHomeAsUpIndicator(R.drawable.close_vector);
         }
 
         binding.localPort.setText(getIntent().getStringExtra(EXTRA_VALUE));

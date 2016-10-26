@@ -28,6 +28,7 @@ public class EditPasswordActivity extends AppCompatActivity {
             actionBar.setDisplayHomeAsUpEnabled(true);
             actionBar.setDisplayShowTitleEnabled(false);
             binding.toolbar.title.setText(R.string.title_activity_edit_password);
+            actionBar.setHomeAsUpIndicator(R.drawable.close_vector);
         }
 
         binding.password.requestFocus();

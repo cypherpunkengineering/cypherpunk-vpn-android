@@ -25,6 +25,7 @@ public class PremiumFreeActivity extends AppCompatActivity {
             actionBar.setDisplayHomeAsUpEnabled(true);
             actionBar.setDisplayShowTitleEnabled(false);
             binding.toolbar.title.setText(R.string.title_activity_premium_free);
+            actionBar.setHomeAsUpIndicator(R.drawable.close_vector);
         }
     }
 
