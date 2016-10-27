@@ -19,8 +19,8 @@ import android.widget.Toast;
 import com.cypherpunk.android.privacy.CypherpunkApplication;
 import com.cypherpunk.android.privacy.R;
 import com.cypherpunk.android.privacy.data.api.CypherpunkService;
-import com.cypherpunk.android.privacy.data.api.json.LoginRequest;
 import com.cypherpunk.android.privacy.data.api.json.LoginResult;
+import com.cypherpunk.android.privacy.data.api.json.SignUpRequest;
 import com.cypherpunk.android.privacy.databinding.ActivitySignUpBinding;
 
 import java.net.UnknownHostException;
@@ -114,14 +114,14 @@ public class SignUpActivity extends AppCompatActivity {
             dialogFragment.show(getSupportFragmentManager());
 
             subscription = webService
-                    .signup(new LoginRequest(getIntent().getStringExtra(EXTRA_EMAIL), password))
+                    .signup(new SignUpRequest(getIntent().getStringExtra(EXTRA_EMAIL), password))
                     .subscribeOn(Schedulers.newThread())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(new SingleSubscriber<LoginResult>() {
                         @Override
                         public void onSuccess(LoginResult result) {
                             dialogFragment.dismiss();
-                            // TODO;
+                            startActivity(new Intent(SignUpActivity.this, ConfirmationEmailActivity.class));
                         }
 
                         @Override

@@ -32,6 +32,12 @@
     <string name="sign_in_welcome_back">Welcome back!</string>
     <string name="sign_up_text">Hello! Please set your password</string>
 
+    <!-- confirmation email -->
+    <string name="confirmation_email_text">We sent you confirmation via Email</string>
+    <string name="confirmation_email_text2">Please check your Email App and\n do something….</string>
+    <string name="confirmation_back_login">Back to Log In</string>
+    <string name="resend_email">Resend Email</string>
+
     <!-- identify email -->
     <string name="identify_email_text">Welcome to Cypherpunk</string>
     <string name="identify_email_hint_email">Email</string>
