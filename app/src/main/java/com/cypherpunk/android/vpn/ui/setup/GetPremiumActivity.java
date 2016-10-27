@@ -12,6 +12,9 @@ import com.cypherpunk.android.vpn.R;
 import com.cypherpunk.android.vpn.databinding.ActivityGetPremiumBinding;
 
 
+/**
+ * unused
+ */
 public class GetPremiumActivity extends AppCompatActivity {
 
     @Override
@@ -36,10 +39,6 @@ public class GetPremiumActivity extends AppCompatActivity {
                 binding.toolbar.title.setText(R.string.title_activity_get_premium);
             }
         }
-
-        binding.monthPlan.setPlan("1 MONTH", "$ 9.99", false);
-        binding.sixMonthPlan.setPlan("6 MONTH", "$ 9.99", false);
-        binding.yearlyPlan.setPlan("12 MONTH", "$ 9.99", true);
     }
 
     @Override
