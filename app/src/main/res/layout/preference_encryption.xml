@@ -17,7 +17,7 @@
     android:paddingStart="?android:listPreferredItemPaddingStart"
     android:paddingTop="16dp">
 
-    <com.cypherpunk.android.privacy.widget.TypefaceTextView
+    <com.cypherpunk.privacy.widget.TypefaceTextView
         android:id="@android:id/title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -27,7 +27,7 @@
         app:fontName="DosisMedium"
         tools:text="title" />
 
-    <com.cypherpunk.android.privacy.widget.TypefaceTextView
+    <com.cypherpunk.privacy.widget.TypefaceTextView
         android:id="@android:id/summary"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

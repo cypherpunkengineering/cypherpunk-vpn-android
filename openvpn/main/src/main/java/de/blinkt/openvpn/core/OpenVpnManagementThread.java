@@ -29,8 +29,8 @@ import java.util.LinkedList;
 import java.util.Locale;
 import java.util.Vector;
 
-import com.cypherpunk.android.privacy.BuildConfig;
-import com.cypherpunk.android.privacy.R;
+import com.cypherpunk.privacy.BuildConfig;
+import com.cypherpunk.privacy.R;
 import de.blinkt.openvpn.VpnProfile;
 import de.blinkt.openvpn.core.VpnStatus.ConnectionStatus;
 

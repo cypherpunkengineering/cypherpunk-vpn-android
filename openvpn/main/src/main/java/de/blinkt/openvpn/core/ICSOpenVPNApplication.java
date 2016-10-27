@@ -12,7 +12,7 @@ import org.acra.ReportingInteractionMode;
 import org.acra.annotation.ReportsCrashes;
 */
 
-import com.cypherpunk.android.privacy.BuildConfig;
+import com.cypherpunk.privacy.BuildConfig;
 
 /*
 @ReportsCrashes(

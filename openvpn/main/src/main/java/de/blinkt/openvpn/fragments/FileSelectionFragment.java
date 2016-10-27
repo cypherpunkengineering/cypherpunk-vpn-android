@@ -26,7 +26,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.TreeMap;
 
-import com.cypherpunk.android.privacy.R;
+import com.cypherpunk.privacy.R;
 import de.blinkt.openvpn.activities.FileSelect;
 
 public class FileSelectionFragment extends ListFragment {

@@ -22,7 +22,7 @@ import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import com.cypherpunk.android.privacy.R;
+import com.cypherpunk.privacy.R;
 import de.blinkt.openvpn.core.VpnStatus.ConnectionStatus;
 
 public class OpenVPNThread implements Runnable {

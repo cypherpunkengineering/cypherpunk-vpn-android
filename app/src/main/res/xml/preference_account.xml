@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
 
-    <com.cypherpunk.android.privacy.ui.settings.AccountPreference android:key="account" />
+    <com.cypherpunk.privacy.ui.settings.AccountPreference android:key="account" />
 
     <PreferenceCategory android:title="@string/account_setting_category_settings">
 

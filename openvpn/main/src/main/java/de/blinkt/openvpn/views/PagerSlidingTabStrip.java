@@ -45,7 +45,7 @@ import android.widget.TextView;
 
 import java.util.Locale;
 
-import com.cypherpunk.android.privacy.R;
+import com.cypherpunk.privacy.R;
 
 public class PagerSlidingTabStrip extends HorizontalScrollView implements TabBarView {
 

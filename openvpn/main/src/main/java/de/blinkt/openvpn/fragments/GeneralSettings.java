@@ -24,8 +24,8 @@ import android.preference.Preference.OnPreferenceClickListener;
 import android.preference.PreferenceCategory;
 import android.preference.PreferenceFragment;
 
-import com.cypherpunk.android.privacy.BuildConfig;
-import com.cypherpunk.android.privacy.R;
+import com.cypherpunk.privacy.BuildConfig;
+import com.cypherpunk.privacy.R;
 import de.blinkt.openvpn.VpnProfile;
 import de.blinkt.openvpn.api.ExternalAppDatabase;
 import de.blinkt.openvpn.core.ProfileManager;
