@@ -63,7 +63,6 @@ public class MainActivity extends AppCompatActivity
     private ActivityMainBinding binding;
     private CypherpunkVpnStatus status;
     private RegionFragment regionFragment;
-    private ActionBarDrawerToggle drawerToggle;
 
     @Inject
     Realm realm;
@@ -136,7 +135,7 @@ public class MainActivity extends AppCompatActivity
         fm.commit();
 
         // navigation drawer
-        drawerToggle = new ActionBarDrawerToggle(this, binding.drawerLayout, binding.toolbar, R.string.drawer_open, R.string.drawer_close);
+        ActionBarDrawerToggle drawerToggle = new ActionBarDrawerToggle(this, binding.drawerLayout, binding.toolbar, R.string.drawer_open, R.string.drawer_close);
         binding.drawerLayout.addDrawerListener(drawerToggle);
         binding.toolbar.setNavigationIcon(R.drawable.account_vector);
 
@@ -247,10 +246,12 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void toggleVpn() {
-        if (CypherpunkVpnStatus.getInstance().isDisconnected())
+        if (CypherpunkVpnStatus.getInstance().isDisconnected()) {
             startVpn();
-        else
+        } else {
             stopVpn();
+            regionFragment.refreshServerList();
+        }
     }
 
     private void onVpnConnected() {
