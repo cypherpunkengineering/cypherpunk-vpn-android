@@ -4,6 +4,7 @@ import com.cypherpunk.android.privacy.data.api.json.IdentifyEmailRequest;
 import com.cypherpunk.android.privacy.data.api.json.LoginRequest;
 import com.cypherpunk.android.privacy.data.api.json.LoginResult;
 import com.cypherpunk.android.privacy.data.api.json.RegionResult;
+import com.cypherpunk.android.privacy.data.api.json.SignUpRequest;
 import com.cypherpunk.android.privacy.data.api.json.StatusResult;
 
 import java.util.Map;
@@ -26,7 +27,7 @@ public interface CypherpunkService {
 
     @POST("/account/register/signup")
     Single<LoginResult> signup(
-            @Body LoginRequest loginRequest);
+            @Body SignUpRequest loginRequest);
 
     @POST("/account/identify/email")
     Single<ResponseBody> identifyEmail(
