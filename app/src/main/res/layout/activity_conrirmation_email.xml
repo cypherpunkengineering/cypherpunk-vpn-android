@@ -8,7 +8,7 @@
             android:gravity="center_horizontal"
             android:orientation="vertical">
 
-            <com.cypherpunk.android.privacy.widget.TypefaceTextView
+            <com.cypherpunk.privacy.widget.TypefaceTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="18dp"
@@ -23,7 +23,7 @@
                 android:layout_marginBottom="24dp"
                 android:src="@drawable/illust_mail_confirm" />
 
-            <com.cypherpunk.android.privacy.widget.TypefaceTextView
+            <com.cypherpunk.privacy.widget.TypefaceTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="18dp"
@@ -38,7 +38,7 @@
                 android:layout_marginBottom="38dp"
                 android:orientation="vertical">
 
-                <com.cypherpunk.android.privacy.widget.TypefaceTextView
+                <com.cypherpunk.privacy.widget.TypefaceTextView
                     android:id="@+id/back_button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -50,7 +50,7 @@
                     android:textSize="16sp"
                     app:fontName="DosisMedium" />
 
-                <com.cypherpunk.android.privacy.widget.TypefaceTextView
+                <com.cypherpunk.privacy.widget.TypefaceTextView
                     android:id="@+id/resend_button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

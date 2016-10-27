@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <com.cypherpunk.android.privacy.widget.TypefaceTextView
+    <com.cypherpunk.privacy.widget.TypefaceTextView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginLeft="32dp"

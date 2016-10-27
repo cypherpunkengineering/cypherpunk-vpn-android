@@ -21,7 +21,7 @@ import de.blinkt.openvpn.core.OpenVPNService;
 import de.blinkt.openvpn.core.ProfileManager;
 import de.blinkt.openvpn.core.VpnStatus;
 
-import com.cypherpunk.android.privacy.R;
+import com.cypherpunk.privacy.R;
 
 /**
  * Created by arne on 22.04.16.

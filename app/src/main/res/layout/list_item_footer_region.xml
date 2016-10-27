@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <com.cypherpunk.android.privacy.widget.TypefaceButton
+    <com.cypherpunk.privacy.widget.TypefaceButton
         android:id="@+id/sort_button"
         style="@style/Widget.Cypherpunk.TransparentButton"
         android:layout_width="match_parent"

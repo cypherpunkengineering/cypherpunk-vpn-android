@@ -47,13 +47,13 @@
                     android:layout_below="@id/toolbar"
                     android:background="@color/divider" />
 
-                <com.cypherpunk.android.privacy.widget.BinarySurfaceView
+                <com.cypherpunk.privacy.widget.BinarySurfaceView
                     android:id="@+id/binary_view"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_below="@id/divider" />
 
-                <com.cypherpunk.android.privacy.widget.VpnFlatButton
+                <com.cypherpunk.privacy.widget.VpnFlatButton
                     android:id="@+id/connection_button"
                     android:layout_width="140dp"
                     android:layout_height="190dp"
@@ -68,13 +68,13 @@
                     android:layout_marginTop="8dp"
                     android:orientation="horizontal">
 
-                    <com.cypherpunk.android.privacy.widget.ConnectionStatusView
+                    <com.cypherpunk.privacy.widget.ConnectionStatusView
                         android:id="@+id/connection_status"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         app:textSize="@dimen/connection_status_text_size" />
 
-                    <com.cypherpunk.android.privacy.widget.TypefaceTextView
+                    <com.cypherpunk.privacy.widget.TypefaceTextView
                         android:id="@+id/connecting_cancel_button"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"

@@ -27,7 +27,7 @@ import java.util.FormatFlagsConversionMismatchException;
 import java.util.Locale;
 import java.util.UnknownFormatConversionException;
 
-import com.cypherpunk.android.privacy.R;
+import com.cypherpunk.privacy.R;
 
 /**
  * Created by arne on 24.04.16.

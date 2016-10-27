@@ -22,7 +22,7 @@ import java.nio.BufferOverflowException;
 import java.nio.ByteBuffer;
 import java.util.Locale;
 
-import com.cypherpunk.android.privacy.R;
+import com.cypherpunk.privacy.R;
 
 /**
  * Created by arne on 23.01.16.

@@ -18,7 +18,7 @@ import java.util.PriorityQueue;
 import java.util.TreeSet;
 import java.util.Vector;
 
-import com.cypherpunk.android.privacy.BuildConfig;
+import com.cypherpunk.privacy.BuildConfig;
 
 public class NetworkSpace {
 

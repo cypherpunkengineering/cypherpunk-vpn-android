@@ -17,7 +17,7 @@ import android.support.v4n.view.ViewPager;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.cypherpunk.android.privacy.R;
+import com.cypherpunk.privacy.R;
 //import de.blinkt.openvpn.fragments.AboutFragment;
 //import de.blinkt.openvpn.fragments.FaqFragment;
 import de.blinkt.openvpn.fragments.GeneralSettings;

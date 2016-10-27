@@ -16,7 +16,7 @@
                 android:layout_marginTop="10dp"
                 android:background="@drawable/plan_background">
 
-                <com.cypherpunk.android.privacy.widget.TypefaceTextView
+                <com.cypherpunk.privacy.widget.TypefaceTextView
                     android:id="@+id/plan"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -29,7 +29,7 @@
                     app:fontName="DosisMedium"
                     tools:text="6 MONTHS" />
 
-                <com.cypherpunk.android.privacy.widget.TypefaceTextView
+                <com.cypherpunk.privacy.widget.TypefaceTextView
                     android:id="@+id/price"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -42,7 +42,7 @@
                     tools:ignore="RtlHardcoded"
                     tools:text="$ 9.99" />
 
-                <com.cypherpunk.android.privacy.widget.TypefaceTextView
+                <com.cypherpunk.privacy.widget.TypefaceTextView
                     android:id="@id/month"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -58,7 +58,7 @@
 
             </RelativeLayout>
 
-            <com.cypherpunk.android.privacy.widget.TypefaceTextView
+            <com.cypherpunk.privacy.widget.TypefaceTextView
                 android:id="@+id/badge"
                 android:layout_width="96dp"
                 android:layout_height="22dp"
@@ -72,7 +72,7 @@
                 tools:ignore="RtlHardcoded"
                 tools:visibility="visible" />
 
-            <com.cypherpunk.android.privacy.widget.TypefaceTextView
+            <com.cypherpunk.privacy.widget.TypefaceTextView
                 android:id="@+id/current_plan"
                 android:layout_width="85dp"
                 android:layout_height="21dp"

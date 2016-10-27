@@ -64,7 +64,7 @@
 
             </android.support.design.widget.TextInputLayout>
 
-            <com.cypherpunk.android.privacy.widget.TypefaceButton
+            <com.cypherpunk.privacy.widget.TypefaceButton
                 android:id="@+id/sign_in_button"
                 style="@style/Widget.Cypherpunk.YellowButton.Big"
                 android:layout_width="360dp"
@@ -74,7 +74,7 @@
                 android:layout_marginTop="8dp"
                 android:text="@string/sign_in_button_sign_in" />
 
-            <com.cypherpunk.android.privacy.widget.TypefaceTextView
+            <com.cypherpunk.privacy.widget.TypefaceTextView
                 android:id="@+id/forgot_password__button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -100,7 +100,7 @@
             android:orientation="horizontal"
             android:padding="16dp">
 
-            <com.cypherpunk.android.privacy.widget.TypefaceTextView
+            <com.cypherpunk.privacy.widget.TypefaceTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="18dp"
@@ -108,7 +108,7 @@
                 android:textSize="18sp"
                 app:fontName="DosisMedium" />
 
-            <com.cypherpunk.android.privacy.widget.TypefaceTextView
+            <com.cypherpunk.privacy.widget.TypefaceTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/sign_in_sign_up"

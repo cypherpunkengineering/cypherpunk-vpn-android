@@ -40,8 +40,8 @@ import java.util.Collection;
 import java.util.Locale;
 import java.util.Vector;
 
-import com.cypherpunk.android.privacy.R;
-import com.cypherpunk.android.privacy.model.CypherpunkSetting;
+import com.cypherpunk.privacy.R;
+import com.cypherpunk.privacy.model.CypherpunkSetting;
 
 import de.blinkt.openvpn.VpnProfile;
 //import de.blinkt.openvpn.activities.LogWindow;
