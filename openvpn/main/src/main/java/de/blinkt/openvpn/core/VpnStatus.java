@@ -17,7 +17,7 @@ import java.util.LinkedList;
 import java.util.Locale;
 import java.util.Vector;
 
-import com.cypherpunk.android.vpn.R;
+import com.cypherpunk.android.privacy.R;
 
 public class VpnStatus {
 

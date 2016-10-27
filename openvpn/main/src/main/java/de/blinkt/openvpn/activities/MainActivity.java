@@ -7,10 +7,8 @@ package de.blinkt.openvpn.activities;
 
 import android.annotation.TargetApi;
 import android.app.ActionBar;
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.PowerManager;
@@ -19,7 +17,7 @@ import android.support.v4n.view.ViewPager;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.cypherpunk.android.vpn.R;
+import com.cypherpunk.android.privacy.R;
 //import de.blinkt.openvpn.fragments.AboutFragment;
 //import de.blinkt.openvpn.fragments.FaqFragment;
 import de.blinkt.openvpn.fragments.GeneralSettings;

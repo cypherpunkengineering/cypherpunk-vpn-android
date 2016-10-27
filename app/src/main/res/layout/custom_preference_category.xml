@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.cypherpunk.android.vpn.widget.TypefaceTextView xmlns:android="http://schemas.android.com/apk/res/android"
+<com.cypherpunk.android.privacy.widget.TypefaceTextView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+android:id/title"
     android:layout_width="match_parent"

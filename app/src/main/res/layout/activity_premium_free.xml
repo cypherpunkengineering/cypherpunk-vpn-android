@@ -20,7 +20,7 @@
             android:gravity="center_horizontal"
             android:orientation="vertical">
 
-            <com.cypherpunk.android.vpn.widget.TypefaceTextView
+            <com.cypherpunk.android.privacy.widget.TypefaceTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="18dp"
@@ -35,21 +35,21 @@
                 android:layout_marginBottom="24dp"
                 android:src="@drawable/illust_gift" />
 
-            <com.cypherpunk.android.vpn.widget.TypefaceButton
+            <com.cypherpunk.android.privacy.widget.TypefaceButton
                 style="@style/Widget.Cypherpunk.FrameButton"
                 android:layout_width="300dp"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"
                 android:text="@string/premium_free_facebook" />
 
-            <com.cypherpunk.android.vpn.widget.TypefaceButton
+            <com.cypherpunk.android.privacy.widget.TypefaceButton
                 style="@style/Widget.Cypherpunk.FrameButton"
                 android:layout_width="300dp"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"
                 android:text="@string/premium_free_twitter" />
 
-            <com.cypherpunk.android.vpn.widget.TypefaceButton
+            <com.cypherpunk.android.privacy.widget.TypefaceButton
                 style="@style/Widget.Cypherpunk.FrameButton"
                 android:layout_width="300dp"
                 android:layout_height="wrap_content"

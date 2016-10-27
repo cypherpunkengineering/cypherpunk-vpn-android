@@ -9,13 +9,13 @@
 
             <variable
                 name="network"
-                type="com.cypherpunk.android.vpn.model.Network" />
+                type="com.cypherpunk.android.privacy.model.Network" />
 
         </data>
 
     <merge>
 
-        <com.cypherpunk.android.vpn.widget.TypefaceTextView
+        <com.cypherpunk.android.privacy.widget.TypefaceTextView
             android:id="@+id/name"
             android:layout_width="match_parent"
             android:layout_height="match_parent"

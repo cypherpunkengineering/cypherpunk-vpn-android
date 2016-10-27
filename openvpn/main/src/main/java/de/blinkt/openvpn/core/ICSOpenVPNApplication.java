@@ -12,9 +12,7 @@ import org.acra.ReportingInteractionMode;
 import org.acra.annotation.ReportsCrashes;
 */
 
-import com.cypherpunk.android.vpn.BuildConfig;
-import com.cypherpunk.android.vpn.R;
-import de.blinkt.openvpn.core.PRNGFixes;
+import com.cypherpunk.android.privacy.BuildConfig;
 
 /*
 @ReportsCrashes(
