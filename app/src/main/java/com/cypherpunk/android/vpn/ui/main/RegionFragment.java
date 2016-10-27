@@ -154,6 +154,9 @@ public class RegionFragment extends Fragment {
         binding.allow.setImageResource(more ? R.drawable.expand_more_vector : R.drawable.expand_less_vector);
     }
 
+    public void refreshServerList() {
+        getServerList();
+    }
     private int getFlagDrawableByKey(String key) {
         String packageName = getContext().getPackageName();
         return getContext().getResources().getIdentifier("flag_" + key, "drawable", packageName);
