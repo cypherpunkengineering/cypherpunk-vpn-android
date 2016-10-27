@@ -9,7 +9,7 @@ import android.preference.CheckBoxPreference;
 import android.preference.EditTextPreference;
 import android.preference.Preference;
 import android.preference.Preference.OnPreferenceChangeListener;
-import com.cypherpunk.android.vpn.R;
+import com.cypherpunk.android.privacy.R;
 
 
 public class Settings_Routing extends OpenVpnPreferencesFragment implements OnPreferenceChangeListener {

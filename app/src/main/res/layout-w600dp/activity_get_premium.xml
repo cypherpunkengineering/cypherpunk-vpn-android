@@ -11,7 +11,7 @@
             android:id="@+id/toolbar"
             layout="@layout/toolbar" />
 
-        <com.cypherpunk.android.vpn.widget.TypefaceTextView
+        <com.cypherpunk.android.privacy.widget.TypefaceTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -27,7 +27,7 @@
             android:layout_marginTop="32dp"
             android:orientation="horizontal">
 
-            <com.cypherpunk.android.vpn.widget.TypefaceTextView
+            <com.cypherpunk.android.privacy.widget.TypefaceTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
@@ -55,7 +55,7 @@
 
         </LinearLayout>
 
-        <com.cypherpunk.android.vpn.widget.TypefaceTextView
+        <com.cypherpunk.android.privacy.widget.TypefaceTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
@@ -64,21 +64,21 @@
             android:textSize="20sp"
             app:fontName="DosisMedium" />
 
-        <com.cypherpunk.android.vpn.widget.PlanView
+        <com.cypherpunk.android.privacy.widget.PlanView
             android:id="@+id/month_plan"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_marginBottom="16dp" />
 
-        <com.cypherpunk.android.vpn.widget.PlanView
+        <com.cypherpunk.android.privacy.widget.PlanView
             android:id="@+id/six_month_plan"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_marginBottom="16dp" />
 
-        <com.cypherpunk.android.vpn.widget.PlanView
+        <com.cypherpunk.android.privacy.widget.PlanView
             android:id="@+id/annually_plan"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

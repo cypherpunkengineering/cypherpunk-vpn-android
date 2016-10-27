@@ -11,7 +11,7 @@ import android.preference.Preference;
 import android.preference.Preference.OnPreferenceChangeListener;
 import android.preference.PreferenceManager;
 import android.preference.SwitchPreference;
-import com.cypherpunk.android.vpn.R;
+import com.cypherpunk.android.privacy.R;
 import de.blinkt.openvpn.VpnProfile;
 
 public class Settings_IP extends OpenVpnPreferencesFragment implements OnPreferenceChangeListener {

@@ -14,7 +14,7 @@
             android:layout_width="match_parent"
             android:layout_height="?android:actionBarSize">
 
-            <com.cypherpunk.android.vpn.widget.TypefaceTextView
+            <com.cypherpunk.android.privacy.widget.TypefaceTextView
                 android:id="@+id/title"
                 style="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"
                 android:layout_width="wrap_content"
@@ -36,7 +36,7 @@
             android:layout_marginTop="16dp"
             android:layout_weight="1" />
 
-        <com.cypherpunk.android.vpn.widget.PageIndicator
+        <com.cypherpunk.android.privacy.widget.PageIndicator
             android:id="@+id/indicator"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -49,7 +49,7 @@
             android:layout_marginBottom="20dp"
             android:orientation="horizontal">
 
-            <com.cypherpunk.android.vpn.widget.TypefaceButton
+            <com.cypherpunk.android.privacy.widget.TypefaceButton
                 android:id="@+id/login_button"
                 style="@style/Widget.Cypherpunk.FrameButton.Big"
                 android:layout_width="190dp"
@@ -57,7 +57,7 @@
                 android:layout_marginRight="20dp"
                 android:text="@string/introduction_start_free_now" />
 
-            <com.cypherpunk.android.vpn.widget.TypefaceButton
+            <com.cypherpunk.android.privacy.widget.TypefaceButton
                 android:id="@+id/get_premium_button"
                 style="@style/Widget.Cypherpunk.FrameButton.Big"
                 android:layout_width="190dp"
@@ -66,7 +66,7 @@
 
         </LinearLayout>
 
-        <com.cypherpunk.android.vpn.widget.TypefaceButton
+        <com.cypherpunk.android.privacy.widget.TypefaceButton
             android:id="@+id/sign_up_premium_button"
             style="@style/Widget.Cypherpunk.YellowButton.Big"
             android:layout_width="400dp"

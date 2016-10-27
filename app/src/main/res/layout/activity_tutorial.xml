@@ -7,14 +7,14 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <com.cypherpunk.android.vpn.widget.UnswipeablePager
+        <com.cypherpunk.android.privacy.widget.UnswipeablePager
             android:id="@+id/pager"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginBottom="16dp"
             android:layout_marginTop="16dp" />
 
-        <com.cypherpunk.android.vpn.widget.TypefaceButton
+        <com.cypherpunk.android.privacy.widget.TypefaceButton
             android:id="@id/ok_button"
             style="@style/Widget.Cypherpunk.YellowButton"
             android:layout_width="220dp"
@@ -24,7 +24,7 @@
             android:layout_marginBottom="16dp"
             android:text="@string/tutorial_allow" />
 
-        <com.cypherpunk.android.vpn.widget.TypefaceTextView
+        <com.cypherpunk.android.privacy.widget.TypefaceTextView
             android:id="@id/do_not_allow_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -39,7 +39,7 @@
             android:visibility="invisible"
             tools:visibility="visible" />
 
-        <com.cypherpunk.android.vpn.widget.PageIndicator
+        <com.cypherpunk.android.privacy.widget.PageIndicator
             android:id="@id/indicator"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

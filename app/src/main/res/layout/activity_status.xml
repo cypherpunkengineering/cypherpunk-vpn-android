@@ -24,7 +24,7 @@
 
                 <include layout="@layout/divider" />
 
-                <com.cypherpunk.android.vpn.widget.WorldMapView
+                <com.cypherpunk.android.privacy.widget.WorldMapView
                     android:id="@+id/map"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -37,7 +37,7 @@
                     android:gravity="center"
                     android:orientation="horizontal">
 
-                    <com.cypherpunk.android.vpn.widget.TypefaceTextView
+                    <com.cypherpunk.android.privacy.widget.TypefaceTextView
                         android:id="@+id/state"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -45,7 +45,7 @@
                         android:textSize="16sp"
                         tools:text="Connected" />
 
-                    <com.cypherpunk.android.vpn.widget.TimeTexView
+                    <com.cypherpunk.android.privacy.widget.TimeTexView
                         android:id="@+id/time"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -73,7 +73,7 @@
                     android:paddingBottom="12dp"
                     android:paddingTop="12dp">
 
-                    <com.cypherpunk.android.vpn.widget.TypefaceTextView
+                    <com.cypherpunk.android.privacy.widget.TypefaceTextView
                         android:id="@+id/original_label"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -82,7 +82,7 @@
                         android:textSize="16sp"
                         app:fontName="DosisSemiBold" />
 
-                    <com.cypherpunk.android.vpn.widget.TypefaceTextView
+                    <com.cypherpunk.android.privacy.widget.TypefaceTextView
                         android:id="@+id/original_ip"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -103,7 +103,7 @@
                             android:layout_marginRight="12dp"
                             android:src="@drawable/flag_us" />
 
-                        <com.cypherpunk.android.vpn.widget.TypefaceTextView
+                        <com.cypherpunk.android.privacy.widget.TypefaceTextView
                             android:id="@+id/original_location"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -128,7 +128,7 @@
                     android:paddingBottom="8dp"
                     android:paddingTop="8dp">
 
-                    <com.cypherpunk.android.vpn.widget.TypefaceTextView
+                    <com.cypherpunk.android.privacy.widget.TypefaceTextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="4dp"
@@ -136,7 +136,7 @@
                         android:textSize="16sp"
                         app:fontName="DosisSemiBold" />
 
-                    <com.cypherpunk.android.vpn.widget.TypefaceTextView
+                    <com.cypherpunk.android.privacy.widget.TypefaceTextView
                         android:id="@+id/new_ip"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -158,7 +158,7 @@
                             android:src="@drawable/flag_us"
                             tools:ignore="ContentDescription" />
 
-                        <com.cypherpunk.android.vpn.widget.TypefaceTextView
+                        <com.cypherpunk.android.privacy.widget.TypefaceTextView
                             android:id="@+id/new_location"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -169,7 +169,7 @@
                     </LinearLayout>
                 </LinearLayout>
 
-                <com.cypherpunk.android.vpn.widget.TypefaceButton
+                <com.cypherpunk.android.privacy.widget.TypefaceButton
                     android:id="@+id/change_ip_button"
                     style="@style/Widget.Cypherpunk.TransparentDarkButton"
                     android:layout_width="wrap_content"

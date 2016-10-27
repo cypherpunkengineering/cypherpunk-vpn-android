@@ -9,7 +9,7 @@
     android:paddingRight="16dp"
     android:paddingTop="16dp">
 
-    <com.cypherpunk.android.vpn.widget.TypefaceTextView
+    <com.cypherpunk.android.privacy.widget.TypefaceTextView
         android:layout_width="260dp"
         android:layout_height="120dp"
         android:layout_gravity="center"
@@ -20,7 +20,7 @@
         android:textSize="16sp"
         app:fontName="DosisMedium" />
 
-    <com.cypherpunk.android.vpn.widget.TypefaceTextView
+    <com.cypherpunk.android.privacy.widget.TypefaceTextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
@@ -32,7 +32,7 @@
         android:textSize="14sp"
         app:fontName="DosisMedium" />
 
-    <com.cypherpunk.android.vpn.widget.TypefaceButton
+    <com.cypherpunk.android.privacy.widget.TypefaceButton
         android:id="@+id/rate_button"
         style="@style/Widget.Cypherpunk.YellowButton"
         android:layout_width="260dp"
@@ -42,7 +42,7 @@
         android:layout_marginTop="32dp"
         android:text="@string/rate_dialog_rate_now" />
 
-    <com.cypherpunk.android.vpn.widget.TypefaceTextView
+    <com.cypherpunk.android.privacy.widget.TypefaceTextView
         android:id="@+id/later_button"
         android:layout_width="260dp"
         android:layout_height="wrap_content"

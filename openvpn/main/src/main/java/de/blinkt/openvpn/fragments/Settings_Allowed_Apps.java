@@ -35,7 +35,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Vector;
 
-import com.cypherpunk.android.vpn.R;
+import com.cypherpunk.android.privacy.R;
 import de.blinkt.openvpn.VpnProfile;
 import de.blinkt.openvpn.core.ProfileManager;
 
