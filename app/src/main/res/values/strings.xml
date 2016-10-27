@@ -199,6 +199,8 @@
     <string name="plan_best_value">BEST VALUE!</string>
     <string name="plan_per_month">/ month</string>
     <string name="plan_current">Current Plan</string>
+    <string name="upgrade_text">Get Cypherpunk Premium\nSelect your plan</string>
+
 
     <!-- premium free -->
     <string name="title_activity_premium_free">Get 30 Days Premium Free</string>

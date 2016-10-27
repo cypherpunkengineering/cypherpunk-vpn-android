@@ -36,26 +36,11 @@ public class UpgradePlanActivity extends AppCompatActivity {
         }
 
         binding.monthlyPlan.setPlan("1 MONTHS", "$ 9.99", false);
-        binding.monthly6Plan.setPlan("6 MONTHS", "$ 79.99", false);
-        binding.yearlyPlan.setPlan("12 MONTHS", "$ 49.99", true);
-
-        UserSettingPref userSettingPref = new UserSettingPref();
-        String renewal = userSettingPref.userStatusRenewal;
-
-        switch (renewal) {
-            case "monthly":
-                binding.monthlyPlan.setCurrentPlan();
-                break;
-            case "semiannually":
-                binding.monthly6Plan.setCurrentPlan();
-                break;
-            case "annually":
-                binding.yearlyPlan.setCurrentPlan();
-                break;
-        }
+        binding.semiannuallyPlan.setPlan("6 MONTHS", "$ 79.99", false);
+        binding.annuallyPlan.setPlan("12 MONTHS", "$ 49.99", true);
 
         // TODO:
-        binding.monthly6Plan.setOnClickListener(new View.OnClickListener() {
+        binding.monthlyPlan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 String payload = "monthly_sample";
@@ -66,6 +51,50 @@ public class UpgradePlanActivity extends AppCompatActivity {
                 }
             }
         });
+
+        binding.semiannuallyPlan.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String payload = "monthly_sample";
+                try {
+                    helper.launchPurchaseFlow(UpgradePlanActivity.this, SKU_MONTHLY, RC_REQUEST, purchaseFinishedListener, payload);
+                } catch (IabHelper.IabAsyncInProgressException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+        binding.annuallyPlan.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String payload = "monthly_sample";
+                try {
+                    helper.launchPurchaseFlow(UpgradePlanActivity.this, SKU_MONTHLY, RC_REQUEST, purchaseFinishedListener, payload);
+                } catch (IabHelper.IabAsyncInProgressException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+        UserSettingPref userSettingPref = new UserSettingPref();
+        String renewal = userSettingPref.userStatusRenewal;
+        switch (renewal) {
+            case "none":
+                break;
+            case "monthly":
+                binding.monthlyPlan.setCurrentPlan();
+                break;
+            case "semiannually":
+                binding.monthlyPlan.setVisibility(View.GONE);
+                binding.semiannuallyPlan.setCurrentPlan();
+                break;
+            case "annually":
+                binding.monthlyPlan.setVisibility(View.GONE);
+                binding.semiannuallyPlan.setVisibility(View.GONE);
+                binding.annuallyPlan.setCurrentPlan();
+                break;
+        }
+
 
         setupBilling();
     }
