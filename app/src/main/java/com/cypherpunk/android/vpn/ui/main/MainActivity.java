@@ -38,7 +38,6 @@ import com.cypherpunk.android.vpn.ui.settings.AccountSettingsFragment;
 import com.cypherpunk.android.vpn.ui.settings.RateDialogFragment;
 import com.cypherpunk.android.vpn.ui.settings.SettingConnectDialogFragment;
 import com.cypherpunk.android.vpn.ui.settings.SettingsFragment;
-import com.cypherpunk.android.vpn.ui.setup.IntroductionActivity;
 import com.cypherpunk.android.vpn.ui.signin.IdentifyEmailActivity;
 import com.cypherpunk.android.vpn.vpn.CypherpunkVPN;
 import com.cypherpunk.android.vpn.vpn.CypherpunkVpnStatus;
@@ -59,8 +58,6 @@ public class MainActivity extends AppCompatActivity
 
     public static final String AUTO_START = "com.cypherpunk.android.vpn.AUTO_START";
 
-    public static final int REQUEST_SELECT_REGION = 1;
-    public static final int REQUEST_SETTINGS = 3;
     private static final int REQUEST_VPN_START = 0;
 
     private ActivityMainBinding binding;

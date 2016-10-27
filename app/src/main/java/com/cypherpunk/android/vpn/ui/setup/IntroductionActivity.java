@@ -17,6 +17,9 @@ import com.cypherpunk.android.vpn.ui.signin.IdentifyEmailActivity;
 import com.cypherpunk.android.vpn.ui.signin.SignInActivity;
 
 
+/**
+ * unused
+ */
 public class IntroductionActivity extends AppCompatActivity {
 
     @Override

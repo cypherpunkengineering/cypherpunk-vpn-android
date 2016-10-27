@@ -16,7 +16,6 @@ import android.widget.TextView;
 
 import com.cypherpunk.android.vpn.R;
 import com.cypherpunk.android.vpn.databinding.ActivityResetPasswordBinding;
-import com.cypherpunk.android.vpn.ui.setup.IntroductionActivity;
 
 
 public class ResetPasswordActivity extends AppCompatActivity {
@@ -74,7 +73,7 @@ public class ResetPasswordActivity extends AppCompatActivity {
             focusView.requestFocus();
         } else {
             // success
-            Intent intent = new Intent(this, IntroductionActivity.class);
+            Intent intent = new Intent(this, IdentifyEmailActivity.class);
             TaskStackBuilder builder = TaskStackBuilder.create(this);
             builder.addNextIntent(intent);
             builder.startActivities();

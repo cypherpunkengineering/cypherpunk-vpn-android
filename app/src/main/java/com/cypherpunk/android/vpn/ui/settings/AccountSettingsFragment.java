@@ -19,7 +19,7 @@ import com.cypherpunk.android.vpn.data.api.json.LoginResult;
 import com.cypherpunk.android.vpn.data.api.json.StatusResult;
 import com.cypherpunk.android.vpn.model.UserSettingPref;
 import com.cypherpunk.android.vpn.ui.account.PremiumFreeActivity;
-import com.cypherpunk.android.vpn.ui.setup.IntroductionActivity;
+import com.cypherpunk.android.vpn.ui.signin.IdentifyEmailActivity;
 import com.cypherpunk.android.vpn.vpn.CypherpunkVPN;
 
 import javax.inject.Inject;
@@ -161,7 +161,7 @@ public class AccountSettingsFragment extends PreferenceFragmentCompat {
     private void signOut() {
         CypherpunkVPN.getInstance().stop(getActivity().getApplicationContext(), getActivity().getBaseContext());
         UserManager.clearUser();
-        Intent intent = new Intent(getActivity(), IntroductionActivity.class);
+        Intent intent = new Intent(getActivity(), IdentifyEmailActivity.class);
         TaskStackBuilder builder = TaskStackBuilder.create(getActivity());
         builder.addNextIntent(intent);
         builder.startActivities();
