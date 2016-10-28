@@ -20,7 +20,6 @@ import com.cypherpunk.privacy.data.api.json.LoginResult;
 import com.cypherpunk.privacy.data.api.json.RegionResult;
 import com.cypherpunk.privacy.databinding.FragmentRegionBinding;
 import com.cypherpunk.privacy.model.CypherpunkSetting;
-import com.cypherpunk.privacy.model.FavoriteRegion;
 import com.cypherpunk.privacy.model.Region;
 import com.cypherpunk.privacy.ui.region.ConnectConfirmationDialogFragment;
 
@@ -93,20 +92,15 @@ public class RegionFragment extends Fragment {
         adapter = new RegionAdapter() {
             @Override
             protected void onFavorite(@NonNull final String regionId, final boolean favorite) {
-                RealmResults<FavoriteRegion> result = realm.where(FavoriteRegion.class).equalTo("id", regionId).findAll();
                 Region region = realm.where(Region.class).equalTo("id", regionId).findFirst();
 
                 realm.beginTransaction();
-                region.setFavorited(favorite);
-                if (favorite) {
-                    if (result.size() == 0) {
-                        realm.copyToRealm(new FavoriteRegion(region.getId()));
+                if (favorite != region.isFavorited()) {
+                    region.setFavorited(favorite);
+                    if (favorite) {
                         adapter.addFavoriteItem(region);
-                    }
-                } else {
-                    if (result.size() != 0) {
+                    } else {
                         adapter.removeFavoriteItem(region);
-                        result.deleteAllFromRealm();
                     }
                 }
                 realm.commitTransaction();
@@ -157,6 +151,7 @@ public class RegionFragment extends Fragment {
     public void refreshServerList() {
         getServerList();
     }
+
     private int getFlagDrawableByKey(String key) {
         String packageName = getContext().getPackageName();
         return getContext().getResources().getIdentifier("flag_" + key, "drawable", packageName);
@@ -187,38 +182,48 @@ public class RegionFragment extends Fragment {
                 .subscribe(new SingleSubscriber<Map<String, Map<String, RegionResult[]>>>() {
                                @Override
                                public void onSuccess(Map<String, Map<String, RegionResult[]>> result) {
-                                   List<Region> regionList = new ArrayList<>();
+                                   realm.beginTransaction();
+                                   List<String> updateRegionIdList = new ArrayList<>();
                                    for (Map.Entry<String, Map<String, RegionResult[]>> area : result.entrySet()) {
                                        Set<Map.Entry<String, RegionResult[]>> areaSet = area.getValue().entrySet();
                                        for (Map.Entry<String, RegionResult[]> country : areaSet) {
                                            RegionResult[] regions = country.getValue();
                                            for (RegionResult regionResult : regions) {
-                                               Region region = new Region(
-                                                       regionResult.getId(),
-                                                       country.getKey(),
-                                                       regionResult.getRegionName(),
-                                                       regionResult.getOvHostname(),
-                                                       regionResult.getOvDefault(),
-                                                       regionResult.getOvNone(),
-                                                       regionResult.getOvStrong(),
-                                                       regionResult.getOvStealth());
-
-                                               long id = realm.where(FavoriteRegion.class)
-                                                       .equalTo("id", regionResult.getId()).count();
-                                               if (id != 0) {
-                                                   region.setFavorited(true);
+                                               Region region = realm.where(Region.class)
+                                                       .equalTo("id", regionResult.getId()).findFirst();
+                                               if (region != null) {
+                                                   region.setRegionName(regionResult.getRegionName());
+                                                   region.setOvHostname(regionResult.getOvHostname());
+                                                   region.setOvDefault(regionResult.getOvDefault());
+                                                   region.setOvNone(regionResult.getOvNone());
+                                                   region.setOvStrong(regionResult.getOvStrong());
+                                                   region.setOvStealth(regionResult.getOvStealth());
+                                               } else {
+                                                   region = new Region(
+                                                           regionResult.getId(),
+                                                           country.getKey(),
+                                                           regionResult.getRegionName(),
+                                                           regionResult.getOvHostname(),
+                                                           regionResult.getOvDefault(),
+                                                           regionResult.getOvNone(),
+                                                           regionResult.getOvStrong(),
+                                                           regionResult.getOvStealth());
+                                                   realm.copyToRealm(region);
                                                }
-                                               regionList.add(region);
+                                               updateRegionIdList.add(region.getId());
                                            }
                                        }
                                    }
-                                   realm.beginTransaction();
-                                   RealmResults<Region> oldRegionListResult = realm.where(Region.class).findAll();
-                                   oldRegionListResult.deleteAllFromRealm();
-                                   realm.copyToRealm(regionList);
+                                   RealmResults<Region> oldRegion = realm.where(Region.class)
+                                           .not()
+                                           .beginGroup()
+                                           .in("id", updateRegionIdList.toArray(new String[updateRegionIdList.size()]))
+                                           .endGroup()
+                                           .findAll();
+                                   oldRegion.deleteAllFromRealm();
                                    realm.commitTransaction();
-                                   adapter.clear();
 
+                                   adapter.clear();
                                    adapter.addFavoriteItems(getFavoriteRegionList());
                                    adapter.addAllItems(getNoFavoriteRegionList());
 

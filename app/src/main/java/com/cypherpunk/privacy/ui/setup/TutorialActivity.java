@@ -24,7 +24,6 @@ import com.cypherpunk.privacy.data.api.json.LoginResult;
 import com.cypherpunk.privacy.data.api.json.RegionResult;
 import com.cypherpunk.privacy.databinding.ActivityTutorialBinding;
 import com.cypherpunk.privacy.model.CypherpunkSetting;
-import com.cypherpunk.privacy.model.FavoriteRegion;
 import com.cypherpunk.privacy.model.Region;
 import com.cypherpunk.privacy.ui.main.MainActivity;
 
@@ -36,6 +35,7 @@ import java.util.Set;
 import javax.inject.Inject;
 
 import io.realm.Realm;
+import io.realm.RealmResults;
 import rx.Single;
 import rx.SingleSubscriber;
 import rx.Subscription;
@@ -86,16 +86,13 @@ public class TutorialActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 int currentItem = binding.pager.getCurrentItem();
-                if (currentItem == 0)
-                {
+                if (currentItem == 0) {
                     Intent intent = VpnService.prepare(getApplicationContext());
                     if (intent != null)
                         startActivityForResult(intent, GRANT_VPN_PERMISSION);
                     else
                         onActivityResult(GRANT_VPN_PERMISSION, RESULT_OK, null);
-                }
-                else
-                {
+                } else {
                     if (currentItem == adapter.getCount() - 1) {
                         Intent intent = new Intent(TutorialActivity.this, MainActivity.class);
                         TaskStackBuilder builder = TaskStackBuilder.create(TutorialActivity.this);
@@ -119,13 +116,10 @@ public class TutorialActivity extends AppCompatActivity {
 
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data)
-    {
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == RESULT_OK)
-        {
-            switch (requestCode)
-            {
+        if (resultCode == RESULT_OK) {
+            switch (requestCode) {
                 case GRANT_VPN_PERMISSION:
                     int currentItem = binding.pager.getCurrentItem();
                     binding.pager.setCurrentItem(++currentItem);
@@ -148,33 +142,45 @@ public class TutorialActivity extends AppCompatActivity {
                 .subscribe(new SingleSubscriber<Map<String, Map<String, RegionResult[]>>>() {
                                @Override
                                public void onSuccess(Map<String, Map<String, RegionResult[]>> result) {
-                                   List<Region> regionList = new ArrayList<>();
+                                   realm.beginTransaction();
+                                   List<String> updateRegionIdList = new ArrayList<>();
                                    for (Map.Entry<String, Map<String, RegionResult[]>> area : result.entrySet()) {
                                        Set<Map.Entry<String, RegionResult[]>> areaSet = area.getValue().entrySet();
                                        for (Map.Entry<String, RegionResult[]> country : areaSet) {
                                            RegionResult[] regions = country.getValue();
                                            for (RegionResult regionResult : regions) {
-                                               Region region = new Region(
-                                                       regionResult.getId(),
-                                                       country.getKey(),
-                                                       regionResult.getRegionName(),
-                                                       regionResult.getOvHostname(),
-                                                       regionResult.getOvDefault(),
-                                                       regionResult.getOvNone(),
-                                                       regionResult.getOvStrong(),
-                                                       regionResult.getOvStealth());
-
-                                               long id = realm.where(FavoriteRegion.class)
-                                                       .equalTo("id", regionResult.getId()).count();
-                                               if (id != 0) {
-                                                   region.setFavorited(true);
+                                               Region region = realm.where(Region.class)
+                                                       .equalTo("id", regionResult.getId()).findFirst();
+                                               if (region != null) {
+                                                   region.setRegionName(regionResult.getRegionName());
+                                                   region.setOvHostname(regionResult.getOvHostname());
+                                                   region.setOvDefault(regionResult.getOvDefault());
+                                                   region.setOvNone(regionResult.getOvNone());
+                                                   region.setOvStrong(regionResult.getOvStrong());
+                                                   region.setOvStealth(regionResult.getOvStealth());
+                                               } else {
+                                                   region = new Region(
+                                                           regionResult.getId(),
+                                                           country.getKey(),
+                                                           regionResult.getRegionName(),
+                                                           regionResult.getOvHostname(),
+                                                           regionResult.getOvDefault(),
+                                                           regionResult.getOvNone(),
+                                                           regionResult.getOvStrong(),
+                                                           regionResult.getOvStealth());
+                                                   realm.copyToRealm(region);
                                                }
-                                               regionList.add(region);
+                                               updateRegionIdList.add(region.getId());
                                            }
                                        }
                                    }
-                                   realm.beginTransaction();
-                                   realm.copyToRealm(regionList);
+                                   RealmResults<Region> oldRegion = realm.where(Region.class)
+                                           .not()
+                                           .beginGroup()
+                                           .in("id", updateRegionIdList.toArray(new String[updateRegionIdList.size()]))
+                                           .endGroup()
+                                           .findAll();
+                                   oldRegion.deleteAllFromRealm();
                                    realm.commitTransaction();
 
                                    // TODO: 一番上のを選択している

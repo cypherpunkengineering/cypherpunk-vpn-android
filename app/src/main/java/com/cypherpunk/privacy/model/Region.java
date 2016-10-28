@@ -68,6 +68,10 @@ public class Region implements RealmModel {
     public String getCountryCode() { return countryCode; }
     public String getRegionName() { return regionName; }
 
+    public void setRegionName(String regionName) {
+        this.regionName = regionName;
+    }
+
     public String getOvHostname() { return ovHostname; }
     public void setOvHostname(String ovHostname) { this.ovHostname = ovHostname; }
 
