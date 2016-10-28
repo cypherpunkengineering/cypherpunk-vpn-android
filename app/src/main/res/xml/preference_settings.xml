@@ -25,12 +25,17 @@
         android:title="Advanced Settings" />
 
     <PreferenceCategory
-        android:title="@string/setting_category_privacy_firewall"
+        android:title="@string/setting_category_privacy_settings"
         app:layout="@layout/custom_preference_category">
 
         <Preference
             android:key="privacy_firewall_mode"
             android:title="@string/setting_privacy_firewall_mode" />
+
+        <Preference
+            android:key="application"
+            android:summary="@string/setting_application_summary"
+            android:title="@string/setting_application" />
 
     </PreferenceCategory>
 
@@ -40,11 +45,6 @@
         <Preference
             android:key="vpn_protocol"
             android:title="@string/setting_vpn_protocol" />
-
-        <Preference
-            android:key="application"
-            android:summary="@string/setting_application_summary"
-            android:title="@string/setting_application" />
 
         <Preference
             android:key="vpn_port_remote"

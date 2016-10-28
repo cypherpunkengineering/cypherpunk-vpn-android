@@ -112,7 +112,7 @@
 
     <!-- advanced setting -->
     <string name="setting_category_advanced">Advanced Settings</string>
-    <string name="setting_category_privacy_firewall">Privacy Firewall</string>
+    <string name="setting_category_privacy_settings">Privacy Settings</string>
     <string name="setting_category_vpn_settings">VPN Settings</string>
 
     <!-- protocol settings -->
@@ -133,10 +133,10 @@
     <string name="setting_application">Privacy for individual apps</string>
     <string name="setting_application_summary">Configure apps to connect directly without privacy protection</string>
     <!-- vpn port remote -->
-    <string name="setting_vpn_port_remote">VPN server port</string>
+    <string name="setting_vpn_port_remote">VPN Server Port</string>
     <string name="setting_vpn_port_remote_summary">Use alternate remote TCP/UDP port for Privacy Tunnel</string>
     <!-- vpn port local -->
-    <string name="setting_vpn_port_local">VPN local port</string>
+    <string name="setting_vpn_port_local">VPN Local Port</string>
     <string name="setting_vpn_port_local_summary">Use alternate local TCP/UDP port for Privacy Tunnel</string>
     <!-- vpn port forwarding -->
     <string name="setting_vpn_port_forwarding">Port Forwarding</string>
