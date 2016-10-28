@@ -1,8 +1,16 @@
 package com.cypherpunk.privacy.vpn;
 
 import android.support.annotation.NonNull;
+import android.util.Log;
+
+import com.cypherpunk.privacy.CypherpunkApplication;
+import com.cypherpunk.privacy.model.CypherpunkSetting;
+import com.cypherpunk.privacy.model.Region;
+
+import java.util.Date;
 
 import de.blinkt.openvpn.core.VpnStatus;
+import io.realm.Realm;
 
 
 public class CypherpunkVpnStatus implements VpnStatus.StateListener {
@@ -30,6 +38,12 @@ public class CypherpunkVpnStatus implements VpnStatus.StateListener {
         CypherpunkVpnStatus.level = level;
         if (level == VpnStatus.ConnectionStatus.LEVEL_CONNECTED) {
             connectedTime = System.currentTimeMillis();
+            Realm realm = CypherpunkApplication.instance.getAppComponent().getDefaultRealm();
+            Region region = realm.where(Region.class).equalTo("id", new CypherpunkSetting().regionId).findFirst();
+            realm.beginTransaction();
+            region.setLastConnectedDate(new Date());
+            realm.commitTransaction();
+            realm.close();
         }
     }
 
