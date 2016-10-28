@@ -2,6 +2,8 @@ package com.cypherpunk.privacy.model;
 
 import android.support.annotation.NonNull;
 
+import java.util.Date;
+
 import io.realm.RealmModel;
 import io.realm.annotations.PrimaryKey;
 import io.realm.annotations.RealmClass;
@@ -33,6 +35,8 @@ public class Region implements RealmModel {
 
     private boolean favorited;
 
+    private Date lastConnectedDate;
+
     @SuppressWarnings("unused")
     public Region() {
     }
@@ -61,6 +65,7 @@ public class Region implements RealmModel {
         this.ovNone = ovNone;
         this.ovStrong = ovStrong;
         this.ovStealth = ovStealth;
+        this.lastConnectedDate = new Date(0);
     }
 
     public String getId() { return id; }
@@ -92,6 +97,14 @@ public class Region implements RealmModel {
         this.favorited = favorited;
     }
 
+    public Date getLastConnectedDate() {
+        return lastConnectedDate;
+    }
+
+    public void setLastConnectedDate(Date lastConnectedDate) {
+        this.lastConnectedDate = lastConnectedDate;
+    }
+
     @Override
     public String toString() {
         return "Region{" +
@@ -104,6 +117,7 @@ public class Region implements RealmModel {
                 ", ovStrong='" + ovStrong + '\'' +
                 ", ovStealth='" + ovStealth + '\'' +
                 ", favorited=" + favorited +
+                ", favorited=" + lastConnectedDate.toString() +
                 '}';
     }
 

@@ -32,6 +32,7 @@ import javax.inject.Inject;
 
 import io.realm.Realm;
 import io.realm.RealmResults;
+import io.realm.Sort;
 import rx.Single;
 import rx.SingleSubscriber;
 import rx.Subscription;
@@ -94,17 +95,16 @@ public class RegionFragment extends Fragment {
             @Override
             protected void onFavorite(@NonNull final String regionId, final boolean favorite) {
                 Region region = realm.where(Region.class).equalTo("id", regionId).findFirst();
-
-                realm.beginTransaction();
                 if (favorite != region.isFavorited()) {
+                    realm.beginTransaction();
                     region.setFavorited(favorite);
+                    realm.commitTransaction();
                     if (favorite) {
                         adapter.addFavoriteItem(region);
                     } else {
                         adapter.removeFavoriteItem(region);
                     }
                 }
-                realm.commitTransaction();
             }
 
             @Override
@@ -159,12 +159,12 @@ public class RegionFragment extends Fragment {
     }
 
     private ArrayList<Region> getNoFavoriteRegionList() {
-        RealmResults<Region> regionList = realm.where(Region.class).equalTo("favorited", false).findAll();
+        RealmResults<Region> regionList = realm.where(Region.class).equalTo("favorited", false).findAllSorted("lastConnectedDate", Sort.DESCENDING);
         return new ArrayList<>(regionList);
     }
 
     private ArrayList<Region> getFavoriteRegionList() {
-        RealmResults<Region> regionList = realm.where(Region.class).equalTo("favorited", true).findAll();
+        RealmResults<Region> regionList = realm.where(Region.class).equalTo("favorited", true).findAllSorted("lastConnectedDate", Sort.DESCENDING);
         return new ArrayList<>(regionList);
     }
 
@@ -237,8 +237,8 @@ public class RegionFragment extends Fragment {
 
                                        binding.regionName.setText(first.getRegionName());
                                        binding.nationalFlag.setImageResource(getFlagDrawableByKey(first.getCountryCode().toLowerCase()));
-                                       binding.progress.setVisibility(View.GONE);
                                    }
+                                   binding.progress.setVisibility(View.GONE);
                                }
 
                                @Override
