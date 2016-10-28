@@ -87,6 +87,7 @@ public class RegionFragment extends Fragment {
             if (region != null) {
                 binding.regionName.setText(region.getRegionName());
                 binding.nationalFlag.setImageResource(getFlagDrawableByKey(region.getCountryCode().toLowerCase()));
+                binding.progress.setVisibility(View.GONE);
             }
         }
 
@@ -157,6 +158,7 @@ public class RegionFragment extends Fragment {
     public void refreshServerList() {
         getServerList();
     }
+
     private int getFlagDrawableByKey(String key) {
         String packageName = getContext().getPackageName();
         return getContext().getResources().getIdentifier("flag_" + key, "drawable", packageName);
@@ -231,6 +233,7 @@ public class RegionFragment extends Fragment {
 
                                        binding.regionName.setText(first.getRegionName());
                                        binding.nationalFlag.setImageResource(getFlagDrawableByKey(first.getCountryCode().toLowerCase()));
+                                       binding.progress.setVisibility(View.GONE);
                                    }
                                }
 
