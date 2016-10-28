@@ -24,6 +24,7 @@ import com.cypherpunk.privacy.model.Region;
 import com.cypherpunk.privacy.ui.region.ConnectConfirmationDialogFragment;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -128,7 +129,8 @@ public class RegionFragment extends Fragment {
         };
         binding.list.setAdapter(adapter);
         adapter.addFavoriteItems(getFavoriteRegionList());
-        adapter.addAllItems(getNoFavoriteRegionList());
+        adapter.addAllItems(getRecentlyConnectedList());
+        adapter.addAllItems(getOtherList());
 
         binding.regionContainer.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -158,13 +160,18 @@ public class RegionFragment extends Fragment {
         return getContext().getResources().getIdentifier("flag_" + key, "drawable", packageName);
     }
 
-    private ArrayList<Region> getNoFavoriteRegionList() {
-        RealmResults<Region> regionList = realm.where(Region.class).equalTo("favorited", false).findAllSorted("lastConnectedDate", Sort.DESCENDING);
+    private ArrayList<Region> getFavoriteRegionList() {
+        RealmResults<Region> regionList = realm.where(Region.class).equalTo("favorited", true).findAllSorted("lastConnectedDate", Sort.DESCENDING);
         return new ArrayList<>(regionList);
     }
 
-    private ArrayList<Region> getFavoriteRegionList() {
-        RealmResults<Region> regionList = realm.where(Region.class).equalTo("favorited", true).findAllSorted("lastConnectedDate", Sort.DESCENDING);
+    private ArrayList<Region> getRecentlyConnectedList() {
+        RealmResults<Region> regionList = realm.where(Region.class).equalTo("favorited", false).notEqualTo("lastConnectedDate", new Date(0)).findAllSorted("lastConnectedDate", Sort.DESCENDING);
+        return new ArrayList<>(regionList);
+    }
+
+    private ArrayList<Region> getOtherList() {
+        RealmResults<Region> regionList = realm.where(Region.class).equalTo("favorited", false).equalTo("lastConnectedDate", new Date(0)).findAll();
         return new ArrayList<>(regionList);
     }
 
@@ -226,7 +233,8 @@ public class RegionFragment extends Fragment {
 
                                    adapter.clear();
                                    adapter.addFavoriteItems(getFavoriteRegionList());
-                                   adapter.addAllItems(getNoFavoriteRegionList());
+                                   adapter.addAllItems(getRecentlyConnectedList());
+                                   adapter.addAllItems(getOtherList());
 
                                    // TODO: 一番上のを選択している
                                    CypherpunkSetting setting = new CypherpunkSetting();
