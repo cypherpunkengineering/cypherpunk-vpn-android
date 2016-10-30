@@ -28,12 +28,15 @@ android {
             storeFile rootProject.file("certificate/debug.keystore")
         }
 
-//        release {
+        release {
+			lintOptions {
+				disable 'MissingTranslation'
+			}
 //            storeFile rootProject.file("certificate/sample.keystore")
 //            storePassword "sample"
 //            keyAlias "sample"
 //            keyPassword "sample"
-//        }
+        }
     }
     buildTypes {
         debug {
