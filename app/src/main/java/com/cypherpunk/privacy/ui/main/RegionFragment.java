@@ -125,11 +125,16 @@ public class RegionFragment extends Fragment {
                 Region region = realm.where(Region.class).equalTo("id", regionId).findFirst();
                 binding.regionName.setText(region.getRegionName());
                 binding.nationalFlag.setImageResource(getFlagDrawableByKey(region.getCountryCode().toLowerCase()));
+
+                realm.beginTransaction();
+                region.setLastConnectedDate(new Date());
+//                adapter.addConnectedItem(region);
+                realm.commitTransaction();
             }
         };
         binding.list.setAdapter(adapter);
         adapter.addFavoriteItems(getFavoriteRegionList());
-//        adapter.addRecentlyConnectedItems(getRecentlyConnectedList());
+        adapter.addRecentlyConnectedItems(getRecentlyConnectedList());
         adapter.addAllItems(getOtherList());
 
         binding.regionContainer.setOnClickListener(new View.OnClickListener() {
@@ -233,7 +238,7 @@ public class RegionFragment extends Fragment {
 
                                    adapter.clear();
                                    adapter.addFavoriteItems(getFavoriteRegionList());
-//                                   adapter.addRecentlyConnectedItems(getRecentlyConnectedList());
+                                   adapter.addRecentlyConnectedItems(getRecentlyConnectedList());
                                    adapter.addAllItems(getOtherList());
 
                                    // TODO: 一番上のを選択している
