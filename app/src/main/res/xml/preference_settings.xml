@@ -4,29 +4,34 @@
 
     <Preference
         android:layout="@layout/preference_header"
-        android:title="Basic Settings" />
+        android:title="@string/setting_configuration" />
 
-    <SwitchPreferenceCompat
-        android:key="vpn_auto_start_connect"
-        android:title="@string/setting_vpn_auto_start_connect" />
+    <PreferenceCategory
+        android:title="@string/setting_category_auto_protection">
 
-    <Preference
-        android:key="trusted_network"
-        android:summary="@string/setting_network_summary"
-        android:title="@string/setting_network" />
+        <SwitchPreferenceCompat
+            android:key="vpn_auto_start_connect"
+            android:title="@string/setting_vpn_auto_start_connect" />
 
-    <Preference
-        android:id="@+id/preference"
-        android:key="vpn_crypto_profile"
-        android:title="@string/setting_vpn_crypto_profile" />
+        <Preference
+            android:key="trusted_network"
+            android:summary="@string/setting_network_summary"
+            android:title="@string/setting_network" />
 
-    <Preference
-        android:layout="@layout/preference_header"
-        android:title="Advanced Settings" />
+        <Preference
+            android:layout="@layout/preference_header"
+            android:title="@string/setting_category_advanced_settings" />
+
+    </PreferenceCategory>
 
     <PreferenceCategory
         android:title="@string/setting_category_privacy_settings"
         app:layout="@layout/custom_preference_category">
+
+        <Preference
+            android:id="@+id/preference"
+            android:key="vpn_crypto_profile"
+            android:title="@string/setting_vpn_crypto_profile" />
 
         <Preference
             android:key="privacy_firewall_mode"
@@ -43,13 +48,13 @@
         android:title="@string/setting_category_vpn_settings">
 
         <Preference
-            android:key="vpn_protocol"
-            android:title="@string/setting_vpn_protocol" />
-
-        <Preference
             android:key="vpn_port_remote"
             android:summary="@string/setting_vpn_port_remote_summary"
             android:title="@string/setting_vpn_port_remote" />
+
+        <Preference
+            android:key="vpn_backend"
+            android:title="@string/setting_vpn_backend" />
 
         <!--
         <Preference

@@ -26,9 +26,9 @@ public class CypherpunkSetting extends PrefModel {
     @DefaultString("setting_vpn_crypto_profile_default")
     public String vpnCryptoProfile;
 
-    @PrefKey("vpn_protocol")
-    @DefaultString("setting_vpn_protocol_openvpn23_udp")
-    public String vpnProtocol;
+    @PrefKey("vpn_backend")
+    @DefaultString("setting_vpn_backend_openvpn23")
+    public String vpnBackend;
 
     @PrefKey("vpn_port_remote")
     @DefaultString("")

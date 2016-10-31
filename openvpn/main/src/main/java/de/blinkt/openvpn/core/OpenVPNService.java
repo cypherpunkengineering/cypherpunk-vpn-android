@@ -474,10 +474,9 @@ public class OpenVPNService extends VpnService implements StateListener, Callbac
             mOvpn3 = false;
         */
         CypherpunkSetting cypherpunkSetting = new CypherpunkSetting();
-        switch (cypherpunkSetting.vpnProtocol)
+        switch (cypherpunkSetting.vpnBackend)
         {
-            case "setting_vpn_protocol_openvpn31_udp":
-            case "setting_vpn_protocol_openvpn31_tcp":
+            case "setting_vpn_protocol_openvpn31":
                 mOvpn3 = true;
                 break;
             default:
