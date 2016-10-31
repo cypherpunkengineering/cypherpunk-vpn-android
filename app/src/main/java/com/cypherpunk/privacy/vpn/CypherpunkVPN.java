@@ -268,10 +268,11 @@ public class CypherpunkVPN {
         }
 
         // local port
-        /*
         int lport = 0;
+        /*
         if (cypherpunkSetting.vpnPortLocal != null && cypherpunkSetting.vpnPortLocal.length() > 0)
             lport = Integer.parseInt(cypherpunkSetting.vpnPortLocal);
+        */
         if (lport > 0 && lport < 65535)
         {
             list.add("lport " + lport);
@@ -279,9 +280,9 @@ public class CypherpunkVPN {
         }
         else
         {
+            // need "nobind" to bind to a random port
             list.add("nobind");
         }
-        */
 
         // privacy firewall killswitch
         if (cypherpunkSetting.privacyFirewallMode != null && cypherpunkSetting.privacyFirewallMode.length() > 0)
