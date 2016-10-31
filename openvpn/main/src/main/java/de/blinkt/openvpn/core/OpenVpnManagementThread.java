@@ -501,6 +501,7 @@ public class OpenVpnManagementThread implements Runnable, OpenVPNManagement {
             case "CLOSETUN":
                 FileDescriptor fdtoclose = mFDList.pollFirst();
                 requestClose(fdtoclose);
+                break;
             default:
                 Log.e(TAG, "Unknown needok command " + argument);
                 return;
