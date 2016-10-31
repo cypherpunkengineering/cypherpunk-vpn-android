@@ -2,7 +2,9 @@
 <resources>
     <string-array name="vpn_backend_value">
         <item>setting_vpn_backend_openvpn23</item>
+        <!--
         <item>setting_vpn_backend_openvpn31</item>
+        -->
     </string-array>
 
     <string-array name="vpn_backend_description">
