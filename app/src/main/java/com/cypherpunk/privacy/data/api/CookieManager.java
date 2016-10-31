@@ -16,7 +16,7 @@ public class CookieManager implements CookieJar {
     public void saveFromResponse(HttpUrl url, List<Cookie> cookies) {
         for (Cookie c : cookies) {
             if (!saveCookies.contains(c)) {
-                saveCookies.add(c);
+                saveCookies.add(0, c);
             }
         }
     }
