@@ -102,6 +102,7 @@ public class RegionFragment extends Fragment {
                     realm.commitTransaction();
                     if (favorite) {
                         adapter.addFavoriteItem(region);
+                        binding.list.smoothScrollToPosition(0);
                     } else {
                         adapter.removeFavoriteItem(region);
                     }
