@@ -62,14 +62,14 @@ public class SettingsFragment extends PreferenceFragmentCompat {
             }
         });
 
-        protocol = findPreference("vpn_protocol");
-        protocol.setSummary(getStringByKey(cypherpunkSetting.vpnProtocol));
+        protocol = findPreference("vpn_backend");
+        protocol.setSummary(getStringByKey(cypherpunkSetting.vpnBackend));
         protocol.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
                 startActivityForResult(ListPreferenceActivity.createIntent(getActivity(),
-                        "vpn_protocol", protocol.getTitle(), new CypherpunkSetting().vpnProtocol, getSettingItemList(
-                                R.array.vpn_protocol_value, R.array.vpn_protocol_description)),
+                        "vpn_backend", protocol.getTitle(), new CypherpunkSetting().vpnBackend, getSettingItemList(
+                                R.array.vpn_backend_value, R.array.vpn_backend_description)),
                         REQUEST_LIST_SETTING);
                 return true;
             }
@@ -136,8 +136,8 @@ public class SettingsFragment extends PreferenceFragmentCompat {
             String updateKey = data.getStringExtra(ListPreferenceActivity.EXTRA_KEY);
             CypherpunkSetting cypherpunkSetting = new CypherpunkSetting();
             switch (updateKey) {
-                case "vpn_protocol":
-                    cypherpunkSetting.vpnProtocol = data.getStringExtra(ListPreferenceActivity.EXTRA_SELECTED_VALUE);
+                case "vpn_backend":
+                    cypherpunkSetting.vpnBackend = data.getStringExtra(ListPreferenceActivity.EXTRA_SELECTED_VALUE);
                     protocol.setSummary(getStringByKey(data.getStringExtra(ListPreferenceActivity.EXTRA_SELECTED_VALUE)));
                     break;
                 case "vpn_port_remote":

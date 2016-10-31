@@ -1,51 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string-array name="vpn_protocol_value">
-        <item>setting_vpn_protocol_openvpn23_udp</item>
-        <item>setting_vpn_protocol_openvpn23_tcp</item>
-		<!--
-        <item>setting_vpn_protocol_openvpn31_udp</item>
-        <item>setting_vpn_protocol_openvpn31_tcp</item>
-		-->
+    <string-array name="vpn_backend_value">
+        <item>setting_vpn_backend_openvpn23</item>
+        <item>setting_vpn_backend_openvpn31</item>
     </string-array>
 
-    <string-array name="vpn_protocol_description">
-        <item>setting_vpn_protocol_openvpn23_udp_desc</item>
-        <item>setting_vpn_protocol_openvpn23_tcp_desc</item>
-		<!--
-        <item>setting_vpn_protocol_openvpn31_udp_desc</item>
-        <item>setting_vpn_protocol_openvpn31_tcp_desc</item>
-		-->
+    <string-array name="vpn_backend_description">
+        <item>setting_vpn_backend_openvpn23_desc</item>
+        <!--
+        <item>setting_vpn_backend_openvpn31_desc</item>
+        -->
     </string-array>
 
     <string-array name="vpn_port_remote_value">
-        <item>7133</item>
-        <item>1194</item>
-        <item>53</item>
+        <item>UDP/7133</item>
+        <item>UDP/5060</item>
+        <item>UDP/53</item>
+        <item>TCP/7133</item>
+        <item>TCP/443</item>
     </string-array>
 
     <string-array name="privacy_firewall_mode_value">
+        <item>setting_privacy_firewall_mode_never</item>
         <item>setting_privacy_firewall_mode_auto</item>
         <item>setting_privacy_firewall_mode_always</item>
-        <item>setting_privacy_firewall_mode_never</item>
     </string-array>
 
     <string-array name="privacy_firewall_mode_description">
+        <item>setting_privacy_firewall_mode_never_desc</item>
         <item>setting_privacy_firewall_mode_auto_desc</item>
         <item>setting_privacy_firewall_mode_always_desc</item>
-        <item>setting_privacy_firewall_mode_never_desc</item>
     </string-array>
 
     <string-array name="vpn_crypto_profile_value">
-        <item>setting_vpn_crypto_profile_default</item>
         <item>setting_vpn_crypto_profile_none</item>
+        <item>setting_vpn_crypto_profile_default</item>
         <item>setting_vpn_crypto_profile_strong</item>
         <item>setting_vpn_crypto_profile_stealth</item>
     </string-array>
 
     <string-array name="vpn_crypto_profile_description">
-        <item>setting_vpn_crypto_profile_default_desc</item>
         <item>setting_vpn_crypto_profile_none_desc</item>
+        <item>setting_vpn_crypto_profile_default_desc</item>
         <item>setting_vpn_crypto_profile_strong_desc</item>
         <item>setting_vpn_crypto_profile_stealth_desc</item>
     </string-array>
