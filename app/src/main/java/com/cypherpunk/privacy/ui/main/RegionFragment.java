@@ -129,7 +129,7 @@ public class RegionFragment extends Fragment {
         };
         binding.list.setAdapter(adapter);
         adapter.addFavoriteItems(getFavoriteRegionList());
-        adapter.addAllItems(getRecentlyConnectedList());
+//        adapter.addRecentlyConnectedItems(getRecentlyConnectedList());
         adapter.addAllItems(getOtherList());
 
         binding.regionContainer.setOnClickListener(new View.OnClickListener() {
@@ -233,7 +233,7 @@ public class RegionFragment extends Fragment {
 
                                    adapter.clear();
                                    adapter.addFavoriteItems(getFavoriteRegionList());
-                                   adapter.addAllItems(getRecentlyConnectedList());
+//                                   adapter.addRecentlyConnectedItems(getRecentlyConnectedList());
                                    adapter.addAllItems(getOtherList());
 
                                    // TODO: 一番上のを選択している
