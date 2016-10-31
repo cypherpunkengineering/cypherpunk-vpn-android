@@ -2,6 +2,9 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <Preference
+        android:layout="@layout/preference_header"
+        android:title="@string/settings_header_account" />
 
     <com.cypherpunk.privacy.ui.settings.AccountPreference android:key="account" />
 

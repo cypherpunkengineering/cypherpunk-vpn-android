@@ -3,17 +3,20 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="68dp"
-    android:gravity="center_vertical"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center_vertical"
     android:orientation="vertical"
-    android:paddingLeft="?android:listPreferredItemPaddingLeft">
+    android:background="#1a000000"
+    android:paddingBottom="16dp"
+    android:paddingLeft="?android:listPreferredItemPaddingLeft"
+    android:paddingTop="16dp">
 
     <com.cypherpunk.privacy.widget.TypefaceTextView
         android:id="@android:id/title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:maxLines="1"
-        android:textSize="20sp"
+        android:textSize="18sp"
         app:fontName="DosisMedium"
         tools:text="title" />
 

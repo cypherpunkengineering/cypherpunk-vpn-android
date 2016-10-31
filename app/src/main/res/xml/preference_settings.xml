@@ -6,7 +6,12 @@
         android:layout="@layout/preference_header"
         android:title="@string/setting_configuration" />
 
+    <Preference
+        android:layout="@layout/preference_configuration_header"
+        android:title="@string/settings_header_configuration_basic" />
+
     <PreferenceCategory
+        android:layout="@layout/custom_preference_category"
         android:title="@string/setting_category_auto_protection">
 
         <SwitchPreferenceCompat
@@ -18,11 +23,11 @@
             android:summary="@string/setting_network_summary"
             android:title="@string/setting_network" />
 
-        <Preference
-            android:layout="@layout/preference_header"
-            android:title="@string/setting_category_advanced_settings" />
-
     </PreferenceCategory>
+
+    <PreferenceCategory
+        android:layout="@layout/preference_configuration_header"
+        android:title="@string/settings_header_configuration_advanced" />
 
     <PreferenceCategory
         android:title="@string/setting_category_privacy_settings"
@@ -44,8 +49,7 @@
 
     </PreferenceCategory>
 
-    <PreferenceCategory
-        android:title="@string/setting_category_vpn_settings">
+    <PreferenceCategory android:title="@string/setting_category_vpn_settings">
 
         <Preference
             android:key="vpn_port_remote"
