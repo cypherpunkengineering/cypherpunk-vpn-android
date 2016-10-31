@@ -103,7 +103,7 @@ public class SignUpActivity extends AppCompatActivity {
 
         if (TextUtils.isEmpty(password)) {
             binding.password.setError(getString(R.string.error_field_required));
-            focusView = binding.email;
+            focusView = binding.password;
             cancel = true;
         }
 
