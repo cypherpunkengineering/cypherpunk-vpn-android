@@ -40,7 +40,7 @@
 
     <!-- identify email -->
     <string name="identify_email_text">Welcome to Cypherpunk</string>
-    <string name="identify_email_hint_email">Email</string>
+    <string name="identify_email_hint_email">Type your email</string>
     <string name="identify_email_get_started">Get Started</string>
 
     <!-- reset password -->
