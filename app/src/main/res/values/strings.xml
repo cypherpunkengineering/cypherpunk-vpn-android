@@ -56,6 +56,10 @@
     <string name="settings_mode_max_privacy">Max privacy</string>
     <string name="settings_mode_max_speed">Max speed</string>
     <string name="settings_mode_max_freedom">Max freedom</string>
+    <string name="settings_header_account">Account</string>
+    <string name="settings_header_configuration">Configuration</string>
+    <string name="settings_header_configuration_basic">Basic Settings</string>
+    <string name="settings_header_configuration_advanced">Advanced Settings</string>
     <string name="action_send">send</string>
     <string name="action_done">done</string>
     <string name="setting_connect_dialog_message">Reconnect to apply new settings?</string>

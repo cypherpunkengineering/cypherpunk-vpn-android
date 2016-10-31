@@ -34,4 +34,5 @@
     <color name="plan_badge_text">#034698</color>
     <color name="plan_price">#000000</color>
     <color name="plan_text">#333333</color>
+    <color name="drawer_background">#1560bd</color>
 </resources>
