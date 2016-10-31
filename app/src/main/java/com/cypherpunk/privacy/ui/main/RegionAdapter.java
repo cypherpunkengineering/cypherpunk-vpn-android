@@ -21,7 +21,6 @@ import static com.os.operando.garum.utils.Cache.getContext;
 public class RegionAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private static final int ITEM_VIEW_TYPE_ITEM = 1;
-    private static final int ITEM_VIEW_TYPE_FAVORITE_ITEM = 3;
     private static final int ITEM_VIEW_TYPE_DIVIDER = 2;
 
     private List<Object> items = new ArrayList<>();
@@ -47,7 +46,7 @@ public class RegionAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         final int viewType = holder.getItemViewType();
-        if (viewType == ITEM_VIEW_TYPE_ITEM || viewType == ITEM_VIEW_TYPE_FAVORITE_ITEM) {
+        if (viewType == ITEM_VIEW_TYPE_ITEM) {
 
             ViewHolder itemHolder = (ViewHolder) holder;
             ListItemRegionBinding binding = itemHolder.getBinding();
@@ -89,7 +88,15 @@ public class RegionAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     public void addFavoriteItems(@NonNull List<Region> data) {
         items.addAll(data);
         if (!data.isEmpty()) {
-            items.add(new Object());
+            items.add(new FavoriteDivider());
+            notifyItemRangeInserted(0, items.size());
+        }
+    }
+
+    public void addRecentlyConnectedItems(ArrayList<Region> data) {
+        items.addAll(data);
+        if (!data.isEmpty()) {
+            items.add(new ConnectedDivider());
             notifyItemRangeInserted(0, items.size());
         }
     }
@@ -103,7 +110,7 @@ public class RegionAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                     items.remove(i);
                     int favoritePosition = getFavoritePosition();
                     if (favoritePosition == -1) {
-                        items.add(0, new Object());
+                        items.add(0, new FavoriteDivider());
                         notifyItemInserted(0);
                         favoritePosition = 0;
                     }
@@ -114,6 +121,43 @@ public class RegionAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             }
         }
     }
+
+    public void addConnectedItem(@NonNull Region data) {
+        if (data.isFavorited()) {
+            for (int i = 0; i < items.size(); i++) {
+                Object item = items.get(i);
+                if (item instanceof Region) {
+                    Region item1 = (Region) item;
+                    if (data.getId().equals(item1.getId())) {
+                        items.remove(i);
+                        items.add(0, data);
+                        notifyItemMoved(i, 0);
+                        return;
+                    }
+                }
+            }
+        } else {
+            for (int i = 0; i < items.size(); i++) {
+                Object item = items.get(i);
+                if (item instanceof Region) {
+                    Region item1 = (Region) item;
+                    if (data.getId().equals(item1.getId())) {
+                        items.remove(i);
+                        int connectedPosition = getConnectedPosition();
+                        if (connectedPosition == -1) {
+                            items.add(getFavoritePosition() != -1 ? getFavoritePosition() : 0, new ConnectedDivider());
+                            notifyItemInserted(getFavoritePosition() != -1 ? getFavoritePosition() : 0);
+                            connectedPosition = 0;
+                        }
+                        items.add(connectedPosition, data);
+                        notifyItemMoved(i, connectedPosition);
+                        break;
+                    }
+                }
+            }
+        }
+    }
+
 
     public void removeFavoriteItem(@NonNull Region data) {
         for (int i = 0; i < items.size(); i++) {
@@ -133,7 +177,16 @@ public class RegionAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
     private int getFavoritePosition() {
         for (int i = 0; i < items.size(); i++) {
-            if (!(items.get(i) instanceof Region)) {
+            if (items.get(i) instanceof FavoriteDivider) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    private int getConnectedPosition() {
+        for (int i = 0; i < items.size(); i++) {
+            if (items.get(i) instanceof ConnectedDivider) {
                 return i;
             }
         }
@@ -176,5 +229,13 @@ public class RegionAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         DividerViewHolder(View view) {
             super(view);
         }
+    }
+
+    private class FavoriteDivider {
+
+    }
+
+    private class ConnectedDivider {
+
     }
 }
