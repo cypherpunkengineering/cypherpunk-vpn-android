@@ -19,9 +19,8 @@
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
-            android:orientation="vertical"
-            android:paddingLeft="28dp"
-            android:paddingRight="28dp">
+            android:gravity="center_horizontal"
+            android:orientation="vertical">
 
             <ImageView
                 android:layout_width="wrap_content"
@@ -51,7 +50,7 @@
 
             <android.support.design.widget.TextInputLayout
                 style="@style/Widget.Cypherpunk.TextInputLayout"
-                android:layout_width="match_parent"
+                android:layout_width="@dimen/edit_text_width"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"
                 android:layout_marginTop="16dp"
@@ -72,7 +71,7 @@
             <com.cypherpunk.privacy.widget.TypefaceButton
                 android:id="@+id/sign_up_button"
                 style="@style/Widget.Cypherpunk.YellowButton"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:text="@string/sign_up_button_sign_up" />
