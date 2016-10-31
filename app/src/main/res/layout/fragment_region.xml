@@ -9,18 +9,18 @@
         android:background="@drawable/window_background_indigo"
         android:orientation="vertical">
 
-        <include layout="@layout/divider" />
-
         <RelativeLayout
             android:id="@+id/region_container"
             android:layout_width="match_parent"
-            android:layout_height="44dp"
+            android:layout_height="wrap_content"
             android:background="@drawable/button_main_region"
             android:clickable="true">
+            <include layout="@layout/divider" />
 
             <LinearLayout
+                android:id="@+id/region_name_container"
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
+                android:layout_height="48dp"
                 android:layout_centerInParent="true"
                 android:orientation="horizontal">
 
@@ -56,9 +56,14 @@
                 android:src="@drawable/expand_less_vector"
                 tools:ignore="ContentDescription" />
 
-        </RelativeLayout>
+            <View
+                android:id="@+id/divider"
+                android:layout_width="wrap_content"
+                android:layout_height="1dp"
+                android:layout_below="@id/region_name_container"
+                android:background="@color/divider" />
 
-        <include layout="@layout/divider" />
+        </RelativeLayout>
 
         <FrameLayout
             android:layout_width="match_parent"
@@ -73,9 +78,9 @@
 
             <ProgressBar
                 android:id="@+id/progress"
-                android:layout_gravity="center"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:layout_gravity="center" />
 
         </FrameLayout>
 
