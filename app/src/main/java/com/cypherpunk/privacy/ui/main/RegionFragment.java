@@ -91,6 +91,9 @@ public class RegionFragment extends Fragment {
                 binding.progress.setVisibility(View.GONE);
             }
         }
+        if (getResources().getBoolean(R.bool.is_tablet)) {
+            binding.regionContainer.setVisibility(View.GONE);
+        }
 
         adapter = new RegionAdapter() {
             @Override

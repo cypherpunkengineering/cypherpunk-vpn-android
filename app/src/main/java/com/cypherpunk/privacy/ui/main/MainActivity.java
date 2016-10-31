@@ -149,9 +149,11 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
         super.onWindowFocusChanged(hasFocus);
-        ViewGroup.LayoutParams layoutParams = binding.regionContainer.getLayoutParams();
-        layoutParams.height = getBottomContainerMinimumHeight();
-        binding.regionContainer.requestLayout();
+        if (!getResources().getBoolean(R.bool.is_tablet)) {
+            ViewGroup.LayoutParams layoutParams = binding.regionContainer.getLayoutParams();
+            layoutParams.height = getBottomContainerMinimumHeight();
+            binding.regionContainer.requestLayout();
+        }
     }
 
     @Override
@@ -304,12 +306,14 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onNoReconnectButtonClick() {
-        ViewGroup.LayoutParams layoutParams = binding.regionContainer.getLayoutParams();
-        if (layoutParams.height == getBottomContainerMaximumHeight()) {
-            Animation animation = new HeightAnimation(getBottomContainerMinimumHeight(), binding.regionContainer);
-            regionFragment.toggleAllowIcon(false);
-            animation.setDuration(300);
-            binding.regionContainer.startAnimation(animation);
+        if (!getResources().getBoolean(R.bool.is_tablet)) {
+            ViewGroup.LayoutParams layoutParams = binding.regionContainer.getLayoutParams();
+            if (layoutParams.height == getBottomContainerMaximumHeight()) {
+                Animation animation = new HeightAnimation(getBottomContainerMinimumHeight(), binding.regionContainer);
+                regionFragment.toggleAllowIcon(false);
+                animation.setDuration(300);
+                binding.regionContainer.startAnimation(animation);
+            }
         }
         stopVpn();
     }
@@ -321,17 +325,19 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void toggleBottomSheetState() {
-        ViewGroup.LayoutParams layoutParams = binding.regionContainer.getLayoutParams();
-        HeightAnimation animation;
-        if (layoutParams.height == getBottomContainerMaximumHeight()) {
-            animation = new HeightAnimation(getBottomContainerMinimumHeight(), binding.regionContainer);
-            regionFragment.toggleAllowIcon(false);
-        } else {
-            animation = new HeightAnimation(getBottomContainerMaximumHeight(), binding.regionContainer);
-            regionFragment.toggleAllowIcon(true);
+        if (!getResources().getBoolean(R.bool.is_tablet)) {
+            ViewGroup.LayoutParams layoutParams = binding.regionContainer.getLayoutParams();
+            HeightAnimation animation;
+            if (layoutParams.height == getBottomContainerMaximumHeight()) {
+                animation = new HeightAnimation(getBottomContainerMinimumHeight(), binding.regionContainer);
+                regionFragment.toggleAllowIcon(false);
+            } else {
+                animation = new HeightAnimation(getBottomContainerMaximumHeight(), binding.regionContainer);
+                regionFragment.toggleAllowIcon(true);
+            }
+            animation.setDuration(300);
+            binding.regionContainer.startAnimation(animation);
         }
-        animation.setDuration(300);
-        binding.regionContainer.startAnimation(animation);
     }
 
     private int getStatusBarHeight() {
