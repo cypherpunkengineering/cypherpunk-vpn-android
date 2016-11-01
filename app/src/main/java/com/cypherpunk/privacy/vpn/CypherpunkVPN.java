@@ -202,6 +202,12 @@ public class CypherpunkVPN {
         list.add("resolv-retry infinite");
         list.add("route-delay 0");
 
+        // mtu settings
+        // "it's best to fix the tunnel MTU at 1500 and vary the other parameters (and use --mssfix to prevent fragmentation rather than a lower tunnel MTU)."
+        list.add("tun-mtu 1500");
+        //list.add("link-mtu 1280");
+        list.add("mssfix 1280");
+
         // security/privacy options
         list.add("tls-version-min 1.2");
         list.add("remote-cert-eku \"TLS Web Server Authentication\"");
