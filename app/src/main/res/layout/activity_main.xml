@@ -3,8 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <android.support.v4.widget.DrawerLayout
-        android:id="@+id/drawer_layout"
+    <FrameLayout
+        android:id="@+id/slide_menu"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fitsSystemWindows="true">
@@ -97,22 +97,6 @@
 
         </RelativeLayout>
 
-        <FrameLayout
-            android:id="@+id/left_drawer"
-            android:layout_width="304dp"
-            android:layout_height="match_parent"
-            android:layout_gravity="start"
-            android:background="@color/drawer_background"
-            android:fitsSystemWindows="true" />
-
-        <FrameLayout
-            android:id="@+id/right_drawer"
-            android:layout_width="304dp"
-            android:layout_height="match_parent"
-            android:layout_gravity="end"
-            android:background="@color/drawer_background"
-            android:fitsSystemWindows="true" />
-
-    </android.support.v4.widget.DrawerLayout>
+    </FrameLayout>
 
 </layout>

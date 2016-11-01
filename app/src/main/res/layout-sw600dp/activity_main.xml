@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <android.support.v4.widget.DrawerLayout
+    <FrameLayout
         android:id="@+id/drawer_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -137,14 +137,6 @@
 
         </RelativeLayout>
 
-        <FrameLayout
-            android:id="@+id/right_drawer"
-            android:layout_width="304dp"
-            android:layout_height="match_parent"
-            android:layout_gravity="end"
-            android:background="#0f3c75"
-            android:fitsSystemWindows="true" />
-
-    </android.support.v4.widget.DrawerLayout>
+    </FrameLayout>
 
 </layout>
