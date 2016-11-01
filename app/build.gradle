@@ -73,6 +73,7 @@ dependencies {
     compile "com.android.support:preference-v7:${supportLibraryVersion}"
     // @style/PreferenceThemeOverlay.v14.Material https://code.google.com/p/android/issues/detail?id=183258
     compile "com.android.support:preference-v14:${supportLibraryVersion}"
+    compile "com.android.support:percent:${supportLibraryVersion}"
     compile 'com.squareup.retrofit2:retrofit:2.1.0'
     compile 'com.squareup.retrofit2:converter-moshi:2.1.0'
     compile 'com.squareup.retrofit2:adapter-rxjava:2.1.0'

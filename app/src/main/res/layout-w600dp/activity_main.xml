@@ -55,7 +55,7 @@
                 android:layout_toRightOf="@id/region_container"
                 android:background="@color/divider" />
 
-            <RelativeLayout
+            <android.support.percent.PercentRelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_below="@id/divider"
@@ -72,7 +72,7 @@
                     android:layout_width="140dp"
                     android:layout_height="190dp"
                     android:layout_centerHorizontal="true"
-                    android:layout_marginTop="74dp" />
+                    app:layout_marginTopPercent="25%" />
 
                 <LinearLayout
                     android:id="@+id/cancel_container"
@@ -108,7 +108,7 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@id/cancel_container"
                     android:layout_centerHorizontal="true"
-                    android:layout_marginTop="64dp"
+                    android:layout_marginTop="48dp"
                     android:background="@drawable/background_tablet_region_name"
                     android:orientation="horizontal"
                     android:padding="8dp">
@@ -133,7 +133,7 @@
 
                 </LinearLayout>
 
-            </RelativeLayout>
+            </android.support.percent.PercentRelativeLayout>
 
         </RelativeLayout>
 
