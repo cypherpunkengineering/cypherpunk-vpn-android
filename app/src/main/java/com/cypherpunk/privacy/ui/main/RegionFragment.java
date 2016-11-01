@@ -3,6 +3,7 @@ package com.cypherpunk.privacy.ui.main;
 import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -56,6 +57,8 @@ public class RegionFragment extends Fragment {
 
     public interface RegionFragmentListener {
         void toggleBottomSheetState();
+
+        void onSelectedRegionChanged(@NonNull String regionName, @DrawableRes int nationalFlagResId);
     }
 
     @Override
@@ -87,7 +90,10 @@ public class RegionFragment extends Fragment {
             Region region = realm.where(Region.class).equalTo("id", setting.regionId).findFirst();
             if (region != null) {
                 binding.regionName.setText(region.getRegionName());
-                binding.nationalFlag.setImageResource(getFlagDrawableByKey(region.getCountryCode().toLowerCase()));
+                int nationalFlagResId = getFlagDrawableByKey(region.getCountryCode().toLowerCase());
+                binding.nationalFlag.setImageResource(nationalFlagResId);
+                listener.onSelectedRegionChanged(region.getRegionName(), nationalFlagResId);
+
                 binding.progress.setVisibility(View.GONE);
             }
         }
@@ -128,12 +134,15 @@ public class RegionFragment extends Fragment {
 
                 Region region = realm.where(Region.class).equalTo("id", regionId).findFirst();
                 binding.regionName.setText(region.getRegionName());
-                binding.nationalFlag.setImageResource(getFlagDrawableByKey(region.getCountryCode().toLowerCase()));
+                int nationalFlagResId = getFlagDrawableByKey(region.getCountryCode().toLowerCase());
+                binding.nationalFlag.setImageResource(nationalFlagResId);
 
                 realm.beginTransaction();
                 region.setLastConnectedDate(new Date());
 //                adapter.addConnectedItem(region);
                 realm.commitTransaction();
+
+                listener.onSelectedRegionChanged(region.getRegionName(), nationalFlagResId);
             }
         };
         binding.list.setAdapter(adapter);
@@ -253,7 +262,8 @@ public class RegionFragment extends Fragment {
                                        setting.save();
 
                                        binding.regionName.setText(first.getRegionName());
-                                       binding.nationalFlag.setImageResource(getFlagDrawableByKey(first.getCountryCode().toLowerCase()));
+                                       int nationalFlagResId = getFlagDrawableByKey(first.getCountryCode().toLowerCase());
+                                       binding.nationalFlag.setImageResource(nationalFlagResId);
                                    }
                                    binding.progress.setVisibility(View.GONE);
                                }

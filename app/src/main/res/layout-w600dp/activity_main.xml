@@ -75,6 +75,7 @@
                     android:layout_marginTop="74dp" />
 
                 <LinearLayout
+                    android:id="@+id/cancel_container"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/connection_button"
@@ -99,6 +100,37 @@
                         android:text="@string/vpn_cancel"
                         android:visibility="gone"
                         tools:visibility="gone" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/cancel_container"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="64dp"
+                    android:background="@drawable/background_tablet_region_name"
+                    android:orientation="horizontal"
+                    android:padding="8dp">
+
+                    <ImageView
+                        android:id="@+id/national_flag"
+                        android:layout_width="@dimen/national_flag_width"
+                        android:layout_height="@dimen/national_flag_height"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginRight="8dp"
+                        tools:ignore="ContentDescription"
+                        tools:src="@drawable/flag_us" />
+
+                    <com.cypherpunk.privacy.widget.TypefaceTextView
+                        android:id="@+id/region_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:textAppearance="?android:textAppearanceLarge"
+                        android:textSize="18sp"
+                        tools:text="USA WEST" />
+
                 </LinearLayout>
 
             </RelativeLayout>

@@ -8,6 +8,8 @@ import android.graphics.Rect;
 import android.net.Uri;
 import android.net.VpnService;
 import android.os.Bundle;
+import android.support.annotation.DrawableRes;
+import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.TaskStackBuilder;
 import android.support.v4.view.GravityCompat;
@@ -341,6 +343,14 @@ public class MainActivity extends AppCompatActivity
             }
             animation.setDuration(300);
             binding.regionContainer.startAnimation(animation);
+        }
+    }
+
+    @Override
+    public void onSelectedRegionChanged(@NonNull String regionName, @DrawableRes int nationalFlagResId) {
+        if (getResources().getBoolean(R.bool.is_tablet)) {
+            binding.regionName.setText(regionName);
+            binding.nationalFlag.setImageResource(nationalFlagResId);
         }
     }
 
