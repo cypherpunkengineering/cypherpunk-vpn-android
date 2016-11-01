@@ -11,7 +11,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="32dp"
         android:layout_marginTop="32dp"
-        android:text="One Final Step"
+        android:text="@string/tutorial_2_title"
         android:textSize="26sp"
         app:fontName="DosisMedium" />
 
@@ -22,7 +22,7 @@
         android:layout_marginBottom="40dp"
         android:layout_marginLeft="40dp"
         android:layout_marginRight="40dp"
-        android:text="Share anonymized analytics about your VPN connections to help make Cypherpunk Privacy faster and more reliable."
+        android:text="@string/tutorial_2_text"
         android:textSize="16sp"
         app:fontName="DosisMedium" />
 

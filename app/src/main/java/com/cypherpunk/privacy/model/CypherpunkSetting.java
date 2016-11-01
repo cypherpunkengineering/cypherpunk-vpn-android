@@ -57,4 +57,8 @@ public class CypherpunkSetting extends PrefModel {
     @PrefKey("cpn_region_id")
     @DefaultString("")
     public String regionId;
+
+    @PrefKey("analytics")
+    @DefaultBoolean(false)
+    public boolean analytics;
 }
