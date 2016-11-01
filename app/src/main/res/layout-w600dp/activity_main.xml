@@ -50,10 +50,10 @@
             <View
                 android:id="@+id/vertical_divider"
                 android:layout_width="1dp"
-                android:layout_toRightOf="@id/region_container"
-                android:background="@color/divider"
+                android:layout_height="match_parent"
                 android:layout_below="@id/divider"
-                android:layout_height="match_parent"/>
+                android:layout_toRightOf="@id/region_container"
+                android:background="@color/divider" />
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -104,14 +104,6 @@
             </RelativeLayout>
 
         </RelativeLayout>
-
-        <FrameLayout
-            android:id="@+id/left_drawer"
-            android:layout_width="304dp"
-            android:layout_height="match_parent"
-            android:layout_gravity="start"
-            android:background="#0f3c75"
-            android:fitsSystemWindows="true" />
 
         <FrameLayout
             android:id="@+id/right_drawer"
