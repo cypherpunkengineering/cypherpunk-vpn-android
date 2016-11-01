@@ -3,6 +3,7 @@ package com.cypherpunk.privacy.ui.settings;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -51,6 +52,10 @@ public class ListPreferenceActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        if (!getResources().getBoolean(R.bool.is_tablet)) {
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        }
 
         ActivityListPreferenceBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_list_preference);
 

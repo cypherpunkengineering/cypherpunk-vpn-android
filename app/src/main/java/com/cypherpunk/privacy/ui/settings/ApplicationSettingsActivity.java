@@ -1,5 +1,6 @@
 package com.cypherpunk.privacy.ui.settings;
 
+import android.content.pm.ActivityInfo;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.databinding.DataBindingUtil;
@@ -44,6 +45,10 @@ public class ApplicationSettingsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_application_settings);
+
+        if (!getResources().getBoolean(R.bool.is_tablet)) {
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        }
 
         // TODO: customize search view
         setSupportActionBar(binding.toolbar.toolbar);

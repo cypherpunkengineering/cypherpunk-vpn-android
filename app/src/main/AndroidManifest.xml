@@ -26,7 +26,6 @@
 
         <activity
             android:name=".ui.main.MainActivity"
-            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -66,68 +65,49 @@
 
         <activity
             android:name=".ui.signin.SignInActivity"
-            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".ui.signin.SignUpActivity"
-            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".ui.signin.IdentifyEmailActivity"
-            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".ui.signin.ConfirmationEmailActivity"
-            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".ui.setup.GetPremiumActivity"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:windowSoftInputMode="adjustResize" />
-        <activity
             android:name=".ui.setup.TutorialActivity"
-            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".ui.signin.ResetPasswordActivity"
-            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".ui.account.PremiumFreeActivity"
-            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".ui.settings.ListPreferenceActivity"
-            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.DialogWhenLarge" />
         <activity
             android:name=".ui.settings.LocalPortActivity"
-            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.DialogWhenLarge" />
         <activity
             android:name=".ui.settings.ApplicationSettingsActivity"
-            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.DialogWhenLarge" />
         <activity
             android:name=".ui.settings.NetworkActivity"
-            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.DialogWhenLarge" />
         <activity
             android:name=".ui.settings.ContactActivity"
-            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.DialogWhenLarge" />
         <activity
             android:name=".ui.settings.EditEmailActivity"
-            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.DialogWhenLarge" />
         <activity
             android:name=".ui.settings.EditPasswordActivity"
-            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.DialogWhenLarge" />
         <activity
             android:name=".ui.settings.UpgradePlanActivity"
-            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.DialogWhenLarge" />
     </application>
 

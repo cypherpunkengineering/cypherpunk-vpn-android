@@ -1,5 +1,6 @@
 package com.cypherpunk.privacy.ui.account;
 
+import android.content.pm.ActivityInfo;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -17,6 +18,9 @@ public class PremiumFreeActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        if (!getResources().getBoolean(R.bool.is_tablet)) {
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        }
         ActivityPremiumFreeBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_premium_free);
 
         setSupportActionBar(binding.toolbar.toolbar);

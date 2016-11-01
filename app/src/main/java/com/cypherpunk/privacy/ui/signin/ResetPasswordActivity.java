@@ -1,6 +1,7 @@
 package com.cypherpunk.privacy.ui.signin;
 
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -26,6 +27,10 @@ public class ResetPasswordActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_reset_password);
+
+        if (!getResources().getBoolean(R.bool.is_tablet)) {
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        }
 
         setSupportActionBar(binding.toolbar.toolbar);
         ActionBar actionBar = getSupportActionBar();

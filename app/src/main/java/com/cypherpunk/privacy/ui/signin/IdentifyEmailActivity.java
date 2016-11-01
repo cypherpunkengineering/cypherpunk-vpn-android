@@ -1,5 +1,6 @@
 package com.cypherpunk.privacy.ui.signin;
 
+import android.content.pm.ActivityInfo;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -45,6 +46,10 @@ public class IdentifyEmailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_identify_email);
         ((CypherpunkApplication) getApplication()).getAppComponent().inject(this);
+
+        if (!getResources().getBoolean(R.bool.is_tablet)) {
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        }
 
         binding.email.requestFocus();
         binding.email.setOnEditorActionListener(new TextView.OnEditorActionListener() {

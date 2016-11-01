@@ -1,6 +1,7 @@
 package com.cypherpunk.privacy.ui.signin;
 
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.databinding.DataBindingUtil;
 import android.graphics.Paint;
 import android.os.Bundle;
@@ -19,6 +20,10 @@ public class ConfirmationEmailActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        if (!getResources().getBoolean(R.bool.is_tablet)) {
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        }
 
         ActivityConrirmationEmailBinding binding =
                 DataBindingUtil.setContentView(this, R.layout.activity_conrirmation_email);

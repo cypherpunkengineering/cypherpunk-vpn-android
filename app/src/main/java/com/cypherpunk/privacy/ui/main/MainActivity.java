@@ -1,6 +1,7 @@
 package com.cypherpunk.privacy.ui.main;
 
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.content.res.Resources;
 import android.databinding.DataBindingUtil;
 import android.graphics.Paint;
@@ -82,6 +83,10 @@ public class MainActivity extends AppCompatActivity
         }
 
         CypherpunkApplication.instance.getAppComponent().inject(this);
+
+        if (!getResources().getBoolean(R.bool.is_tablet)) {
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        }
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
 

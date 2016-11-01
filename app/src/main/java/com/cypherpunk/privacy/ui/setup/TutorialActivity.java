@@ -2,6 +2,7 @@ package com.cypherpunk.privacy.ui.setup;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.databinding.DataBindingUtil;
 import android.net.VpnService;
 import android.os.Bundle;
@@ -63,6 +64,10 @@ public class TutorialActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         CypherpunkApplication.instance.getAppComponent().inject(this);
+
+        if (!getResources().getBoolean(R.bool.is_tablet)) {
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        }
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_tutorial);
 
