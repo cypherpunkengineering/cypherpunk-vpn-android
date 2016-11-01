@@ -88,7 +88,6 @@ public class MainActivity extends AppCompatActivity
         ActionBar actionBar = getSupportActionBar();
         assert actionBar != null;
         actionBar.setDisplayShowTitleEnabled(false);
-        actionBar.setDisplayHomeAsUpEnabled(true);
 
         // background
 //        String operatorName = getSimOperatorName();
@@ -137,13 +136,18 @@ public class MainActivity extends AppCompatActivity
         // navigation drawer
         ActionBarDrawerToggle drawerToggle = new ActionBarDrawerToggle(this, binding.drawerLayout, binding.toolbar, R.string.drawer_open, R.string.drawer_close);
         binding.drawerLayout.addDrawerListener(drawerToggle);
-        binding.toolbar.setNavigationIcon(R.drawable.account_vector);
 
-        getSupportFragmentManager().beginTransaction()
-                .replace(R.id.left_drawer, new AccountSettingsFragment()).commit();
+        if (getResources().getBoolean(R.bool.is_tablet)) {
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.right_drawer, new TabletDrawerFragment()).commit();
+        } else {
+            binding.toolbar.setNavigationIcon(R.drawable.account_vector);
 
-        getSupportFragmentManager().beginTransaction()
-                .replace(R.id.right_drawer, new SettingsFragment()).commit();
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.left_drawer, new AccountSettingsFragment()).commit();
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.right_drawer, new SettingsFragment()).commit();
+        }
     }
 
     @Override
@@ -174,7 +178,7 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onBackPressed() {
-        if (binding.drawerLayout.isDrawerOpen(GravityCompat.START)) {
+        if (!getResources().getBoolean(R.bool.is_tablet) && binding.drawerLayout.isDrawerOpen(GravityCompat.START)) {
             binding.drawerLayout.closeDrawer(GravityCompat.START);
         } else if (binding.drawerLayout.isDrawerOpen(GravityCompat.END)) {
             binding.drawerLayout.closeDrawer(GravityCompat.END);
