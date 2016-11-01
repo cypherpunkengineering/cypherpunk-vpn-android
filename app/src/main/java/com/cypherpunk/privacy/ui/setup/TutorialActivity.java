@@ -86,20 +86,22 @@ public class TutorialActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 int currentItem = binding.pager.getCurrentItem();
-                if (currentItem == 0) {
-                    Intent intent = VpnService.prepare(getApplicationContext());
-                    if (intent != null)
-                        startActivityForResult(intent, GRANT_VPN_PERMISSION);
-                    else
-                        onActivityResult(GRANT_VPN_PERMISSION, RESULT_OK, null);
-                } else {
-                    if (currentItem == adapter.getCount() - 1) {
-                        Intent intent = new Intent(TutorialActivity.this, MainActivity.class);
-                        TaskStackBuilder builder = TaskStackBuilder.create(TutorialActivity.this);
-                        builder.addNextIntent(intent);
-                        builder.startActivities();
-                    } else {
-                        binding.pager.setCurrentItem(++currentItem);
+                switch (currentItem) {
+                    case 0: {
+                        Intent intent = VpnService.prepare(getApplicationContext());
+                        if (intent != null)
+                            startActivityForResult(intent, GRANT_VPN_PERMISSION);
+                        else
+                            onActivityResult(GRANT_VPN_PERMISSION, RESULT_OK, null);
+                        break;
+                    }
+                    case 1: {
+                        CypherpunkSetting setting = new CypherpunkSetting();
+                        setting.analytics = true;
+                        setting.save();
+
+                        goToMainScreen();
+                        break;
                     }
                 }
             }
@@ -108,12 +110,14 @@ public class TutorialActivity extends AppCompatActivity {
         binding.doNotAllowButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int currentItem = binding.pager.getCurrentItem();
-                binding.pager.setCurrentItem(++currentItem);
+                CypherpunkSetting setting = new CypherpunkSetting();
+                setting.analytics = false;
+                setting.save();
+
+                goToMainScreen();
             }
         });
     }
-
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -214,6 +218,13 @@ public class TutorialActivity extends AppCompatActivity {
         super.onDestroy();
         realm.close();
         subscription.unsubscribe();
+    }
+
+    private void goToMainScreen() {
+        Intent intent = new Intent(TutorialActivity.this, MainActivity.class);
+        TaskStackBuilder builder = TaskStackBuilder.create(TutorialActivity.this);
+        builder.addNextIntent(intent);
+        builder.startActivities();
     }
 
     private static class IntroductionPagerAdapter extends PagerAdapter {

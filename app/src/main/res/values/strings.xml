@@ -270,5 +270,9 @@
     <string name="network_other_auto_secure_connections">Auto secure connections</string>
     <string name="introduction_login">Log In</string>
     <string name="introduction_type_email">Type your email</string>
+    <string name="tutorial_1_title">Setting Up Your VPN</string>
+    <string name="tutorial_1_text">Please grant permission to Cypherpunk Privacy for connecting a VPN from your device.</string>
+    <string name="tutorial_2_title">One Final Step</string>
+    <string name="tutorial_2_text">Share anonymized analytics about your VPN connections to help make Cypherpunk Privacy faster and more reliable.</string>
 
 </resources>

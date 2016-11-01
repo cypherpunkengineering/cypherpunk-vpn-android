@@ -11,7 +11,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="32dp"
         android:layout_marginTop="32dp"
-        android:text="Setting Up Your VPN"
+        android:text="@string/tutorial_1_title"
         android:textSize="26sp"
         app:fontName="DosisMedium" />
 
@@ -22,7 +22,7 @@
         android:layout_marginLeft="40dp"
         android:layout_marginRight="40dp"
         android:gravity="center_horizontal"
-        android:text="Please grant permission to Cypherpunk Privacy for connecting a VPN from your device."
+        android:text="@string/tutorial_1_text"
         android:textSize="16sp"
         app:fontName="DosisMedium" />
 
