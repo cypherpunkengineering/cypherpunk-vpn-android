@@ -36,14 +36,14 @@ public class UpgradePlanActivity extends AppCompatActivity {
         }
 
         binding.monthlyPlan.setPlan("1 MONTHS", "$ 9.99", false);
-        binding.semiannuallyPlan.setPlan("6 MONTHS", "$ 79.99", false);
-        binding.annuallyPlan.setPlan("12 MONTHS", "$ 49.99", true);
+        binding.semiannuallyPlan.setPlan("6 MONTHS", "$ 49.98", false);
+        binding.annuallyPlan.setPlan("12 MONTHS", "$ 80.04", true);
 
         // TODO:
         binding.monthlyPlan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String payload = "monthly_sample";
+                String payload = "monthly999";
                 try {
                     helper.launchPurchaseFlow(UpgradePlanActivity.this, SKU_MONTHLY, RC_REQUEST, purchaseFinishedListener, payload);
                 } catch (IabHelper.IabAsyncInProgressException e) {
@@ -55,7 +55,7 @@ public class UpgradePlanActivity extends AppCompatActivity {
         binding.semiannuallyPlan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String payload = "monthly_sample";
+                String payload = "semiannually4998";
                 try {
                     helper.launchPurchaseFlow(UpgradePlanActivity.this, SKU_MONTHLY, RC_REQUEST, purchaseFinishedListener, payload);
                 } catch (IabHelper.IabAsyncInProgressException e) {
@@ -67,7 +67,7 @@ public class UpgradePlanActivity extends AppCompatActivity {
         binding.annuallyPlan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String payload = "monthly_sample";
+                String payload = "annually8004";
                 try {
                     helper.launchPurchaseFlow(UpgradePlanActivity.this, SKU_MONTHLY, RC_REQUEST, purchaseFinishedListener, payload);
                 } catch (IabHelper.IabAsyncInProgressException e) {
