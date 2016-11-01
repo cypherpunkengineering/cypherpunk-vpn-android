@@ -98,14 +98,6 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".ui.settings.SettingsActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.DialogWhenLarge" />
-        <activity
-            android:name=".ui.account.AccountActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
             android:name=".ui.settings.ListPreferenceActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.DialogWhenLarge" />

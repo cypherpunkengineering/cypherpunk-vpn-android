@@ -63,11 +63,9 @@
     <string name="action_send">send</string>
     <string name="action_done">done</string>
     <string name="setting_connect_dialog_message">Reconnect to apply new settings?</string>
+    <string name="setting_configuration">Configuration</string>
 
     <!-- account -->
-    <string name="title_activity_account">Account</string>
-
-    <string name="setting_configuration">Configuration</string>
 
     <!-- startup settings -->
     <string name="setting_category_startup">Startup</string>
