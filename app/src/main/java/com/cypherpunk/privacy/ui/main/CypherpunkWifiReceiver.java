@@ -8,6 +8,7 @@ import android.net.NetworkInfo;
 import android.net.wifi.WifiManager;
 import android.util.Log;
 
+import com.cypherpunk.privacy.CypherpunkApplication;
 import com.cypherpunk.privacy.model.CypherpunkSetting;
 import com.cypherpunk.privacy.model.Network;
 import com.cypherpunk.privacy.ui.main.CypherpunkLaunchVPN;
@@ -89,7 +90,7 @@ public class CypherpunkWifiReceiver extends BroadcastReceiver
     {
         boolean trustedNetwork = false;
 
-        Realm realm = Realm.getDefaultInstance();
+        Realm realm = CypherpunkApplication.instance.getAppComponent().getDefaultRealm();
         RealmResults<Network> networks = realm.where(Network.class).findAll();
         for (Network network : networks)
         {
