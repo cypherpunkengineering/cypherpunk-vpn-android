@@ -125,24 +125,19 @@ public class RegionFragment extends Fragment {
                     // 既に選択されている
                     return;
                 }
-                setting.regionId = regionId;
-                setting.save();
+                selectRegion(realm.where(Region.class).equalTo("id", regionId).findFirst());
+            }
 
-                ConnectConfirmationDialogFragment dialogFragment =
-                        ConnectConfirmationDialogFragment.newInstance(regionId);
-                dialogFragment.show(getChildFragmentManager());
-
-                Region region = realm.where(Region.class).equalTo("id", regionId).findFirst();
-                binding.regionName.setText(region.getRegionName());
-                int nationalFlagResId = getFlagDrawableByKey(region.getCountryCode().toLowerCase());
-                binding.nationalFlag.setImageResource(nationalFlagResId);
-
-                realm.beginTransaction();
-                region.setLastConnectedDate(new Date());
-//                adapter.addConnectedItem(region);
-                realm.commitTransaction();
-
-                listener.onSelectedRegionChanged(region.getRegionName(), nationalFlagResId);
+            @Override
+            protected void onFastestLocationClick() {
+                //TODO: fastest location
+                Region region = realm.where(Region.class).findFirst();
+                CypherpunkSetting setting = new CypherpunkSetting();
+                if (region.getId().equals(setting.regionId)) {
+                    // 既に選択されている
+                    return;
+                }
+                selectRegion(region);
             }
         };
         binding.list.setAdapter(adapter);
@@ -192,6 +187,28 @@ public class RegionFragment extends Fragment {
         RealmResults<Region> regionList = realm.where(Region.class).equalTo("favorited", false).equalTo("lastConnectedDate", new Date(0)).findAll();
         return new ArrayList<>(regionList);
     }
+
+    private void selectRegion(Region region) {
+        CypherpunkSetting setting = new CypherpunkSetting();
+        setting.regionId = region.getId();
+        setting.save();
+
+        ConnectConfirmationDialogFragment dialogFragment =
+                ConnectConfirmationDialogFragment.newInstance(region.getId());
+        dialogFragment.show(getChildFragmentManager());
+
+        binding.regionName.setText(region.getRegionName());
+        int nationalFlagResId = getFlagDrawableByKey(region.getCountryCode().toLowerCase());
+        binding.nationalFlag.setImageResource(nationalFlagResId);
+
+        realm.beginTransaction();
+        region.setLastConnectedDate(new Date());
+//                adapter.addConnectedItem(region);
+        realm.commitTransaction();
+
+        listener.onSelectedRegionChanged(region.getRegionName(), nationalFlagResId);
+    }
+
 
     private void getServerList() {
         subscription = webService
