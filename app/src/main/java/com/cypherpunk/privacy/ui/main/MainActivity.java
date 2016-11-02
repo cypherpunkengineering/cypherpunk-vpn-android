@@ -13,9 +13,7 @@ import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.TaskStackBuilder;
-import android.support.v4.view.GravityCompat;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.ActionMenuView;
 import android.telephony.TelephonyManager;
@@ -35,7 +33,6 @@ import android.widget.CompoundButton;
 import com.cypherpunk.privacy.CypherpunkApplication;
 import com.cypherpunk.privacy.R;
 import com.cypherpunk.privacy.data.api.UserManager;
-import com.cypherpunk.privacy.databinding.ActivityMainBinding;
 import com.cypherpunk.privacy.ui.region.ConnectConfirmationDialogFragment;
 import com.cypherpunk.privacy.ui.settings.AccountSettingsFragment;
 import com.cypherpunk.privacy.ui.settings.RateDialogFragment;
@@ -47,6 +44,7 @@ import com.cypherpunk.privacy.vpn.CypherpunkVpnStatus;
 import com.cypherpunk.privacy.widget.BinarySurfaceView;
 import com.cypherpunk.privacy.widget.ConnectionStatusView;
 import com.cypherpunk.privacy.widget.VpnFlatButton;
+import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 
 import javax.inject.Inject;
 
@@ -63,9 +61,10 @@ public class MainActivity extends AppCompatActivity
 
     private static final int REQUEST_VPN_START = 0;
 
-    private ActivityMainBinding binding;
+    private com.cypherpunk.privacy.databinding.ActivityMainBinding binding;
     private CypherpunkVpnStatus status;
     private RegionFragment regionFragment;
+    private SlidingMenu slidingMenu;
 
     @Inject
     Realm realm;
@@ -95,6 +94,18 @@ public class MainActivity extends AppCompatActivity
         ActionBar actionBar = getSupportActionBar();
         assert actionBar != null;
         actionBar.setDisplayShowTitleEnabled(false);
+
+        slidingMenu = new SlidingMenu(this);
+        slidingMenu.setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);
+        slidingMenu.setShadowWidthRes(R.dimen.slide_menu_shadow_width);
+        slidingMenu.setShadowDrawable(R.drawable.slide_menu_shadow);
+        slidingMenu.setBehindOffsetRes(R.dimen.slide_menu_behind_offset);
+        slidingMenu.setFadeDegree(0.35f);
+        slidingMenu.attachToActivity(this, SlidingMenu.SLIDING_CONTENT);
+        slidingMenu.setSecondaryMenu(R.layout.frame_main_right);
+        slidingMenu.setMenu(R.layout.frame_main_left);
+        slidingMenu.setSecondaryShadowDrawable(R.drawable.slide_menu_shadow_right);
+        slidingMenu.setMode(SlidingMenu.LEFT_RIGHT);
 
         // background
 //        String operatorName = getSimOperatorName();
@@ -141,13 +152,14 @@ public class MainActivity extends AppCompatActivity
         fm.commit();
 
         // navigation drawer
-        ActionBarDrawerToggle drawerToggle = new ActionBarDrawerToggle(this, binding.drawerLayout, binding.toolbar, R.string.drawer_open, R.string.drawer_close);
-        binding.drawerLayout.addDrawerListener(drawerToggle);
+//        ActionBarDrawerToggle drawerToggle = new ActionBarDrawerToggle(this, binding.drawerLayout, binding.toolbar, R.string.drawer_open, R.string.drawer_close);
+//        binding.drawerLayout.addDrawerListener(drawerToggle);
 
         if (getResources().getBoolean(R.bool.is_tablet)) {
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.right_drawer, new TabletDrawerFragment()).commit();
         } else {
+            actionBar.setHomeButtonEnabled(true);
             binding.toolbar.setNavigationIcon(R.drawable.account_vector);
 
             getSupportFragmentManager().beginTransaction()
@@ -176,8 +188,11 @@ public class MainActivity extends AppCompatActivity
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+            case android.R.id.home:
+                slidingMenu.showMenu();
+                break;
             case R.id.action_setting:
-                binding.drawerLayout.openDrawer(GravityCompat.END);
+                slidingMenu.showSecondaryMenu();
                 break;
         }
         return false;
@@ -185,10 +200,10 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onBackPressed() {
-        if (!getResources().getBoolean(R.bool.is_tablet) && binding.drawerLayout.isDrawerOpen(GravityCompat.START)) {
-            binding.drawerLayout.closeDrawer(GravityCompat.START);
-        } else if (binding.drawerLayout.isDrawerOpen(GravityCompat.END)) {
-            binding.drawerLayout.closeDrawer(GravityCompat.END);
+        if (!getResources().getBoolean(R.bool.is_tablet) && slidingMenu.isMenuShowing()) {
+            slidingMenu.showContent();
+        } else if (slidingMenu.isSecondaryMenuShowing()) {
+            slidingMenu.showContent();
         } else {
             super.onBackPressed();
         }

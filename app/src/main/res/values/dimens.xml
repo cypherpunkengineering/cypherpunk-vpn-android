@@ -12,4 +12,6 @@
 
     <dimen name="bottom_sheet_margin_top">55dp</dimen>
     <dimen name="edit_text_width">320dp</dimen>
+    <dimen name="slide_menu_shadow_width">16dp</dimen>
+    <dimen name="slide_menu_behind_offset">70dp</dimen>
 </resources>
