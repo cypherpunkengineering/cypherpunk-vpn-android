@@ -4,9 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <RelativeLayout
+        android:id="@+id/region_container"
         android:layout_width="match_parent"
         android:layout_height="48dp"
-        android:background="@drawable/list_item_background_dark"
         android:clickable="true"
         android:orientation="horizontal">
 
