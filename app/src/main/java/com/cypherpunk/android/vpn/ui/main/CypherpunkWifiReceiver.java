@@ -8,9 +8,9 @@ import android.net.NetworkInfo;
 import android.net.wifi.WifiManager;
 import android.util.Log;
 
-import com.cypherpunk.android.vpn.model.CypherpunkSetting;
-import com.cypherpunk.android.vpn.model.Network;
-import com.cypherpunk.android.vpn.vpn.CypherpunkVPN;
+import com.cypherpunk.privacy.model.CypherpunkSetting;
+import com.cypherpunk.privacy.model.Network;
+import com.cypherpunk.privacy.ui.main.CypherpunkLaunchVPN;
 
 import io.realm.Realm;
 import io.realm.RealmResults;

@@ -11,6 +11,7 @@ import android.util.Log;
 import com.android.annotations.NonNull;
 import com.cypherpunk.privacy.CypherpunkApplication;
 import com.cypherpunk.privacy.data.api.UserManager;
+import com.cypherpunk.privacy.model.CypherpunkSetting;
 import com.cypherpunk.privacy.model.Region;
 
 import java.io.BufferedReader;
