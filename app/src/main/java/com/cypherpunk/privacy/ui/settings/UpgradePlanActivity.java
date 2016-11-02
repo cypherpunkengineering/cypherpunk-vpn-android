@@ -40,15 +40,15 @@ public class UpgradePlanActivity extends AppCompatActivity {
             actionBar.setHomeAsUpIndicator(R.drawable.close_vector);
         }
 
-        binding.monthlyPlan.setPlan("1 MONTHS", "$ 9.99", false);
-        binding.semiannuallyPlan.setPlan("6 MONTHS", "$ 49.98", false);
-        binding.annuallyPlan.setPlan("12 MONTHS", "$ 80.04", true);
+        binding.monthlyPlan.setPlan("1 MONTH", "$ 8.99", false);
+        binding.semiannuallyPlan.setPlan("6 MONTHS", "$ 44.99", false);
+        binding.annuallyPlan.setPlan("12 MONTHS", "$ 59.99", true);
 
         // TODO:
         binding.monthlyPlan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String payload = "monthly999";
+                String payload = "monthly899";
                 try {
                     helper.launchPurchaseFlow(UpgradePlanActivity.this, SKU_MONTHLY, RC_REQUEST, purchaseFinishedListener, payload);
                 } catch (IabHelper.IabAsyncInProgressException e) {
@@ -60,7 +60,7 @@ public class UpgradePlanActivity extends AppCompatActivity {
         binding.semiannuallyPlan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String payload = "semiannually4998";
+                String payload = "semiannually4499";
                 try {
                     helper.launchPurchaseFlow(UpgradePlanActivity.this, SKU_MONTHLY, RC_REQUEST, purchaseFinishedListener, payload);
                 } catch (IabHelper.IabAsyncInProgressException e) {
@@ -72,7 +72,7 @@ public class UpgradePlanActivity extends AppCompatActivity {
         binding.annuallyPlan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String payload = "annually8004";
+                String payload = "annually5999";
                 try {
                     helper.launchPurchaseFlow(UpgradePlanActivity.this, SKU_MONTHLY, RC_REQUEST, purchaseFinishedListener, payload);
                 } catch (IabHelper.IabAsyncInProgressException e) {
