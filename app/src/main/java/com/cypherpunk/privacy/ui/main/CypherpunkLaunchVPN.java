@@ -20,10 +20,12 @@ public class CypherpunkLaunchVPN extends Activity
 {
     public static final String AUTO_START = "com.cypherpunk.privacy.AUTO_START";
     public static final String TILE_CLICK = "com.cypherpunk.privacy.TILE_CLICK";
+    public static final String NETWORK_TRUSTED = "com.cypherpunk.privacy.NETWORK_TRUSTED";
+    public static final String NETWORK_UNTRUSTED = "com.cypherpunk.privacy.NETWORK_UNTRUSTED";
 
     private static final int START_VPN_PROFILE = 70;
 
-    private static void log(String str) { Log.w("CypherpunkVPN", str); }
+    private static void log(String str) { Log.w("CypherpunkLaunchVPN", str); }
 
     //private CypherpunkVpnStatus status;
 
@@ -33,7 +35,7 @@ public class CypherpunkLaunchVPN extends Activity
         log("onCreate()");
         super.onCreate(savedInstanceState);
         Intent intent = getIntent();
-        launch(intent);
+        handleIntent(intent);
     }
 
     @Override
@@ -41,17 +43,25 @@ public class CypherpunkLaunchVPN extends Activity
     {
         log("onNewIntent()");
         super.onNewIntent(intent);
-        launch(intent);
+        handleIntent(intent);
     }
 
-    private void launch(Intent intent)
+    @Override
+    protected void onStart()
     {
-        log("launch()");
+        super.onStart();
+        // crash fix for invisible dialog, in case perm dialog needs to be shown
+        setVisible(true);
+    }
+
+    private void handleIntent(Intent intent)
+    {
+        log("handleIntent()");
 
         // check if user is signed in
         if (!UserManager.isSignedIn() || intent == null)
         {
-            log("user not logged in, ignoring launch intent");
+            log("user not logged in, ignoring intent");
             setIntent(null);
             finish();
             return;
@@ -73,10 +83,6 @@ public class CypherpunkLaunchVPN extends Activity
             // prepare vpn service and wait for callback
             log("auto starting VPN");
             prepareVpnService();
-
-            // done
-            setIntent(null);
-            moveTaskToBack(true);
         }
         else if (intent.getBooleanExtra(TILE_CLICK, false))
         {
@@ -93,16 +99,25 @@ public class CypherpunkLaunchVPN extends Activity
 
             // prepare vpn service, wait for callback, then connect
             prepareVpnService();
-
-            // done
-            setIntent(null);
-            moveTaskToBack(true);
         }
+        else if (intent.getBooleanExtra(NETWORK_TRUSTED, false))
+        {
+            CypherpunkVPN.getInstance().stop(getApplicationContext(), getBaseContext());
+            finish();
+        }
+        else if (intent.getBooleanExtra(NETWORK_UNTRUSTED, false))
+        {
+            prepareVpnService();
+        }
+
+        // done
+        //setIntent(null);
+        //moveTaskToBack(true);
     }
 
     private void prepareVpnService()
     {
-        log("prepareVpnService()");
+        log("VpnService.prepare()");
 
         // returns intent if permission dialog is needed
         Intent permissionIntent = VpnService.prepare(this);
