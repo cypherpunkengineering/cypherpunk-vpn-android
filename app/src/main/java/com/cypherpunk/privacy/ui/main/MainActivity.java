@@ -99,13 +99,13 @@ public class MainActivity extends AppCompatActivity
         slidingMenu.setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);
         slidingMenu.setShadowWidthRes(R.dimen.slide_menu_shadow_width);
         slidingMenu.setShadowDrawable(R.drawable.slide_menu_shadow);
-        slidingMenu.setBehindOffsetRes(R.dimen.slide_menu_behind_offset);
+        slidingMenu.setMode(SlidingMenu.LEFT_RIGHT);
         slidingMenu.setFadeDegree(0.35f);
+        slidingMenu.setBehindWidthRes(R.dimen.slide_menu_width);
         slidingMenu.attachToActivity(this, SlidingMenu.SLIDING_CONTENT);
         slidingMenu.setSecondaryMenu(R.layout.frame_main_right);
         slidingMenu.setMenu(R.layout.frame_main_left);
         slidingMenu.setSecondaryShadowDrawable(R.drawable.slide_menu_shadow_right);
-        slidingMenu.setMode(SlidingMenu.LEFT_RIGHT);
 
         // background
 //        String operatorName = getSimOperatorName();
