@@ -1,5 +1,6 @@
 package com.cypherpunk.privacy.data.api;
 
+import com.cypherpunk.privacy.data.api.json.ChangeEmailRequest;
 import com.cypherpunk.privacy.data.api.json.IdentifyEmailRequest;
 import com.cypherpunk.privacy.data.api.json.LoginRequest;
 import com.cypherpunk.privacy.data.api.json.LoginResult;
@@ -38,4 +39,8 @@ public interface CypherpunkService {
 
     @GET("/api/vpn/serverList")
     Single<Map<String, Map<String, RegionResult[]>>> serverList();
+
+    @POST("/api/v1/account/email/change")
+    Single<ResponseBody> changeEmail(
+            @Body ChangeEmailRequest identifyEmailRequest);
 }
