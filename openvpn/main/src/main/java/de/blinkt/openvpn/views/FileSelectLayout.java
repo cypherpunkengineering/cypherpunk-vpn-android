@@ -17,7 +17,7 @@ import android.widget.TextView;
 
 import java.io.IOException;
 
-import com.cypherpunk.android.vpn.R;
+import com.cypherpunk.privacy.R;
 import de.blinkt.openvpn.VpnProfile;
 import de.blinkt.openvpn.activities.FileSelect;
 import de.blinkt.openvpn.core.VpnStatus;

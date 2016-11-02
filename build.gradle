@@ -5,9 +5,8 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:2.2.1'
-        classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
-        classpath 'io.realm:realm-gradle-plugin:1.2.0'
+        classpath 'com.android.tools.build:gradle:2.2.2'
+        classpath 'io.realm:realm-gradle-plugin:2.0.2'
 
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
@@ -18,9 +17,7 @@ allprojects {
     repositories {
         jcenter()
         maven { url "https://jitpack.io" }
-        maven {
-            url "https://s3.amazonaws.com/repo.commonsware.com"
-        }
+        maven { url "http://jzaccone.github.io/SlidingMenu-aar" }
     }
 }
 
@@ -29,5 +26,5 @@ task clean(type: Delete) {
 }
 
 task wrapper(type: Wrapper) {
-    gradleVersion = '2.14.1'
+    gradleVersion = '3.1'
 }

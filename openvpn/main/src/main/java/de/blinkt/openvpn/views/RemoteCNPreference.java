@@ -15,7 +15,7 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import com.cypherpunk.android.vpn.R;
+import com.cypherpunk.privacy.R;
 import de.blinkt.openvpn.VpnProfile;
 
 public class RemoteCNPreference extends DialogPreference {

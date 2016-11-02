@@ -7,7 +7,7 @@
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize">
 
-        <com.cypherpunk.android.vpn.widget.TypefaceTextView
+        <com.cypherpunk.privacy.widget.TypefaceTextView
             android:id="@+id/title"
             style="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"
             android:layout_width="wrap_content"

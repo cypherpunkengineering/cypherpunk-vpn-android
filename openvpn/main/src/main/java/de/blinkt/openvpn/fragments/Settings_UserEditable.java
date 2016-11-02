@@ -13,7 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.cypherpunk.android.vpn.R;
+import com.cypherpunk.privacy.R;
 
 public class Settings_UserEditable extends OpenVpnPreferencesFragment {
     @Override

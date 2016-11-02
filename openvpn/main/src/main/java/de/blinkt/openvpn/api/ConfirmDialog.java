@@ -29,7 +29,7 @@ import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
-import com.cypherpunk.android.vpn.R;
+import com.cypherpunk.privacy.R;
 
 
 public class ConfirmDialog extends Activity implements

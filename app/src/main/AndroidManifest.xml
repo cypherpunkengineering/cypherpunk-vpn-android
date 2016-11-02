@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.cypherpunk.android.vpn">
+    package="com.cypherpunk.privacy">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
@@ -34,7 +34,6 @@
 
         <activity
             android:name=".ui.main.MainActivity"
-            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -60,82 +59,64 @@
         </service>
         <service
             android:name=".ui.main.CypherpunkTileService"
-            android:value="true"
-            android:label="@string/qs_tile_title"
             android:icon="@drawable/ic_quick"
-            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
+            android:label="@string/qs_tile_title"
+            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE"
+            android:value="true">
             <intent-filter>
                 <action android:name="android.service.quicksettings.action.QS_TILE" />
             </intent-filter>
-            <meta-data android:name="android.service.quicksettings.ACTIVE_TILE"
+            <meta-data
+                android:name="android.service.quicksettings.ACTIVE_TILE"
                 android:value="false" />
         </service>
 
         <activity
             android:name=".ui.signin.SignInActivity"
-            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".ui.signin.SignUpActivity"
-            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".ui.setup.IntroductionActivity"
-            android:screenOrientation="portrait"
+            android:name=".ui.signin.IdentifyEmailActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".ui.setup.GetPremiumActivity"
-            android:windowSoftInputMode="adjustResize"
+            android:name=".ui.signin.ConfirmationEmailActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".ui.setup.TutorialActivity"
-            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".ui.settings.SettingsActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.DialogWhenLarge" />
+            android:name=".ui.signin.ResetPasswordActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ui.account.PremiumFreeActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".ui.settings.ListPreferenceActivity"
-            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.DialogWhenLarge" />
         <activity
             android:name=".ui.settings.LocalPortActivity"
-            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.DialogWhenLarge" />
         <activity
             android:name=".ui.settings.ApplicationSettingsActivity"
-            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.DialogWhenLarge" />
         <activity
             android:name=".ui.settings.NetworkActivity"
-            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.DialogWhenLarge" />
         <activity
-            android:name=".ui.status.StatusActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
             android:name=".ui.settings.ContactActivity"
-            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.DialogWhenLarge" />
         <activity
             android:name=".ui.settings.EditEmailActivity"
-            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.DialogWhenLarge" />
         <activity
             android:name=".ui.settings.EditPasswordActivity"
-            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.DialogWhenLarge" />
         <activity
             android:name=".ui.settings.UpgradePlanActivity"
-            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.DialogWhenLarge" />
-        <activity
-            android:name=".ui.region.LocationsActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar" />
     </application>
 
 </manifest>

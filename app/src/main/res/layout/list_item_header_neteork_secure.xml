@@ -2,10 +2,10 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:orientation="vertical">
 
-    <com.cypherpunk.android.vpn.widget.TypefaceTextView
+    <com.cypherpunk.privacy.widget.TypefaceTextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/background"
@@ -18,7 +18,7 @@
         android:textSize="16sp"
         app:fontName="DosisMedium" />
 
-    <com.cypherpunk.android.vpn.widget.TypefaceTextView
+    <com.cypherpunk.privacy.widget.TypefaceTextView
         android:id="@+id/typefaceTextView2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -38,7 +38,7 @@
         android:paddingLeft="16dp"
         android:paddingRight="16dp">
 
-        <com.cypherpunk.android.vpn.widget.TypefaceTextView
+        <com.cypherpunk.privacy.widget.TypefaceTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
@@ -57,7 +57,7 @@
 
     </RelativeLayout>
 
-    <com.cypherpunk.android.vpn.widget.TypefaceTextView
+    <com.cypherpunk.privacy.widget.TypefaceTextView
         android:id="@+id/typefaceTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -79,7 +79,7 @@
         android:paddingLeft="16dp"
         android:paddingRight="16dp">
 
-        <com.cypherpunk.android.vpn.widget.TypefaceTextView
+        <com.cypherpunk.privacy.widget.TypefaceTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
@@ -98,7 +98,7 @@
 
     </RelativeLayout>
 
-    <com.cypherpunk.android.vpn.widget.TypefaceTextView
+    <com.cypherpunk.privacy.widget.TypefaceTextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
@@ -112,7 +112,7 @@
         android:textSize="16sp"
         app:fontName="DosisMedium" />
 
-    <com.cypherpunk.android.vpn.widget.TypefaceTextView
+    <com.cypherpunk.privacy.widget.TypefaceTextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/background"
