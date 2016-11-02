@@ -15,11 +15,10 @@ import android.net.NetworkInfo.State;
 import android.os.Handler;
 import android.preference.PreferenceManager;
 
-import com.cypherpunk.android.vpn.R;
+import com.cypherpunk.privacy.R;
 import de.blinkt.openvpn.core.VpnStatus.ByteCountListener;
 
 import java.util.LinkedList;
-import java.util.Objects;
 
 import static de.blinkt.openvpn.core.OpenVPNManagement.pauseReason;
 

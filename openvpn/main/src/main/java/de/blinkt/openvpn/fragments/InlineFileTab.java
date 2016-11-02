@@ -15,7 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import de.blinkt.openvpn.activities.FileSelect;
-import com.cypherpunk.android.vpn.R;
+import com.cypherpunk.privacy.R;
 
 public class InlineFileTab extends Fragment
 {

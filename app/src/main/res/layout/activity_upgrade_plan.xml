@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -17,23 +18,32 @@
             android:layout_height="match_parent"
             android:background="@color/background"
             android:gravity="center_horizontal"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:paddingTop="16dp">
 
-            <com.cypherpunk.android.vpn.widget.PlanView
-                android:id="@+id/monthly_plan"
+            <com.cypherpunk.privacy.widget.TypefaceTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"
-                android:layout_marginTop="16dp" />
+                android:gravity="center_horizontal"
+                android:text="@string/upgrade_text"
+                android:textSize="20sp"
+                app:fontName="DosisMedium" />
 
-            <com.cypherpunk.android.vpn.widget.PlanView
-                android:id="@+id/monthly6_plan"
+            <com.cypherpunk.privacy.widget.PlanView
+                android:id="@+id/monthly_plan"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp" />
 
-            <com.cypherpunk.android.vpn.widget.PlanView
-                android:id="@+id/yearly_plan"
+            <com.cypherpunk.privacy.widget.PlanView
+                android:id="@+id/semiannually_plan"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp" />
+
+            <com.cypherpunk.privacy.widget.PlanView
+                android:id="@+id/annually_plan"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 

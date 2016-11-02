@@ -5,16 +5,25 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:ignore="RtlHardcoded">
 
+        <data>
+
+            <variable
+                name="network"
+                type="com.cypherpunk.privacy.model.Network" />
+
+        </data>
+
     <merge>
 
-        <com.cypherpunk.android.vpn.widget.TypefaceTextView
+        <com.cypherpunk.privacy.widget.TypefaceTextView
             android:id="@+id/name"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_centerVertical="true"
-            android:background="@color/background_dark"
+            android:background="@color/background"
             android:gravity="center_vertical"
             android:paddingLeft="16dp"
+            android:text="@{network.ssid}"
             android:paddingRight="16dp"
             android:textSize="18sp"
             app:fontName="DosisMedium"
@@ -26,9 +35,16 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
+            android:checked="@{network.trusted? true : false}"
             android:clickable="false"
             android:focusable="false"
             android:paddingRight="16dp" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_alignParentBottom="true"
+            android:background="@color/divider" />
 
     </merge>
 

@@ -9,7 +9,7 @@
 
         <variable
             name="app"
-            type="com.cypherpunk.android.vpn.model.AppData" />
+            type="com.cypherpunk.privacy.model.AppData" />
     </data>
 
     <merge>
@@ -23,7 +23,7 @@
             android:src="@{app.icon}"
             tools:ignore="ContentDescription" />
 
-        <com.cypherpunk.android.vpn.widget.TypefaceTextView
+        <com.cypherpunk.privacy.widget.TypefaceTextView
             android:id="@+id/name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

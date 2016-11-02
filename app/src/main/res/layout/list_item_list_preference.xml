@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout>
 
-    <com.cypherpunk.android.vpn.widget.SettingItemView xmlns:android="http://schemas.android.com/apk/res/android"
+    <com.cypherpunk.privacy.widget.SettingItemView xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/setting_item"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

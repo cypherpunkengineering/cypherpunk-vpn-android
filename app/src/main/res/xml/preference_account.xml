@@ -2,23 +2,17 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <Preference
+        android:layout="@layout/preference_header"
+        android:title="@string/settings_header_account" />
 
-    <com.cypherpunk.android.vpn.ui.settings.AccountPreference android:key="account" />
+    <com.cypherpunk.privacy.ui.settings.AccountPreference android:key="account" />
 
-    <PreferenceCategory android:title="@string/account_setting_category_type">
-
-        <Preference
-            android:key="plan"
-            tools:summary="Renews On 02/02/2016"
-            tools:title="Monthly Premium" />
+    <PreferenceCategory android:title="@string/account_setting_category_settings">
 
         <Preference
             android:key="upgrade"
             android:title="Upgrade" />
-
-    </PreferenceCategory>
-
-    <PreferenceCategory android:title="@string/account_setting_category_details">
 
         <Preference
             android:key="email"
@@ -34,8 +28,21 @@
     <PreferenceCategory android:title="@string/account_setting_category_more">
 
         <Preference
+            android:key="premium_free"
+            android:title="@string/account_setting_premium_free" />
+
+        <Preference
+            android:key="rate"
+            android:title="@string/account_setting_rate" />
+
+        <Preference
             android:key="contact_us"
+            android:summary="@string/account_setting_contact_summary"
             android:title="@string/account_setting_contact" />
+
+        <Preference
+            android:key="help"
+            android:title="@string/account_setting_help" />
 
         <Preference
             android:key="log_out"

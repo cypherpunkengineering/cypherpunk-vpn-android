@@ -29,8 +29,8 @@ import java.util.LinkedList;
 import java.util.Locale;
 import java.util.Vector;
 
-import com.cypherpunk.android.vpn.BuildConfig;
-import com.cypherpunk.android.vpn.R;
+import com.cypherpunk.privacy.BuildConfig;
+import com.cypherpunk.privacy.R;
 import de.blinkt.openvpn.VpnProfile;
 import de.blinkt.openvpn.core.VpnStatus.ConnectionStatus;
 
@@ -501,6 +501,7 @@ public class OpenVpnManagementThread implements Runnable, OpenVPNManagement {
             case "CLOSETUN":
                 FileDescriptor fdtoclose = mFDList.pollFirst();
                 requestClose(fdtoclose);
+                break;
             default:
                 Log.e(TAG, "Unknown needok command " + argument);
                 return;

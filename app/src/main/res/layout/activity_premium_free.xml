@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <include
+            android:id="@+id/toolbar"
+            layout="@layout/toolbar" />
+
+        <include layout="@layout/divider" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/background"
+            android:gravity="center_horizontal"
+            android:orientation="vertical">
+
+            <com.cypherpunk.privacy.widget.TypefaceTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="18dp"
+                android:layout_marginTop="24dp"
+                android:text="@string/premium_free_text"
+                android:textSize="18sp"
+                app:fontName="DosisMedium" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="24dp"
+                android:src="@drawable/illust_gift" />
+
+            <com.cypherpunk.privacy.widget.TypefaceButton
+                style="@style/Widget.Cypherpunk.FrameButton"
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:text="@string/premium_free_facebook" />
+
+            <com.cypherpunk.privacy.widget.TypefaceButton
+                style="@style/Widget.Cypherpunk.FrameButton"
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:text="@string/premium_free_twitter" />
+
+            <com.cypherpunk.privacy.widget.TypefaceButton
+                style="@style/Widget.Cypherpunk.FrameButton"
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:text="@string/premium_free_email" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</layout>

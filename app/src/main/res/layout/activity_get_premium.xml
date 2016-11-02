@@ -13,7 +13,7 @@
 
         <include layout="@layout/divider" />
 
-        <com.cypherpunk.android.vpn.widget.TypefaceTextView
+        <com.cypherpunk.privacy.widget.TypefaceTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
@@ -43,7 +43,7 @@
 
         </android.support.design.widget.TextInputLayout>
 
-        <com.cypherpunk.android.vpn.widget.TypefaceTextView
+        <com.cypherpunk.privacy.widget.TypefaceTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
@@ -52,22 +52,22 @@
             android:textSize="18sp"
             app:fontName="DosisSemiBold" />
 
-        <com.cypherpunk.android.vpn.widget.PlanView
+        <com.cypherpunk.privacy.widget.PlanView
             android:id="@+id/month_plan"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_marginBottom="16dp" />
 
-        <com.cypherpunk.android.vpn.widget.PlanView
+        <com.cypherpunk.privacy.widget.PlanView
             android:id="@+id/six_month_plan"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_marginBottom="16dp" />
 
-        <com.cypherpunk.android.vpn.widget.PlanView
-            android:id="@+id/yearly_plan"
+        <com.cypherpunk.privacy.widget.PlanView
+            android:id="@+id/annually_plan"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal" />

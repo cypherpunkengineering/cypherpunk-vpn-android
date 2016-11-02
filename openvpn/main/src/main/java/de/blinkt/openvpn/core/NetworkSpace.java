@@ -7,7 +7,6 @@ package de.blinkt.openvpn.core;
 
 import android.os.Build;
 import android.support.annotation.NonNull;
-import android.text.TextUtils;
 
 import junit.framework.Assert;
 
@@ -19,7 +18,7 @@ import java.util.PriorityQueue;
 import java.util.TreeSet;
 import java.util.Vector;
 
-import com.cypherpunk.android.vpn.BuildConfig;
+import com.cypherpunk.privacy.BuildConfig;
 
 public class NetworkSpace {
 

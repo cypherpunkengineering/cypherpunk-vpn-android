@@ -7,19 +7,21 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="?android:actionBarSize">
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="?android:actionBarSize"
+            android:layout_gravity="center"
+            android:layout_marginTop="16dp"
+            android:src="@drawable/helmet_color_big_vector"
+            tools:ignore="ContentDescription" />
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="?android:actionBarSize"
-                android:layout_gravity="center"
-                android:src="@drawable/header_logo_vector"
-                tools:ignore="ContentDescription" />
-
-        </android.support.v7.widget.Toolbar>
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginBottom="16dp"
+            android:src="@drawable/header_logo_vector"
+            tools:ignore="ContentDescription" />
 
         <android.support.v4.view.ViewPager
             android:id="@+id/pager"
@@ -28,68 +30,22 @@
             android:layout_marginBottom="8dp"
             android:layout_weight="1" />
 
-        <com.cypherpunk.android.vpn.widget.PageIndicator
+        <com.cypherpunk.privacy.widget.PageIndicator
             android:id="@+id/indicator"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginBottom="24dp" />
 
-        <com.cypherpunk.android.vpn.widget.TypefaceButton
-            android:id="@+id/start_free_button"
-            style="@style/Widget.Cypherpunk.TransparentButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="12dp"
-            android:layout_marginLeft="28dp"
-            android:layout_marginRight="28dp"
-            android:text="@string/introduction_start_free_now" />
-
-        <com.cypherpunk.android.vpn.widget.TypefaceButton
-            android:id="@+id/sign_up_premium_button"
+        <com.cypherpunk.privacy.widget.TypefaceButton
+            android:id="@+id/start_button"
             style="@style/Widget.Cypherpunk.YellowButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="12dp"
+            android:layout_marginBottom="32dp"
             android:layout_marginLeft="28dp"
             android:layout_marginRight="28dp"
-            android:text="@string/introduction_sign_up" />
-
-        <com.cypherpunk.android.vpn.widget.TypefaceButton
-            android:id="@+id/get_premium_button"
-            style="@style/Widget.Cypherpunk.TransparentButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:layout_marginLeft="28dp"
-            android:layout_marginRight="28dp"
-            android:text="@string/introduction_premium" />
-
-        <RelativeLayout
-            android:id="@+id/move_sign_in_button"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
-            android:background="?android:attr/selectableItemBackground"
-            android:clickable="true"
-            android:gravity="bottom"
-            android:padding="16dp">
-
-            <com.cypherpunk.android.vpn.widget.TypefaceTextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/introduction_exist_account"
-                android:textSize="14sp" />
-
-            <com.cypherpunk.android.vpn.widget.TypefaceTextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentRight="true"
-                android:text="@string/introduction_sign_in"
-                android:textSize="18sp" />
-
-        </RelativeLayout>
+            android:text="@string/introduction_type_email" />
 
     </LinearLayout>
 

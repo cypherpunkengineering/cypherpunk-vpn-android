@@ -14,7 +14,6 @@ import android.app.UiModeManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.net.ConnectivityManager;
@@ -26,7 +25,6 @@ import android.os.Handler.Callback;
 import android.os.IBinder;
 import android.os.Message;
 import android.os.ParcelFileDescriptor;
-import android.preference.PreferenceManager;
 import android.system.OsConstants;
 import android.text.TextUtils;
 import android.util.Log;
@@ -42,12 +40,10 @@ import java.util.Collection;
 import java.util.Locale;
 import java.util.Vector;
 
-import com.cypherpunk.android.vpn.BuildConfig;
-import com.cypherpunk.android.vpn.R;
-import com.cypherpunk.android.vpn.model.CypherpunkSetting;
+import com.cypherpunk.privacy.R;
+import com.cypherpunk.privacy.model.CypherpunkSetting;
 
 import de.blinkt.openvpn.VpnProfile;
-import de.blinkt.openvpn.activities.DisconnectVPN;
 //import de.blinkt.openvpn.activities.LogWindow;
 import de.blinkt.openvpn.core.VpnStatus.ByteCountListener;
 import de.blinkt.openvpn.core.VpnStatus.ConnectionStatus;
@@ -478,10 +474,9 @@ public class OpenVPNService extends VpnService implements StateListener, Callbac
             mOvpn3 = false;
         */
         CypherpunkSetting cypherpunkSetting = new CypherpunkSetting();
-        switch (cypherpunkSetting.vpnProtocol)
+        switch (cypherpunkSetting.vpnBackend)
         {
-            case "setting_vpn_protocol_openvpn31_udp":
-            case "setting_vpn_protocol_openvpn31_tcp":
+            case "setting_vpn_protocol_openvpn31":
                 mOvpn3 = true;
                 break;
             default:
@@ -589,7 +584,7 @@ public class OpenVPNService extends VpnService implements StateListener, Callbac
         }
         // Just in case unregister for state
         VpnStatus.removeStateListener(this);
-        VpnStatus.flushLog();
+        //VpnStatus.flushLog();
 
     }
 

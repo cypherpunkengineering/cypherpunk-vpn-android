@@ -14,7 +14,7 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.List;
 
-import com.cypherpunk.android.vpn.R;
+import com.cypherpunk.privacy.R;
 import de.blinkt.openvpn.VpnProfile;
 
 public class ProxyDetection {
