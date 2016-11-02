@@ -15,7 +15,7 @@ public class CypherpunkSetting extends PrefModel {
     public boolean vpnAutoStartConnect;
 
     @PrefKey("privacy_firewall_mode")
-    @DefaultString("setting_privacy_firewall_mode_auto")
+    @DefaultString("setting_privacy_firewall_mode_never")
     public String privacyFirewallMode;
 
     @PrefKey("privacy_firewall_exempt_lan")

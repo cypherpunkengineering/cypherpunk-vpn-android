@@ -105,7 +105,7 @@
     <!-- privacy firewall mode -->
     <string name="setting_privacy_firewall_mode">Privacy Firewall</string>
     <!-- privacy firewall mode: never -->
-    <string name="setting_privacy_firewall_mode_never">Never</string>
+    <string name="setting_privacy_firewall_mode_never">Off</string>
     <string name="setting_privacy_firewall_mode_never_desc">Privacy Firewall is disabled</string>
     <!-- privacy firewall mode: auto -->
     <string name="setting_privacy_firewall_mode_auto">Auto</string>

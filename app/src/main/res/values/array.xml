@@ -25,13 +25,17 @@
     <string-array name="privacy_firewall_mode_value">
         <item>setting_privacy_firewall_mode_never</item>
         <item>setting_privacy_firewall_mode_auto</item>
+        <!--
         <item>setting_privacy_firewall_mode_always</item>
+        -->
     </string-array>
 
     <string-array name="privacy_firewall_mode_description">
         <item>setting_privacy_firewall_mode_never_desc</item>
         <item>setting_privacy_firewall_mode_auto_desc</item>
+        <!--
         <item>setting_privacy_firewall_mode_always_desc</item>
+        -->
     </string-array>
 
     <string-array name="vpn_crypto_profile_value">
