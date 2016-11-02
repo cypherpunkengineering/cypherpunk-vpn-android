@@ -3,6 +3,7 @@ package com.cypherpunk.privacy.ui.main;
 import android.databinding.DataBindingUtil;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +11,7 @@ import android.widget.CompoundButton;
 
 import com.cypherpunk.privacy.R;
 import com.cypherpunk.privacy.databinding.ListItemRegionBinding;
+import com.cypherpunk.privacy.model.CypherpunkSetting;
 import com.cypherpunk.privacy.model.Region;
 
 import java.util.ArrayList;
@@ -76,6 +78,12 @@ public class RegionAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             });
 
             binding.nationalFlag.setImageResource(getFlagDrawableByKey(item.getCountryCode().toLowerCase()));
+
+            CypherpunkSetting setting = new CypherpunkSetting();
+            binding.regionContainer.setBackgroundResource(
+                    !TextUtils.isEmpty(setting.regionId) && regionId.equals(setting.regionId) ?
+                            R.drawable.list_item_region_selected : R.drawable.list_item_background_dark);
+
         } else if (viewType == ITEM_VIEW_TYPE_FASTEST_LOCATION) {
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
