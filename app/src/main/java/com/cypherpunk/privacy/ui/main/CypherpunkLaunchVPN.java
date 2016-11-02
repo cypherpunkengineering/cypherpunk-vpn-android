@@ -103,6 +103,7 @@ public class CypherpunkLaunchVPN extends Activity
         else if (intent.getBooleanExtra(NETWORK_TRUSTED, false))
         {
             CypherpunkVPN.getInstance().stop(getApplicationContext(), getBaseContext());
+            finish();
         }
         else if (intent.getBooleanExtra(NETWORK_UNTRUSTED, false))
         {
