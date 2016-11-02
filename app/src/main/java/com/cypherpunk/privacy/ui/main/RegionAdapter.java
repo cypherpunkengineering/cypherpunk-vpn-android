@@ -102,125 +102,39 @@ public class RegionAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         return ITEM_VIEW_TYPE_DIVIDER;
     }
 
-    public void addFavoriteItems(@NonNull List<Region> data) {
+    public void addRegionList(@NonNull List<Region> favoriteItems,
+                              @NonNull List<Region> recentlyConnectedItems,
+                              @NonNull List<Region> otherItems) {
+        clear();
+        addFavoriteItems(favoriteItems);
+        addRecentlyConnectedItems(recentlyConnectedItems);
+        addAllItems(otherItems);
+        notifyItemRangeInserted(0, items.size());
+    }
+
+    private void addFavoriteItems(@NonNull List<Region> data) {
         items.add(new FastestLocation());
         items.addAll(data);
         if (!data.isEmpty()) {
             items.add(new FavoriteDivider());
-            notifyItemRangeInserted(0, items.size());
         }
     }
 
-    public void addRecentlyConnectedItems(ArrayList<Region> data) {
+    private void addRecentlyConnectedItems(List<Region> data) {
         items.addAll(data);
         if (!data.isEmpty()) {
             items.add(new ConnectedDivider());
-            notifyItemRangeInserted(0, items.size());
         }
     }
 
-    public void addFavoriteItem(@NonNull Region data) {
-        for (int i = 0; i < items.size(); i++) {
-            Object item = items.get(i);
-            if (item instanceof Region) {
-                Region item1 = (Region) item;
-                if (data.getId().equals(item1.getId())) {
-                    items.remove(i);
-                    int favoritePosition = getFavoritePosition();
-                    if (favoritePosition == -1) {
-                        items.add(0, new FavoriteDivider());
-                        notifyItemInserted(0);
-                        favoritePosition = 0;
-                    }
-                    items.add(favoritePosition, data);
-                    notifyItemMoved(i, favoritePosition);
-                    break;
-                }
-            }
-        }
-    }
-
-    public void addConnectedItem(@NonNull Region data) {
-        if (data.isFavorited()) {
-            for (int i = 0; i < items.size(); i++) {
-                Object item = items.get(i);
-                if (item instanceof Region) {
-                    Region item1 = (Region) item;
-                    if (data.getId().equals(item1.getId())) {
-                        items.remove(i);
-                        items.add(0, data);
-                        notifyItemMoved(i, 0);
-                        return;
-                    }
-                }
-            }
-        } else {
-            for (int i = 0; i < items.size(); i++) {
-                Object item = items.get(i);
-                if (item instanceof Region) {
-                    Region item1 = (Region) item;
-                    if (data.getId().equals(item1.getId())) {
-                        items.remove(i);
-                        int connectedPosition = getConnectedPosition();
-                        if (connectedPosition == -1) {
-                            items.add(getFavoritePosition() != -1 ? getFavoritePosition() : 0, new ConnectedDivider());
-                            notifyItemInserted(getFavoritePosition() != -1 ? getFavoritePosition() : 0);
-                            connectedPosition = 0;
-                        }
-                        items.add(connectedPosition, data);
-                        notifyItemMoved(i, connectedPosition);
-                        break;
-                    }
-                }
-            }
-        }
-    }
-
-
-    public void removeFavoriteItem(@NonNull Region data) {
-        for (int i = 0; i < items.size(); i++) {
-            Object item = items.get(i);
-            if (item instanceof Region) {
-                Region item1 = (Region) item;
-                if (data.getId().equals(item1.getId())) {
-                    items.remove(i);
-                    notifyItemRemoved(i);
-                    items.add(data);
-                    notifyItemInserted(items.size());
-                    break;
-                }
-            }
-        }
-    }
-
-    private int getFavoritePosition() {
-        for (int i = 0; i < items.size(); i++) {
-            if (items.get(i) instanceof FavoriteDivider) {
-                return i;
-            }
-        }
-        return -1;
-    }
-
-    private int getConnectedPosition() {
-        for (int i = 0; i < items.size(); i++) {
-            if (items.get(i) instanceof ConnectedDivider) {
-                return i;
-            }
-        }
-        return -1;
-    }
-
-
-    public void addAllItems(@NonNull List<Region> data) {
-        int size = items.size();
+    private void addAllItems(@NonNull List<Region> data) {
         items.addAll(data);
-        notifyItemRangeInserted(size, data.size());
     }
 
     public void clear() {
+        int size = items.size();
         items.clear();
-        notifyDataSetChanged();
+        notifyItemRangeRemoved(0, size);
     }
 
     private int getFlagDrawableByKey(String key) {
@@ -228,7 +142,7 @@ public class RegionAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         return getContext().getResources().getIdentifier("flag_" + key, "drawable", packageName);
     }
 
-    static class ViewHolder extends RecyclerView.ViewHolder {
+    private static class ViewHolder extends RecyclerView.ViewHolder {
 
         private ListItemRegionBinding binding;
 
@@ -242,7 +156,7 @@ public class RegionAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         }
     }
 
-    static class DividerViewHolder extends RecyclerView.ViewHolder {
+    private static class DividerViewHolder extends RecyclerView.ViewHolder {
 
         DividerViewHolder(View view) {
             super(view);

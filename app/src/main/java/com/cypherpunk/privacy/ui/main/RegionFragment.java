@@ -109,12 +109,7 @@ public class RegionFragment extends Fragment {
                     realm.beginTransaction();
                     region.setFavorited(favorite);
                     realm.commitTransaction();
-                    if (favorite) {
-                        adapter.addFavoriteItem(region);
-                        binding.list.smoothScrollToPosition(0);
-                    } else {
-                        adapter.removeFavoriteItem(region);
-                    }
+                    adapter.addRegionList(getFavoriteRegionList(), getRecentlyConnectedList(), getOtherList());
                 }
             }
 
@@ -141,9 +136,7 @@ public class RegionFragment extends Fragment {
             }
         };
         binding.list.setAdapter(adapter);
-        adapter.addFavoriteItems(getFavoriteRegionList());
-        adapter.addRecentlyConnectedItems(getRecentlyConnectedList());
-        adapter.addAllItems(getOtherList());
+        adapter.addRegionList(getFavoriteRegionList(), getRecentlyConnectedList(), getOtherList());
 
         binding.regionContainer.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -180,7 +173,11 @@ public class RegionFragment extends Fragment {
 
     private ArrayList<Region> getRecentlyConnectedList() {
         RealmResults<Region> regionList = realm.where(Region.class).equalTo("favorited", false).notEqualTo("lastConnectedDate", new Date(0)).findAllSorted("lastConnectedDate", Sort.DESCENDING);
-        return new ArrayList<>(regionList);
+        ArrayList<Region> regions = new ArrayList<>(regionList);;
+        if (regionList.size() > 3) {
+            regions = new ArrayList<>(regionList.subList(0, 3));
+        }
+        return regions;
     }
 
     private ArrayList<Region> getOtherList() {
@@ -203,7 +200,7 @@ public class RegionFragment extends Fragment {
 
         realm.beginTransaction();
         region.setLastConnectedDate(new Date());
-//                adapter.addConnectedItem(region);
+        adapter.addRegionList(getFavoriteRegionList(), getRecentlyConnectedList(), getOtherList());
         realm.commitTransaction();
 
         listener.onSelectedRegionChanged(region.getRegionName(), nationalFlagResId);
@@ -266,10 +263,7 @@ public class RegionFragment extends Fragment {
                                    oldRegion.deleteAllFromRealm();
                                    realm.commitTransaction();
 
-                                   adapter.clear();
-                                   adapter.addFavoriteItems(getFavoriteRegionList());
-                                   adapter.addRecentlyConnectedItems(getRecentlyConnectedList());
-                                   adapter.addAllItems(getOtherList());
+                                   adapter.addRegionList(getFavoriteRegionList(), getRecentlyConnectedList(), getOtherList());
 
                                    // TODO: 一番上のを選択している
                                    CypherpunkSetting setting = new CypherpunkSetting();
