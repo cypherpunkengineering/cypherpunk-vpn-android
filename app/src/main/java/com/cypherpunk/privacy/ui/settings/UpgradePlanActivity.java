@@ -41,8 +41,8 @@ public class UpgradePlanActivity extends AppCompatActivity {
         }
 
         binding.monthlyPlan.setPlan("1 MONTH", "$ 8.99", false);
-        binding.semiannuallyPlan.setPlan("6 MONTHS", "$ 44.99", false);
-        binding.annuallyPlan.setPlan("12 MONTHS", "$ 59.99", true);
+        binding.semiannuallyPlan.setPlan("6 MONTHS", "$ 7.49", false);
+        binding.annuallyPlan.setPlan("12 MONTHS", "$ 4.99", true);
 
         // TODO:
         binding.monthlyPlan.setOnClickListener(new View.OnClickListener() {
