@@ -22,6 +22,7 @@ public class RegionAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
     private static final int ITEM_VIEW_TYPE_ITEM = 1;
     private static final int ITEM_VIEW_TYPE_DIVIDER = 2;
+    private static final int ITEM_VIEW_TYPE_FASTEST_LOCATION = 3;
 
     private List<Object> items = new ArrayList<>();
 
@@ -31,12 +32,18 @@ public class RegionAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     protected void onItemClick(@NonNull String regionId) {
     }
 
+    protected void onFastestLocationClick() {
+    }
+
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         switch (viewType) {
             case ITEM_VIEW_TYPE_ITEM:
                 return new ViewHolder(LayoutInflater.from(parent.getContext())
                         .inflate(R.layout.list_item_region, parent, false));
+            case ITEM_VIEW_TYPE_FASTEST_LOCATION:
+                return new DividerViewHolder(LayoutInflater.from(parent.getContext())
+                        .inflate(R.layout.list_item_region_fastest_location, parent, false));
             default:
                 return new DividerViewHolder(LayoutInflater.from(parent.getContext())
                         .inflate(R.layout.list_item_region_divider, parent, false));
@@ -69,6 +76,13 @@ public class RegionAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             });
 
             binding.nationalFlag.setImageResource(getFlagDrawableByKey(item.getCountryCode().toLowerCase()));
+        } else if (viewType == ITEM_VIEW_TYPE_FASTEST_LOCATION) {
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    onFastestLocationClick();
+                }
+            });
         }
     }
 
@@ -82,10 +96,14 @@ public class RegionAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         if (items.get(position) instanceof Region) {
             return ITEM_VIEW_TYPE_ITEM;
         }
+        if (items.get(position) instanceof FastestLocation) {
+            return ITEM_VIEW_TYPE_FASTEST_LOCATION;
+        }
         return ITEM_VIEW_TYPE_DIVIDER;
     }
 
     public void addFavoriteItems(@NonNull List<Region> data) {
+        items.add(new FastestLocation());
         items.addAll(data);
         if (!data.isEmpty()) {
             items.add(new FavoriteDivider());
@@ -232,10 +250,11 @@ public class RegionAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     }
 
     private class FavoriteDivider {
-
     }
 
     private class ConnectedDivider {
+    }
 
+    private class FastestLocation {
     }
 }
