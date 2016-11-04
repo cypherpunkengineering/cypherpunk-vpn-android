@@ -12,6 +12,7 @@ import android.os.SystemClock;
 import android.support.annotation.ColorInt;
 import android.support.annotation.IntDef;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.annotation.Size;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.util.Pair;
@@ -66,7 +67,7 @@ public class BinaryTextureView extends TextureView implements TextureView.Surfac
 
         private long baseTime;
 
-        private RenderingThread(@NonNull Context context, int width, int height, @NonNull String[] strings) {
+        private RenderingThread(@NonNull Context context, int width, int height, @Nullable String[] strings) {
             final Resources res = context.getResources();
             scrollDistancePerMilliSec = res.getDisplayMetrics().density * SCROLL_DISTANCE_PER_SEC_IN_DP / 1000;
 
@@ -298,13 +299,15 @@ public class BinaryTextureView extends TextureView implements TextureView.Surfac
             for (int i = 0; i < columnCount; i++) {
                 positions.add(i);
             }
-            for (String s : strings) {
-                if (positions.isEmpty()) {
-                    break;
+            if (strings != null) {
+                for (String s : strings) {
+                    if (positions.isEmpty()) {
+                        break;
+                    }
+                    int position = random.nextInt(positions.size());
+                    int column = positions.remove(position);
+                    stringInfo.put(column, new Pair<>(random.nextInt(rowCount), s));
                 }
-                int position = random.nextInt(positions.size());
-                int column = positions.remove(position);
-                stringInfo.put(column, new Pair<>(random.nextInt(rowCount), s));
             }
         }
 
