@@ -42,6 +42,7 @@ import com.cypherpunk.privacy.ui.signin.IdentifyEmailActivity;
 import com.cypherpunk.privacy.vpn.CypherpunkVPN;
 import com.cypherpunk.privacy.vpn.CypherpunkVpnStatus;
 import com.cypherpunk.privacy.widget.BinarySurfaceView;
+import com.cypherpunk.privacy.widget.BinaryTextureView;
 import com.cypherpunk.privacy.widget.ConnectionStatusView;
 import com.cypherpunk.privacy.widget.VpnFlatButton;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
@@ -257,7 +258,7 @@ public class MainActivity extends AppCompatActivity
         if (intent != null) {
             startActivityForResult(intent, REQUEST_VPN_START);
         } else {
-            binding.binaryView.setState(BinarySurfaceView.CONNECTING);
+            binding.binaryView.setState(BinaryTextureView.CONNECTING);
             binding.connectionStatus.setStatus(ConnectionStatusView.CONNECTING);
             binding.connectionButton.setStatus(VpnFlatButton.CONNECTING);
             binding.connectingCancelButton.setVisibility(View.VISIBLE);
@@ -286,7 +287,7 @@ public class MainActivity extends AppCompatActivity
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                binding.binaryView.setState(BinarySurfaceView.CONNECTED);
+                binding.binaryView.setState(BinaryTextureView.CONNECTED);
                 binding.connectionStatus.setStatus(ConnectionStatusView.CONNECTED);
                 binding.connectionButton.setStatus(VpnFlatButton.CONNECTED);
                 binding.connectingCancelButton.setVisibility(View.GONE);
@@ -298,7 +299,7 @@ public class MainActivity extends AppCompatActivity
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                binding.binaryView.setState(BinarySurfaceView.DISCONNECTED);
+                binding.binaryView.setState(BinaryTextureView.DISCONNECTED);
                 binding.connectionStatus.setStatus(ConnectionStatusView.DISCONNECTED);
                 binding.connectionButton.setStatus(VpnFlatButton.DISCONNECTED);
                 binding.connectingCancelButton.setVisibility(View.GONE);

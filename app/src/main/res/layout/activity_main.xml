@@ -47,7 +47,7 @@
                     android:layout_below="@id/toolbar"
                     android:background="@color/divider" />
 
-                <com.cypherpunk.privacy.widget.BinarySurfaceView
+                <com.cypherpunk.privacy.widget.BinaryTextureView
                     android:id="@+id/binary_view"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
