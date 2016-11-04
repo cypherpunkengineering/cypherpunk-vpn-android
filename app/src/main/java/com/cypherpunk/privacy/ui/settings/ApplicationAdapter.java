@@ -28,13 +28,13 @@ public class ApplicationAdapter extends RecyclerView.Adapter<ApplicationAdapter.
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, final int position) {
+    public void onBindViewHolder(final ViewHolder holder, final int position) {
         ApplicationItemView appItemView = holder.getBinding().applicationItem;
         appItemView.setApp(items.get(position));
         appItemView.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                items.get(position).check = isChecked;
+                items.get(holder.getAdapterPosition()).check = isChecked;
             }
         });
         holder.getBinding().executePendingBindings();

@@ -22,7 +22,6 @@ public class SettingsFragment extends PreferenceFragmentCompat {
 
     private static final int REQUEST_LIST_SETTING = 1;
 
-    private CypherpunkSetting cypherpunkSetting;
     private Preference protocol;
     private Preference remotePort;
     private Preference vpnPortLocal;
@@ -44,7 +43,7 @@ public class SettingsFragment extends PreferenceFragmentCompat {
         preferenceManager.setSharedPreferencesName("cypherpunk_setting");
         addPreferencesFromResource(R.xml.preference_settings);
 
-        cypherpunkSetting = new CypherpunkSetting();
+        CypherpunkSetting cypherpunkSetting = new CypherpunkSetting();
 
         findPreference("application").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override

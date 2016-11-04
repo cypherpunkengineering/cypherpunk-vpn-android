@@ -49,7 +49,6 @@ import rx.subscriptions.Subscriptions;
 public class TutorialActivity extends AppCompatActivity {
 
     private ActivityTutorialBinding binding;
-    private IntroductionPagerAdapter adapter;
     private Subscription subscription = Subscriptions.empty();
 
     private static final int GRANT_VPN_PERMISSION = 1;
@@ -76,7 +75,7 @@ public class TutorialActivity extends AppCompatActivity {
             getServerList();
         }
 
-        adapter = new IntroductionPagerAdapter(this);
+        IntroductionPagerAdapter adapter = new IntroductionPagerAdapter(this);
         binding.pager.setAdapter(adapter);
         binding.indicator.setViewPager(binding.pager);
         binding.pager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {

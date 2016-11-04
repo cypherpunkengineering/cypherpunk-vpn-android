@@ -34,7 +34,7 @@
             android:background="?android:selectableItemBackground"
             android:clickable="true"
             android:padding="8dp"
-            android:text="Don’t allow"
+            android:text="@string/tutorial_don_t_allow"
             android:textSize="16sp"
             android:visibility="invisible"
             tools:visibility="visible" />

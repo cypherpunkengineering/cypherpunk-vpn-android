@@ -9,11 +9,8 @@
     <string name="main_status_connected">You are protected</string>
     <string name="vpn_cancel">Cancel</string>
     <string name="main_sign_up">Sign Up and get a 7-Day Free Premium Trial</string>
-    <string name="drawer_close">close drawer</string>
-    <string name="drawer_open">open drawer</string>
 
     <!-- sign in-->
-    <string name="title_activity_sign_up">Sign Up</string>
     <string name="error_field_required">This field is required</string>
     <string name="error_invalid_email">invalid email</string>
     <string name="sign_in_button_sign_in">Log In</string>
@@ -49,7 +46,6 @@
     <string name="title_activity_reset_password">Reset your password</string>
 
     <!-- setting -->
-    <string name="title_activity_settings">Configuration</string>
     <string name="tab_settings_account">Account</string>
     <string name="tab_settings_advanced_settings">Settings</string>
     <string name="mode_description_text">‘Speed and Country’ mode is very fast, because it is not encrypted.\n Omnicos directe al desirabilite de un nov lingua franca: On refusa continuar payar custosi traductores. At solmen va esser necessi far uniform grammatica, pronunciation e plu sommun paroles.</string>
@@ -217,8 +213,6 @@
     <string name="premium_free_email">Email</string>
 
     <!-- introduction -->
-    <string name="introduction_exist_account">Have an account already?</string>
-    <string name="introduction_sign_in">Log In</string>
     <string name="introduction_start_free_now">Start Free Now</string>
     <string name="introduction_sign_up">Sign up for 7-day Free Premium Trial</string>
     <string name="introduction_premium">Get a Premium plan</string>
@@ -243,12 +237,6 @@
     <string name="tutorial_allow">Allow</string>
 
     <!-- select region -->
-    <string name="title_activity_locations">Locations</string>
-    <string name="location_favorite">FAVORITE</string>
-    <string name="location_recommended">RECOMMENDED</string>
-    <string name="location_all_locations">ALL LOCATIONS</string>
-    <string name="select_region_sort_by_distance">Sort by distance</string>
-    <string name="title_activity_sort_region">Sort by distance</string>
     <string name="select_region_connect_dialog_message">Do you want to connect now?</string>
     <string name="region_fastest_location">Fastest Location</string>
 
@@ -268,11 +256,11 @@
     <string name="network_wifi_description">Add the networks you trust. Cypherpunk will NOT automatically connect through the VPN when you connect to these trusted networks.</string>
     <string name="network_other_networks">OTHER NETWORKS</string>
     <string name="network_other_auto_secure_connections">Auto secure connections</string>
-    <string name="introduction_login">Log In</string>
     <string name="introduction_type_email">Type your email</string>
     <string name="tutorial_1_title">Setting Up Your VPN</string>
     <string name="tutorial_1_text">Please grant permission to Cypherpunk Privacy for connecting a VPN from your device.</string>
     <string name="tutorial_2_title">One Final Step</string>
     <string name="tutorial_2_text">Share anonymized analytics about your VPN connections to help make Cypherpunk Privacy faster and more reliable.</string>
+    <string name="tutorial_don_t_allow">Don’t allow</string>
 
 </resources>

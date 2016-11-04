@@ -31,7 +31,9 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 import rx.subscriptions.Subscriptions;
 
-
+/**
+ * unused
+ */
 public class StatusActivity extends AppCompatActivity implements VpnStatus.StateListener {
 
     private static String EXTRA_LOCATION_ID = "location_id";
