@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
         <LinearLayout
@@ -21,7 +22,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="24dp"
-                android:src="@drawable/illust_mail_confirm" />
+                android:src="@drawable/illust_mail_confirm"
+                tools:ignore="ContentDescription" />
 
             <com.cypherpunk.privacy.widget.TypefaceTextView
                 android:layout_width="wrap_content"

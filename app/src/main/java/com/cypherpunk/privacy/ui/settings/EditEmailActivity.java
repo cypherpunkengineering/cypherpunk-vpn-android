@@ -40,7 +40,6 @@ public class EditEmailActivity extends AppCompatActivity {
 
     private ActivityEditEmailBinding binding;
     private ProgressFragment dialogFragment = ProgressFragment.newInstance();
-    ;
     private Subscription subscription = Subscriptions.empty();
 
     @Inject

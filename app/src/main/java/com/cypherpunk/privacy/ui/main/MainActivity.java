@@ -41,7 +41,6 @@ import com.cypherpunk.privacy.ui.settings.SettingsFragment;
 import com.cypherpunk.privacy.ui.signin.IdentifyEmailActivity;
 import com.cypherpunk.privacy.vpn.CypherpunkVPN;
 import com.cypherpunk.privacy.vpn.CypherpunkVpnStatus;
-import com.cypherpunk.privacy.widget.BinarySurfaceView;
 import com.cypherpunk.privacy.widget.BinaryTextureView;
 import com.cypherpunk.privacy.widget.ConnectionStatusView;
 import com.cypherpunk.privacy.widget.VpnFlatButton;
@@ -126,17 +125,8 @@ public class MainActivity extends AppCompatActivity
                 toggleVpn();
             }
         });
-
         binding.connectingCancelButton.setPaintFlags(
                 binding.connectingCancelButton.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
-
-        binding.actionMenuLeft.setOnMenuItemClickListener(new ActionMenuView.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                return onOptionsItemSelected(item);
-            }
-        });
-
         binding.connectingCancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -144,17 +134,18 @@ public class MainActivity extends AppCompatActivity
                 stopVpn();
             }
         });
-
+        binding.actionMenuLeft.setOnMenuItemClickListener(new ActionMenuView.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                return onOptionsItemSelected(item);
+            }
+        });
         VpnStatus.addStateListener(this);
 
         FragmentTransaction fm = getSupportFragmentManager().beginTransaction();
         regionFragment = new RegionFragment();
         fm.add(R.id.region_container, regionFragment);
         fm.commit();
-
-        // navigation drawer
-//        ActionBarDrawerToggle drawerToggle = new ActionBarDrawerToggle(this, binding.drawerLayout, binding.toolbar, R.string.drawer_open, R.string.drawer_close);
-//        binding.drawerLayout.addDrawerListener(drawerToggle);
 
         if (getResources().getBoolean(R.bool.is_tablet)) {
             getSupportFragmentManager().beginTransaction()
