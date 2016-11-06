@@ -22,25 +22,25 @@ import rx.Single;
 public interface CypherpunkService {
     String ENDPOINT = "https://cypherpunk.engineering";
 
-    @POST("/account/authenticate/userpasswd")
+    @POST("/api/v0/account/authenticate/userpasswd")
     Single<LoginResult> login(
             @Body LoginRequest loginRequest);
 
-    @POST("/account/register/signup")
+    @POST("/api/v0/account/register/signup")
     Single<LoginResult> signup(
             @Body SignUpRequest loginRequest);
 
-    @POST("/account/identify/email")
+    @POST("/api/v0/account/identify/email")
     Single<ResponseBody> identifyEmail(
             @Body IdentifyEmailRequest identifyEmailRequest);
 
-    @GET("/api/subscription/status")
+    @GET("/api/v0/subscription/status")
     Single<StatusResult> getStatus();
 
-    @GET("/api/vpn/serverList")
+    @GET("/api/v0/vpn/serverList")
     Single<Map<String, Map<String, RegionResult[]>>> serverList();
 
-    @POST("/api/v1/account/email/change")
+    @POST("/api/v0/account/email/change")
     Single<ResponseBody> changeEmail(
             @Body ChangeEmailRequest identifyEmailRequest);
 }
