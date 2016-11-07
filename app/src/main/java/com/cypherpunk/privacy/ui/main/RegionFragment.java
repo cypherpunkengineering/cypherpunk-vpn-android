@@ -33,6 +33,7 @@ import java.util.Set;
 import javax.inject.Inject;
 
 import io.realm.Realm;
+import io.realm.RealmChangeListener;
 import io.realm.RealmResults;
 import io.realm.Sort;
 import rx.Single;
@@ -50,6 +51,7 @@ public class RegionFragment extends Fragment {
     private FragmentRegionBinding binding;
     private Subscription subscription = Subscriptions.empty();
     private RegionAdapter adapter;
+    private RealmChangeListener realmChangeListener;
 
     @Inject
     CypherpunkService webService;
@@ -109,7 +111,6 @@ public class RegionFragment extends Fragment {
                     realm.beginTransaction();
                     region.setFavorited(favorite);
                     realm.commitTransaction();
-                    adapter.addRegionList(getFavoriteRegionList(), getRecentlyConnectedList(), getOtherList());
                 }
             }
 
@@ -136,6 +137,13 @@ public class RegionFragment extends Fragment {
             }
         };
         binding.list.setAdapter(adapter);
+        realmChangeListener = new RealmChangeListener() {
+            @Override
+            public void onChange(Object element) {
+                adapter.addRegionList(getFavoriteRegionList(), getRecentlyConnectedList(), getOtherList());
+            }
+        };
+        realm.addChangeListener(realmChangeListener);
         adapter.addRegionList(getFavoriteRegionList(), getRecentlyConnectedList(), getOtherList());
 
         binding.regionContainer.setOnClickListener(new View.OnClickListener() {
@@ -149,6 +157,7 @@ public class RegionFragment extends Fragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
+        realm.removeChangeListener(realmChangeListener);
         realm.close();
         subscription.unsubscribe();
     }
@@ -198,14 +207,8 @@ public class RegionFragment extends Fragment {
         int nationalFlagResId = getFlagDrawableByKey(region.getCountryCode().toLowerCase());
         binding.nationalFlag.setImageResource(nationalFlagResId);
 
-        realm.beginTransaction();
-        region.setLastConnectedDate(new Date());
-        adapter.addRegionList(getFavoriteRegionList(), getRecentlyConnectedList(), getOtherList());
-        realm.commitTransaction();
-
         listener.onSelectedRegionChanged(region.getRegionName(), nationalFlagResId);
     }
-
 
     private void getServerList() {
         subscription = webService
