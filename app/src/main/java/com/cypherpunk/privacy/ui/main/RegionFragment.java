@@ -206,6 +206,7 @@ public class RegionFragment extends Fragment {
         binding.regionName.setText(region.getRegionName());
         int nationalFlagResId = getFlagDrawableByKey(region.getCountryCode().toLowerCase());
         binding.nationalFlag.setImageResource(nationalFlagResId);
+        adapter.addRegionList(getFavoriteRegionList(), getRecentlyConnectedList(), getOtherList());
 
         listener.onSelectedRegionChanged(region.getRegionName(), nationalFlagResId);
     }
