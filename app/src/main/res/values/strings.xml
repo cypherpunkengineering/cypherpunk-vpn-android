@@ -9,6 +9,7 @@
     <string name="main_status_connected">You are protected</string>
     <string name="vpn_cancel">Cancel</string>
     <string name="main_sign_up">Sign Up and get a 7-Day Free Premium Trial</string>
+    <string name="store_url">https://play.google.com/store/apps/details?id=com.cypherpunk.privacy</string>
 
     <!-- sign in-->
     <string name="error_field_required">This field is required</string>

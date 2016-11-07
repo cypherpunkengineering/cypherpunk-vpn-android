@@ -223,7 +223,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onRateNowButtonClick() {
         startActivity(new Intent(Intent.ACTION_VIEW,
-                Uri.parse("https://play.google.com/store/apps/details?id=com.cypherpunk.privacy.debug")));
+                Uri.parse(getString(R.string.store_url))));
     }
 
     @Override
