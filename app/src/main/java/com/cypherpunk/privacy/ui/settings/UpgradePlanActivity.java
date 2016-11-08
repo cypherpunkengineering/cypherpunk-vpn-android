@@ -48,7 +48,7 @@ public class UpgradePlanActivity extends AppCompatActivity {
         binding.monthlyPlan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String payload = "monthly899";
+                String payload = "";
                 try {
                     helper.launchPurchaseFlow(UpgradePlanActivity.this, SKU_MONTHLY, RC_REQUEST, purchaseFinishedListener, payload);
                 } catch (IabHelper.IabAsyncInProgressException e) {
@@ -60,9 +60,9 @@ public class UpgradePlanActivity extends AppCompatActivity {
         binding.semiannuallyPlan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String payload = "semiannually4499";
+                String payload = "";
                 try {
-                    helper.launchPurchaseFlow(UpgradePlanActivity.this, SKU_MONTHLY, RC_REQUEST, purchaseFinishedListener, payload);
+                    helper.launchPurchaseFlow(UpgradePlanActivity.this, SKU_SEMIANNUALLY, RC_REQUEST, purchaseFinishedListener, payload);
                 } catch (IabHelper.IabAsyncInProgressException e) {
                     e.printStackTrace();
                 }
@@ -72,9 +72,9 @@ public class UpgradePlanActivity extends AppCompatActivity {
         binding.annuallyPlan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String payload = "annually5999";
+                String payload = "";
                 try {
-                    helper.launchPurchaseFlow(UpgradePlanActivity.this, SKU_MONTHLY, RC_REQUEST, purchaseFinishedListener, payload);
+                    helper.launchPurchaseFlow(UpgradePlanActivity.this, SKU_ANNUALLY, RC_REQUEST, purchaseFinishedListener, payload);
                 } catch (IabHelper.IabAsyncInProgressException e) {
                     e.printStackTrace();
                 }
@@ -113,8 +113,10 @@ public class UpgradePlanActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private static final String PUBLIC_KEY = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAtnaJo8j5g1N40hNEkxUwdP9OQzz/av2MmubCCusUT5aycx7ZSfHt3bipvVmTkFvHFrUvdoAvpZ0xXaKZN3xU+w3dUj4uk32CzHFpC3Rl4vtUN993ZEt0BmJSCvOveCj5JsmeDGe0h6LqAJGHl4RMKFcOoUrK92xhqOJuvO3KfxJcVrDWfGx+luK3pxeqBp2nMZqO3FLyEMsneDOKyZcTgCK9OIPpyjH72aE7cGrJpJUe40iFxV8a2JfOVKFvzRN0gfvKewvik7v4lxD2uEU8g4YV0SEKRYed2xZPvZTiqQF9ar3CcaF3xFJi7a1bEXPMmZ+MF0fiLX+weWi7s8z4RQIDAQAB";
-    static final String SKU_MONTHLY = "monthly_sample";
+    private static final String PUBLIC_KEY = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAjG76qnaQN3mpl2g5CqND9KIm5oKkKt9vb7bW2i8+Si/8FI2yQKTaKnkGtOxRRNhy0y50S2oNFyuasxWFLHtDCHpodVI9rvJ5zAc+z79Qxrgke1SMzDU1z+oSf3/HWa2yVcAVyBolbvLtras7TXCsKIIWaXbMwccN3L2tW0kZkNkGryqlJJ0Nw/zGCmOY6t5hDZ5Ogh4avlND14naO4P4OqtE0eJh5BJ8WQFUe5mHvp8QLOsN0E6hUr2kf7pLMi9MZ3CR9fFvIk9phiPiB8vDD35c4b22SD5EcWgJCIiIVI6IPhg3cJo4H8ZnKd0O6xmEvAal7YRScGQRMcp6aZLu3wIDAQAB";
+    static final String SKU_MONTHLY = "monthly899";
+    static final String SKU_SEMIANNUALLY = "semiannually4499";
+    static final String SKU_ANNUALLY = "annually5999";
     static final int RC_REQUEST = 10001;
 
     private IabHelper helper;
