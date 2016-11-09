@@ -1,5 +1,6 @@
 package com.cypherpunk.privacy.ui.settings;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -34,6 +35,8 @@ import rx.subscriptions.Subscriptions;
 
 
 public class AccountSettingsFragment extends PreferenceFragmentCompat {
+
+    public static final int REQUEST_UPGRADE_PLAN = 1;
 
     private AccountPreference accountPreference;
     private Subscription subscription = Subscriptions.empty();
@@ -90,7 +93,7 @@ public class AccountSettingsFragment extends PreferenceFragmentCompat {
         findPreference("upgrade").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
-                startActivity(new Intent(getActivity(), UpgradePlanActivity.class));
+                startActivityForResult(new Intent(getActivity(), UpgradePlanActivity.class), REQUEST_UPGRADE_PLAN);
                 return true;
             }
         });
@@ -124,6 +127,18 @@ public class AccountSettingsFragment extends PreferenceFragmentCompat {
     public void onDestroy() {
         super.onDestroy();
         subscription.unsubscribe();
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == Activity.RESULT_OK) {
+            switch (requestCode) {
+                case REQUEST_UPGRADE_PLAN:
+                    getStatus();
+                    break;
+            }
+        }
     }
 
     private void getStatus() {

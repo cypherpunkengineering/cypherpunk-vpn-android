@@ -156,6 +156,10 @@ public class UpgradePlanActivity extends AppCompatActivity {
     IabHelper.OnIabPurchaseFinishedListener purchaseFinishedListener = new IabHelper.OnIabPurchaseFinishedListener() {
         @Override
         public void onIabPurchaseFinished(IabResult result, Purchase info) {
+            if (result.isSuccess()) {
+                setResult(RESULT_OK);
+                finish();
+            }
         }
     };
 
