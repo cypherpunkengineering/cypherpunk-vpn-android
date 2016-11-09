@@ -109,14 +109,14 @@ public class MainActivity extends AppCompatActivity
         slidingMenu.setSecondaryShadowDrawable(R.drawable.slide_menu_shadow_right);
 
         // background
-//        String operatorName = getSimOperatorName();
-//        if (TextUtils.isEmpty(operatorName)) {
-//            String[] text = {Build.BRAND.toUpperCase(), Build.MODEL.toUpperCase()};
-//            binding.binaryView.setText(text);
-//        } else {
-//            String[] text = {Build.BRAND.toUpperCase(), Build.MODEL.toUpperCase(), operatorName};
-//            binding.binaryView.setText(text);
-//        }
+        String operatorName = getSimOperatorName();
+        if (TextUtils.isEmpty(operatorName)) {
+            String[] text = {Build.BRAND.toUpperCase(), Build.MODEL.toUpperCase()};
+            binding.binaryView.setText(text);
+        } else {
+            String[] text = {Build.BRAND.toUpperCase(), Build.MODEL.toUpperCase(), operatorName};
+            binding.binaryView.setText(text);
+        }
 
         // showSignUpButton();
 
