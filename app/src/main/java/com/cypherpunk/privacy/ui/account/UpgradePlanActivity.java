@@ -1,4 +1,4 @@
-package com.cypherpunk.privacy.ui.settings;
+package com.cypherpunk.privacy.ui.account;
 
 import android.content.Intent;
 import android.content.pm.ActivityInfo;

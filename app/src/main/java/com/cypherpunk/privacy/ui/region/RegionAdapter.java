@@ -1,4 +1,4 @@
-package com.cypherpunk.privacy.ui.main;
+package com.cypherpunk.privacy.ui.region;
 
 import android.databinding.DataBindingUtil;
 import android.support.annotation.NonNull;

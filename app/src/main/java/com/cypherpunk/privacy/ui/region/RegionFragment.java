@@ -1,4 +1,4 @@
-package com.cypherpunk.privacy.ui.main;
+package com.cypherpunk.privacy.ui.region;
 
 import android.content.Context;
 import android.databinding.DataBindingUtil;
@@ -22,7 +22,6 @@ import com.cypherpunk.privacy.data.api.json.RegionResult;
 import com.cypherpunk.privacy.databinding.FragmentRegionBinding;
 import com.cypherpunk.privacy.model.CypherpunkSetting;
 import com.cypherpunk.privacy.model.Region;
-import com.cypherpunk.privacy.ui.region.ConnectConfirmationDialogFragment;
 
 import java.util.ArrayList;
 import java.util.Date;

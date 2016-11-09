@@ -106,16 +106,16 @@
             android:name=".ui.settings.NetworkActivity"
             android:theme="@style/AppTheme.DialogWhenLarge" />
         <activity
-            android:name=".ui.settings.ContactActivity"
+            android:name=".ui.account.ContactActivity"
             android:theme="@style/AppTheme.DialogWhenLarge" />
         <activity
-            android:name=".ui.settings.EditEmailActivity"
+            android:name=".ui.account.EditEmailActivity"
             android:theme="@style/AppTheme.DialogWhenLarge" />
         <activity
-            android:name=".ui.settings.EditPasswordActivity"
+            android:name=".ui.account.EditPasswordActivity"
             android:theme="@style/AppTheme.DialogWhenLarge" />
         <activity
-            android:name=".ui.settings.UpgradePlanActivity"
+            android:name=".ui.account.UpgradePlanActivity"
             android:theme="@style/AppTheme.DialogWhenLarge" />
     </application>
 
