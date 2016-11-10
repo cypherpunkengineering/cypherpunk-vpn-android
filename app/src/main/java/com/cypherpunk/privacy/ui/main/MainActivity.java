@@ -35,8 +35,8 @@ import android.widget.CompoundButton;
 import com.cypherpunk.privacy.CypherpunkApplication;
 import com.cypherpunk.privacy.R;
 import com.cypherpunk.privacy.data.api.UserManager;
-import com.cypherpunk.privacy.ui.region.ConnectConfirmationDialogFragment;
 import com.cypherpunk.privacy.ui.account.AccountSettingsFragment;
+import com.cypherpunk.privacy.ui.region.ConnectConfirmationDialogFragment;
 import com.cypherpunk.privacy.ui.region.RegionFragment;
 import com.cypherpunk.privacy.ui.settings.RateDialogFragment;
 import com.cypherpunk.privacy.ui.settings.SettingConnectDialogFragment;
@@ -214,6 +214,18 @@ public class MainActivity extends AppCompatActivity
                     break;
             }
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        binding.binaryView.startAnimation();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        binding.binaryView.stopAnimation();
     }
 
     @Override
