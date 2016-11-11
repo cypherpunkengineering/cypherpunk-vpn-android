@@ -25,8 +25,6 @@ public interface AppComponent {
 
     void inject(SignUpActivity target);
 
-    void inject(StatusActivity target);
-
     void inject(AccountSettingsFragment target);
 
     void inject(IdentifyEmailActivity target);

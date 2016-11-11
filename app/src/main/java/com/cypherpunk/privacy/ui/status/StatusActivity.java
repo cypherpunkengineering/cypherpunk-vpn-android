@@ -15,20 +15,13 @@ import android.view.View;
 
 import com.cypherpunk.privacy.CypherpunkApplication;
 import com.cypherpunk.privacy.R;
-import com.cypherpunk.privacy.data.api.JsonipService;
-import com.cypherpunk.privacy.data.api.json.JsonipResult;
 import com.cypherpunk.privacy.databinding.ActivityStatusBinding;
 import com.cypherpunk.privacy.model.Region;
 import com.cypherpunk.privacy.vpn.CypherpunkVpnStatus;
 
-import javax.inject.Inject;
-
 import de.blinkt.openvpn.core.VpnStatus;
 import io.realm.Realm;
-import rx.SingleSubscriber;
 import rx.Subscription;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
 import rx.subscriptions.Subscriptions;
 
 /**
@@ -43,8 +36,8 @@ public class StatusActivity extends AppCompatActivity implements VpnStatus.State
     private Subscription subscription = Subscriptions.empty();
     private Region region;
 
-    @Inject
-    JsonipService webService;
+//    @Inject
+//    JsonipService webService;
 
     @NonNull
     public static Intent createIntent(@NonNull Context context, @NonNull String locationId) {
@@ -76,7 +69,7 @@ public class StatusActivity extends AppCompatActivity implements VpnStatus.State
         if (!TextUtils.isEmpty(status.getNewIp())) {
             binding.newIp.setText(status.getNewIp());
         } else if (status.isConnected()) {
-            getIpAddress();
+//            getIpAddress();
         }
 
         Realm realm = CypherpunkApplication.instance.getAppComponent().getDefaultRealm();
@@ -131,29 +124,29 @@ public class StatusActivity extends AppCompatActivity implements VpnStatus.State
             }
         });
     }
-
-    private void getIpAddress() {
-        subscription = webService.getIpAddress()
-                .subscribeOn(Schedulers.newThread())
-                .retry(1)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new SingleSubscriber<JsonipResult>() {
-                    @Override
-                    public void onSuccess(JsonipResult jsonipResult) {
-                        if (status.isConnected()) {
-                            status.setNewIp(jsonipResult.getIp());
-                            binding.newIp.setText(status.getNewIp());
-                        }
-                    }
-
-                    @Override
-                    public void onError(Throwable error) {
-                        error.printStackTrace();
-                        if (status.isConnected()) {
-                            status.setNewIp("");
-                            binding.newIp.setText("-");
-                        }
-                    }
-                });
-    }
+//
+//    private void getIpAddress() {
+//        subscription = webService.getIpAddress()
+//                .subscribeOn(Schedulers.newThread())
+//                .retry(1)
+//                .observeOn(AndroidSchedulers.mainThread())
+//                .subscribe(new SingleSubscriber<JsonipResult>() {
+//                    @Override
+//                    public void onSuccess(JsonipResult jsonipResult) {
+//                        if (status.isConnected()) {
+//                            status.setNewIp(jsonipResult.getIp());
+//                            binding.newIp.setText(status.getNewIp());
+//                        }
+//                    }
+//
+//                    @Override
+//                    public void onError(Throwable error) {
+//                        error.printStackTrace();
+//                        if (status.isConnected()) {
+//                            status.setNewIp("");
+//                            binding.newIp.setText("-");
+//                        }
+//                    }
+//                });
+//    }
 }

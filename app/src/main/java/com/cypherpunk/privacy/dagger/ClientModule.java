@@ -2,9 +2,6 @@ package com.cypherpunk.privacy.dagger;
 
 import com.cypherpunk.privacy.data.api.CookieManager;
 import com.cypherpunk.privacy.data.api.CypherpunkService;
-import com.cypherpunk.privacy.data.api.JsonipService;
-
-import java.util.concurrent.TimeUnit;
 
 import javax.inject.Singleton;
 
@@ -43,23 +40,5 @@ public class ClientModule {
     @Singleton
     public CypherpunkService provideCypherpunkService(Retrofit retrofit) {
         return retrofit.create(CypherpunkService.class);
-    }
-
-    @Provides
-    @Singleton
-    public JsonipService provideJsonipService() {
-        //TODO:
-        OkHttpClient.Builder builder = new OkHttpClient.Builder();
-        HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
-        logging.setLevel(HttpLoggingInterceptor.Level.BODY);
-        builder.readTimeout(3, TimeUnit.SECONDS);
-        //builder.addInterceptor(logging);
-
-        Retrofit build = new Retrofit.Builder().client(builder.build())
-                .baseUrl(JsonipService.ENDPOINT)
-                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
-                .addConverterFactory(MoshiConverterFactory.create())
-                .build();
-        return build.create(JsonipService.class);
     }
 }
