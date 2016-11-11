@@ -49,7 +49,7 @@ public class StatusActivity extends AppCompatActivity implements VpnStatus.State
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ((CypherpunkApplication) getApplication()).getAppComponent().inject(this);
+//        ((CypherpunkApplication) getApplication()).getAppComponent().inject(this);
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_status);
 

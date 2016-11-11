@@ -22,6 +22,7 @@ import com.cypherpunk.privacy.data.api.json.RegionResult;
 import com.cypherpunk.privacy.databinding.FragmentRegionBinding;
 import com.cypherpunk.privacy.model.CypherpunkSetting;
 import com.cypherpunk.privacy.model.Region;
+import com.cypherpunk.privacy.utils.ResourceUtil;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -91,7 +92,7 @@ public class RegionFragment extends Fragment {
             Region region = realm.where(Region.class).equalTo("id", setting.regionId).findFirst();
             if (region != null) {
                 binding.regionName.setText(region.getRegionName());
-                int nationalFlagResId = getFlagDrawableByKey(region.getCountryCode().toLowerCase());
+                int nationalFlagResId = ResourceUtil.getFlagDrawableByKey(getContext(), region.getCountryCode().toLowerCase());
                 binding.nationalFlag.setImageResource(nationalFlagResId);
                 listener.onSelectedRegionChanged(region.getRegionName(), nationalFlagResId);
 
@@ -169,11 +170,6 @@ public class RegionFragment extends Fragment {
         getServerList();
     }
 
-    private int getFlagDrawableByKey(String key) {
-        String packageName = getContext().getPackageName();
-        return getContext().getResources().getIdentifier("flag_" + key, "drawable", packageName);
-    }
-
     private ArrayList<Region> getFavoriteRegionList() {
         RealmResults<Region> regionList = realm.where(Region.class).equalTo("favorited", true).findAllSorted("lastConnectedDate", Sort.DESCENDING);
         return new ArrayList<>(regionList);
@@ -203,7 +199,7 @@ public class RegionFragment extends Fragment {
         dialogFragment.show(getChildFragmentManager());
 
         binding.regionName.setText(region.getRegionName());
-        int nationalFlagResId = getFlagDrawableByKey(region.getCountryCode().toLowerCase());
+        int nationalFlagResId = ResourceUtil.getFlagDrawableByKey(getContext(), region.getCountryCode().toLowerCase());
         binding.nationalFlag.setImageResource(nationalFlagResId);
         adapter.addRegionList(getFavoriteRegionList(), getRecentlyConnectedList(), getOtherList());
 
@@ -276,7 +272,7 @@ public class RegionFragment extends Fragment {
                                        setting.save();
 
                                        binding.regionName.setText(first.getRegionName());
-                                       int nationalFlagResId = getFlagDrawableByKey(first.getCountryCode().toLowerCase());
+                                       int nationalFlagResId = ResourceUtil.getFlagDrawableByKey(getContext(), first.getCountryCode().toLowerCase());
                                        binding.nationalFlag.setImageResource(nationalFlagResId);
                                    }
                                    binding.progress.setVisibility(View.GONE);

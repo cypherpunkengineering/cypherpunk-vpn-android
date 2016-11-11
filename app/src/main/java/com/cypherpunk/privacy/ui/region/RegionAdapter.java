@@ -13,6 +13,7 @@ import com.cypherpunk.privacy.R;
 import com.cypherpunk.privacy.databinding.ListItemRegionBinding;
 import com.cypherpunk.privacy.model.CypherpunkSetting;
 import com.cypherpunk.privacy.model.Region;
+import com.cypherpunk.privacy.utils.ResourceUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -77,7 +78,7 @@ public class RegionAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                 }
             });
 
-            binding.nationalFlag.setImageResource(getFlagDrawableByKey(item.getCountryCode().toLowerCase()));
+            binding.nationalFlag.setImageResource(ResourceUtil.getFlagDrawableByKey(getContext(), item.getCountryCode().toLowerCase()));
 
             CypherpunkSetting setting = new CypherpunkSetting();
             binding.regionContainer.setBackgroundResource(
@@ -143,11 +144,6 @@ public class RegionAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         int size = items.size();
         items.clear();
         notifyItemRangeRemoved(0, size);
-    }
-
-    private int getFlagDrawableByKey(String key) {
-        String packageName = getContext().getPackageName();
-        return getContext().getResources().getIdentifier("flag_" + key, "drawable", packageName);
     }
 
     private static class ViewHolder extends RecyclerView.ViewHolder {
