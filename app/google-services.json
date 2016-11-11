@@ -1,0 +1,73 @@
+{
+  "project_info": {
+    "project_number": "385823011522",
+    "firebase_url": "https://cypherpunk-analytics.firebaseio.com",
+    "project_id": "cypherpunk-analytics",
+    "storage_bucket": "cypherpunk-analytics.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:385823011522:android:c5d53084dcb0021f",
+        "android_client_info": {
+          "package_name": "com.cypherpunk.privacy"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "385823011522-69nt2ekalsl68np5sl5l4ifnoeesmj46.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDSCP3IQ0g0bYMN1oEWdEY2qySBDBj-J-I"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:385823011522:android:e6af8b7ff518b9f1",
+        "android_client_info": {
+          "package_name": "com.cypherpunk.privacy.debug"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "385823011522-69nt2ekalsl68np5sl5l4ifnoeesmj46.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDSCP3IQ0g0bYMN1oEWdEY2qySBDBj-J-I"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
