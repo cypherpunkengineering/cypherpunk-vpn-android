@@ -27,6 +27,7 @@ import com.cypherpunk.privacy.databinding.ActivityTutorialBinding;
 import com.cypherpunk.privacy.model.CypherpunkSetting;
 import com.cypherpunk.privacy.model.Region;
 import com.cypherpunk.privacy.ui.main.MainActivity;
+import com.google.firebase.analytics.FirebaseAnalytics;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -104,6 +105,9 @@ public class TutorialActivity extends AppCompatActivity {
                         setting.analytics = true;
                         setting.save();
 
+                        // enable firebase
+                        FirebaseAnalytics.getInstance(getApplicationContext()).setAnalyticsCollectionEnabled(true);
+
                         goToMainScreen();
                         break;
                     }
@@ -117,6 +121,9 @@ public class TutorialActivity extends AppCompatActivity {
                 CypherpunkSetting setting = new CypherpunkSetting();
                 setting.analytics = false;
                 setting.save();
+
+                // disable firebase
+                FirebaseAnalytics.getInstance(getApplicationContext()).setAnalyticsCollectionEnabled(false);
 
                 goToMainScreen();
             }
