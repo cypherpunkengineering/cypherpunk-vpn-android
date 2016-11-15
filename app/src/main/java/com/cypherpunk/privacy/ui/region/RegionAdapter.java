@@ -1,7 +1,9 @@
 package com.cypherpunk.privacy.ui.region;
 
 import android.databinding.DataBindingUtil;
+import android.support.annotation.ColorInt;
 import android.support.annotation.NonNull;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -28,6 +30,16 @@ public class RegionAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     private static final int ITEM_VIEW_TYPE_FASTEST_LOCATION = 3;
 
     private List<Object> items = new ArrayList<>();
+
+    @ColorInt
+    private final int textColor;
+    @ColorInt
+    private final int selectedTextColor;
+
+    public RegionAdapter() {
+        textColor = ContextCompat.getColor(getContext(), android.R.color.white);
+        selectedTextColor = ContextCompat.getColor(getContext(), R.color.region_selected_text);
+    }
 
     protected void onFavorite(@NonNull String regionId, boolean favorite) {
     }
@@ -81,10 +93,8 @@ public class RegionAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             binding.nationalFlag.setImageResource(ResourceUtil.getFlagDrawableByKey(getContext(), item.getCountryCode().toLowerCase()));
 
             CypherpunkSetting setting = new CypherpunkSetting();
-            binding.regionContainer.setBackgroundResource(
-                    !TextUtils.isEmpty(setting.regionId) && regionId.equals(setting.regionId) ?
-                            R.drawable.list_item_region_selected : R.drawable.list_item_background_dark);
-
+            binding.regionName.setTextColor(!TextUtils.isEmpty(setting.regionId) && regionId.equals(setting.regionId) ?
+                    selectedTextColor : textColor);
         } else if (viewType == ITEM_VIEW_TYPE_FASTEST_LOCATION) {
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
