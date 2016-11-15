@@ -140,6 +140,15 @@ public class AccountSettingsFragment extends PreferenceFragmentCompat {
                 return true;
             }
         });
+
+        findPreference("help").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                startActivity(new Intent(Intent.ACTION_VIEW,
+                        Uri.parse(getString(R.string.help_url))));
+                return true;
+            }
+        });
     }
 
     @Override
