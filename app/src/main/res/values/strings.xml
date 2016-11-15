@@ -13,6 +13,7 @@
     <!-- url -->
     <string name="store_url">https://play.google.com/store/apps/details?id=com.cypherpunk.privacy</string>
     <string name="contact_us_url">https://cypherpunk.zendesk.com/tickets/new</string>
+    <string name="help_url">https://support.cypherpunk.com/hc</string>
 
     <!-- sign in-->
     <string name="error_field_required">This field is required</string>
