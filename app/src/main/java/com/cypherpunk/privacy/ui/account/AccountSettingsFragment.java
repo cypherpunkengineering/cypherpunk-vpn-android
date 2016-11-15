@@ -131,6 +131,15 @@ public class AccountSettingsFragment extends PreferenceFragmentCompat {
                 return true;
             }
         });
+
+        findPreference("contact_us").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                startActivity(new Intent(Intent.ACTION_VIEW,
+                        Uri.parse(getString(R.string.contact_us_url))));
+                return true;
+            }
+        });
     }
 
     @Override
