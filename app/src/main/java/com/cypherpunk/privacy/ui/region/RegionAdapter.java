@@ -125,28 +125,29 @@ public class RegionAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                               @NonNull List<Region> recentlyConnectedItems,
                               @NonNull List<Region> otherItems) {
         clear();
-        addFavoriteItems(favoriteItems);
+        items.add(new FastestLocation());
         addRecentlyConnectedItems(recentlyConnectedItems);
+        addFavoriteItems(favoriteItems);
         addAllItems(otherItems);
         notifyItemRangeInserted(0, items.size());
     }
 
     private void addFavoriteItems(@NonNull List<Region> data) {
-        items.add(new FastestLocation());
-        items.addAll(data);
         if (!data.isEmpty()) {
             items.add(new FavoriteDivider());
         }
+        items.addAll(data);
     }
 
     private void addRecentlyConnectedItems(List<Region> data) {
-        items.addAll(data);
         if (!data.isEmpty()) {
             items.add(new ConnectedDivider());
         }
+        items.addAll(data);
     }
 
     private void addAllItems(@NonNull List<Region> data) {
+        items.add(new Divider());
         items.addAll(data);
     }
 
@@ -181,6 +182,9 @@ public class RegionAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     }
 
     private class ConnectedDivider {
+    }
+
+    private class Divider {
     }
 
     private class FastestLocation {
