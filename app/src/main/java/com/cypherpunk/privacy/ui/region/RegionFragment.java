@@ -176,7 +176,7 @@ public class RegionFragment extends Fragment {
     }
 
     private ArrayList<Region> getRecentlyConnectedList() {
-        RealmResults<Region> regionList = realm.where(Region.class).equalTo("favorited", false).notEqualTo("lastConnectedDate", new Date(0)).findAllSorted("lastConnectedDate", Sort.DESCENDING);
+        RealmResults<Region> regionList = realm.where(Region.class).notEqualTo("lastConnectedDate", new Date(0)).findAllSorted("lastConnectedDate", Sort.DESCENDING);
         ArrayList<Region> regions = new ArrayList<>(regionList);
         if (regionList.size() > 3) {
             regions = new ArrayList<>(regionList.subList(0, 3));
@@ -185,7 +185,7 @@ public class RegionFragment extends Fragment {
     }
 
     private ArrayList<Region> getOtherList() {
-        RealmResults<Region> regionList = realm.where(Region.class).equalTo("favorited", false).equalTo("lastConnectedDate", new Date(0)).findAll();
+        RealmResults<Region> regionList = realm.where(Region.class).equalTo("lastConnectedDate", new Date(0)).findAll();
         return new ArrayList<>(regionList);
     }
 
