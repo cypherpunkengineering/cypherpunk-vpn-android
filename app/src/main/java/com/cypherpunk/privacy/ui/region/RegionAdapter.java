@@ -1,7 +1,9 @@
 package com.cypherpunk.privacy.ui.region;
 
 import android.databinding.DataBindingUtil;
+import android.support.annotation.ColorInt;
 import android.support.annotation.NonNull;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -11,6 +13,7 @@ import android.widget.CompoundButton;
 
 import com.cypherpunk.privacy.R;
 import com.cypherpunk.privacy.databinding.ListItemRegionBinding;
+import com.cypherpunk.privacy.databinding.ListItemRegionDividerBinding;
 import com.cypherpunk.privacy.model.CypherpunkSetting;
 import com.cypherpunk.privacy.model.Region;
 import com.cypherpunk.privacy.utils.ResourceUtil;
@@ -29,6 +32,16 @@ public class RegionAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
     private List<Object> items = new ArrayList<>();
 
+    @ColorInt
+    private final int textColor;
+    @ColorInt
+    private final int selectedTextColor;
+
+    public RegionAdapter() {
+        textColor = ContextCompat.getColor(getContext(), android.R.color.white);
+        selectedTextColor = ContextCompat.getColor(getContext(), R.color.region_selected_text);
+    }
+
     protected void onFavorite(@NonNull String regionId, boolean favorite) {
     }
 
@@ -42,10 +55,10 @@ public class RegionAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         switch (viewType) {
             case ITEM_VIEW_TYPE_ITEM:
-                return new ViewHolder(LayoutInflater.from(parent.getContext())
+                return new RegionViewHolder(LayoutInflater.from(parent.getContext())
                         .inflate(R.layout.list_item_region, parent, false));
             case ITEM_VIEW_TYPE_FASTEST_LOCATION:
-                return new DividerViewHolder(LayoutInflater.from(parent.getContext())
+                return new ViewHolder(LayoutInflater.from(parent.getContext())
                         .inflate(R.layout.list_item_region_fastest_location, parent, false));
             default:
                 return new DividerViewHolder(LayoutInflater.from(parent.getContext())
@@ -56,42 +69,48 @@ public class RegionAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         final int viewType = holder.getItemViewType();
-        if (viewType == ITEM_VIEW_TYPE_ITEM) {
+        switch (viewType) {
+            case ITEM_VIEW_TYPE_ITEM:
+                RegionViewHolder itemHolder = (RegionViewHolder) holder;
+                ListItemRegionBinding binding = itemHolder.getBinding();
+                final Region item = (Region) items.get(position);
+                final String regionId = item.getId();
+                binding.regionName.setText(item.getRegionName());
+                binding.favorite.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                    @Override
+                    public void onCheckedChanged(CompoundButton compoundButton, final boolean b) {
+                        onFavorite(regionId, b);
+                    }
+                });
+                binding.favorite.setChecked(item.isFavorited());
 
-            ViewHolder itemHolder = (ViewHolder) holder;
-            ListItemRegionBinding binding = itemHolder.getBinding();
-            final Region item = (Region) items.get(position);
-            final String regionId = item.getId();
-            binding.regionName.setText(item.getRegionName());
-            binding.favorite.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                @Override
-                public void onCheckedChanged(CompoundButton compoundButton, final boolean b) {
-                    onFavorite(regionId, b);
-                }
-            });
-            binding.favorite.setChecked(item.isFavorited());
+                holder.itemView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        onItemClick(regionId);
+                    }
+                });
 
-            holder.itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    onItemClick(regionId);
-                }
-            });
+                binding.nationalFlag.setImageResource(ResourceUtil.getFlagDrawableByKey(getContext(), item.getCountryCode().toLowerCase()));
 
-            binding.nationalFlag.setImageResource(ResourceUtil.getFlagDrawableByKey(getContext(), item.getCountryCode().toLowerCase()));
-
-            CypherpunkSetting setting = new CypherpunkSetting();
-            binding.regionContainer.setBackgroundResource(
-                    !TextUtils.isEmpty(setting.regionId) && regionId.equals(setting.regionId) ?
-                            R.drawable.list_item_region_selected : R.drawable.list_item_background_dark);
-
-        } else if (viewType == ITEM_VIEW_TYPE_FASTEST_LOCATION) {
-            holder.itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    onFastestLocationClick();
-                }
-            });
+                CypherpunkSetting setting = new CypherpunkSetting();
+                binding.regionName.setTextColor(!TextUtils.isEmpty(setting.regionId) && regionId.equals(setting.regionId) ?
+                        selectedTextColor : textColor);
+                break;
+            case ITEM_VIEW_TYPE_FASTEST_LOCATION:
+                holder.itemView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        onFastestLocationClick();
+                    }
+                });
+                break;
+            case ITEM_VIEW_TYPE_DIVIDER:
+                DividerViewHolder dividerHolder = (DividerViewHolder) holder;
+                ListItemRegionDividerBinding dividerBinding = dividerHolder.getBinding();
+                final Divider dividerItem = (Divider) items.get(position);
+                dividerBinding.text.setText(dividerItem.title);
+                break;
         }
     }
 
@@ -115,28 +134,29 @@ public class RegionAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                               @NonNull List<Region> recentlyConnectedItems,
                               @NonNull List<Region> otherItems) {
         clear();
-        addFavoriteItems(favoriteItems);
+        items.add(new FastestLocation());
         addRecentlyConnectedItems(recentlyConnectedItems);
+        addFavoriteItems(favoriteItems);
         addAllItems(otherItems);
         notifyItemRangeInserted(0, items.size());
     }
 
     private void addFavoriteItems(@NonNull List<Region> data) {
-        items.add(new FastestLocation());
-        items.addAll(data);
         if (!data.isEmpty()) {
-            items.add(new FavoriteDivider());
+            items.add(new Divider(getContext().getString(R.string.region_list_favorite)));
         }
+        items.addAll(data);
     }
 
     private void addRecentlyConnectedItems(List<Region> data) {
-        items.addAll(data);
         if (!data.isEmpty()) {
-            items.add(new ConnectedDivider());
+            items.add(new Divider(getContext().getString(R.string.region_list_recent)));
         }
+        items.addAll(data);
     }
 
     private void addAllItems(@NonNull List<Region> data) {
+        items.add(new Divider(getContext().getString(R.string.region_list_all)));
         items.addAll(data);
     }
 
@@ -146,11 +166,11 @@ public class RegionAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         notifyItemRangeRemoved(0, size);
     }
 
-    private static class ViewHolder extends RecyclerView.ViewHolder {
+    private static class RegionViewHolder extends RecyclerView.ViewHolder {
 
         private ListItemRegionBinding binding;
 
-        ViewHolder(View view) {
+        RegionViewHolder(View view) {
             super(view);
             binding = DataBindingUtil.bind(view);
         }
@@ -160,17 +180,34 @@ public class RegionAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         }
     }
 
-    private static class DividerViewHolder extends RecyclerView.ViewHolder {
+    private static class ViewHolder extends RecyclerView.ViewHolder {
 
-        DividerViewHolder(View view) {
-            super(view);
+        public ViewHolder(View itemView) {
+            super(itemView);
         }
     }
 
-    private class FavoriteDivider {
+    private static class DividerViewHolder extends RecyclerView.ViewHolder {
+
+        private ListItemRegionDividerBinding binding;
+
+        DividerViewHolder(View view) {
+            super(view);
+            binding = DataBindingUtil.bind(view);
+        }
+
+        public ListItemRegionDividerBinding getBinding() {
+            return binding;
+        }
+
     }
 
-    private class ConnectedDivider {
+    private class Divider {
+        private String title;
+
+        public Divider(String title) {
+            this.title = title;
+        }
     }
 
     private class FastestLocation {

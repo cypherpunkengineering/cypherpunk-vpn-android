@@ -263,5 +263,8 @@
     <string name="tutorial_2_title">One Final Step</string>
     <string name="tutorial_2_text">Share anonymized analytics about your VPN connections to help make Cypherpunk Privacy faster and more reliable.</string>
     <string name="tutorial_don_t_allow">Don’t allow</string>
+    <string name="region_list_favorite">FAVORITE</string>
+    <string name="region_list_recent">RECENT</string>
+    <string name="region_list_all">ALL</string>
 
 </resources>
