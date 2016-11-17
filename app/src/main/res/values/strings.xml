@@ -167,12 +167,13 @@
     <string name="account_setting_help">Help</string>
     <string name="account_setting_logout">Log out</string>
 
-    <string name="account_plan_none">Free</string>
-    <string name="account_plan_monthly">Monthly Premium</string>
-    <string name="account_plan_semiannually">Semiannually Premium</string>
-    <string name="account_plan_annually">Annually Premium</string>
+    <string name="account_type_free">Free</string>
+    <string name="account_type_premium">Premium</string>
+    <string name="account_plan_monthly">Monthly</string>
+    <string name="account_plan_semiannually">Semiannually</string>
+    <string name="account_plan_annually">Annually</string>
     <string name="account_plan_expiration_format">dd/MM/yyyy</string>
-    <string name="account_plan_expiration">Renews On %1$s</string>
+    <string name="account_plan_expiration">Renews %1$s On %2$s</string>
 
     <!-- edit profile-->
     <string name="title_activity_edit_email">Update Email</string>
