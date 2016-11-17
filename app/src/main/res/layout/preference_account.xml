@@ -9,7 +9,7 @@
     android:background="@color/background_dark"
     android:gravity="center_horizontal"
     android:orientation="vertical"
-    android:padding="8dp">
+    android:padding="14dp">
 
     <com.cypherpunk.privacy.widget.TypefaceTextView
         android:id="@+id/username"
@@ -25,18 +25,22 @@
         tools:text="wiz" />
 
     <com.cypherpunk.privacy.widget.TypefaceTextView
-        android:id="@+id/renewal"
+        android:id="@+id/type"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="6dp"
         android:textSize="18sp"
+        app:fontName="DosisMedium"
         tools:text="Monthly Premium" />
 
     <com.cypherpunk.privacy.widget.TypefaceTextView
         android:id="@+id/expiration"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="6dp"
         android:textColor="?android:attr/textColorSecondary"
         android:textSize="14sp"
+        app:fontName="DosisMedium"
         tools:text="Renews On 02/02/2016" />
 
 </LinearLayout>

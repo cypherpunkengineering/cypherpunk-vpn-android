@@ -64,8 +64,8 @@ public class AccountSettingsFragment extends PreferenceFragmentCompat {
         accountPreference = (AccountPreference) findPreference("account");
         if (!TextUtils.isEmpty(user.userStatusRenewal)) {
             accountPreference.setUsernameText(user.mail);
-            accountPreference.setRenewal(user.userStatusRenewal);
-            accountPreference.setExpiration(user.userStatusExpiration);
+            accountPreference.setType(user.userStatusType);
+            accountPreference.setRenewalAndExpiration(user.userStatusRenewal, user.userStatusExpiration);
         }
 
         getStatus();
@@ -190,8 +190,8 @@ public class AccountSettingsFragment extends PreferenceFragmentCompat {
                         statusPref.save();
 
                         accountPreference.setUsernameText(statusPref.mail);
-                        accountPreference.setRenewal(status.getRenewal());
-                        accountPreference.setExpiration(status.getExpiration());
+                        accountPreference.setType(status.getType());
+                        accountPreference.setRenewalAndExpiration(status.getRenewal(), status.getExpiration());
                     }
 
                     @Override
