@@ -64,7 +64,7 @@ public class SignInActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         ((CypherpunkApplication) getApplication()).getAppComponent().inject(this);
 
-        if (getResources().getBoolean(R.bool.is_tablet)) {
+        if (!getResources().getBoolean(R.bool.is_tablet)) {
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         }
 
