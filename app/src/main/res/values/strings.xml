@@ -15,6 +15,9 @@
     <string name="contact_us_url">https://cypherpunk.zendesk.com/tickets/new</string>
     <string name="help_url">https://support.cypherpunk.com/hc</string>
 
+    <string name="share_subject">Get 30 Days Premium Free [Cypherpunk]</string>
+    <string name="share_text">We’ll give you both 30 days free! https://play.google.com/store/apps/details?id=com.cypherpunk.privacy</string>
+
     <!-- sign in-->
     <string name="error_field_required">This field is required</string>
     <string name="error_invalid_email">invalid email</string>
@@ -216,6 +219,7 @@
     <string name="premium_free_facebook">Facebook</string>
     <string name="premium_free_twitter">Twitter</string>
     <string name="premium_free_email">Email</string>
+    <string name="premium_free_share">Share</string>
 
     <!-- introduction -->
     <string name="introduction_start_free_now">Start Free Now</string>
