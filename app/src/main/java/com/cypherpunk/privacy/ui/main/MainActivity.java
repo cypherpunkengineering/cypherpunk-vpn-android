@@ -76,6 +76,11 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            findViewById(android.R.id.content).setSystemUiVisibility(
+                    View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
+        }
+
         if (!UserManager.isSignedIn()) {
             Intent intent = new Intent(this, IdentifyEmailActivity.class);
             TaskStackBuilder builder = TaskStackBuilder.create(this);
@@ -105,7 +110,7 @@ public class MainActivity extends AppCompatActivity
         slidingMenu.setMode(SlidingMenu.LEFT_RIGHT);
         slidingMenu.setFadeDegree(0.35f);
         slidingMenu.setBehindWidthRes(R.dimen.slide_menu_width);
-        slidingMenu.attachToActivity(this, SlidingMenu.SLIDING_CONTENT);
+        slidingMenu.attachToActivity(this, SlidingMenu.SLIDING_CONTENT, true);
         slidingMenu.setSecondaryMenu(R.layout.frame_main_right);
         slidingMenu.setMenu(R.layout.frame_main_left);
         slidingMenu.setSecondaryShadowDrawable(R.drawable.slide_menu_shadow_right);
