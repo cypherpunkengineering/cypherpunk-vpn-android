@@ -1,7 +1,7 @@
 package com.cypherpunk.privacy.data.api;
 
 import com.cypherpunk.privacy.data.api.json.ChangeEmailRequest;
-import com.cypherpunk.privacy.data.api.json.IdentifyEmailRequest;
+import com.cypherpunk.privacy.data.api.json.EmailRequest;
 import com.cypherpunk.privacy.data.api.json.LoginRequest;
 import com.cypherpunk.privacy.data.api.json.LoginResult;
 import com.cypherpunk.privacy.data.api.json.RegionResult;
@@ -32,7 +32,7 @@ public interface CypherpunkService {
 
     @POST("/api/v0/account/identify/email")
     Single<ResponseBody> identifyEmail(
-            @Body IdentifyEmailRequest identifyEmailRequest);
+            @Body EmailRequest emailRequest);
 
     @GET("/api/v0/subscription/status")
     Single<StatusResult> getStatus();
@@ -43,4 +43,8 @@ public interface CypherpunkService {
     @POST("/api/v0/account/email/change")
     Single<ResponseBody> changeEmail(
             @Body ChangeEmailRequest identifyEmailRequest);
+
+    @POST("/api/v1/account/password/recover")
+    Single<ResponseBody> recoverPassword(
+            @Body EmailRequest emailRequest);
 }
