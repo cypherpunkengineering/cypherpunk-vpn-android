@@ -174,7 +174,7 @@
     <string name="account_plan_monthly">Monthly</string>
     <string name="account_plan_semiannually">Semiannually</string>
     <string name="account_plan_annually">Annually</string>
-    <string name="account_plan_expiration_format">dd/MM/yyyy</string>
+    <string name="account_plan_expiration_format">MMM dd, yyyy</string>
     <string name="account_plan_expiration">Renews %1$s On %2$s</string>
 
     <!-- edit profile-->
