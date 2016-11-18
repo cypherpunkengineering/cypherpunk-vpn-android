@@ -42,4 +42,4 @@ deploy:
               mkdir -p $HOME/.ssh/
               echo '[builds-upload.cypherpunk.engineering]:92,[208.111.52.44]:92 ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBF3loDObhGOkV6ocni0AAv9il/yeQOuhzExcB9NHJRqGavyHhOi5NdZBEeNdXYYEou9vYilARYESVnknRJsK6nA=' > $HOME/.ssh/known_hosts
               BUILD_NUMBER=`date +%s`
-              scp -P92 "app/build/outputs/apk/app-debug.apk" "upload@builds-upload.cypherpunk.engineering:/data/builds/`printf 'cypherpunk-vpn-android-%05d' ${BUILD_NUMBER}`.apk"
+              scp -P92 "app/build/outputs/apk/app-debug.apk" "upload@builds-upload.cypherpunk.engineering:/data/builds/`printf 'cypherpunk-privacy-android-%05d' ${BUILD_NUMBER}`.apk"
