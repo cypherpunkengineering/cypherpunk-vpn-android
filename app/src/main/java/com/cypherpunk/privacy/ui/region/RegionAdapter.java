@@ -17,6 +17,7 @@ import com.cypherpunk.privacy.databinding.ListItemRegionDividerBinding;
 import com.cypherpunk.privacy.model.CypherpunkSetting;
 import com.cypherpunk.privacy.model.Region;
 import com.cypherpunk.privacy.utils.ResourceUtil;
+import com.cypherpunk.privacy.widget.StarView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -76,10 +77,11 @@ public class RegionAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                 final Region item = (Region) items.get(position);
                 final String regionId = item.getId();
                 binding.regionName.setText(item.getRegionName());
-                binding.favorite.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                binding.favorite.setOnCheckedChangeListener(new StarView.Listener() {
                     @Override
-                    public void onCheckedChanged(CompoundButton compoundButton, final boolean b) {
-                        onFavorite(regionId, b);
+                    public void onCheckedChanged(boolean checked) {
+                        onFavorite(regionId, checked);
+
                     }
                 });
                 binding.favorite.setChecked(item.isFavorited());
