@@ -26,7 +26,7 @@
     <string name="api_error">Error</string>
     <string name="invalid_mail_password">invalid password</string>
     <string name="sign_in_forgot_password">Forgot password?</string>
-    <string name="sign_in_set_password_recovery">We sent password recovery email.</string>
+    <string name="sign_in_set_password_recovery">We sent you password recovery email.</string>
     <string name="sign_in_email_hint">Username/Email</string>
     <string name="sign_in_password_hint">Password</string>
     <string name="sign_in_no_account">Don’t have an account yet?</string>
@@ -44,6 +44,7 @@
     <string name="confirmation_email_text2">Please check your Email App and\n do something….</string>
     <string name="confirmation_back_login">Back to Log In</string>
     <string name="resend_email">Resend Email</string>
+    <string name="confirmation_email_resend">We sent you email</string>
 
     <!-- identify email -->
     <string name="identify_email_text">Welcome to Cypherpunk</string>

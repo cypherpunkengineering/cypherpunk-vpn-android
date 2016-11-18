@@ -46,6 +46,8 @@ public class SignUpActivity extends AppCompatActivity {
     @Inject
     CypherpunkService webService;
 
+    private String email;
+
     @NonNull
     public static Intent createIntent(@NonNull Context context, @NonNull String email) {
         Intent intent = new Intent(context, SignUpActivity.class);
@@ -89,6 +91,8 @@ public class SignUpActivity extends AppCompatActivity {
             }
         });
 
+        email = getIntent().getStringExtra(EXTRA_EMAIL);
+
         dialogFragment = ProgressFragment.newInstance();
     }
 
@@ -119,14 +123,14 @@ public class SignUpActivity extends AppCompatActivity {
             dialogFragment.show(getSupportFragmentManager());
 
             subscription = webService
-                    .signup(new SignUpRequest(getIntent().getStringExtra(EXTRA_EMAIL), password))
+                    .signup(new SignUpRequest(email, password))
                     .subscribeOn(Schedulers.newThread())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(new SingleSubscriber<LoginResult>() {
                         @Override
                         public void onSuccess(LoginResult result) {
                             dialogFragment.dismiss();
-                            startActivity(new Intent(SignUpActivity.this, ConfirmationEmailActivity.class));
+                            startActivity(ConfirmationEmailActivity.createIntent(SignUpActivity.this, email));
                         }
 
                         @Override
