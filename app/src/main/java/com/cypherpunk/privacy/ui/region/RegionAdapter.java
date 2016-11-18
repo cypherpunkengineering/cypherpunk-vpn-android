@@ -137,8 +137,8 @@ public class RegionAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                               @NonNull List<Region> otherItems) {
         clear();
         items.add(new FastestLocation());
-        addRecentlyConnectedItems(recentlyConnectedItems);
         addFavoriteItems(favoriteItems);
+        addRecentlyConnectedItems(recentlyConnectedItems);
         addAllItems(otherItems);
         notifyItemRangeInserted(0, items.size());
     }
