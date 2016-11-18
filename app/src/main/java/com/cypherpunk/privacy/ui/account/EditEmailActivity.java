@@ -27,7 +27,6 @@ import java.net.UnknownHostException;
 import javax.inject.Inject;
 
 import okhttp3.ResponseBody;
-import retrofit2.adapter.rxjava.HttpException;
 import rx.Single;
 import rx.SingleSubscriber;
 import rx.Subscription;
@@ -96,30 +95,42 @@ public class EditEmailActivity extends AppCompatActivity {
     }
 
     private boolean validateEmailAndPassword() {
+        binding.email.setError(null);
+        binding.confirmEmail.setError(null);
+        binding.currentPassword.setError(null);
+
         String newEmail = binding.email.getText().toString();
         String confirmEmail = binding.confirmEmail.getText().toString();
+        String currentPassword = binding.currentPassword.getText().toString();
+
+        boolean result = true;
 
         if (TextUtils.isEmpty(newEmail)) {
             binding.email.setError(getString(R.string.error_field_required));
-            return false;
+            result = false;
         }
 
-        if (TextUtils.isEmpty(newEmail)) {
-            binding.email.setError(getString(R.string.error_field_required));
-            return false;
+        if (TextUtils.isEmpty(confirmEmail)) {
+            binding.confirmEmail.setError(getString(R.string.error_field_required));
+            result = false;
+        }
+
+        if (TextUtils.isEmpty(currentPassword)) {
+            binding.currentPassword.setError(getString(R.string.error_field_required));
+            result = false;
         }
 
         if (!isValidEmail(newEmail)) {
             binding.email.setError(getString(R.string.error_invalid_email));
-            return false;
+            result = false;
         }
 
         if (!newEmail.equals(confirmEmail)) {
             binding.confirmEmail.setError(getString(R.string.edit_email_account_error_do_not_match));
-            return false;
+            result = false;
         }
 
-        return true;
+        return result;
     }
 
     private void updateEmail(@NonNull final String email, @NonNull final String password) {
@@ -147,12 +158,8 @@ public class EditEmailActivity extends AppCompatActivity {
                         dialogFragment.dismiss();
                         if (error instanceof UnknownHostException) {
                             Toast.makeText(EditEmailActivity.this, R.string.no_internet, Toast.LENGTH_SHORT).show();
-                        } else if (error instanceof HttpException) {
-                            HttpException httpException = (HttpException) error;
-                            //TODO:
-//                            if (httpException.code() == 400) {
-//                                Toast.makeText(EditEmailActivity.this, R.string.invalid_mail_password, Toast.LENGTH_SHORT).show();
-//                            }
+                        } else {
+                            Toast.makeText(EditEmailActivity.this, R.string.api_error, Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
