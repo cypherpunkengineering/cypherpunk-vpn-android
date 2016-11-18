@@ -16,7 +16,7 @@ import android.widget.Toast;
 import com.cypherpunk.privacy.CypherpunkApplication;
 import com.cypherpunk.privacy.R;
 import com.cypherpunk.privacy.data.api.CypherpunkService;
-import com.cypherpunk.privacy.data.api.json.IdentifyEmailRequest;
+import com.cypherpunk.privacy.data.api.json.EmailRequest;
 import com.cypherpunk.privacy.databinding.ActivityIdentifyEmailBinding;
 
 import java.net.UnknownHostException;
@@ -107,7 +107,7 @@ public class IdentifyEmailActivity extends AppCompatActivity {
             dialogFragment.show(getSupportFragmentManager());
 
             subscription = webService
-                    .identifyEmail(new IdentifyEmailRequest(email))
+                    .identifyEmail(new EmailRequest(email))
                     .subscribeOn(Schedulers.newThread())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(new SingleSubscriber<ResponseBody>() {

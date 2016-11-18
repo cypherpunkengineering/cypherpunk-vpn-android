@@ -23,6 +23,7 @@ import com.cypherpunk.privacy.CypherpunkApplication;
 import com.cypherpunk.privacy.R;
 import com.cypherpunk.privacy.data.api.CypherpunkService;
 import com.cypherpunk.privacy.data.api.UserManager;
+import com.cypherpunk.privacy.data.api.json.EmailRequest;
 import com.cypherpunk.privacy.data.api.json.LoginRequest;
 import com.cypherpunk.privacy.data.api.json.LoginResult;
 import com.cypherpunk.privacy.databinding.ActivitySignInBinding;
@@ -32,12 +33,13 @@ import java.net.UnknownHostException;
 
 import javax.inject.Inject;
 
+import okhttp3.ResponseBody;
 import retrofit2.adapter.rxjava.HttpException;
 import rx.SingleSubscriber;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
-import rx.subscriptions.Subscriptions;
+import rx.subscriptions.CompositeSubscription;
 
 
 public class SignInActivity extends AppCompatActivity {
@@ -46,7 +48,7 @@ public class SignInActivity extends AppCompatActivity {
 
     private ActivitySignInBinding binding;
     private ProgressFragment dialogFragment;
-    private Subscription subscription = Subscriptions.empty();
+    private CompositeSubscription subscriptions = new CompositeSubscription();
 
     @Inject
     CypherpunkService webService;
@@ -104,7 +106,7 @@ public class SignInActivity extends AppCompatActivity {
         binding.forgotPasswordButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(SignInActivity.this, ResetPasswordActivity.class));
+                recoverPassword();
             }
         });
 
@@ -118,7 +120,7 @@ public class SignInActivity extends AppCompatActivity {
 
     @Override
     protected void onDestroy() {
-        subscription.unsubscribe();
+        subscriptions.unsubscribe();
         super.onDestroy();
     }
 
@@ -140,8 +142,7 @@ public class SignInActivity extends AppCompatActivity {
             focusView.requestFocus();
         } else {
             dialogFragment.show(getSupportFragmentManager());
-
-            subscription = webService
+            Subscription subscription = webService
                     .login(new LoginRequest(email, password))
                     .subscribeOn(Schedulers.newThread())
                     .observeOn(AndroidSchedulers.mainThread())
@@ -172,7 +173,34 @@ public class SignInActivity extends AppCompatActivity {
                             }
                         }
                     });
+            subscriptions.add(subscription);
         }
+    }
+
+    private void recoverPassword() {
+        dialogFragment.show(getSupportFragmentManager());
+        Subscription subscription = webService
+                .recoverPassword(new EmailRequest(email))
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new SingleSubscriber<ResponseBody>() {
+                    @Override
+                    public void onSuccess(ResponseBody result) {
+                        dialogFragment.dismiss();
+                        Toast.makeText(SignInActivity.this, R.string.sign_in_set_password_recovery, Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onError(Throwable error) {
+                        dialogFragment.dismiss();
+                        if (error instanceof UnknownHostException) {
+                            Toast.makeText(SignInActivity.this, R.string.no_internet, Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(SignInActivity.this, R.string.api_error, Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+        subscriptions.add(subscription);
     }
 
     @Override
