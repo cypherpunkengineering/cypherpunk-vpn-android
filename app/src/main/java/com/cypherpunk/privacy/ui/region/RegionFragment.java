@@ -185,7 +185,7 @@ public class RegionFragment extends Fragment {
     }
 
     private ArrayList<Region> getOtherList() {
-        RealmResults<Region> regionList = realm.where(Region.class).equalTo("lastConnectedDate", new Date(0)).findAll();
+        RealmResults<Region> regionList = realm.where(Region.class).findAll();
         return new ArrayList<>(regionList);
     }
 
