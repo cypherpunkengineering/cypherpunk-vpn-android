@@ -46,9 +46,15 @@ public class AccountPreference extends Preference {
 
         usernameView.setText(username);
         typeView.setText(type);
-        if (!TextUtils.isEmpty(expiration)) {
-            expirationViewView.setText(getContext().getString(R.string.account_plan_expiration, renewal, expiration));
-        }
+
+        if (!TextUtils.isEmpty(renewal) && renewal.equalsIgnoreCase("forever"))
+            expirationViewView.setText(getContext().getString(R.string.account_plan_expiration_forever));
+        else if (!TextUtils.isEmpty(expiration))
+            expirationViewView.setText(getContext().getString(R.string.account_plan_expiration_date, renewal, expiration));
+        else if (!TextUtils.isEmpty(renewal))
+            expirationViewView.setText(getContext().getString(R.string.account_plan_expiration_nodate, renewal));
+        else
+            expirationViewView.setText("");
     }
 
     public void setUsernameText(@NonNull String username) {
@@ -64,16 +70,29 @@ public class AccountPreference extends Preference {
             case "premium":
                 this.type = getContext().getString(R.string.account_type_premium);
                 break;
+            case "organization":
+                this.type = getContext().getString(R.string.account_type_organization);
+                break;
+            case "developer":
+                this.type = getContext().getString(R.string.account_type_developer);
+                break;
         }
         notifyChanged();
     }
 
     private static final String DATE_FORMAT_PATTERN = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
 
-    public void setRenewalAndExpiration(@NonNull String renewal, @NonNull String expiration) {
-        if (TextUtils.isEmpty(expiration)) {
-            // type: free
-            return;
+    public void setRenewalAndExpiration(@NonNull String renewal, @NonNull String expiration)
+    {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(DATE_FORMAT_PATTERN, Locale.getDefault());
+        Date date;
+
+        try {
+            date = simpleDateFormat.parse(expiration);
+        } catch (ParseException e) {
+            date = null;
+            //e.printStackTrace();
+            //return;
         }
 
         switch (renewal) {
@@ -86,19 +105,20 @@ public class AccountPreference extends Preference {
             case "annually":
                 this.renewal = getContext().getString(R.string.account_plan_annually);
                 break;
+            case "forever":
+                this.renewal = getContext().getString(R.string.account_plan_forever);
+                break;
+            case "none": // free account
+            default:
+                return;
         }
 
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(DATE_FORMAT_PATTERN, Locale.getDefault());
-        Date date;
-        try {
-            date = simpleDateFormat.parse(expiration);
-        } catch (ParseException e) {
-            e.printStackTrace();
-            return;
-        }
-        this.expiration = DateFormat.format(
-                getContext().getString(R.string.account_plan_expiration_format), date).toString();
+        int expFmt = R.string.account_plan_expiration_format;
 
+        if (date != null)
+            this.expiration = DateFormat.format(getContext().getString(expFmt), date).toString();
+        else
+            this.expiration = "";
         notifyChanged();
     }
 }

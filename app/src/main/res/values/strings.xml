@@ -171,11 +171,16 @@
 
     <string name="account_type_free">Free</string>
     <string name="account_type_premium">Premium</string>
+    <string name="account_type_organization">Organization</string>
+    <string name="account_type_developer">Developer</string>
     <string name="account_plan_monthly">Monthly</string>
     <string name="account_plan_semiannually">Semiannually</string>
     <string name="account_plan_annually">Annually</string>
+    <string name="account_plan_forever">Forever</string>
     <string name="account_plan_expiration_format">MMM dd, yyyy</string>
-    <string name="account_plan_expiration">Renews %1$s On %2$s</string>
+    <string name="account_plan_expiration_forever">Forever</string>
+    <string name="account_plan_expiration_date">Renews %1$s on %2$s</string>
+    <string name="account_plan_expiration_nodate">Renews %1$s</string>
 
     <!-- edit profile-->
     <string name="title_activity_edit_email">Update Email</string>
