@@ -137,8 +137,8 @@
     <string name="setting_network_summary">Privacy when you need it most</string>
     <string name="title_activity_network">Manage trusted networks</string>
     <!-- per-app vpn settings -->
-    <string name="setting_application">Privacy for individual apps</string>
-    <string name="setting_application_summary">Configure apps to connect directly without privacy protection</string>
+    <string name="setting_application">VPN Split Tunnel</string>
+    <string name="setting_application_summary">Configure which apps to route through VPN</string>
     <!-- vpn port remote -->
     <string name="setting_vpn_port_remote">VPN Server Port</string>
     <string name="setting_vpn_port_remote_summary">Use alternate remote TCP/UDP port for VPN</string>

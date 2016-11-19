@@ -42,14 +42,14 @@
             android:key="privacy_firewall_mode"
             android:title="@string/setting_privacy_firewall_mode" />
 
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/setting_category_vpn_settings">
+
         <Preference
             android:key="application"
             android:summary="@string/setting_application_summary"
             android:title="@string/setting_application" />
-
-    </PreferenceCategory>
-
-    <PreferenceCategory android:title="@string/setting_category_vpn_settings">
 
         <Preference
             android:key="vpn_port_remote"
