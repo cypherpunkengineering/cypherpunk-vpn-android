@@ -21,7 +21,7 @@ import rx.Single;
  * Cypherpunk API
  */
 public interface CypherpunkService {
-    String ENDPOINT = "https://cypherpunk.engineering";
+    String ENDPOINT = "https://cypherpunk.com";
 
     @POST("/api/v0/account/authenticate/userpasswd")
     Single<LoginResult> login(
