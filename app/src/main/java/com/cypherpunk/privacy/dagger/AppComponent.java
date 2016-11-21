@@ -6,6 +6,7 @@ import com.cypherpunk.privacy.ui.account.EditPasswordActivity;
 import com.cypherpunk.privacy.ui.main.MainActivity;
 import com.cypherpunk.privacy.ui.region.RegionFragment;
 import com.cypherpunk.privacy.ui.setup.TutorialActivity;
+import com.cypherpunk.privacy.ui.signin.ConfirmationEmailActivity;
 import com.cypherpunk.privacy.ui.signin.IdentifyEmailActivity;
 import com.cypherpunk.privacy.ui.signin.SignInActivity;
 import com.cypherpunk.privacy.ui.signin.SignUpActivity;
@@ -28,6 +29,8 @@ public interface AppComponent {
     void inject(AccountSettingsFragment target);
 
     void inject(IdentifyEmailActivity target);
+
+    void inject(ConfirmationEmailActivity target);
 
     void inject(RegionFragment target);
 

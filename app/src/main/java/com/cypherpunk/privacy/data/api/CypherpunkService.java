@@ -52,4 +52,8 @@ public interface CypherpunkService {
     @POST("/api/v1/account/password/recover")
     Single<ResponseBody> recoverPassword(
             @Body EmailRequest emailRequest);
+
+    @POST("/api/v1/account/email/confirm")
+    Single<ResponseBody> resendEmail(
+            @Body EmailRequest emailRequest);
 }
