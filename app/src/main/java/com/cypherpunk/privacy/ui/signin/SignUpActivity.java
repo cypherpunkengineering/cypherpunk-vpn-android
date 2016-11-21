@@ -20,6 +20,7 @@ import android.widget.Toast;
 import com.cypherpunk.privacy.CypherpunkApplication;
 import com.cypherpunk.privacy.R;
 import com.cypherpunk.privacy.data.api.CypherpunkService;
+import com.cypherpunk.privacy.data.api.UserManager;
 import com.cypherpunk.privacy.data.api.json.LoginResult;
 import com.cypherpunk.privacy.data.api.json.SignUpRequest;
 import com.cypherpunk.privacy.databinding.ActivitySignUpBinding;
@@ -105,7 +106,7 @@ public class SignUpActivity extends AppCompatActivity {
     private void signUp() {
         binding.password.setError(null);
 
-        String password = binding.password.getText().toString();
+        final String password = binding.password.getText().toString();
 
         boolean cancel = false;
         View focusView = null;
@@ -130,6 +131,9 @@ public class SignUpActivity extends AppCompatActivity {
                         @Override
                         public void onSuccess(LoginResult result) {
                             dialogFragment.dismiss();
+                            UserManager.saveMailAddress(email);
+                            UserManager.savePassword(password);
+                            UserManager.saveSecret(result.getSecret());
                             startActivity(ConfirmationEmailActivity.createIntent(SignUpActivity.this, email));
                         }
 
