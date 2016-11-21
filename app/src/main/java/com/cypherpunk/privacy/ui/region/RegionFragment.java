@@ -194,10 +194,6 @@ public class RegionFragment extends Fragment {
         setting.regionId = region.getId();
         setting.save();
 
-        ConnectConfirmationDialogFragment dialogFragment =
-                ConnectConfirmationDialogFragment.newInstance(region.getId());
-        dialogFragment.show(getChildFragmentManager());
-
         binding.regionName.setText(region.getRegionName());
         int nationalFlagResId = ResourceUtil.getFlagDrawableByKey(getContext(), region.getCountryCode().toLowerCase());
         binding.nationalFlag.setImageResource(nationalFlagResId);

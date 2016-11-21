@@ -36,7 +36,6 @@ import com.cypherpunk.privacy.CypherpunkApplication;
 import com.cypherpunk.privacy.R;
 import com.cypherpunk.privacy.data.api.UserManager;
 import com.cypherpunk.privacy.ui.account.AccountSettingsFragment;
-import com.cypherpunk.privacy.ui.region.ConnectConfirmationDialogFragment;
 import com.cypherpunk.privacy.ui.region.RegionFragment;
 import com.cypherpunk.privacy.ui.settings.RateDialogFragment;
 import com.cypherpunk.privacy.ui.settings.SettingConnectDialogFragment;
@@ -56,7 +55,6 @@ import io.realm.Realm;
 
 public class MainActivity extends AppCompatActivity
         implements VpnStatus.StateListener, RateDialogFragment.RateDialogListener,
-        ConnectConfirmationDialogFragment.ConnectDialogListener,
         SettingConnectDialogFragment.ConnectDialogListener,
         RegionFragment.RegionFragmentListener {
 
@@ -326,32 +324,6 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
-    public void onReconnectButtonClick() {
-        ViewGroup.LayoutParams layoutParams = binding.regionContainer.getLayoutParams();
-        if (layoutParams.height == getBottomContainerMaximumHeight()) {
-            Animation animation = new HeightAnimation(getBottomContainerMinimumHeight(), binding.regionContainer);
-            regionFragment.toggleAllowIcon(false);
-            animation.setDuration(300);
-            binding.regionContainer.startAnimation(animation);
-        }
-        startVpn();
-    }
-
-    @Override
-    public void onNoReconnectButtonClick() {
-        if (!getResources().getBoolean(R.bool.is_tablet)) {
-            ViewGroup.LayoutParams layoutParams = binding.regionContainer.getLayoutParams();
-            if (layoutParams.height == getBottomContainerMaximumHeight()) {
-                Animation animation = new HeightAnimation(getBottomContainerMinimumHeight(), binding.regionContainer);
-                regionFragment.toggleAllowIcon(false);
-                animation.setDuration(300);
-                binding.regionContainer.startAnimation(animation);
-            }
-        }
-        stopVpn();
-    }
-
-    @Override
     public void onConnectDialogButtonClick() {
         startVpn();
     }
@@ -379,6 +351,14 @@ public class MainActivity extends AppCompatActivity
             binding.regionName.setText(regionName);
             binding.nationalFlag.setImageResource(nationalFlagResId);
         }
+        ViewGroup.LayoutParams layoutParams = binding.regionContainer.getLayoutParams();
+        if (layoutParams.height == getBottomContainerMaximumHeight()) {
+            Animation animation = new HeightAnimation(getBottomContainerMinimumHeight(), binding.regionContainer);
+            regionFragment.toggleAllowIcon(false);
+            animation.setDuration(300);
+            binding.regionContainer.startAnimation(animation);
+        }
+        startVpn();
     }
 
     private int getStatusBarHeight() {
