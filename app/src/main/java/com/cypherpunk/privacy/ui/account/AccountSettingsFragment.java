@@ -26,6 +26,7 @@ import com.cypherpunk.privacy.vpn.CypherpunkVPN;
 
 import javax.inject.Inject;
 
+import retrofit2.adapter.rxjava.HttpException;
 import rx.Single;
 import rx.SingleSubscriber;
 import rx.Subscription;
@@ -175,6 +176,8 @@ public class AccountSettingsFragment extends PreferenceFragmentCompat {
                 .flatMap(new Func1<LoginResult, Single<StatusResult>>() {
                     @Override
                     public Single<StatusResult> call(LoginResult result) {
+                        UserManager.saveVpnUsername(result.getPrivacy().username);
+                        UserManager.saveVpnPassword(result.getPrivacy().password);
                         return webService.getStatus();
                     }
                 })
@@ -197,6 +200,15 @@ public class AccountSettingsFragment extends PreferenceFragmentCompat {
                     @Override
                     public void onError(Throwable error) {
                         error.printStackTrace();
+                        if (error instanceof HttpException) {
+                            HttpException httpException = (HttpException) error;
+                            if (httpException.code() == 400) {
+                                Intent intent = new Intent(getContext(), IdentifyEmailActivity.class);
+                                TaskStackBuilder builder = TaskStackBuilder.create(getContext());
+                                builder.addNextIntent(intent);
+                                builder.startActivities();
+                            }
+                        }
                     }
                 });
     }
