@@ -144,6 +144,7 @@ public class EditPasswordActivity extends AppCompatActivity {
                     @Override
                     public void onSuccess(ResponseBody result) {
                         dialogFragment.dismiss();
+                        UserManager.savePassword(newPassword);
                         finish();
                     }
 
