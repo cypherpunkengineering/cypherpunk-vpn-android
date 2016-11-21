@@ -39,6 +39,7 @@ import rx.subscriptions.Subscriptions;
 public class AccountSettingsFragment extends PreferenceFragmentCompat {
 
     public static final int REQUEST_UPGRADE_PLAN = 1;
+    public static final int REQUEST_EDIT_EMAIL = 2;
 
     private AccountPreference accountPreference;
     private Subscription subscription = Subscriptions.empty();
@@ -111,7 +112,7 @@ public class AccountSettingsFragment extends PreferenceFragmentCompat {
         email.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
-                startActivity(new Intent(getActivity(), EditEmailActivity.class));
+                startActivityForResult(new Intent(getActivity(), EditEmailActivity.class), REQUEST_EDIT_EMAIL);
                 return true;
             }
         });
@@ -165,6 +166,10 @@ public class AccountSettingsFragment extends PreferenceFragmentCompat {
             switch (requestCode) {
                 case REQUEST_UPGRADE_PLAN:
                     getStatus();
+                    break;
+                case REQUEST_EDIT_EMAIL:
+                    UserSettingPref statusPref = new UserSettingPref();
+                    accountPreference.setUsernameText(statusPref.mail);
                     break;
             }
         }

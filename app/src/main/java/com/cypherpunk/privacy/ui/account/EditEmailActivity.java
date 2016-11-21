@@ -150,6 +150,8 @@ public class EditEmailActivity extends AppCompatActivity {
                     @Override
                     public void onSuccess(ResponseBody result) {
                         dialogFragment.dismiss();
+                        UserManager.saveMailAddress(email);
+                        setResult(RESULT_OK);
                         finish();
                     }
 
