@@ -18,23 +18,30 @@ import com.cypherpunk.privacy.CypherpunkApplication;
 import com.cypherpunk.privacy.R;
 import com.cypherpunk.privacy.data.api.CypherpunkService;
 import com.cypherpunk.privacy.data.api.json.EmailRequest;
+import com.cypherpunk.privacy.data.api.json.StatusResult;
 import com.cypherpunk.privacy.databinding.ActivityConfirmationEmailBinding;
+import com.cypherpunk.privacy.ui.setup.TutorialActivity;
+
+import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
 
 import okhttp3.ResponseBody;
+import rx.Observable;
 import rx.SingleSubscriber;
+import rx.Subscriber;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Func1;
 import rx.schedulers.Schedulers;
-import rx.subscriptions.Subscriptions;
+import rx.subscriptions.CompositeSubscription;
 
 
 public class ConfirmationEmailActivity extends AppCompatActivity {
 
     private static final String EXTRA_EMAIL = "email";
 
-    private Subscription subscription = Subscriptions.empty();
+    private CompositeSubscription subscriptions = new CompositeSubscription();
 
     @Inject
     CypherpunkService webService;
@@ -79,6 +86,9 @@ public class ConfirmationEmailActivity extends AppCompatActivity {
             }
         });
 
+        // check if account has been confirmed
+        checkAccountConfirmed();
+
         binding.resendButton.setPaintFlags(
                 binding.resendButton.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
     }
@@ -94,12 +104,12 @@ public class ConfirmationEmailActivity extends AppCompatActivity {
 
     @Override
     protected void onDestroy() {
-        subscription.unsubscribe();
+        subscriptions.unsubscribe();
         super.onDestroy();
     }
 
     private void resendEmail() {
-        subscription = webService
+        Subscription subscription = webService
                 .resendEmail(new EmailRequest(email))
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -113,5 +123,45 @@ public class ConfirmationEmailActivity extends AppCompatActivity {
                     public void onError(Throwable error) {
                     }
                 });
+        subscriptions.add(subscription);
+    }
+
+    /**
+     * GET /api/v0/subscription/status at 10 second intervals
+     */
+    private void checkAccountConfirmed() {
+        Subscription subscription = webService
+                .getStatusObservable()
+                .repeatWhen(new Func1<Observable<? extends Void>, Observable<?>>() {
+                    @Override
+                    public Observable<?> call(Observable<? extends Void> observable) {
+                        return observable.delay(10, TimeUnit.SECONDS);
+                    }
+                })
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<StatusResult>() {
+                    @Override
+                    public void onCompleted() {
+                        Intent intent = new Intent(ConfirmationEmailActivity.this, TutorialActivity.class);
+                        TaskStackBuilder builder = TaskStackBuilder.create(ConfirmationEmailActivity.this);
+                        builder.addNextIntent(intent);
+                        builder.startActivities();
+                        finish();
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        e.printStackTrace();
+                    }
+
+                    @Override
+                    public void onNext(StatusResult result) {
+                        if (result.getConfirmed()) {
+                            onCompleted();
+                        }
+                    }
+                });
+        subscriptions.add(subscription);
     }
 }

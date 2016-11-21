@@ -15,6 +15,7 @@ import okhttp3.ResponseBody;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
+import rx.Observable;
 import rx.Single;
 
 /**
@@ -37,6 +38,9 @@ public interface CypherpunkService {
 
     @GET("/api/v0/subscription/status")
     Single<StatusResult> getStatus();
+
+    @GET("/api/v0/subscription/status")
+    Observable<StatusResult> getStatusObservable();
 
     @GET("/api/v0/vpn/serverList")
     Single<Map<String, Map<String, RegionResult[]>>> serverList();
