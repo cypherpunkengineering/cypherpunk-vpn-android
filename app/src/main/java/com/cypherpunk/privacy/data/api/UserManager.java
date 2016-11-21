@@ -12,6 +12,8 @@ public class UserManager {
     private static final String PREF_KEY_PASSWORD = "password";
     private static final String PREF_KEY_SECRET = "secret";
 
+    private static final String PREF_KEY_VPN_USERNAME = "vpn_username";
+    private static final String PREF_KEY_VPN_PASSWORD = "vpn_password";
 
     public static boolean isSignedIn() {
         String mail = getMailAddress();
@@ -47,10 +49,30 @@ public class UserManager {
         Hawk.put(PREF_KEY_SECRET, secret);
     }
 
+    @Nullable
+    public static String getVpnUsername() {
+        return Hawk.get(PREF_KEY_VPN_USERNAME);
+    }
+
+    public static void saveVpnUsername(@NonNull String username) {
+        Hawk.put(PREF_KEY_VPN_USERNAME, username);
+    }
+
+    @Nullable
+    public static String getVpnPassword() {
+        return Hawk.get(PREF_KEY_VPN_PASSWORD);
+    }
+
+    public static void saveVpnPassword(@NonNull String password) {
+        Hawk.put(PREF_KEY_VPN_PASSWORD, password);
+    }
+
     public static void clearUser() {
         UserSettingPref user = new UserSettingPref();
         user.clear();
         Hawk.remove(PREF_KEY_PASSWORD);
         Hawk.remove(PREF_KEY_SECRET);
+        Hawk.remove(PREF_KEY_VPN_USERNAME);
+        Hawk.remove(PREF_KEY_VPN_PASSWORD);
     }
 }
