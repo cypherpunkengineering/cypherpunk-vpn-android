@@ -177,6 +177,11 @@ public class MainActivity extends AppCompatActivity
             layoutParams.height = getBottomContainerMinimumHeight();
             binding.regionContainer.requestLayout();
         }
+
+        int statusBarHeight = getStatusBarHeight();
+        binding.container.setPadding(0, statusBarHeight, 0, 0);
+        slidingMenu.getMenu().setPadding(0, statusBarHeight, 0, 0);
+        slidingMenu.getSecondaryMenu().setPadding(0, statusBarHeight, 0, 0);
     }
 
     @Override
