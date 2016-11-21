@@ -4,6 +4,7 @@
 
     <Preference
         android:layout="@layout/preference_header"
+        android:selectable="false"
         android:title="@string/settings_header_account" />
 
     <com.cypherpunk.privacy.ui.settings.AccountPreference android:key="account" />

@@ -4,6 +4,7 @@
 
     <Preference
         android:layout="@layout/preference_header"
+        android:selectable="false"
         android:title="@string/setting_configuration" />
 
     <Preference
