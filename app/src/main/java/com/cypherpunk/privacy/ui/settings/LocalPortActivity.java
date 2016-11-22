@@ -17,7 +17,7 @@ import com.cypherpunk.privacy.databinding.ActivityLocalPortBinding;
 
 public class LocalPortActivity extends AppCompatActivity {
 
-    public static String EXTRA_VALUE = "value";
+    private static final String EXTRA_VALUE = "value";
 
     private ActivityLocalPortBinding binding;
 

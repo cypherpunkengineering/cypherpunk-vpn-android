@@ -19,7 +19,7 @@ import java.util.List;
 
 public class ApplicationAdapter extends RecyclerView.Adapter<ApplicationAdapter.ViewHolder> {
 
-    private List<AppData> items = new ArrayList<>();
+    private final List<AppData> items = new ArrayList<>();
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -53,7 +53,7 @@ public class ApplicationAdapter extends RecyclerView.Adapter<ApplicationAdapter.
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
-        private ListItemApplicationBinding binding;
+        private final ListItemApplicationBinding binding;
 
         public ViewHolder(View view) {
             super(view);

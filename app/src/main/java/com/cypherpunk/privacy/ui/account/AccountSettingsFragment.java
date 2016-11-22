@@ -38,8 +38,8 @@ import rx.subscriptions.Subscriptions;
 
 public class AccountSettingsFragment extends PreferenceFragmentCompat {
 
-    public static final int REQUEST_UPGRADE_PLAN = 1;
-    public static final int REQUEST_EDIT_EMAIL = 2;
+    private static final int REQUEST_UPGRADE_PLAN = 1;
+    private static final int REQUEST_EDIT_EMAIL = 2;
 
     private AccountPreference accountPreference;
     private Subscription subscription = Subscriptions.empty();

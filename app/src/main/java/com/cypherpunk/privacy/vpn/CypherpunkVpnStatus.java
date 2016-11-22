@@ -1,7 +1,6 @@
 package com.cypherpunk.privacy.vpn;
 
 import android.support.annotation.NonNull;
-import android.util.Log;
 
 import com.cypherpunk.privacy.CypherpunkApplication;
 import com.cypherpunk.privacy.model.CypherpunkSetting;

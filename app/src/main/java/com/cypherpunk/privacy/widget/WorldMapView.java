@@ -23,15 +23,15 @@ public class WorldMapView extends View {
 
     private final Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
     private final Paint linePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-    private Path linePath = new Path();
-    private float[] originalPositionMatrix = new float[2]; // x, y
-    private float[] newPositionMatrix = new float[2]; // x, y
-    private Bitmap mapBitmap;
-    private Bitmap originalPositionBitmap;
-    private Bitmap newPositionBitmap;
-    private Matrix mapMatrix;
-    private DisplayMetrics dm;
-    private float scale;
+    private final Path linePath = new Path();
+    private final float[] originalPositionMatrix = new float[2]; // x, y
+    private final float[] newPositionMatrix = new float[2]; // x, y
+    private final Bitmap mapBitmap;
+    private final Bitmap originalPositionBitmap;
+    private final Bitmap newPositionBitmap;
+    private final Matrix mapMatrix;
+    private final DisplayMetrics dm;
+    private final float scale;
     private boolean isNewPositionVisible;
 
     public WorldMapView(Context context) {

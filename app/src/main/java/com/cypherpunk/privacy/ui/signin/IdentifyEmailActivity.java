@@ -133,7 +133,7 @@ public class IdentifyEmailActivity extends AppCompatActivity {
         }
     }
 
-    public boolean isValidEmail(CharSequence text) {
+    private boolean isValidEmail(CharSequence text) {
         return !TextUtils.isEmpty(text) && Patterns.EMAIL_ADDRESS.matcher(text).matches();
     }
 }

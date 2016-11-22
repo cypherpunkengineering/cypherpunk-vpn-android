@@ -28,9 +28,9 @@ import java.util.ArrayList;
 public class ListPreferenceActivity extends AppCompatActivity
         implements AdapterView.OnItemClickListener {
 
-    public static String EXTRA_TITLE = "title";
-    public static String EXTRA_VALUE = "value";
-    public static String EXTRA_LIST = "list";
+    private static final String EXTRA_TITLE = "title";
+    private static final String EXTRA_VALUE = "value";
+    private static final String EXTRA_LIST = "list";
 
     public static final String EXTRA_KEY = "key";
     public static final String EXTRA_SELECTED_VALUE = "selected_value";

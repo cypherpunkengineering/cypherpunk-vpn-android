@@ -9,7 +9,6 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CompoundButton;
 
 import com.cypherpunk.privacy.R;
 import com.cypherpunk.privacy.databinding.ListItemRegionBinding;
@@ -31,7 +30,7 @@ public class RegionAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     private static final int ITEM_VIEW_TYPE_DIVIDER = 2;
     private static final int ITEM_VIEW_TYPE_FASTEST_LOCATION = 3;
 
-    private List<Object> items = new ArrayList<>();
+    private final List<Object> items = new ArrayList<>();
 
     @ColorInt
     private final int textColor;

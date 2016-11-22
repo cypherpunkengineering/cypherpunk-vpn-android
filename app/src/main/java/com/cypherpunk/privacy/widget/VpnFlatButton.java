@@ -33,9 +33,9 @@ public class VpnFlatButton extends FrameLayout {
 
     private CompoundButton.OnCheckedChangeListener listener;
 
-    private VpnFlatButton.VpnCoreButton buttonView;
-    private ObjectAnimator anim;
-    private ImageView imageView;
+    private final VpnFlatButton.VpnCoreButton buttonView;
+    private final ObjectAnimator anim;
+    private final ImageView imageView;
 
     @Retention(RetentionPolicy.SOURCE)
     @IntDef({DISCONNECTED, CONNECTING, CONNECTED})
@@ -100,10 +100,10 @@ public class VpnFlatButton extends FrameLayout {
 
     public static class VpnCoreButton extends CompoundButton implements OnTouchListener {
 
-        private Drawable icon;
+        private final Drawable icon;
 
         @ColorInt
-        private int pressedColor;
+        private final int pressedColor;
 
         public VpnCoreButton(Context context) {
             this(context, null);
