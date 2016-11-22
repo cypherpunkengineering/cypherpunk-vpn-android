@@ -20,7 +20,9 @@ import com.cypherpunk.privacy.data.api.json.LoginRequest;
 import com.cypherpunk.privacy.data.api.json.LoginResult;
 import com.cypherpunk.privacy.data.api.json.StatusResult;
 import com.cypherpunk.privacy.model.UserSettingPref;
+import com.cypherpunk.privacy.ui.signin.ConfirmationEmailActivity;
 import com.cypherpunk.privacy.ui.signin.IdentifyEmailActivity;
+import com.cypherpunk.privacy.ui.signin.SignUpActivity;
 import com.cypherpunk.privacy.vpn.CypherpunkVPN;
 
 import javax.inject.Inject;
@@ -42,6 +44,7 @@ public class AccountSettingsFragment extends PreferenceFragmentCompat {
 
     private AccountPreference accountPreference;
     private Subscription subscription = Subscriptions.empty();
+    private boolean confirmed;
 
     @Inject
     CypherpunkService webService;
@@ -182,6 +185,7 @@ public class AccountSettingsFragment extends PreferenceFragmentCompat {
                     public Single<StatusResult> call(LoginResult result) {
                         UserManager.saveVpnUsername(result.getPrivacy().username);
                         UserManager.saveVpnPassword(result.getPrivacy().password);
+                        confirmed = result.getAccount().confirmed;
                         return webService.getStatus();
                     }
                 })
@@ -195,6 +199,10 @@ public class AccountSettingsFragment extends PreferenceFragmentCompat {
                         statusPref.userStatusRenewal = status.getRenewal();
                         statusPref.userStatusExpiration = status.getExpiration();
                         statusPref.save();
+
+                        if (!confirmed) {
+                            startActivity(ConfirmationEmailActivity.createIntent(getActivity(), statusPref.mail));
+                        }
 
                         accountPreference.setUsernameText(statusPref.mail);
                         accountPreference.setType(status.getType());

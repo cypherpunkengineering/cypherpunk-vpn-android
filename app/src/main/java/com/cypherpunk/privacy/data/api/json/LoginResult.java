@@ -28,5 +28,6 @@ public class LoginResult {
 
     public static class Account {
         public String type;
+        public boolean confirmed;
     }
 }
