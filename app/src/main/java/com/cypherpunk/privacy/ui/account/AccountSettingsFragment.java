@@ -200,9 +200,9 @@ public class AccountSettingsFragment extends PreferenceFragmentCompat {
                         statusPref.userStatusExpiration = status.getExpiration();
                         statusPref.save();
 
-                        if (!confirmed) {
+                        /*if (!confirmed) {
                             startActivity(ConfirmationEmailActivity.createIntent(getActivity(), statusPref.mail));
-                        }
+                        }*/
 
                         accountPreference.setUsernameText(statusPref.mail);
                         accountPreference.setType(status.getType());
