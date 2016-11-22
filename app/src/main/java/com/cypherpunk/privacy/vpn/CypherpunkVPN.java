@@ -350,7 +350,7 @@ public class CypherpunkVPN {
         String conf = TextUtils.join("\n", confLines);
 
         // debug print
-        // for (String line : confLines) log(line);
+        for (String line : confLines) log(line);
 
         return conf;
     }
