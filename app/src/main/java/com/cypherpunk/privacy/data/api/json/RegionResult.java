@@ -7,6 +7,8 @@ public class RegionResult
 
     private String regionName;
 
+    private boolean regionEnabled;
+
     private String ovHostname;
 
     private String ovDefault;
@@ -31,6 +33,14 @@ public class RegionResult
 
     public void setRegionName(String regionName) {
         this.regionName = regionName;
+    }
+
+    public boolean isRegionEnabled() {
+        return regionEnabled;
+    }
+
+    public void setRegionEnabled(boolean regionEnabled) {
+        this.regionEnabled = regionEnabled;
     }
 
     public String getOvHostname() {

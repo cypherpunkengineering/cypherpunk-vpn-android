@@ -238,6 +238,7 @@ public class RegionFragment extends Fragment {
                                                            regionResult.getId(),
                                                            country.getKey(),
                                                            regionResult.getRegionName(),
+                                                           regionResult.isRegionEnabled(),
                                                            regionResult.getOvHostname(),
                                                            regionResult.getOvDefault(),
                                                            regionResult.getOvNone(),
