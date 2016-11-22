@@ -356,7 +356,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
-    public void onSelectedRegionChanged(@NonNull String regionName, @DrawableRes int nationalFlagResId) {
+    public void onSelectedRegionChanged(@NonNull String regionName, @DrawableRes int nationalFlagResId, boolean connectNow) {
         if (getResources().getBoolean(R.bool.is_tablet)) {
             binding.regionName.setText(regionName);
             binding.nationalFlag.setImageResource(nationalFlagResId);
@@ -368,7 +368,9 @@ public class MainActivity extends AppCompatActivity
             animation.setDuration(300);
             binding.regionContainer.startAnimation(animation);
         }
-        startVpn();
+        if (connectNow) {
+            startVpn();
+        }
     }
 
     private int getStatusBarHeight() {

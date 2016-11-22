@@ -60,7 +60,7 @@ public class RegionFragment extends Fragment {
     public interface RegionFragmentListener {
         void toggleBottomSheetState();
 
-        void onSelectedRegionChanged(@NonNull String regionName, @DrawableRes int nationalFlagResId);
+        void onSelectedRegionChanged(@NonNull String regionName, @DrawableRes int nationalFlagResId, boolean connectNow);
     }
 
     @Override
@@ -94,6 +94,7 @@ public class RegionFragment extends Fragment {
                 binding.regionName.setText(region.getRegionName());
                 int nationalFlagResId = ResourceUtil.getFlagDrawableByKey(getContext(), region.getCountryCode().toLowerCase());
                 binding.nationalFlag.setImageResource(nationalFlagResId);
+                listener.onSelectedRegionChanged(region.getRegionName(), nationalFlagResId, false);
 
                 binding.progress.setVisibility(View.GONE);
             }
@@ -198,7 +199,7 @@ public class RegionFragment extends Fragment {
         binding.nationalFlag.setImageResource(nationalFlagResId);
         adapter.addRegionList(getFavoriteRegionList(), getRecentlyConnectedList(), getOtherList());
 
-        listener.onSelectedRegionChanged(region.getRegionName(), nationalFlagResId);
+        listener.onSelectedRegionChanged(region.getRegionName(), nationalFlagResId, true);
     }
 
     private void getServerList() {
