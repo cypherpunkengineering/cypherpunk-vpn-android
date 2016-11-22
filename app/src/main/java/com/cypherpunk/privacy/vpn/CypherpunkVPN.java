@@ -325,8 +325,8 @@ public class CypherpunkVPN {
         log("username is "+ UserManager.getMailAddress());
         */
         list.add("<auth-user-pass>");
-        list.add(UserManager.getMailAddress());
-        list.add(UserManager.getPassword());
+        list.add(UserManager.getVpnUsername());
+        list.add(UserManager.getVpnPassword());
         list.add("</auth-user-pass>");
 
         // append contents of openvpn.conf
