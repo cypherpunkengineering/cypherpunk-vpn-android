@@ -178,6 +178,7 @@ public class TutorialActivity extends AppCompatActivity {
                                                            regionResult.getId(),
                                                            country.getKey(),
                                                            regionResult.getRegionName(),
+                                                           regionResult.isRegionEnabled(),
                                                            regionResult.getOvHostname(),
                                                            regionResult.getOvDefault(),
                                                            regionResult.getOvNone(),

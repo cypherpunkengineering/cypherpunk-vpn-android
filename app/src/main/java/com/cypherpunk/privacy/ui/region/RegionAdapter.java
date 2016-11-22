@@ -36,10 +36,13 @@ public class RegionAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     private final int textColor;
     @ColorInt
     private final int selectedTextColor;
+    @ColorInt
+    private final int disabledTextColor;
 
     public RegionAdapter() {
         textColor = ContextCompat.getColor(getContext(), android.R.color.white);
         selectedTextColor = ContextCompat.getColor(getContext(), R.color.region_selected_text);
+        disabledTextColor = ContextCompat.getColor(getContext(), R.color.region_disabled_text);
     }
 
     protected void onFavorite(@NonNull String regionId, boolean favorite) {
@@ -95,8 +98,15 @@ public class RegionAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                 binding.nationalFlag.setImageResource(ResourceUtil.getFlagDrawableByKey(getContext(), item.getCountryCode().toLowerCase()));
 
                 CypherpunkSetting setting = new CypherpunkSetting();
-                binding.regionName.setTextColor(!TextUtils.isEmpty(setting.regionId) && regionId.equals(setting.regionId) ?
-                        selectedTextColor : textColor);
+                if (!TextUtils.isEmpty(setting.regionId) && regionId.equals(setting.regionId)) {
+                    binding.regionName.setTextColor(selectedTextColor);
+                } else if (item.isRegionEnabled()) {
+                    binding.regionName.setTextColor(textColor);
+                } else {
+                    binding.regionName.setTextColor(disabledTextColor);
+                }
+                holder.itemView.setClickable(item.isRegionEnabled());
+
                 break;
             case ITEM_VIEW_TYPE_FASTEST_LOCATION:
                 holder.itemView.setOnClickListener(new View.OnClickListener() {
