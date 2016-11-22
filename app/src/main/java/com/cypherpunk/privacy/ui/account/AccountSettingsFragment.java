@@ -20,7 +20,6 @@ import com.cypherpunk.privacy.data.api.json.LoginRequest;
 import com.cypherpunk.privacy.data.api.json.LoginResult;
 import com.cypherpunk.privacy.data.api.json.StatusResult;
 import com.cypherpunk.privacy.model.UserSettingPref;
-import com.cypherpunk.privacy.ui.settings.AccountPreference;
 import com.cypherpunk.privacy.ui.signin.IdentifyEmailActivity;
 import com.cypherpunk.privacy.vpn.CypherpunkVPN;
 

@@ -58,17 +58,12 @@ public class MainActivity extends AppCompatActivity
         SettingConnectDialogFragment.ConnectDialogListener,
         RegionFragment.RegionFragmentListener {
 
-    public static final String AUTO_START = "com.cypherpunk.privacy.AUTO_START";
-
     private static final int REQUEST_VPN_START = 0;
 
     private com.cypherpunk.privacy.databinding.ActivityMainBinding binding;
     private CypherpunkVpnStatus status;
     private RegionFragment regionFragment;
     private SlidingMenu slidingMenu;
-
-    @Inject
-    Realm realm;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,8 +81,6 @@ public class MainActivity extends AppCompatActivity
             builder.startActivities();
             finish();
         }
-
-        CypherpunkApplication.instance.getAppComponent().inject(this);
 
         if (!getResources().getBoolean(R.bool.is_tablet)) {
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
@@ -234,13 +227,6 @@ public class MainActivity extends AppCompatActivity
     protected void onPause() {
         super.onPause();
         binding.binaryView.stopAnimation();
-    }
-
-    @Override
-    protected void onDestroy() {
-        realm.close();
-        realm = null;
-        super.onDestroy();
     }
 
     @Override

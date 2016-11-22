@@ -20,8 +20,6 @@ import io.realm.Realm;
 @Singleton
 public interface AppComponent {
 
-    void inject(MainActivity target);
-
     void inject(SignInActivity target);
 
     void inject(SignUpActivity target);

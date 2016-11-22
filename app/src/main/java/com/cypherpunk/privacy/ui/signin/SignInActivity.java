@@ -91,11 +91,6 @@ public class SignInActivity extends AppCompatActivity {
             }
         });
 
-
-//        if (BuildConfig.DEBUG) {
-//            binding.email.setText("test@test.test");
-//            binding.password.setText("test123");
-//        }
         binding.signInButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
