@@ -23,6 +23,7 @@
     <string name="error_invalid_email">invalid email</string>
     <string name="sign_in_button_sign_in">Log In</string>
     <string name="no_internet">No internet</string>
+    <string name="email_already_registered">email address is already registered</string>
     <string name="api_error">Error</string>
     <string name="invalid_mail_password">invalid password</string>
     <string name="sign_in_forgot_password">Forgot password?</string>
