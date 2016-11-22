@@ -94,7 +94,6 @@ public class RegionFragment extends Fragment {
                 binding.regionName.setText(region.getRegionName());
                 int nationalFlagResId = ResourceUtil.getFlagDrawableByKey(getContext(), region.getCountryCode().toLowerCase());
                 binding.nationalFlag.setImageResource(nationalFlagResId);
-                listener.onSelectedRegionChanged(region.getRegionName(), nationalFlagResId);
 
                 binding.progress.setVisibility(View.GONE);
             }
