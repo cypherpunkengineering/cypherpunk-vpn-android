@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "385823011522-l78dk62gegqppmdm486llqa1o0mkuool.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.cypherpunk.privacy",
+            "certificate_hash": "18192E7F5DD075D00100E85F655B1B9661533B59"
+          }
+        },
+        {
           "client_id": "385823011522-69nt2ekalsl68np5sl5l4ifnoeesmj46.apps.googleusercontent.com",
           "client_type": 3
         }
@@ -29,8 +37,21 @@
           "status": 1
         },
         "appinvite_service": {
-          "status": 1,
-          "other_platform_oauth_client": []
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "385823011522-925qv9gkj5qgcacj7nhkjjd2tj8df0h1.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.cypherpunk.privacy.ios",
+                "app_store_id": "1162528030"
+              }
+            },
+            {
+              "client_id": "385823011522-69nt2ekalsl68np5sl5l4ifnoeesmj46.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         },
         "ads_service": {
           "status": 2
