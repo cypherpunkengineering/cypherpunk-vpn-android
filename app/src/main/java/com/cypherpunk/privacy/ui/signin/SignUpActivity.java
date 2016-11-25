@@ -4,12 +4,18 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.databinding.DataBindingUtil;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.text.SpannableStringBuilder;
+import android.text.Spanned;
 import android.text.TextUtils;
+import android.text.method.LinkMovementMethod;
+import android.text.style.ClickableSpan;
+import android.text.style.TextAppearanceSpan;
 import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
@@ -95,6 +101,8 @@ public class SignUpActivity extends AppCompatActivity {
         email = getIntent().getStringExtra(EXTRA_EMAIL);
 
         dialogFragment = ProgressFragment.newInstance();
+
+        setTextStyle();
     }
 
     @Override
@@ -163,5 +171,38 @@ public class SignUpActivity extends AppCompatActivity {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void setTextStyle() {
+        SpannableStringBuilder sb = new SpannableStringBuilder();
+        sb.append(getString(R.string.sign_up_policy1));
+        int start = sb.length();
+        sb.setSpan(new TextAppearanceSpan(this, R.style.TextAppearance_Cypherpunk_Policy), 0, start, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        sb.append(getString(R.string.sign_up_policy2));
+        sb.setSpan(new ClickableSpan() {
+            @Override
+            public void onClick(View widget) {
+                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.terms_of_service_url))));
+            }
+        }, start, sb.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        sb.setSpan(new TextAppearanceSpan(this, R.style.TextAppearance_Cypherpunk_PolicyLink), start, sb.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        start = sb.length();
+        sb.append(getString(R.string.sign_up_policy3));
+        sb.setSpan(new TextAppearanceSpan(this, R.style.TextAppearance_Cypherpunk_Policy), start, sb.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        start = sb.length();
+        sb.append(getString(R.string.sign_up_policy4));
+        sb.setSpan(new ClickableSpan() {
+            @Override
+            public void onClick(View widget) {
+                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.privacy_policy_url))));
+            }
+        }, start, sb.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        sb.setSpan(new TextAppearanceSpan(this, R.style.TextAppearance_Cypherpunk_PolicyLink), start, sb.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        start = sb.length();
+        sb.append(getString(R.string.sign_up_policy5));
+        sb.setSpan(new TextAppearanceSpan(this, R.style.TextAppearance_Cypherpunk_Policy), start, sb.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+        binding.text.setText(sb);
+        binding.text.setMovementMethod(LinkMovementMethod.getInstance());
     }
 }

@@ -14,6 +14,8 @@
     <string name="store_url">https://play.google.com/store/apps/details?id=com.cypherpunk.privacy</string>
     <string name="contact_us_url">https://cypherpunk.zendesk.com/tickets/new</string>
     <string name="help_url">https://support.cypherpunk.com/hc</string>
+    <string name="terms_of_service_url">https://support.cypherpunk.com/hc</string>
+    <string name="privacy_policy_url">https://support.cypherpunk.com/hc</string>
 
     <string name="share_subject">Get 30 Days Premium Free [Cypherpunk]</string>
     <string name="share_text">We’ll give you both 30 days free! https://play.google.com/store/apps/details?id=com.cypherpunk.privacy</string>
@@ -276,5 +278,10 @@
     <string name="region_list_favorite">FAVORITE</string>
     <string name="region_list_recent">RECENT</string>
     <string name="region_list_all">ALL</string>
+    <string name="sign_up_policy1">"By signing up, you agree to our "</string>
+    <string name="sign_up_policy2">Terms of Service</string>
+    <string name="sign_up_policy3">" and confirm that you have read the "</string>
+    <string name="sign_up_policy4">Privacy Policy</string>
+    <string name="sign_up_policy5">.</string>
 
 </resources>
