@@ -175,18 +175,18 @@ public class TutorialActivity extends AppCompatActivity {
 //                                           region.setOvStrong(regionResult.getOvStrong());
 //                                           region.setOvStealth(regionResult.getOvStealth());
                                        } else {
-                                           region = new Region(
-                                                   regionResult.getId(),
-                                                   regionResult.getRegion(),
-                                                   regionResult.getCountry(),
-                                                   regionResult.getName(),
-                                                   regionResult.isRegionEnabled(),
-                                                   "",
-                                                   "",
-                                                   "",
-                                                   "",
-                                                   "");
-                                           realm.copyToRealm(region);
+//                                           region = new Region(
+//                                                   regionResult.getId(),
+//                                                   regionResult.getRegion(),
+//                                                   regionResult.getCountry(),
+//                                                   regionResult.getName(),
+//                                                   regionResult.isRegionEnabled(),
+//                                                   "",
+//                                                   "",
+//                                                   "",
+//                                                   "",
+//                                                   "");
+//                                           realm.copyToRealm(region);
                                        }
                                            updateRegionIdList.add(region.getId());
                                    }
