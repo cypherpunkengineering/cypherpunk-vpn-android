@@ -111,7 +111,7 @@ public class CypherpunkVPN {
             cp.parseConfig(new StringReader(conf));
             vpnProfile = cp.convertProfile();
             ProfileManager.setTemporaryProfile(vpnProfile);
-            vpnProfile.mName = region.getRegionName() + ", " + region.getCountryCode();
+            vpnProfile.mName = region.getRegionName() + ", " + region.getCountry();
 
             //log("vpn profile check: "+vpnProfile.checkProfile(context));
         }

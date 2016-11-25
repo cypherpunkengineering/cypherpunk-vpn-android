@@ -22,7 +22,10 @@ public class Region implements RealmModel {
     private boolean regionEnabled;
 
     @Required
-    private String countryCode;
+    private String region;
+
+    @Required
+    private String country;
 
     @Required
     private String ovHostname;
@@ -47,7 +50,8 @@ public class Region implements RealmModel {
     public Region
     (
          @NonNull String id,
-         @NonNull String countryCode,
+         @NonNull String region,
+         @NonNull String country,
          @NonNull String regionName,
          boolean regionEnabled,
 
@@ -60,7 +64,8 @@ public class Region implements RealmModel {
     )
     {
         this.id = id;
-        this.countryCode = countryCode;
+        this.region = region;
+        this.country = country;
         this.regionName = regionName;
         this.regionEnabled = regionEnabled;
 
@@ -75,7 +80,11 @@ public class Region implements RealmModel {
 
     public String getId() { return id; }
 
-    public String getCountryCode() { return countryCode; }
+    public String getRegion() {
+        return region;
+    }
+
+    public String getCountry() { return country; }
     public String getRegionName() { return regionName; }
 
     public void setRegionName(String regionName) {
@@ -118,7 +127,8 @@ public class Region implements RealmModel {
     public String toString() {
         return "Region{" +
                 "id='" + id + '\'' +
-                ", countryCode='" + countryCode + '\'' +
+                ", region='" + region + '\'' +
+                ", country='" + country + '\'' +
                 ", regionName='" + regionName + '\'' +
                 ", regionEnabled='" + regionEnabled + '\'' +
                 ", ovHostname='" + ovHostname + '\'' +
