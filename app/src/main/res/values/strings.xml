@@ -284,6 +284,7 @@
     <string name="sign_up_policy4">Privacy Policy</string>
     <string name="sign_up_policy5">.</string>
 
+    <string name="region_list_dev">DEVELOPER</string>
     <string name="region_list_na">NORTH AMERICA</string>
     <string name="region_list_sa">CENTRAL &amp; SOUTH AMERICA</string>
     <string name="region_list_cr">CARIBBEAN</string>
@@ -291,7 +292,6 @@
     <string name="region_list_eu">EUROPE</string>
     <string name="region_list_me">MIDDLE EAST</string>
     <string name="region_list_af">AFRICA</string>
-    <string name="region_list_as">ASIA &amp; INDIA SUBCONTINENT</string>
-    <string name="region_list_dev">DEVELOPER</string>
+    <string name="region_list_as">ASIA</string>
 
 </resources>
