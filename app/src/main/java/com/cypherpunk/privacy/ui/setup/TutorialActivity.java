@@ -167,7 +167,10 @@ public class TutorialActivity extends AppCompatActivity {
                                        Region region = realm.where(Region.class)
                                                .equalTo("id", regionResult.getId()).findFirst();
                                        if (region != null) {
+                                           region.setRegion(regionResult.getRegion());
+                                           region.setCountry(regionResult.getCountry());
                                            region.setRegionName(regionResult.getName());
+                                           region.setEnabled(regionResult.isEnabled());
                                            region.setOvHostname(regionResult.getOvHostname());
                                            region.setOvDefault(regionResult.getOvDefault());
                                            region.setOvNone(regionResult.getOvNone());
@@ -179,7 +182,7 @@ public class TutorialActivity extends AppCompatActivity {
                                                    regionResult.getRegion(),
                                                    regionResult.getCountry(),
                                                    regionResult.getName(),
-                                                   regionResult.isRegionEnabled(),
+                                                   regionResult.isEnabled(),
                                                    regionResult.getOvHostname(),
                                                    regionResult.getOvDefault(),
                                                    regionResult.getOvNone(),

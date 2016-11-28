@@ -101,12 +101,12 @@ public class RegionAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                 CypherpunkSetting setting = new CypherpunkSetting();
                 if (!TextUtils.isEmpty(setting.regionId) && regionId.equals(setting.regionId)) {
                     binding.regionName.setTextColor(selectedTextColor);
-                } else if (item.isRegionEnabled()) {
+                } else if (item.isEnabled()) {
                     binding.regionName.setTextColor(textColor);
                 } else {
                     binding.regionName.setTextColor(disabledTextColor);
                 }
-                holder.itemView.setClickable(item.isRegionEnabled());
+                holder.itemView.setClickable(item.isEnabled());
 
                 break;
             case ITEM_VIEW_TYPE_FASTEST_LOCATION:

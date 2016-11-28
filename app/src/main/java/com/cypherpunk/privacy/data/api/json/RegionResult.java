@@ -11,7 +11,7 @@ public class RegionResult
 
     private String region;
 
-    private boolean regionEnabled;
+    private boolean enabled;
 
     private String ovHostname;
 
@@ -55,12 +55,12 @@ public class RegionResult
         this.region = region;
     }
 
-    public boolean isRegionEnabled() {
-        return regionEnabled;
+    public boolean isEnabled() {
+        return enabled;
     }
 
-    public void setRegionEnabled(boolean regionEnabled) {
-        this.regionEnabled = regionEnabled;
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
     }
 
     public String getOvHostname() {
