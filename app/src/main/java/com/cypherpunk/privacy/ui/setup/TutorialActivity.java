@@ -12,7 +12,6 @@ import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -170,25 +169,25 @@ public class TutorialActivity extends AppCompatActivity {
                                        if (region != null) {
                                            region.setRegionName(regionResult.getName());
                                            region.setOvHostname(regionResult.getOvHostname());
-//                                           region.setOvDefault(regionResult.getOvDefault());
-//                                           region.setOvNone(regionResult.getOvNone());
-//                                           region.setOvStrong(regionResult.getOvStrong());
-//                                           region.setOvStealth(regionResult.getOvStealth());
+                                           region.setOvDefault(regionResult.getOvDefault());
+                                           region.setOvNone(regionResult.getOvNone());
+                                           region.setOvStrong(regionResult.getOvStrong());
+                                           region.setOvStealth(regionResult.getOvStealth());
                                        } else {
-//                                           region = new Region(
-//                                                   regionResult.getId(),
-//                                                   regionResult.getRegion(),
-//                                                   regionResult.getCountry(),
-//                                                   regionResult.getName(),
-//                                                   regionResult.isRegionEnabled(),
-//                                                   "",
-//                                                   "",
-//                                                   "",
-//                                                   "",
-//                                                   "");
-//                                           realm.copyToRealm(region);
+                                           region = new Region(
+                                                   regionResult.getId(),
+                                                   regionResult.getRegion(),
+                                                   regionResult.getCountry(),
+                                                   regionResult.getName(),
+                                                   regionResult.isRegionEnabled(),
+                                                   regionResult.getOvHostname(),
+                                                   regionResult.getOvDefault(),
+                                                   regionResult.getOvNone(),
+                                                   regionResult.getOvStrong(),
+                                                   regionResult.getOvStealth());
+                                           realm.copyToRealm(region);
                                        }
-                                           updateRegionIdList.add(region.getId());
+                                       updateRegionIdList.add(region.getId());
                                    }
                                    RealmResults<Region> oldRegion = realm.where(Region.class)
                                            .not()

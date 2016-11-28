@@ -1,10 +1,10 @@
 package com.cypherpunk.privacy.model;
 
 import android.support.annotation.NonNull;
+import android.text.TextUtils;
 
 import java.util.Date;
 
-import io.realm.RealmList;
 import io.realm.RealmModel;
 import io.realm.annotations.PrimaryKey;
 import io.realm.annotations.RealmClass;
@@ -32,13 +32,13 @@ public class Region implements RealmModel {
     private String ovHostname;
 
     @Required
-    private RealmList<RealmString> ovDefault;
+    private String ovDefault;
     @Required
-    private RealmList<RealmString> ovNone;
+    private String ovNone;
     @Required
-    private RealmList<RealmString> ovStrong;
+    private String ovStrong;
     @Required
-    private RealmList<RealmString> ovStealth;
+    private String ovStealth;
 
     private boolean favorited;
 
@@ -72,22 +72,10 @@ public class Region implements RealmModel {
 
         this.ovHostname = ovHostname;
 
-        this.ovDefault = new RealmList<>();
-        for (String s : ovDefault) {
-            this.ovDefault.add(new RealmString(s));
-        }
-        this.ovNone = new RealmList<>();
-        for (String s : ovNone) {
-            this.ovNone.add(new RealmString(s));
-        }
-        this.ovStrong = new RealmList<>();
-        for (String s : ovStrong) {
-            this.ovStrong.add(new RealmString(s));
-        }
-        this.ovStealth = new RealmList<>();
-        for (String s : ovStealth) {
-            this.ovStealth.add(new RealmString(s));
-        }
+        this.ovDefault = TextUtils.join(",", ovDefault);
+        this.ovNone = TextUtils.join(",", ovNone);
+        this.ovStrong = TextUtils.join(",", ovStrong);
+        this.ovStealth = TextUtils.join(",", ovStealth);
         this.lastConnectedDate = new Date(0);
     }
 
@@ -111,64 +99,55 @@ public class Region implements RealmModel {
     public String getOvHostname() { return ovHostname; }
     public void setOvHostname(String ovHostname) { this.ovHostname = ovHostname; }
 
-    public RealmList<RealmString> getOvDefault() {
+    public String getOvDefault() {
         return ovDefault;
     }
 
-    public void setOvDefault(RealmList<RealmString> ovDefault) {
+    public void setOvDefault(String ovDefault) {
         this.ovDefault = ovDefault;
     }
 
     public void setOvDefault(String[] ovDefault) {
-        this.ovDefault = new RealmList<>();
-        for (String s : ovDefault) {
-            this.ovDefault.add(new RealmString(s));
-        }
+        this.ovDefault = TextUtils.join(",", ovDefault);
     }
 
-    public RealmList<RealmString> getOvNone() {
+    public String getOvNone() {
         return ovNone;
     }
 
-    public void setOvNone(RealmList<RealmString> ovNone) {
+    public void setOvNone(String ovNone) {
         this.ovNone = ovNone;
     }
 
     public void setOvNone(String[] ovNone) {
-        this.ovNone = new RealmList<>();
-        for (String s : ovNone) {
-            this.ovNone.add(new RealmString(s));
-        }
+        this.ovNone = TextUtils.join(",", ovNone);
+
     }
 
-    public RealmList<RealmString> getOvStrong() {
+    public String getOvStrong() {
         return ovStrong;
     }
 
-    public void setOvStrong(RealmList<RealmString> ovStrong) {
+    public void setOvStrong(String ovStrong) {
         this.ovStrong = ovStrong;
     }
 
     public void setOvStrong(String[] ovStrong) {
-        this.ovStrong = new RealmList<>();
-        for (String s : ovStrong) {
-            this.ovStrong.add(new RealmString(s));
-        }
+        this.ovStrong = TextUtils.join(",", ovStrong);
     }
 
-    public RealmList<RealmString> getOvStealth() {
+    public String getOvStealth() {
         return ovStealth;
     }
 
-    public void setOvStealth(RealmList<RealmString> ovStealth) {
+    public void setOvStealth(String ovStealth) {
         this.ovStealth = ovStealth;
     }
 
     public void setOvStealth(String[] ovStealth) {
-        this.ovStealth = new RealmList<>();
-        for (String s : ovStealth) {
-            this.ovStealth.add(new RealmString(s));
-        }    }
+        this.ovStealth = TextUtils.join(",", ovStealth);
+
+    }
 
     public boolean isFavorited() {
         return favorited;
@@ -200,7 +179,7 @@ public class Region implements RealmModel {
                 ", ovStrong='" + ovStrong + '\'' +
                 ", ovStealth='" + ovStealth + '\'' +
                 ", favorited=" + favorited +
-                ", favorited=" + lastConnectedDate.toString() +
+                ", lastConnectedDate=" + lastConnectedDate.toString() +
                 '}';
     }
 

@@ -226,10 +226,10 @@ public class RegionFragment extends Fragment {
                                        if (region != null) {
                                            region.setRegionName(regionResult.getName());
                                            region.setOvHostname(regionResult.getOvHostname());
-//                                           region.setOvDefault(regionResult.getOvDefault());
-//                                           region.setOvNone(regionResult.getOvNone());
-//                                           region.setOvStrong(regionResult.getOvStrong());
-//                                           region.setOvStealth(regionResult.getOvStealth());
+                                           region.setOvDefault(regionResult.getOvDefault());
+                                           region.setOvNone(regionResult.getOvNone());
+                                           region.setOvStrong(regionResult.getOvStrong());
+                                           region.setOvStealth(regionResult.getOvStealth());
                                        } else {
                                            region = new Region(
                                                    regionResult.getId(),
@@ -237,11 +237,11 @@ public class RegionFragment extends Fragment {
                                                    regionResult.getCountry(),
                                                    regionResult.getName(),
                                                    regionResult.isRegionEnabled(),
-                                                   "",
-                                                   "",
-                                                   "",
-                                                   "",
-                                                   "");
+                                                   regionResult.getOvHostname(),
+                                                   regionResult.getOvDefault(),
+                                                   regionResult.getOvNone(),
+                                                   regionResult.getOvStrong(),
+                                                   regionResult.getOvStealth());
                                            realm.copyToRealm(region);
                                        }
                                        updateRegionIdList.add(region.getId());
