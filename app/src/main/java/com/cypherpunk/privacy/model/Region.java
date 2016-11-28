@@ -1,6 +1,7 @@
 package com.cypherpunk.privacy.model;
 
 import android.support.annotation.NonNull;
+import android.text.TextUtils;
 
 import java.util.Date;
 
@@ -22,7 +23,10 @@ public class Region implements RealmModel {
     private boolean regionEnabled;
 
     @Required
-    private String countryCode;
+    private String region;
+
+    @Required
+    private String country;
 
     @Required
     private String ovHostname;
@@ -47,35 +51,41 @@ public class Region implements RealmModel {
     public Region
     (
          @NonNull String id,
-         @NonNull String countryCode,
+         @NonNull String region,
+         @NonNull String country,
          @NonNull String regionName,
          boolean regionEnabled,
 
          @NonNull String ovHostname,
 
-         @NonNull String ovDefault,
-         @NonNull String ovNone,
-         @NonNull String ovStrong,
-         @NonNull String ovStealth
+         @NonNull String[] ovDefault,
+         @NonNull String[] ovNone,
+         @NonNull String[] ovStrong,
+         @NonNull String[] ovStealth
     )
     {
         this.id = id;
-        this.countryCode = countryCode;
+        this.region = region;
+        this.country = country;
         this.regionName = regionName;
         this.regionEnabled = regionEnabled;
 
         this.ovHostname = ovHostname;
 
-        this.ovDefault = ovDefault;
-        this.ovNone = ovNone;
-        this.ovStrong = ovStrong;
-        this.ovStealth = ovStealth;
+        this.ovDefault = TextUtils.join(",", ovDefault);
+        this.ovNone = TextUtils.join(",", ovNone);
+        this.ovStrong = TextUtils.join(",", ovStrong);
+        this.ovStealth = TextUtils.join(",", ovStealth);
         this.lastConnectedDate = new Date(0);
     }
 
     public String getId() { return id; }
 
-    public String getCountryCode() { return countryCode; }
+    public String getRegion() {
+        return region;
+    }
+
+    public String getCountry() { return country; }
     public String getRegionName() { return regionName; }
 
     public void setRegionName(String regionName) {
@@ -89,14 +99,55 @@ public class Region implements RealmModel {
     public String getOvHostname() { return ovHostname; }
     public void setOvHostname(String ovHostname) { this.ovHostname = ovHostname; }
 
-    public String getOvDefault() { return ovDefault; }
-    public void setOvDefault(String ovDefault) { this.ovDefault = ovDefault; }
-    public String getOvNone() { return ovNone; }
-    public void setOvNone(String ovNone) { this.ovNone = ovNone; }
-    public String getOvStrong() { return ovStrong; }
-    public void setOvStrong(String ovStrong) { this.ovStrong = ovStrong; }
-    public String getOvStealth() { return ovStealth; }
-    public void setOvStealth(String ovStealth) { this.ovStealth = ovStealth; }
+    public String getOvDefault() {
+        return ovDefault;
+    }
+
+    public void setOvDefault(String ovDefault) {
+        this.ovDefault = ovDefault;
+    }
+
+    public void setOvDefault(String[] ovDefault) {
+        this.ovDefault = TextUtils.join(",", ovDefault);
+    }
+
+    public String getOvNone() {
+        return ovNone;
+    }
+
+    public void setOvNone(String ovNone) {
+        this.ovNone = ovNone;
+    }
+
+    public void setOvNone(String[] ovNone) {
+        this.ovNone = TextUtils.join(",", ovNone);
+
+    }
+
+    public String getOvStrong() {
+        return ovStrong;
+    }
+
+    public void setOvStrong(String ovStrong) {
+        this.ovStrong = ovStrong;
+    }
+
+    public void setOvStrong(String[] ovStrong) {
+        this.ovStrong = TextUtils.join(",", ovStrong);
+    }
+
+    public String getOvStealth() {
+        return ovStealth;
+    }
+
+    public void setOvStealth(String ovStealth) {
+        this.ovStealth = ovStealth;
+    }
+
+    public void setOvStealth(String[] ovStealth) {
+        this.ovStealth = TextUtils.join(",", ovStealth);
+
+    }
 
     public boolean isFavorited() {
         return favorited;
@@ -118,7 +169,8 @@ public class Region implements RealmModel {
     public String toString() {
         return "Region{" +
                 "id='" + id + '\'' +
-                ", countryCode='" + countryCode + '\'' +
+                ", region='" + region + '\'' +
+                ", country='" + country + '\'' +
                 ", regionName='" + regionName + '\'' +
                 ", regionEnabled='" + regionEnabled + '\'' +
                 ", ovHostname='" + ovHostname + '\'' +
@@ -127,7 +179,7 @@ public class Region implements RealmModel {
                 ", ovStrong='" + ovStrong + '\'' +
                 ", ovStealth='" + ovStealth + '\'' +
                 ", favorited=" + favorited +
-                ", favorited=" + lastConnectedDate.toString() +
+                ", lastConnectedDate=" + lastConnectedDate.toString() +
                 '}';
     }
 

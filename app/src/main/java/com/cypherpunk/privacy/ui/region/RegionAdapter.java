@@ -95,7 +95,7 @@ public class RegionAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                     }
                 });
 
-                binding.nationalFlag.setImageResource(ResourceUtil.getFlagDrawableByKey(getContext(), item.getCountryCode().toLowerCase()));
+                binding.nationalFlag.setImageResource(ResourceUtil.getFlagDrawableByKey(getContext(), item.getCountry().toLowerCase()));
 
                 CypherpunkSetting setting = new CypherpunkSetting();
                 if (!TextUtils.isEmpty(setting.regionId) && regionId.equals(setting.regionId)) {

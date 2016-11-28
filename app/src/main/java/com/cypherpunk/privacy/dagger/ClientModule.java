@@ -22,7 +22,7 @@ public class ClientModule {
         builder.cookieJar(new CookieManager());
         HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
         logging.setLevel(HttpLoggingInterceptor.Level.BODY);
-        //builder.addInterceptor(logging);
+        builder.addInterceptor(logging);
         return builder.build();
     }
 

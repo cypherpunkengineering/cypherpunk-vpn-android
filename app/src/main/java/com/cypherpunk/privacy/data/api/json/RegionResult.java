@@ -5,19 +5,23 @@ public class RegionResult
 {
     private String id;
 
-    private String regionName;
+    private String name;
+
+    private String country;
+
+    private String region;
 
     private boolean regionEnabled;
 
     private String ovHostname;
 
-    private String ovDefault;
+    private String[] ovDefault;
 
-    private String ovNone;
+    private String[] ovNone;
 
-    private String ovStrong;
+    private String[] ovStrong;
 
-    private String ovStealth;
+    private String[] ovStealth;
 
     public String getId() {
         return id;
@@ -27,12 +31,28 @@ public class RegionResult
         this.id = id;
     }
 
-    public String getRegionName() {
-        return regionName;
+    public String getName() {
+        return name;
     }
 
-    public void setRegionName(String regionName) {
-        this.regionName = regionName;
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getCountry() {
+        return country;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
+    }
+
+    public String getRegion() {
+        return region;
+    }
+
+    public void setRegion(String region) {
+        this.region = region;
     }
 
     public boolean isRegionEnabled() {
@@ -51,35 +71,35 @@ public class RegionResult
         this.ovHostname = ovHostname;
     }
 
-    public String getOvDefault() {
+    public String[] getOvDefault() {
         return ovDefault;
     }
 
-    public void setOvDefault(String ovDefault) {
+    public void setOvDefault(String[] ovDefault) {
         this.ovDefault = ovDefault;
     }
 
-    public String getOvNone() {
+    public String[] getOvNone() {
         return ovNone;
     }
 
-    public void setOvNone(String ovNone) {
+    public void setOvNone(String[] ovNone) {
         this.ovNone = ovNone;
     }
 
-    public String getOvStrong() {
+    public String[] getOvStrong() {
         return ovStrong;
     }
 
-    public void setOvStrong(String ovStrong) {
+    public void setOvStrong(String[] ovStrong) {
         this.ovStrong = ovStrong;
     }
 
-    public String getOvStealth() {
+    public String[] getOvStealth() {
         return ovStealth;
     }
 
-    public void setOvStealth(String ovStealth) {
+    public void setOvStealth(String[] ovStealth) {
         this.ovStealth = ovStealth;
     }
 }
