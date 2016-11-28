@@ -183,6 +183,7 @@ public class RegionFragment extends Fragment {
                 getOtherList("DEV")
         );
     }
+
     private ArrayList<Region> getFavoriteRegionList() {
         RealmResults<Region> regionList = realm.where(Region.class).equalTo("favorited", true).findAllSorted("lastConnectedDate", Sort.DESCENDING);
         return new ArrayList<>(regionList);
@@ -237,7 +238,10 @@ public class RegionFragment extends Fragment {
                                        Region region = realm.where(Region.class)
                                                .equalTo("id", regionResult.getId()).findFirst();
                                        if (region != null) {
+                                           region.setRegion(regionResult.getRegion());
+                                           region.setCountry(regionResult.getCountry());
                                            region.setRegionName(regionResult.getName());
+                                           region.setEnabled(regionResult.isEnabled());
                                            region.setOvHostname(regionResult.getOvHostname());
                                            region.setOvDefault(regionResult.getOvDefault());
                                            region.setOvNone(regionResult.getOvNone());
@@ -249,7 +253,7 @@ public class RegionFragment extends Fragment {
                                                    regionResult.getRegion(),
                                                    regionResult.getCountry(),
                                                    regionResult.getName(),
-                                                   regionResult.isRegionEnabled(),
+                                                   regionResult.isEnabled(),
                                                    regionResult.getOvHostname(),
                                                    regionResult.getOvDefault(),
                                                    regionResult.getOvNone(),
