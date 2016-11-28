@@ -140,11 +140,11 @@ public class RegionFragment extends Fragment {
         realmChangeListener = new RealmChangeListener() {
             @Override
             public void onChange(Object element) {
-                adapter.addRegionList(getFavoriteRegionList(), getRecentlyConnectedList(), getOtherList());
+                refreshRegionList();
             }
         };
         realm.addChangeListener(realmChangeListener);
-        adapter.addRegionList(getFavoriteRegionList(), getRecentlyConnectedList(), getOtherList());
+        refreshRegionList();
 
         binding.regionContainer.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -170,6 +170,19 @@ public class RegionFragment extends Fragment {
         getServerList();
     }
 
+    private void refreshRegionList() {
+        adapter.addRegionList(getFavoriteRegionList(), getRecentlyConnectedList(),
+                getOtherList("NA"),
+                getOtherList("SA"),
+                getOtherList("CR"),
+                getOtherList("OP"),
+                getOtherList("EU"),
+                getOtherList("ME"),
+                getOtherList("AF"),
+                getOtherList("AS"),
+                getOtherList("DEV")
+        );
+    }
     private ArrayList<Region> getFavoriteRegionList() {
         RealmResults<Region> regionList = realm.where(Region.class).equalTo("favorited", true).findAllSorted("lastConnectedDate", Sort.DESCENDING);
         return new ArrayList<>(regionList);
@@ -184,8 +197,8 @@ public class RegionFragment extends Fragment {
         return regions;
     }
 
-    private ArrayList<Region> getOtherList() {
-        RealmResults<Region> regionList = realm.where(Region.class).findAll();
+    private ArrayList<Region> getOtherList(String region) {
+        RealmResults<Region> regionList = realm.where(Region.class).equalTo("region", region).findAll();
         return new ArrayList<>(regionList);
     }
 
@@ -197,7 +210,7 @@ public class RegionFragment extends Fragment {
         binding.regionName.setText(region.getRegionName());
         int nationalFlagResId = ResourceUtil.getFlagDrawableByKey(getContext(), region.getCountry().toLowerCase());
         binding.nationalFlag.setImageResource(nationalFlagResId);
-        adapter.addRegionList(getFavoriteRegionList(), getRecentlyConnectedList(), getOtherList());
+        refreshRegionList();
 
         listener.onSelectedRegionChanged(region.getRegionName(), nationalFlagResId, true);
     }
@@ -255,7 +268,7 @@ public class RegionFragment extends Fragment {
                                    oldRegion.deleteAllFromRealm();
                                    realm.commitTransaction();
 
-                                   adapter.addRegionList(getFavoriteRegionList(), getRecentlyConnectedList(), getOtherList());
+                                   refreshRegionList();
 
                                    // TODO: 一番上のを選択している
                                    CypherpunkSetting setting = new CypherpunkSetting();

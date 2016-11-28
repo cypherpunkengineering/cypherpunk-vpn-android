@@ -3,6 +3,7 @@ package com.cypherpunk.privacy.ui.region;
 import android.databinding.DataBindingUtil;
 import android.support.annotation.ColorInt;
 import android.support.annotation.NonNull;
+import android.support.annotation.StringRes;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -143,12 +144,28 @@ public class RegionAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
     public void addRegionList(@NonNull List<Region> favoriteItems,
                               @NonNull List<Region> recentlyConnectedItems,
-                              @NonNull List<Region> otherItems) {
+                              @NonNull List<Region> naItems,
+                              @NonNull List<Region> saItems,
+                              @NonNull List<Region> crItems,
+                              @NonNull List<Region> opItems,
+                              @NonNull List<Region> euItems,
+                              @NonNull List<Region> meItems,
+                              @NonNull List<Region> afItems,
+                              @NonNull List<Region> asItems,
+                              @NonNull List<Region> devItems) {
         clear();
         items.add(new FastestLocation());
         addFavoriteItems(favoriteItems);
         addRecentlyConnectedItems(recentlyConnectedItems);
-        addAllItems(otherItems);
+        addItems(naItems, R.string.region_list_na);
+        addItems(saItems, R.string.region_list_sa);
+        addItems(crItems, R.string.region_list_cr);
+        addItems(opItems, R.string.region_list_op);
+        addItems(euItems, R.string.region_list_eu);
+        addItems(meItems, R.string.region_list_me);
+        addItems(afItems, R.string.region_list_af);
+        addItems(asItems, R.string.region_list_as);
+        addItems(devItems, R.string.region_list_dev);
         notifyItemRangeInserted(0, items.size());
     }
 
@@ -166,9 +183,11 @@ public class RegionAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         items.addAll(data);
     }
 
-    private void addAllItems(@NonNull List<Region> data) {
-        items.add(new Divider(getContext().getString(R.string.region_list_all)));
-        items.addAll(data);
+    private void addItems(@NonNull List<Region> data, @StringRes int dividerName) {
+        if (!data.isEmpty()) {
+            items.add(new Divider(getContext().getString(dividerName)));
+            items.addAll(data);
+        }
     }
 
     public void clear() {
