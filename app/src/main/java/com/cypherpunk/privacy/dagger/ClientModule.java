@@ -1,7 +1,9 @@
 package com.cypherpunk.privacy.dagger;
 
+import com.cypherpunk.privacy.BuildConfig;
 import com.cypherpunk.privacy.data.api.CookieManager;
 import com.cypherpunk.privacy.data.api.CypherpunkService;
+import com.cypherpunk.privacy.data.api.UserAgentInterceptor;
 
 import javax.inject.Singleton;
 
@@ -20,6 +22,7 @@ public class ClientModule {
     public OkHttpClient provideHttpClient() {
         OkHttpClient.Builder builder = new OkHttpClient.Builder();
         builder.cookieJar(new CookieManager());
+        builder.interceptors().add(new UserAgentInterceptor("CypherpunkPrivacy/Android/" + BuildConfig.VERSION_NAME));
         HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
         logging.setLevel(HttpLoggingInterceptor.Level.BODY);
         //builder.addInterceptor(logging);
