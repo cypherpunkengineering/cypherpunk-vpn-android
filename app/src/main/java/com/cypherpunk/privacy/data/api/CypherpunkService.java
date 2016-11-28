@@ -46,19 +46,19 @@ public interface CypherpunkService {
     @GET("/api/v0/location/list/{accountType}")
     Single<Map<String, RegionResult>> serverList(@Path(value = "accountType", encoded = true) String accountType);
 
-    @POST("/api/v1/account/email/change")
+    @POST("/api/v0/account/email/change")
     Single<ResponseBody> changeEmail(
             @Body ChangeEmailRequest changeEmailRequest);
 
-    @POST("/api/v1/account/password/change")
+    @POST("/api/v0/account/password/change")
     Single<ResponseBody> changePassword(
             @Body ChangePasswordRequest changePasswordRequest);
 
-    @POST("/api/v1/account/password/recover")
+    @POST("/api/v0/account/password/recover")
     Single<ResponseBody> recoverPassword(
             @Body EmailRequest emailRequest);
 
-    @POST("/api/v1/account/email/confirm")
+    @POST("/api/v0/account/email/confirm")
     Single<ResponseBody> resendEmail(
             @Body EmailRequest emailRequest);
 }
