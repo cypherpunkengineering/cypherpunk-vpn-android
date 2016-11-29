@@ -277,12 +277,11 @@ public class RegionFragment extends Fragment {
 
                                    refreshRegionList();
 
-                                   // TODO: 一番上のを選択している
                                    CypherpunkSetting setting = new CypherpunkSetting();
                                    if (!TextUtils.isEmpty(setting.regionId)) {
                                        Region region = realm.where(Region.class).equalTo("id", setting.regionId).findFirst();
                                        if (region != null) {
-                                           Region first = realm.where(Region.class).findFirst();
+                                           Region first = realm.where(Region.class).equalTo("enabled", true).findFirst();
                                            setting.regionId = first.getId();
                                            setting.save();
 
