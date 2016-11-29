@@ -202,10 +202,9 @@ public class TutorialActivity extends AppCompatActivity {
                                    oldRegion.deleteAllFromRealm();
                                    realm.commitTransaction();
 
-                                   // TODO: 一番上のを選択している
                                    CypherpunkSetting setting = new CypherpunkSetting();
                                    if (TextUtils.isEmpty(setting.regionId)) {
-                                       Region first = realm.where(Region.class).findFirst();
+                                       Region first = realm.where(Region.class).equalTo("enabled", true).findFirst();
                                        setting.regionId = first.getId();
                                        setting.save();
                                    }
