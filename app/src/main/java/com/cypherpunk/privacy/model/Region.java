@@ -26,6 +26,9 @@ public class Region implements RealmModel {
     private String region;
 
     @Required
+    private String level;
+
+    @Required
     private String country;
 
     @Required
@@ -54,6 +57,7 @@ public class Region implements RealmModel {
          @NonNull String region,
          @NonNull String country,
          @NonNull String regionName,
+         @NonNull String level,
          boolean enabled,
 
          @NonNull String ovHostname,
@@ -68,6 +72,7 @@ public class Region implements RealmModel {
         this.region = region;
         this.country = country;
         this.regionName = regionName;
+        this.level = level;
         this.enabled = enabled;
 
         this.ovHostname = ovHostname;
@@ -99,6 +104,10 @@ public class Region implements RealmModel {
 
     public void setRegionName(String regionName) {
         this.regionName = regionName;
+    }
+
+    public String getLevel() {
+        return level;
     }
 
     public boolean isEnabled() {

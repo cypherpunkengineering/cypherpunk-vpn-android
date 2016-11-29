@@ -11,6 +11,8 @@ public class RegionResult
 
     private String region;
 
+    private String level;
+
     private boolean enabled;
 
     private String ovHostname;
@@ -53,6 +55,10 @@ public class RegionResult
 
     public void setRegion(String region) {
         this.region = region;
+    }
+
+    public String getLevel() {
+        return level;
     }
 
     public boolean isEnabled() {

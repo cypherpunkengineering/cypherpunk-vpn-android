@@ -183,6 +183,7 @@ public class TutorialActivity extends AppCompatActivity {
                                                    regionResult.getRegion(),
                                                    regionResult.getCountry(),
                                                    regionResult.getName(),
+                                                   regionResult.getLevel(),
                                                    regionResult.isEnabled(),
                                                    regionResult.getOvHostname(),
                                                    regionResult.getOvDefault(),
