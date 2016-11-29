@@ -26,8 +26,11 @@ import com.cypherpunk.privacy.model.UserSettingPref;
 import com.cypherpunk.privacy.utils.ResourceUtil;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import javax.inject.Inject;
@@ -185,12 +188,14 @@ public class RegionFragment extends Fragment {
     }
 
     private ArrayList<Region> getFavoriteRegionList() {
-        RealmResults<Region> regionList = realm.where(Region.class).equalTo("favorited", true).findAllSorted("lastConnectedDate", Sort.DESCENDING);
+        RealmResults<Region> regionList = realm.where(Region.class)
+                .equalTo("favorited", true).findAllSorted("regionName", Sort.ASCENDING);
         return new ArrayList<>(regionList);
     }
 
     private ArrayList<Region> getRecentlyConnectedList() {
-        RealmResults<Region> regionList = realm.where(Region.class).notEqualTo("lastConnectedDate", new Date(0)).findAllSorted("lastConnectedDate", Sort.DESCENDING);
+        RealmResults<Region> regionList = realm.where(Region.class)
+                .notEqualTo("lastConnectedDate", new Date(0)).findAllSorted("lastConnectedDate", Sort.DESCENDING);
         ArrayList<Region> regions = new ArrayList<>(regionList);
         if (regionList.size() > 3) {
             regions = new ArrayList<>(regionList.subList(0, 3));
@@ -199,8 +204,25 @@ public class RegionFragment extends Fragment {
     }
 
     private ArrayList<Region> getOtherList(String region) {
-        RealmResults<Region> regionList = realm.where(Region.class).equalTo("region", region).findAll();
-        return new ArrayList<>(regionList);
+        ArrayList<Region> regionList = new ArrayList<>(
+                realm.where(Region.class).equalTo("region", region).findAll());
+        final Locale locale = Locale.getDefault();
+        Collections.sort(regionList, new Comparator<Region>() {
+            @Override
+            public int compare(Region region1, Region region2) {
+                Locale countryLocale1 = new Locale(locale.getLanguage(), region1.getCountry());
+                String regionCountryName1 = countryLocale1.getDisplayCountry(locale);
+
+                Locale countryLocale2 = new Locale(locale.getLanguage(), region2.getCountry());
+                String region1CountryName2 = countryLocale2.getDisplayCountry(locale);
+                int result = regionCountryName1.compareTo(region1CountryName2);
+                if (result == 0) {
+                    return region1.getRegionName().compareTo(region2.getRegionName());
+                }
+                return result;
+            }
+        });
+        return regionList;
     }
 
     private void selectRegion(Region region) {

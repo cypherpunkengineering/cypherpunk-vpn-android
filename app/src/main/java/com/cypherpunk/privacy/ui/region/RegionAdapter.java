@@ -157,6 +157,7 @@ public class RegionAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         items.add(new FastestLocation());
         addFavoriteItems(favoriteItems);
         addRecentlyConnectedItems(recentlyConnectedItems);
+        addItems(devItems, R.string.region_list_dev);
         addItems(naItems, R.string.region_list_na);
         addItems(saItems, R.string.region_list_sa);
         addItems(crItems, R.string.region_list_cr);
@@ -165,7 +166,6 @@ public class RegionAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         addItems(meItems, R.string.region_list_me);
         addItems(afItems, R.string.region_list_af);
         addItems(asItems, R.string.region_list_as);
-        addItems(devItems, R.string.region_list_dev);
         notifyItemRangeInserted(0, items.size());
     }
 
