@@ -223,6 +223,9 @@ public class RegionFragment extends Fragment {
                     @Override
                     public Single<Map<String, RegionResult>> call(LoginResult result) {
                         UserManager.saveSecret(result.getSecret());
+                        UserSettingPref userPref = new UserSettingPref();
+                        userPref.userStatusType = result.getAccount().type;
+                        userPref.save();
                         return webService.serverList(new UserSettingPref().userStatusType);
                     }
                 })

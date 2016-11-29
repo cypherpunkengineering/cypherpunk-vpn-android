@@ -152,6 +152,7 @@ public class TutorialActivity extends AppCompatActivity {
                         UserManager.saveSecret(result.getSecret());
                         UserSettingPref userPref = new UserSettingPref();
                         userPref.userStatusType = result.getAccount().type;
+                        userPref.save();
                         return webService.serverList(userPref.userStatusType);
                     }
                 })
