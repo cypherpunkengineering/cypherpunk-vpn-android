@@ -6,6 +6,7 @@ import android.graphics.Typeface;
 import android.support.annotation.ColorInt;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.StringRes;
+import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 import android.widget.TextView;
 
@@ -14,9 +15,9 @@ import com.cypherpunk.privacy.R;
 
 public class RegionTagView extends TextView {
 
-    public static final String PREMIUM = "premium";
-    public static final String DEVELOPER = "developer";
-//    public static final String STAFF = "staff";
+    private static final String PREMIUM = "premium";
+    private static final String DEVELOPER = "developer";
+//    private static final String STAFF = "staff";
 
     public RegionTagView(Context context) {
         this(context, null);
@@ -42,7 +43,7 @@ public class RegionTagView extends TextView {
                 case PREMIUM:
                     background = R.drawable.region_badge_premium;
                     text = R.string.region_level_badge_premium;
-                    color = Color.BLACK;
+                    color = ContextCompat.getColor(getContext(), R.color.region_badge_premium_text);
                     break;
                 case DEVELOPER:
                     background = R.drawable.region_badge_dev;
