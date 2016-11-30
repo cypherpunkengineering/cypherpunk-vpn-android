@@ -2,7 +2,6 @@ package com.cypherpunk.privacy.widget;
 
 import android.content.Context;
 import android.graphics.Color;
-import android.graphics.Typeface;
 import android.support.annotation.ColorInt;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.StringRes;
@@ -11,13 +10,13 @@ import android.util.AttributeSet;
 import android.widget.TextView;
 
 import com.cypherpunk.privacy.R;
+import com.cypherpunk.privacy.utils.FontUtil;
 
 
 public class RegionTagView extends TextView {
 
     private static final String PREMIUM = "premium";
     private static final String DEVELOPER = "developer";
-//    private static final String STAFF = "staff";
 
     public RegionTagView(Context context) {
         this(context, null);
@@ -29,7 +28,7 @@ public class RegionTagView extends TextView {
 
     public RegionTagView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        setTypeface(null, Typeface.BOLD);
+        setTypeface(FontUtil.getDosisSemiBold(context));
     }
 
 

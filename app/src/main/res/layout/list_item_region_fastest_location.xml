@@ -16,7 +16,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
+            android:layout_marginRight="12dp"
             tools:ignore="ContentDescription"
             android:src="@drawable/helmet_color_vector" />
 
