@@ -16,6 +16,7 @@ import com.cypherpunk.privacy.databinding.ListItemRegionBinding;
 import com.cypherpunk.privacy.databinding.ListItemRegionDividerBinding;
 import com.cypherpunk.privacy.model.CypherpunkSetting;
 import com.cypherpunk.privacy.model.Region;
+import com.cypherpunk.privacy.utils.FontUtil;
 import com.cypherpunk.privacy.utils.ResourceUtil;
 import com.cypherpunk.privacy.widget.StarView;
 
@@ -37,13 +38,10 @@ public class RegionAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     private final int textColor;
     @ColorInt
     private final int selectedTextColor;
-    @ColorInt
-    private final int disabledTextColor;
 
     public RegionAdapter() {
         textColor = ContextCompat.getColor(getContext(), android.R.color.white);
         selectedTextColor = ContextCompat.getColor(getContext(), R.color.region_selected_text);
-        disabledTextColor = ContextCompat.getColor(getContext(), R.color.region_disabled_text);
     }
 
     protected void onFavorite(@NonNull String regionId, boolean favorite) {
@@ -101,15 +99,26 @@ public class RegionAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                 CypherpunkSetting setting = new CypherpunkSetting();
                 if (!TextUtils.isEmpty(setting.regionId) && regionId.equals(setting.regionId)) {
                     binding.regionName.setTextColor(selectedTextColor);
-                } else if (item.isEnabled()) {
-                    binding.regionName.setTextColor(textColor);
+                    binding.regionName.setTypeface(FontUtil.getDosisBold(getContext()));
                 } else {
-                    binding.regionName.setTextColor(disabledTextColor);
+                    binding.regionName.setTextColor(textColor);
+                    binding.regionName.setTypeface(FontUtil.getDosisRegular(getContext()));
+                }
+
+                holder.itemView.setClickable(item.isEnabled());
+                if (item.isEnabled()) {
+                    binding.nationalFlag.setAlpha(1f);
+                    binding.regionName.setAlpha(1f);
+                    binding.regionTag.setAlpha(1f);
+                    binding.favorite.setAlpha(1f);
+                } else {
+                    binding.nationalFlag.setAlpha(0.5f);
+                    binding.regionName.setAlpha(0.5f);
+                    binding.regionTag.setAlpha(0.5f);
+                    binding.favorite.setAlpha(0.5f);
                 }
 
                 binding.regionTag.setRegionLevel(item.getLevel());
-                holder.itemView.setClickable(item.isEnabled());
-
                 break;
             case ITEM_VIEW_TYPE_FASTEST_LOCATION:
                 holder.itemView.setOnClickListener(new View.OnClickListener() {
