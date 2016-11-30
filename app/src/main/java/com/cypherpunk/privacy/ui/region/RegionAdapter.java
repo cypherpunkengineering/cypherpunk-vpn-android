@@ -105,20 +105,24 @@ public class RegionAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                     binding.regionName.setTypeface(FontUtil.getDosisRegular(getContext()));
                 }
 
-                holder.itemView.setClickable(item.isEnabled());
-                if (item.isEnabled()) {
+                holder.itemView.setClickable(item.isEnabled() && !TextUtils.isEmpty(item.getOvDefault()));
+                if (item.isEnabled() && !TextUtils.isEmpty(item.getOvDefault())) {
+                    binding.regionTag.setRegionLevel(item.getLevel());
                     binding.nationalFlag.setAlpha(1f);
                     binding.regionName.setAlpha(1f);
                     binding.regionTag.setAlpha(1f);
                     binding.favorite.setAlpha(1f);
                 } else {
+                    if (!TextUtils.isEmpty(item.getOvDefault())) {
+                        binding.regionTag.setRegionLevel(item.getLevel());
+                    } else {
+                        binding.regionTag.setUnavailable();
+                    }
                     binding.nationalFlag.setAlpha(0.5f);
                     binding.regionName.setAlpha(0.5f);
                     binding.regionTag.setAlpha(0.5f);
                     binding.favorite.setAlpha(0.5f);
                 }
-
-                binding.regionTag.setRegionLevel(item.getLevel());
                 break;
             case ITEM_VIEW_TYPE_FASTEST_LOCATION:
                 holder.itemView.setOnClickListener(new View.OnClickListener() {

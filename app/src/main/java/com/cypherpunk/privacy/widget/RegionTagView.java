@@ -28,9 +28,7 @@ public class RegionTagView extends TextView {
 
     public RegionTagView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        setTypeface(FontUtil.getDosisSemiBold(context));
     }
-
 
     public void setRegionLevel(String level) {
         setVisibility(level.equals(PREMIUM) || level.equals(DEVELOPER) ? VISIBLE : INVISIBLE);
@@ -53,6 +51,15 @@ public class RegionTagView extends TextView {
             setText(text);
             setBackgroundResource(background);
             setTextColor(color);
+            setTypeface(FontUtil.getDosisSemiBold(getContext()));
         }
+    }
+
+    public void setUnavailable() {
+        setVisibility(VISIBLE);
+        setText(R.string.region_level_badge_unavailable);
+        setTypeface(FontUtil.getDosisRegular(getContext()));
+        setTextColor(ContextCompat.getColor(getContext(), R.color.region_disabled_text));
+        setBackgroundDrawable(null);
     }
 }
