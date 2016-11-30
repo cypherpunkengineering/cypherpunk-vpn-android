@@ -296,4 +296,5 @@
 
     <string name="region_level_badge_dev">DEV</string>
     <string name="region_level_badge_premium">PREMIUM</string>
+    <string name="region_level_badge_unavailable">UNAVAILABLE</string>
 </resources>
