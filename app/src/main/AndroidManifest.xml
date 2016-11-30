@@ -19,6 +19,8 @@
         android:theme="@style/AppTheme"
         tools:replace="android:allowBackup">
 
+        <meta-data android:name="firebase_analytics_collection_enabled" android:value="false" />
+
         <receiver android:name=".ui.main.CypherpunkBootReceiver">
             <intent-filter android:priority="9001">
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
