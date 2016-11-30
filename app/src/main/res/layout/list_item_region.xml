@@ -16,14 +16,14 @@
             android:layout_width="@dimen/national_flag_width"
             android:layout_height="@dimen/national_flag_height"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
             tools:ignore="ContentDescription"
             tools:src="@drawable/flag_us" />
 
         <com.cypherpunk.privacy.widget.TypefaceTextView
             android:id="@+id/region_name"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_centerVertical="true"
             android:layout_gravity="center_vertical"
@@ -35,6 +35,17 @@
             tools:ignore="RtlHardcoded,RtlSymmetry"
             tools:text="US" />
 
+        <com.cypherpunk.privacy.widget.RegionTagView
+            android:id="@+id/region_tag"
+            android:layout_width="wrap_content"
+            android:layout_height="14dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="8dp"
+            android:layout_toRightOf="@id/region_name"
+            android:paddingLeft="4dp"
+            android:paddingRight="4dp"
+            android:textSize="11sp" />
+
         <com.cypherpunk.privacy.widget.StarView
             android:id="@+id/favorite"
             android:layout_width="44dp"
@@ -43,7 +54,7 @@
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_marginEnd="8dp"
-            android:layout_marginRight="16dp"
+            android:layout_marginRight="11dp"
             android:background="?android:selectableItemBackground"
             android:padding="10dp" />
 

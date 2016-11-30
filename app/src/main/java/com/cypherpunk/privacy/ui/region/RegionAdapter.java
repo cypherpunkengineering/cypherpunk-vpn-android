@@ -106,6 +106,8 @@ public class RegionAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                 } else {
                     binding.regionName.setTextColor(disabledTextColor);
                 }
+
+                binding.regionTag.setRegionLevel(item.getLevel());
                 holder.itemView.setClickable(item.isEnabled());
 
                 break;

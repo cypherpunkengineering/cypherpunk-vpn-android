@@ -94,9 +94,8 @@ public class RegionFragment extends Fragment {
         if (!TextUtils.isEmpty(setting.regionId)) {
             Region region = realm.where(Region.class).equalTo("id", setting.regionId).findFirst();
             if (region != null) {
-                binding.regionName.setText(region.getRegionName());
                 int nationalFlagResId = ResourceUtil.getFlagDrawableByKey(getContext(), region.getCountry().toLowerCase());
-                binding.nationalFlag.setImageResource(nationalFlagResId);
+                updateRegion(region);
                 listener.onSelectedRegionChanged(region.getRegionName(), nationalFlagResId, false);
 
                 binding.progress.setVisibility(View.GONE);
@@ -230,12 +229,18 @@ public class RegionFragment extends Fragment {
         setting.regionId = region.getId();
         setting.save();
 
-        binding.regionName.setText(region.getRegionName());
         int nationalFlagResId = ResourceUtil.getFlagDrawableByKey(getContext(), region.getCountry().toLowerCase());
-        binding.nationalFlag.setImageResource(nationalFlagResId);
+        updateRegion(region);
         refreshRegionList();
 
         listener.onSelectedRegionChanged(region.getRegionName(), nationalFlagResId, true);
+    }
+
+    private void updateRegion(Region region) {
+        binding.regionName.setText(region.getRegionName());
+        int nationalFlagResId = ResourceUtil.getFlagDrawableByKey(getContext(), region.getCountry().toLowerCase());
+        binding.nationalFlag.setImageResource(nationalFlagResId);
+        binding.regionTag.setRegionLevel(region.getLevel());
     }
 
     private void getServerList() {
@@ -278,6 +283,7 @@ public class RegionFragment extends Fragment {
                                                    regionResult.getRegion(),
                                                    regionResult.getCountry(),
                                                    regionResult.getName(),
+                                                   regionResult.getLevel(),
                                                    regionResult.isEnabled(),
                                                    regionResult.getOvHostname(),
                                                    regionResult.getOvDefault(),
@@ -307,9 +313,8 @@ public class RegionFragment extends Fragment {
                                            setting.regionId = first.getId();
                                            setting.save();
 
-                                           binding.regionName.setText(region.getRegionName());
                                            int nationalFlagResId = ResourceUtil.getFlagDrawableByKey(getContext(), region.getCountry().toLowerCase());
-                                           binding.nationalFlag.setImageResource(nationalFlagResId);
+                                           updateRegion(region);
                                            listener.onSelectedRegionChanged(region.getRegionName(), nationalFlagResId, false);
                                        }
                                    }

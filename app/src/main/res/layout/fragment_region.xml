@@ -15,6 +15,7 @@
             android:layout_height="wrap_content"
             android:background="@drawable/button_main_region"
             android:clickable="true">
+
             <include layout="@layout/divider" />
 
             <LinearLayout
@@ -41,6 +42,16 @@
                     android:textAppearance="?android:textAppearanceLarge"
                     android:textSize="20sp"
                     tools:text="USA WEST" />
+
+                <com.cypherpunk.privacy.widget.RegionTagView
+                    android:id="@+id/region_tag"
+                    android:layout_width="wrap_content"
+                    android:layout_height="14dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="8dp"
+                    android:paddingLeft="4dp"
+                    android:paddingRight="4dp"
+                    android:textSize="11sp" />
 
             </LinearLayout>
 
