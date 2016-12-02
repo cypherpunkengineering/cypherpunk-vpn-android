@@ -203,6 +203,7 @@ public class CypherpunkVPN {
         list.add("tls-client");
         list.add("resolv-retry infinite");
         list.add("route-delay 0");
+        list.add("comp-lzo no");
 
         // mtu settings
         // "it's best to fix the tunnel MTU at 1500 and vary the other parameters (and use --mssfix to prevent fragmentation rather than a lower tunnel MTU)."
