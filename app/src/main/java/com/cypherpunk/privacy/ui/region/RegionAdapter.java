@@ -157,17 +157,19 @@ public class RegionAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         return ITEM_VIEW_TYPE_DIVIDER;
     }
 
-    public void addRegionList(@NonNull List<Region> favoriteItems,
+    public void addRegionList(
+                              @NonNull List<Region> favoriteItems,
                               @NonNull List<Region> recentlyConnectedItems,
+                              @NonNull List<Region> devItems,
                               @NonNull List<Region> naItems,
                               @NonNull List<Region> saItems,
                               @NonNull List<Region> crItems,
-                              @NonNull List<Region> opItems,
                               @NonNull List<Region> euItems,
                               @NonNull List<Region> meItems,
                               @NonNull List<Region> afItems,
                               @NonNull List<Region> asItems,
-                              @NonNull List<Region> devItems) {
+                              @NonNull List<Region> opItems
+                              ) {
         clear();
         items.add(new FastestLocation());
         addFavoriteItems(favoriteItems);
@@ -176,11 +178,11 @@ public class RegionAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         addItems(naItems, R.string.region_list_na);
         addItems(saItems, R.string.region_list_sa);
         addItems(crItems, R.string.region_list_cr);
-        addItems(opItems, R.string.region_list_op);
         addItems(euItems, R.string.region_list_eu);
         addItems(meItems, R.string.region_list_me);
         addItems(afItems, R.string.region_list_af);
         addItems(asItems, R.string.region_list_as);
+        addItems(opItems, R.string.region_list_op);
         notifyItemRangeInserted(0, items.size());
     }
 

@@ -173,7 +173,9 @@ public class RegionFragment extends Fragment {
     }
 
     private void refreshRegionList() {
-        adapter.addRegionList(getFavoriteRegionList(), getRecentlyConnectedList(),
+        adapter.addRegionList(
+				getFavoriteRegionList(),
+				getRecentlyConnectedList(),
                 getOtherList("DEV"),
                 getOtherList("NA"),
                 getOtherList("SA"),
