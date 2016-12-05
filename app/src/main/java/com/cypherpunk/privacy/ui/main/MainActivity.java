@@ -46,6 +46,7 @@ import com.cypherpunk.privacy.vpn.CypherpunkVpnStatus;
 import com.cypherpunk.privacy.widget.BinaryTextureView;
 import com.cypherpunk.privacy.widget.ConnectionStatusView;
 import com.cypherpunk.privacy.widget.VpnFlatButton;
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 
 import javax.inject.Inject;
@@ -64,6 +65,8 @@ public class MainActivity extends AppCompatActivity
     private CypherpunkVpnStatus status;
     private RegionFragment regionFragment;
     private SlidingMenu slidingMenu;
+
+    private FirebaseAnalytics mFirebaseAnalytics;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,6 +88,9 @@ public class MainActivity extends AppCompatActivity
         if (!getResources().getBoolean(R.bool.is_tablet)) {
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         }
+
+        // Obtain the FirebaseAnalytics instance.
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
 
