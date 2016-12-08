@@ -196,6 +196,7 @@ public class RegionFragment extends Fragment {
 
     private ArrayList<Region> getRecentlyConnectedList() {
         RealmResults<Region> regionList = realm.where(Region.class)
+                .equalTo("favorited", false)
                 .notEqualTo("lastConnectedDate", new Date(0)).findAllSorted("lastConnectedDate", Sort.DESCENDING);
         ArrayList<Region> regions = new ArrayList<>(regionList);
         if (regionList.size() > 3) {
