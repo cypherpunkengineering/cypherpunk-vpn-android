@@ -311,7 +311,7 @@ public class RegionFragment extends Fragment {
                                    CypherpunkSetting setting = new CypherpunkSetting();
                                    if (!TextUtils.isEmpty(setting.regionId)) {
                                        Region region = realm.where(Region.class).equalTo("id", setting.regionId).findFirst();
-                                       if (region != null) {
+                                       if (region == null) {
                                            Region first = realm.where(Region.class).equalTo("enabled", true).findFirst();
                                            setting.regionId = first.getId();
                                            setting.save();
@@ -328,6 +328,7 @@ public class RegionFragment extends Fragment {
                                @Override
                                public void onError(Throwable error) {
                                    error.printStackTrace();
+                                   binding.progress.setVisibility(View.GONE);
                                }
                            }
                 );
