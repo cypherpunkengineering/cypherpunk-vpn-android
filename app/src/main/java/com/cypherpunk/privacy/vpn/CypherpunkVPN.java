@@ -217,6 +217,10 @@ public class CypherpunkVPN {
         list.add("tls-cipher TLS-DHE-RSA-WITH-AES-256-GCM-SHA384:TLS-DHE-RSA-WITH-AES-256-CBC-SHA256:TLS-DHE-RSA-WITH-AES-128-GCM-SHA256:TLS-DHE-RSA-WITH-AES-128-CBC-SHA256");
         list.add("auth SHA256");
 
+        // ipv6 kill
+        list.add("ifconfig-ipv6 fd25::1/64 ::1");
+        list.add("route-ipv6 ::/0 ::1");
+
         // vpn protocol + remote port
         int rport = 7133;
         if (cypherpunkSetting.vpnPortRemote != null && cypherpunkSetting.vpnPortRemote.length() > 0)
