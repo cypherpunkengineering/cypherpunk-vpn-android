@@ -105,8 +105,8 @@ public class RegionAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                     binding.regionName.setTypeface(FontUtil.getDosisRegular(getContext()));
                 }
 
-                holder.itemView.setClickable(item.isEnabled() && !TextUtils.isEmpty(item.getOvDefault()));
-                if (item.isEnabled() && !TextUtils.isEmpty(item.getOvDefault())) {
+                holder.itemView.setClickable(item.isAuthorized() && !TextUtils.isEmpty(item.getOvDefault()));
+                if (item.isAuthorized() && !TextUtils.isEmpty(item.getOvDefault())) {
                     binding.regionTag.setRegionLevel(item.getLevel());
                     binding.nationalFlag.setAlpha(1f);
                     binding.regionName.setAlpha(1f);

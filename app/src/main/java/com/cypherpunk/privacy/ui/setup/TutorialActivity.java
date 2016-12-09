@@ -106,7 +106,7 @@ public class TutorialActivity extends AppCompatActivity {
                         setting.save();
 
                         // enable firebase
-                        FirebaseAnalytics.getInstance(getApplicationContext()).setAnalyticsCollectionEnabled(true);
+                        FirebaseAnalytics.getInstance(getApplicationContext()).setAnalyticsCollectionAuthorized(true);
 
                         goToMainScreen();
                         break;
@@ -123,7 +123,7 @@ public class TutorialActivity extends AppCompatActivity {
                 setting.save();
 
                 // disable firebase
-                FirebaseAnalytics.getInstance(getApplicationContext()).setAnalyticsCollectionEnabled(false);
+                FirebaseAnalytics.getInstance(getApplicationContext()).setAnalyticsCollectionAuthorized(false);
 
                 goToMainScreen();
             }
@@ -171,7 +171,7 @@ public class TutorialActivity extends AppCompatActivity {
                                            region.setRegion(regionResult.getRegion());
                                            region.setCountry(regionResult.getCountry());
                                            region.setRegionName(regionResult.getName());
-                                           region.setEnabled(regionResult.isEnabled());
+                                           region.setAuthorized(regionResult.isAuthorized());
                                            region.setOvHostname(regionResult.getOvHostname());
                                            region.setOvDefault(regionResult.getOvDefault());
                                            region.setOvNone(regionResult.getOvNone());
@@ -184,7 +184,7 @@ public class TutorialActivity extends AppCompatActivity {
                                                    regionResult.getCountry(),
                                                    regionResult.getName(),
                                                    regionResult.getLevel(),
-                                                   regionResult.isEnabled(),
+                                                   regionResult.isAuthorized(),
                                                    regionResult.getOvHostname(),
                                                    regionResult.getOvDefault(),
                                                    regionResult.getOvNone(),

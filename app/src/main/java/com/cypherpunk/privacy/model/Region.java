@@ -20,7 +20,7 @@ public class Region implements RealmModel {
     @Required
     private String regionName;
 
-    private boolean enabled;
+    private boolean authorized;
 
     @Required
     private String region;
@@ -58,7 +58,7 @@ public class Region implements RealmModel {
          @NonNull String country,
          @NonNull String regionName,
          @NonNull String level,
-         boolean enabled,
+         boolean authorized,
 
          @NonNull String ovHostname,
 
@@ -73,7 +73,7 @@ public class Region implements RealmModel {
         this.country = country;
         this.regionName = regionName;
         this.level = level;
-        this.enabled = enabled;
+        this.authorized = authorized;
 
         this.ovHostname = ovHostname;
 
@@ -110,12 +110,12 @@ public class Region implements RealmModel {
         return level;
     }
 
-    public boolean isEnabled() {
-        return enabled;
+    public boolean isAuthorized() {
+        return authorized;
     }
 
-    public void setEnabled(boolean enabled) {
-        this.enabled = enabled;
+    public void setAuthorized(boolean authorized) {
+        this.authorized = authorized;
     }
 
     public String getOvHostname() { return ovHostname; }
@@ -194,7 +194,7 @@ public class Region implements RealmModel {
                 ", region='" + region + '\'' +
                 ", country='" + country + '\'' +
                 ", regionName='" + regionName + '\'' +
-                ", enabled='" + enabled + '\'' +
+                ", authorized='" + authorized + '\'' +
                 ", ovHostname='" + ovHostname + '\'' +
                 ", ovDefault='" + ovDefault + '\'' +
                 ", ovNone='" + ovNone + '\'' +

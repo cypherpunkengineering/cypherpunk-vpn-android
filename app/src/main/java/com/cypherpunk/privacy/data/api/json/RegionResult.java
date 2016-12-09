@@ -13,7 +13,7 @@ public class RegionResult
 
     private String level;
 
-    private boolean enabled;
+    private boolean authorized;
 
     private String ovHostname;
 
@@ -61,12 +61,12 @@ public class RegionResult
         return level;
     }
 
-    public boolean isEnabled() {
-        return enabled;
+    public boolean isAuthorized() {
+        return authorized;
     }
 
-    public void setEnabled(boolean enabled) {
-        this.enabled = enabled;
+    public void setAuthorized(boolean authorized) {
+        this.authorized = authorized;
     }
 
     public String getOvHostname() {

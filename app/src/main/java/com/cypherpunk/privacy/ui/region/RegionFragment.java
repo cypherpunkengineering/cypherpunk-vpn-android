@@ -274,7 +274,7 @@ public class RegionFragment extends Fragment {
                                            region.setRegion(regionResult.getRegion());
                                            region.setCountry(regionResult.getCountry());
                                            region.setRegionName(regionResult.getName());
-                                           region.setEnabled(regionResult.isEnabled());
+                                           region.setAuthorized(regionResult.isAuthorized());
                                            region.setOvHostname(regionResult.getOvHostname());
                                            region.setOvDefault(regionResult.getOvDefault());
                                            region.setOvNone(regionResult.getOvNone());
@@ -287,7 +287,7 @@ public class RegionFragment extends Fragment {
                                                    regionResult.getCountry(),
                                                    regionResult.getName(),
                                                    regionResult.getLevel(),
-                                                   regionResult.isEnabled(),
+                                                   regionResult.isAuthorized(),
                                                    regionResult.getOvHostname(),
                                                    regionResult.getOvDefault(),
                                                    regionResult.getOvNone(),
