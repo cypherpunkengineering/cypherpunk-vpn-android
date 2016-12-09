@@ -106,7 +106,7 @@ public class TutorialActivity extends AppCompatActivity {
                         setting.save();
 
                         // enable firebase
-                        FirebaseAnalytics.getInstance(getApplicationContext()).setAnalyticsCollectionAuthorized(true);
+                        FirebaseAnalytics.getInstance(getApplicationContext()).setAnalyticsCollectionEnabled(true);
 
                         goToMainScreen();
                         break;
@@ -123,7 +123,7 @@ public class TutorialActivity extends AppCompatActivity {
                 setting.save();
 
                 // disable firebase
-                FirebaseAnalytics.getInstance(getApplicationContext()).setAnalyticsCollectionAuthorized(false);
+                FirebaseAnalytics.getInstance(getApplicationContext()).setAnalyticsCollectionEnabled(false);
 
                 goToMainScreen();
             }
