@@ -178,17 +178,7 @@ public class AccountSettingsFragment extends PreferenceFragmentCompat {
     }
 
     private void getStatus() {
-        subscription = webService
-                .login(new LoginRequest(UserManager.getMailAddress(), UserManager.getPassword()))
-                .flatMap(new Func1<LoginResult, Single<StatusResult>>() {
-                    @Override
-                    public Single<StatusResult> call(LoginResult result) {
-                        UserManager.saveVpnUsername(result.getPrivacy().username);
-                        UserManager.saveVpnPassword(result.getPrivacy().password);
-                        confirmed = result.getAccount().confirmed;
-                        return webService.getStatus();
-                    }
-                })
+        subscription = webService.getStatus()
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new SingleSubscriber<StatusResult>() {

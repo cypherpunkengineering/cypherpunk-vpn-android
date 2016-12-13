@@ -140,8 +140,9 @@ public class SignUpActivity extends AppCompatActivity {
                         public void onSuccess(LoginResult result) {
                             dialogFragment.dismiss();
                             UserManager.saveMailAddress(email);
-                            UserManager.savePassword(password);
                             UserManager.saveSecret(result.getSecret());
+                            UserManager.saveVpnUsername(result.getPrivacy().username);
+                            UserManager.saveVpnPassword(result.getPrivacy().password);
                             startActivity(ConfirmationEmailActivity.createIntent(SignUpActivity.this, email));
                         }
 

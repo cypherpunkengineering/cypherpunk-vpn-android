@@ -131,20 +131,13 @@ public class EditPasswordActivity extends AppCompatActivity {
         dialogFragment.show(getSupportFragmentManager());
 
         subscription = webService
-                .login(new LoginRequest(UserManager.getMailAddress(), UserManager.getPassword()))
-                .flatMap(new Func1<LoginResult, Single<ResponseBody>>() {
-                    @Override
-                    public Single<ResponseBody> call(LoginResult result) {
-                        return webService.changePassword(new ChangePasswordRequest(oldPassword, newPassword));
-                    }
-                })
+                .changePassword(new ChangePasswordRequest(oldPassword, newPassword))
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new SingleSubscriber<ResponseBody>() {
                     @Override
                     public void onSuccess(ResponseBody result) {
                         dialogFragment.dismiss();
-                        UserManager.savePassword(newPassword);
                         finish();
                     }
 
