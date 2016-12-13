@@ -19,6 +19,7 @@ import com.cypherpunk.privacy.data.api.UserManager;
 import com.cypherpunk.privacy.data.api.json.LoginRequest;
 import com.cypherpunk.privacy.data.api.json.LoginResult;
 import com.cypherpunk.privacy.data.api.json.RegionResult;
+import com.cypherpunk.privacy.data.api.json.StatusResult;
 import com.cypherpunk.privacy.databinding.FragmentRegionBinding;
 import com.cypherpunk.privacy.model.CypherpunkSetting;
 import com.cypherpunk.privacy.model.Region;
@@ -248,13 +249,12 @@ public class RegionFragment extends Fragment {
 
     private void getServerList() {
         subscription = webService
-                .login(new LoginRequest(UserManager.getMailAddress(), UserManager.getPassword()))
-                .flatMap(new Func1<LoginResult, Single<Map<String, RegionResult>>>() {
+                .getStatus()
+                .flatMap(new Func1<StatusResult, Single<Map<String, RegionResult>>>() {
                     @Override
-                    public Single<Map<String, RegionResult>> call(LoginResult result) {
-                        UserManager.saveSecret(result.getSecret());
+                    public Single<Map<String, RegionResult>> call(StatusResult result) {
                         UserSettingPref userPref = new UserSettingPref();
-                        userPref.userStatusType = result.getAccount().type;
+                        userPref.userStatusType = result.getType();
                         userPref.save();
                         return webService.serverList(new UserSettingPref().userStatusType);
                     }

@@ -9,8 +9,8 @@ import com.orhanobut.hawk.Hawk;
 
 public class UserManager {
 
-    private static final String PREF_KEY_PASSWORD = "password";
     private static final String PREF_KEY_SECRET = "secret";
+    private static final String PREF_KEY_COOKIE = "cookie";
 
     private static final String PREF_KEY_VPN_USERNAME = "vpn_username";
     private static final String PREF_KEY_VPN_PASSWORD = "vpn_password";
@@ -32,12 +32,12 @@ public class UserManager {
     }
 
     @Nullable
-    public static String getPassword() {
-        return Hawk.get(PREF_KEY_PASSWORD);
+    public static String getCookie() {
+        return Hawk.get(PREF_KEY_COOKIE);
     }
 
-    public static void savePassword(@NonNull String password) {
-        Hawk.put(PREF_KEY_PASSWORD, password);
+    public static void saveCookie(@NonNull String cookie) {
+        Hawk.put(PREF_KEY_COOKIE, cookie);
     }
 
     @Nullable
@@ -70,7 +70,7 @@ public class UserManager {
     public static void clearUser() {
         UserSettingPref user = new UserSettingPref();
         user.clear();
-        Hawk.remove(PREF_KEY_PASSWORD);
+        Hawk.remove(PREF_KEY_COOKIE);
         Hawk.remove(PREF_KEY_SECRET);
         Hawk.remove(PREF_KEY_VPN_USERNAME);
         Hawk.remove(PREF_KEY_VPN_PASSWORD);

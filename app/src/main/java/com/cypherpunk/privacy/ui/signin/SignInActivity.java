@@ -146,8 +146,9 @@ public class SignInActivity extends AppCompatActivity {
                         public void onSuccess(LoginResult result) {
                             dialogFragment.dismiss();
                             UserManager.saveMailAddress(email);
-                            UserManager.savePassword(password);
                             UserManager.saveSecret(result.getSecret());
+                            UserManager.saveVpnUsername(result.getPrivacy().username);
+                            UserManager.saveVpnPassword(result.getPrivacy().password);
                             Intent intent = new Intent(SignInActivity.this, TutorialActivity.class);
                             TaskStackBuilder builder = TaskStackBuilder.create(SignInActivity.this);
                             builder.addNextIntent(intent);

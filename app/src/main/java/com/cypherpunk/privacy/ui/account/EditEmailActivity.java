@@ -137,13 +137,7 @@ public class EditEmailActivity extends AppCompatActivity {
         dialogFragment.show(getSupportFragmentManager());
 
         subscription = webService
-                .login(new LoginRequest(UserManager.getMailAddress(), UserManager.getPassword()))
-                .flatMap(new Func1<LoginResult, Single<ResponseBody>>() {
-                    @Override
-                    public Single<ResponseBody> call(LoginResult result) {
-                        return webService.changeEmail(new ChangeEmailRequest(email, password));
-                    }
-                })
+                .changeEmail(new ChangeEmailRequest(email, password))
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new SingleSubscriber<ResponseBody>() {
