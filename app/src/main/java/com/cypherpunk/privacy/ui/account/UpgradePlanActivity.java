@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -11,19 +12,39 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import com.cypherpunk.privacy.CypherpunkApplication;
 import com.cypherpunk.privacy.R;
 import com.cypherpunk.privacy.billing.IabHelper;
 import com.cypherpunk.privacy.billing.IabResult;
 import com.cypherpunk.privacy.billing.Inventory;
 import com.cypherpunk.privacy.billing.Purchase;
+import com.cypherpunk.privacy.data.api.CypherpunkService;
+import com.cypherpunk.privacy.data.api.json.UpgradeAccountRequest;
 import com.cypherpunk.privacy.databinding.ActivityUpgradePlanBinding;
 import com.cypherpunk.privacy.model.UserSettingPref;
+import com.cypherpunk.privacy.widget.ProgressFullScreenDialog;
+
+import javax.inject.Inject;
+
+import okhttp3.ResponseBody;
+import rx.SingleSubscriber;
+import rx.Subscription;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
+import rx.subscriptions.Subscriptions;
 
 public class UpgradePlanActivity extends AppCompatActivity {
+
+    private ProgressFullScreenDialog dialog;
+    private Subscription subscription = Subscriptions.empty();
+
+    @Inject
+    CypherpunkService webService;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        ((CypherpunkApplication) getApplication()).getAppComponent().inject(this);
 
         if (!getResources().getBoolean(R.bool.is_tablet)) {
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
@@ -113,6 +134,16 @@ public class UpgradePlanActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    protected void onDestroy() {
+        if (dialog != null) {
+            dialog.dismiss();
+            dialog = null;
+        }
+        subscription.unsubscribe();
+        super.onDestroy();
+    }
+
     private static final String PUBLIC_KEY = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAjG76qnaQN3mpl2g5CqND9KIm5oKkKt9vb7bW2i8+Si/8FI2yQKTaKnkGtOxRRNhy0y50S2oNFyuasxWFLHtDCHpodVI9rvJ5zAc+z79Qxrgke1SMzDU1z+oSf3/HWa2yVcAVyBolbvLtras7TXCsKIIWaXbMwccN3L2tW0kZkNkGryqlJJ0Nw/zGCmOY6t5hDZ5Ogh4avlND14naO4P4OqtE0eJh5BJ8WQFUe5mHvp8QLOsN0E6hUr2kf7pLMi9MZ3CR9fFvIk9phiPiB8vDD35c4b22SD5EcWgJCIiIVI6IPhg3cJo4H8ZnKd0O6xmEvAal7YRScGQRMcp6aZLu3wIDAQAB";
     static final String SKU_MONTHLY = "monthly899";
     static final String SKU_SEMIANNUALLY = "semiannually4499";
@@ -120,7 +151,6 @@ public class UpgradePlanActivity extends AppCompatActivity {
     static final int RC_REQUEST = 10001;
 
     private IabHelper helper;
-
 
     private void setupBilling() {
         helper = new IabHelper(this, PUBLIC_KEY);
@@ -157,8 +187,7 @@ public class UpgradePlanActivity extends AppCompatActivity {
         @Override
         public void onIabPurchaseFinished(IabResult result, Purchase info) {
             if (result.isSuccess()) {
-                setResult(RESULT_OK);
-                finish();
+                upgradeAccount(info.getDeveloperPayload(), info.getSku(), info.getOriginalJson());
             }
         }
     };
@@ -168,5 +197,47 @@ public class UpgradePlanActivity extends AppCompatActivity {
         if (!helper.handleActivityResult(requestCode, resultCode, data)) {
             super.onActivityResult(requestCode, resultCode, data);
         }
+    }
+
+    /**
+     * @param accountId    developerPayload
+     * @param planId       Item Id (monthly899, semiannually4499, annually5999)
+     * @param purchaseData INAPP_PURCHASE_DATA
+     */
+    private void upgradeAccount(@NonNull String accountId, @NonNull String planId,
+                                @NonNull String purchaseData) {
+
+        if (dialog != null) {
+            dialog.dismiss();
+        }
+
+        dialog = new ProgressFullScreenDialog(this);
+        dialog.setCancelable(false);
+
+        subscription = webService
+                .upgradeAccount(new UpgradeAccountRequest(accountId, planId, purchaseData))
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new SingleSubscriber<ResponseBody>() {
+                    @Override
+                    public void onSuccess(ResponseBody result) {
+                        if (dialog != null) {
+                            dialog.dismiss();
+                            dialog = null;
+                        }
+                        setResult(RESULT_OK);
+                        finish();
+                    }
+
+                    @Override
+                    public void onError(Throwable error) {
+                        if (dialog != null) {
+                            dialog.dismiss();
+                            dialog = null;
+                        }
+                        // TODO: how to behave? show toast?
+                        finish();
+                    }
+                });
     }
 }
