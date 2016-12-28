@@ -15,9 +15,6 @@ import android.view.ViewGroup;
 import com.cypherpunk.privacy.CypherpunkApplication;
 import com.cypherpunk.privacy.R;
 import com.cypherpunk.privacy.data.api.CypherpunkService;
-import com.cypherpunk.privacy.data.api.UserManager;
-import com.cypherpunk.privacy.data.api.json.LoginRequest;
-import com.cypherpunk.privacy.data.api.json.LoginResult;
 import com.cypherpunk.privacy.data.api.json.RegionResult;
 import com.cypherpunk.privacy.data.api.json.StatusResult;
 import com.cypherpunk.privacy.databinding.FragmentRegionBinding;
@@ -309,18 +306,15 @@ public class RegionFragment extends Fragment {
                                    refreshRegionList();
 
                                    CypherpunkSetting setting = new CypherpunkSetting();
-                                   if (!TextUtils.isEmpty(setting.regionId)) {
-                                       Region region = realm.where(Region.class).equalTo("id", setting.regionId).findFirst();
-                                       if (region == null) {
-                                           Region first = realm.where(Region.class).equalTo("authorized", true).findFirst();
-                                           setting.regionId = first.getId();
-                                           setting.save();
-
-                                           int nationalFlagResId = ResourceUtil.getFlagDrawableByKey(getContext(), region.getCountry().toLowerCase());
-                                           updateRegion(region);
-                                           listener.onSelectedRegionChanged(region.getRegionName(), nationalFlagResId, false);
-                                       }
+                                   Region region = realm.where(Region.class).equalTo("id", setting.regionId).findFirst();
+                                   if (region == null) {
+                                       region = realm.where(Region.class).equalTo("authorized", true).findFirst();
+                                       setting.regionId = region.getId();
+                                       setting.save();
                                    }
+                                   int nationalFlagResId = ResourceUtil.getFlagDrawableByKey(getContext(), region.getCountry().toLowerCase());
+                                   updateRegion(region);
+                                   listener.onSelectedRegionChanged(region.getRegionName(), nationalFlagResId, false);
 
                                    binding.progress.setVisibility(View.GONE);
                                }
