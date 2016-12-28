@@ -63,7 +63,7 @@ public interface CypherpunkService {
     Single<ResponseBody> resendEmail(
             @Body EmailRequest emailRequest);
 
-    @POST("/api/v1/account/upgrade/GooglePlay")
+    @POST("/api/v0/account/upgrade/GooglePlay")
     Single<ResponseBody> upgradeAccount(
             @Body UpgradeAccountRequest emailRequest);
 }
