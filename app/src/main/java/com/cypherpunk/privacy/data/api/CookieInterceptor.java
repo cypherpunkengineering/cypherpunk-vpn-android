@@ -15,20 +15,19 @@ public class CookieInterceptor implements Interceptor {
 
     @Override
     public Response intercept(Chain chain) throws IOException {
-        Response originalResponse = chain.proceed(chain.request());
-        if (!originalResponse.headers("Set-Cookie").isEmpty()) {
-            for (String header : originalResponse.headers("Set-Cookie")) {
-                String cookie = header.split(";")[0];
-                UserManager.saveCookie(cookie);
-            }
-        }
-
         Request request = chain.request();
         if (!TextUtils.isEmpty(UserManager.getCookie())) {
             request = request.newBuilder()
                     .addHeader(COOKIE_HEADER_KEY, UserManager.getCookie())
                     .build();
         }
-        return chain.proceed(request);
+        Response response = chain.proceed(request);
+        if (!response.headers("set-cookie").isEmpty()) {
+            for (String header : response.headers("set-cookie")) {
+                String cookie = header.split(";")[0];
+                UserManager.saveCookie(cookie);
+            }
+        }
+        return response;
     }
 }
