@@ -205,7 +205,7 @@ public class TutorialActivity extends AppCompatActivity {
 
                                    CypherpunkSetting setting = new CypherpunkSetting();
                                    if (TextUtils.isEmpty(setting.regionId)) {
-                                       Region first = realm.where(Region.class).equalTo("enabled", true).findFirst();
+                                       Region first = realm.where(Region.class).equalTo("authorized", true).findFirst();
                                        setting.regionId = first.getId();
                                        setting.save();
                                    }

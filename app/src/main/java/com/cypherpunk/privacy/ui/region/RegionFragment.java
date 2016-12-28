@@ -312,7 +312,7 @@ public class RegionFragment extends Fragment {
                                    if (!TextUtils.isEmpty(setting.regionId)) {
                                        Region region = realm.where(Region.class).equalTo("id", setting.regionId).findFirst();
                                        if (region == null) {
-                                           Region first = realm.where(Region.class).equalTo("enabled", true).findFirst();
+                                           Region first = realm.where(Region.class).equalTo("authorized", true).findFirst();
                                            setting.regionId = first.getId();
                                            setting.save();
 
