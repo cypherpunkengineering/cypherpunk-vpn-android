@@ -11,7 +11,6 @@ import android.support.v4.app.TaskStackBuilder;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,9 +18,6 @@ import android.view.ViewGroup;
 import com.cypherpunk.privacy.CypherpunkApplication;
 import com.cypherpunk.privacy.R;
 import com.cypherpunk.privacy.data.api.CypherpunkService;
-import com.cypherpunk.privacy.data.api.UserManager;
-import com.cypherpunk.privacy.data.api.json.LoginRequest;
-import com.cypherpunk.privacy.data.api.json.LoginResult;
 import com.cypherpunk.privacy.data.api.json.RegionResult;
 import com.cypherpunk.privacy.data.api.json.StatusResult;
 import com.cypherpunk.privacy.databinding.ActivityTutorialBinding;
@@ -204,11 +200,9 @@ public class TutorialActivity extends AppCompatActivity {
                                    realm.commitTransaction();
 
                                    CypherpunkSetting setting = new CypherpunkSetting();
-                                   if (TextUtils.isEmpty(setting.regionId)) {
-                                       Region first = realm.where(Region.class).equalTo("authorized", true).findFirst();
-                                       setting.regionId = first.getId();
-                                       setting.save();
-                                   }
+                                   Region first = realm.where(Region.class).equalTo("authorized", true).findFirst();
+                                   setting.regionId = first.getId();
+                                   setting.save();
                                }
 
                                @Override
