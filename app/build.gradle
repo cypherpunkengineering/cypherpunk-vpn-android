@@ -9,8 +9,8 @@ android {
         applicationId "com.cypherpunk.privacy"
         minSdkVersion 15
         targetSdkVersion 24
-        versionCode 58
-        versionName "0.6.1"
+        versionCode 59
+        versionName "0.6.2"
 
         vectorDrawables.generatedDensities = ['hdpi', 'xhdpi', 'xxhdpi']
     }
