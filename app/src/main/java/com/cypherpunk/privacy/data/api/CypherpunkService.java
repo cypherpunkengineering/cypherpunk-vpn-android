@@ -8,6 +8,7 @@ import com.cypherpunk.privacy.data.api.json.LoginResult;
 import com.cypherpunk.privacy.data.api.json.RegionResult;
 import com.cypherpunk.privacy.data.api.json.SignUpRequest;
 import com.cypherpunk.privacy.data.api.json.StatusResult;
+import com.cypherpunk.privacy.data.api.json.UpgradeAccountRequest;
 
 import java.util.Map;
 
@@ -61,4 +62,8 @@ public interface CypherpunkService {
     @POST("/api/v0/account/email/confirm")
     Single<ResponseBody> resendEmail(
             @Body EmailRequest emailRequest);
+
+    @POST("/api/v0/account/upgrade/GooglePlay")
+    Single<ResponseBody> upgradeAccount(
+            @Body UpgradeAccountRequest emailRequest);
 }
