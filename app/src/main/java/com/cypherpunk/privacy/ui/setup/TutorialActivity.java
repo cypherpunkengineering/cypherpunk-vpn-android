@@ -18,8 +18,8 @@ import android.view.ViewGroup;
 import com.cypherpunk.privacy.CypherpunkApplication;
 import com.cypherpunk.privacy.R;
 import com.cypherpunk.privacy.data.api.CypherpunkService;
+import com.cypherpunk.privacy.data.api.json.AccountStatusResult;
 import com.cypherpunk.privacy.data.api.json.RegionResult;
-import com.cypherpunk.privacy.data.api.json.StatusResult;
 import com.cypherpunk.privacy.databinding.ActivityTutorialBinding;
 import com.cypherpunk.privacy.model.CypherpunkSetting;
 import com.cypherpunk.privacy.model.Region;
@@ -142,12 +142,12 @@ public class TutorialActivity extends AppCompatActivity {
 
     private void getServerList() {
         subscription = webService
-                .getStatus()
-                .flatMap(new Func1<StatusResult, Single<Map<String, RegionResult>>>() {
+                .getAccountStatus()
+                .flatMap(new Func1<AccountStatusResult, Single<Map<String, RegionResult>>>() {
                     @Override
-                    public Single<Map<String, RegionResult>> call(StatusResult result) {
+                    public Single<Map<String, RegionResult>> call(AccountStatusResult result) {
                         UserSettingPref userPref = new UserSettingPref();
-                        userPref.userStatusType = result.getType();
+                        userPref.userStatusType = result.getAccount().type;
                         userPref.save();
                         return webService.serverList(userPref.userStatusType);
                     }

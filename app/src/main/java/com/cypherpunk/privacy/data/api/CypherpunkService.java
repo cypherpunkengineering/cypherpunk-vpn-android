@@ -1,13 +1,12 @@
 package com.cypherpunk.privacy.data.api;
 
+import com.cypherpunk.privacy.data.api.json.AccountStatusResult;
 import com.cypherpunk.privacy.data.api.json.ChangeEmailRequest;
 import com.cypherpunk.privacy.data.api.json.ChangePasswordRequest;
 import com.cypherpunk.privacy.data.api.json.EmailRequest;
 import com.cypherpunk.privacy.data.api.json.LoginRequest;
-import com.cypherpunk.privacy.data.api.json.LoginResult;
 import com.cypherpunk.privacy.data.api.json.RegionResult;
 import com.cypherpunk.privacy.data.api.json.SignUpRequest;
-import com.cypherpunk.privacy.data.api.json.StatusResult;
 import com.cypherpunk.privacy.data.api.json.UpgradeAccountRequest;
 
 import java.util.Map;
@@ -27,22 +26,22 @@ public interface CypherpunkService {
     String ENDPOINT = "https://cypherpunk.com";
 
     @POST("/api/v0/account/authenticate/userpasswd")
-    Single<LoginResult> login(
+    Single<AccountStatusResult> login(
             @Body LoginRequest loginRequest);
 
     @POST("/api/v0/account/register/signup")
-    Single<LoginResult> signup(
+    Single<AccountStatusResult> signup(
             @Body SignUpRequest loginRequest);
 
     @POST("/api/v0/account/identify/email")
     Single<ResponseBody> identifyEmail(
             @Body EmailRequest emailRequest);
 
-    @GET("/api/v0/subscription/status")
-    Single<StatusResult> getStatus();
+    @POST("/api/v0/account/status")
+    Single<AccountStatusResult> getAccountStatus();
 
-    @GET("/api/v0/subscription/status")
-    Observable<StatusResult> getStatusObservable();
+    @GET("/api/v0/account/status")
+    Observable<AccountStatusResult> getAccountStatusObservable();
 
     @GET("/api/v0/location/list/{accountType}")
     Single<Map<String, RegionResult>> serverList(@Path(value = "accountType", encoded = true) String accountType);
@@ -64,6 +63,7 @@ public interface CypherpunkService {
             @Body EmailRequest emailRequest);
 
     @POST("/api/v0/account/upgrade/GooglePlay")
-    Single<ResponseBody> upgradeAccount(
+    Single<AccountStatusResult> upgradeAccount(
             @Body UpgradeAccountRequest emailRequest);
+
 }

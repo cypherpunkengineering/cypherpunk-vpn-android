@@ -25,7 +25,7 @@ import com.cypherpunk.privacy.data.api.CypherpunkService;
 import com.cypherpunk.privacy.data.api.UserManager;
 import com.cypherpunk.privacy.data.api.json.EmailRequest;
 import com.cypherpunk.privacy.data.api.json.LoginRequest;
-import com.cypherpunk.privacy.data.api.json.LoginResult;
+import com.cypherpunk.privacy.data.api.json.AccountStatusResult;
 import com.cypherpunk.privacy.databinding.ActivitySignInBinding;
 import com.cypherpunk.privacy.ui.setup.TutorialActivity;
 
@@ -141,9 +141,9 @@ public class SignInActivity extends AppCompatActivity {
                     .login(new LoginRequest(email, password))
                     .subscribeOn(Schedulers.newThread())
                     .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(new SingleSubscriber<LoginResult>() {
+                    .subscribe(new SingleSubscriber<AccountStatusResult>() {
                         @Override
-                        public void onSuccess(LoginResult result) {
+                        public void onSuccess(AccountStatusResult result) {
                             dialogFragment.dismiss();
                             UserManager.saveMailAddress(email);
                             UserManager.saveSecret(result.getSecret());

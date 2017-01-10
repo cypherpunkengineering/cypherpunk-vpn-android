@@ -19,6 +19,7 @@ import com.cypherpunk.privacy.billing.IabResult;
 import com.cypherpunk.privacy.billing.Inventory;
 import com.cypherpunk.privacy.billing.Purchase;
 import com.cypherpunk.privacy.data.api.CypherpunkService;
+import com.cypherpunk.privacy.data.api.json.AccountStatusResult;
 import com.cypherpunk.privacy.data.api.json.UpgradeAccountRequest;
 import com.cypherpunk.privacy.databinding.ActivityUpgradePlanBinding;
 import com.cypherpunk.privacy.model.UserSettingPref;
@@ -26,7 +27,6 @@ import com.cypherpunk.privacy.widget.ProgressFullScreenDialog;
 
 import javax.inject.Inject;
 
-import okhttp3.ResponseBody;
 import rx.SingleSubscriber;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
@@ -218,9 +218,19 @@ public class UpgradePlanActivity extends AppCompatActivity {
                 .upgradeAccount(new UpgradeAccountRequest(accountId, planId, purchaseData))
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new SingleSubscriber<ResponseBody>() {
+                .subscribe(new SingleSubscriber<AccountStatusResult>() {
                     @Override
-                    public void onSuccess(ResponseBody result) {
+                    public void onSuccess(AccountStatusResult accountStatus) {
+                        final String type = accountStatus.getAccount().type;
+                        final String renewal = accountStatus.getSubscription().renewal;
+                        final String expiration = accountStatus.getSubscription().expiration;
+
+                        UserSettingPref statusPref = new UserSettingPref();
+                        statusPref.userStatusType = type;
+                        statusPref.userStatusRenewal = renewal;
+                        statusPref.userStatusExpiration = expiration;
+                        statusPref.save();
+
                         if (dialog != null) {
                             dialog.dismiss();
                             dialog = null;
