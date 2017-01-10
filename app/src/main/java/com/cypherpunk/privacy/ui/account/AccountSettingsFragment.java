@@ -96,6 +96,10 @@ public class AccountSettingsFragment extends PreferenceFragmentCompat {
                 return true;
             }
         });
+        boolean upgradeVisible = !"annually".equals(user.userStatusRenewal) &&
+                !"forever".equals(user.userStatusRenewal) &&
+                !"lifetime".equals(user.userStatusRenewal);
+        findPreference("upgrade").setVisible(upgradeVisible);
 
         findPreference("contact_us").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
@@ -162,9 +166,17 @@ public class AccountSettingsFragment extends PreferenceFragmentCompat {
             switch (requestCode) {
                 case REQUEST_UPGRADE_PLAN: {
                     UserSettingPref statusPref = new UserSettingPref();
+
+                    final String renewal = statusPref.userStatusRenewal;
+
                     accountPreference.setUsernameText(statusPref.mail);
                     accountPreference.setType(statusPref.userStatusType);
-                    accountPreference.setRenewalAndExpiration(statusPref.userStatusRenewal, statusPref.userStatusExpiration);
+                    accountPreference.setRenewalAndExpiration(renewal, statusPref.userStatusExpiration);
+
+                    boolean upgradeVisible = !"annually".equals(renewal) &&
+                            !"forever".equals(renewal) &&
+                            !"lifetime".equals(renewal);
+                    findPreference("upgrade").setVisible(upgradeVisible);
                     break;
                 }
                 case REQUEST_EDIT_EMAIL: {
