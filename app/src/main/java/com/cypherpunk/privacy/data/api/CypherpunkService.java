@@ -37,7 +37,7 @@ public interface CypherpunkService {
     Single<ResponseBody> identifyEmail(
             @Body EmailRequest emailRequest);
 
-    @POST("/api/v0/account/status")
+    @GET("/api/v0/account/status")
     Single<AccountStatusResult> getAccountStatus();
 
     @GET("/api/v0/account/status")
