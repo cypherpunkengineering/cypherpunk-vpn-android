@@ -17,8 +17,6 @@ import com.cypherpunk.privacy.R;
 import com.cypherpunk.privacy.data.api.CypherpunkService;
 import com.cypherpunk.privacy.data.api.UserManager;
 import com.cypherpunk.privacy.data.api.json.ChangeEmailRequest;
-import com.cypherpunk.privacy.data.api.json.LoginRequest;
-import com.cypherpunk.privacy.data.api.json.LoginResult;
 import com.cypherpunk.privacy.databinding.ActivityEditEmailBinding;
 import com.cypherpunk.privacy.ui.signin.ProgressFragment;
 
@@ -27,11 +25,9 @@ import java.net.UnknownHostException;
 import javax.inject.Inject;
 
 import okhttp3.ResponseBody;
-import rx.Single;
 import rx.SingleSubscriber;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 import rx.subscriptions.Subscriptions;
 

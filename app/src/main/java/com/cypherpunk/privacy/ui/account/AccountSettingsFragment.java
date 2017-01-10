@@ -16,23 +16,17 @@ import com.cypherpunk.privacy.CypherpunkApplication;
 import com.cypherpunk.privacy.R;
 import com.cypherpunk.privacy.data.api.CypherpunkService;
 import com.cypherpunk.privacy.data.api.UserManager;
-import com.cypherpunk.privacy.data.api.json.LoginRequest;
-import com.cypherpunk.privacy.data.api.json.LoginResult;
-import com.cypherpunk.privacy.data.api.json.StatusResult;
+import com.cypherpunk.privacy.data.api.json.AccountStatusResult;
 import com.cypherpunk.privacy.model.UserSettingPref;
-import com.cypherpunk.privacy.ui.signin.ConfirmationEmailActivity;
 import com.cypherpunk.privacy.ui.signin.IdentifyEmailActivity;
-import com.cypherpunk.privacy.ui.signin.SignUpActivity;
 import com.cypherpunk.privacy.vpn.CypherpunkVPN;
 
 import javax.inject.Inject;
 
 import retrofit2.adapter.rxjava.HttpException;
-import rx.Single;
 import rx.SingleSubscriber;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 import rx.subscriptions.Subscriptions;
 
@@ -166,28 +160,37 @@ public class AccountSettingsFragment extends PreferenceFragmentCompat {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == Activity.RESULT_OK) {
             switch (requestCode) {
-                case REQUEST_UPGRADE_PLAN:
-                    getStatus();
+                case REQUEST_UPGRADE_PLAN: {
+                    UserSettingPref statusPref = new UserSettingPref();
+                    accountPreference.setUsernameText(statusPref.mail);
+                    accountPreference.setType(statusPref.userStatusType);
+                    accountPreference.setRenewalAndExpiration(statusPref.userStatusRenewal, statusPref.userStatusExpiration);
                     break;
-                case REQUEST_EDIT_EMAIL:
+                }
+                case REQUEST_EDIT_EMAIL: {
                     UserSettingPref statusPref = new UserSettingPref();
                     accountPreference.setUsernameText(statusPref.mail);
                     break;
+                }
             }
         }
     }
 
     private void getStatus() {
-        subscription = webService.getStatus()
+        subscription = webService.getAccountStatus()
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new SingleSubscriber<StatusResult>() {
+                .subscribe(new SingleSubscriber<AccountStatusResult>() {
                     @Override
-                    public void onSuccess(StatusResult status) {
+                    public void onSuccess(AccountStatusResult accountStatus) {
+                        final String type = accountStatus.getAccount().type;
+                        final String renewal = accountStatus.getSubscription().renewal;
+                        final String expiration = accountStatus.getSubscription().expiration;
+
                         UserSettingPref statusPref = new UserSettingPref();
-                        statusPref.userStatusType = status.getType();
-                        statusPref.userStatusRenewal = status.getRenewal();
-                        statusPref.userStatusExpiration = status.getExpiration();
+                        statusPref.userStatusType = type;
+                        statusPref.userStatusRenewal = renewal;
+                        statusPref.userStatusExpiration = expiration;
                         statusPref.save();
 
                         /*if (!confirmed) {
@@ -195,8 +198,8 @@ public class AccountSettingsFragment extends PreferenceFragmentCompat {
                         }*/
 
                         accountPreference.setUsernameText(statusPref.mail);
-                        accountPreference.setType(status.getType());
-                        accountPreference.setRenewalAndExpiration(status.getRenewal(), status.getExpiration());
+                        accountPreference.setType(type);
+                        accountPreference.setRenewalAndExpiration(renewal, expiration);
                     }
 
                     @Override

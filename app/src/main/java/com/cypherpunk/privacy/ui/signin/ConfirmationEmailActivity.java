@@ -17,8 +17,8 @@ import android.widget.Toast;
 import com.cypherpunk.privacy.CypherpunkApplication;
 import com.cypherpunk.privacy.R;
 import com.cypherpunk.privacy.data.api.CypherpunkService;
+import com.cypherpunk.privacy.data.api.json.AccountStatusResult;
 import com.cypherpunk.privacy.data.api.json.EmailRequest;
-import com.cypherpunk.privacy.data.api.json.StatusResult;
 import com.cypherpunk.privacy.databinding.ActivityConfirmationEmailBinding;
 import com.cypherpunk.privacy.ui.setup.TutorialActivity;
 
@@ -131,7 +131,7 @@ public class ConfirmationEmailActivity extends AppCompatActivity {
      */
     private void checkAccountConfirmed() {
         Subscription subscription = webService
-                .getStatusObservable()
+                .getAccountStatusObservable()
                 .repeatWhen(new Func1<Observable<? extends Void>, Observable<?>>() {
                     @Override
                     public Observable<?> call(Observable<? extends Void> observable) {
@@ -140,7 +140,7 @@ public class ConfirmationEmailActivity extends AppCompatActivity {
                 })
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<StatusResult>() {
+                .subscribe(new Subscriber<AccountStatusResult>() {
                     @Override
                     public void onCompleted() {
                         Intent intent = new Intent(ConfirmationEmailActivity.this, TutorialActivity.class);
@@ -156,8 +156,8 @@ public class ConfirmationEmailActivity extends AppCompatActivity {
                     }
 
                     @Override
-                    public void onNext(StatusResult result) {
-                        if (result.getConfirmed()) {
+                    public void onNext(AccountStatusResult result) {
+                        if (result.getAccount().confirmed) {
                             onCompleted();
                         }
                     }
