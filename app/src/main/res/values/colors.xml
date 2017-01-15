@@ -35,5 +35,8 @@
     <color name="plan_price">#000000</color>
     <color name="plan_text">#333333</color>
     <color name="drawer_background">#1560bd</color>
-    <color name="region_selected">#1a000000</color>
+    <color name="region_selected_text">#ffc933</color>
+    <color name="region_disabled_text">#80ffffff</color>
+    <color name="region_badge_premium_text">#453908</color>
+    <color name="region_badge_unavailable">#59ffffff</color>
 </resources>

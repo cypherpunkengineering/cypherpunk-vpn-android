@@ -1,4 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<View xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
-    android:layout_height="8dp" />
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="38dp"
+        android:background="#26000000"
+        android:orientation="vertical">
+
+        <com.cypherpunk.privacy.widget.TypefaceTextView
+            android:id="@+id/text"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:layout_marginLeft="16dp"
+            android:textSize="13sp"
+            android:textColor="#99ffffff"
+            app:fontName="DosisMedium"
+            tools:text="FAVORITE" />
+
+    </LinearLayout>
+
+</layout>

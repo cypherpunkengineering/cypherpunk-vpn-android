@@ -4,9 +4,11 @@ import android.content.pm.ActivityInfo;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ShareCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
+import android.view.View;
 
 import com.cypherpunk.privacy.R;
 import com.cypherpunk.privacy.databinding.ActivityPremiumFreeBinding;
@@ -31,6 +33,18 @@ public class PremiumFreeActivity extends AppCompatActivity {
             binding.toolbar.title.setText(R.string.title_activity_premium_free);
             actionBar.setHomeAsUpIndicator(R.drawable.close_vector);
         }
+
+        binding.shareButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ShareCompat.IntentBuilder builder = ShareCompat.IntentBuilder.from(PremiumFreeActivity.this)
+                        .setSubject(getString(R.string.share_subject))
+                        .setText(getString(R.string.share_text))
+                        .setType("text/plain");
+
+                builder.startChooser();
+            }
+        });
     }
 
     @Override

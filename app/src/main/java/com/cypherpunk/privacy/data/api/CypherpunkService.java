@@ -1,12 +1,13 @@
 package com.cypherpunk.privacy.data.api;
 
+import com.cypherpunk.privacy.data.api.json.AccountStatusResult;
 import com.cypherpunk.privacy.data.api.json.ChangeEmailRequest;
-import com.cypherpunk.privacy.data.api.json.IdentifyEmailRequest;
+import com.cypherpunk.privacy.data.api.json.ChangePasswordRequest;
+import com.cypherpunk.privacy.data.api.json.EmailRequest;
 import com.cypherpunk.privacy.data.api.json.LoginRequest;
-import com.cypherpunk.privacy.data.api.json.LoginResult;
 import com.cypherpunk.privacy.data.api.json.RegionResult;
 import com.cypherpunk.privacy.data.api.json.SignUpRequest;
-import com.cypherpunk.privacy.data.api.json.StatusResult;
+import com.cypherpunk.privacy.data.api.json.UpgradeAccountRequest;
 
 import java.util.Map;
 
@@ -14,33 +15,55 @@ import okhttp3.ResponseBody;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
+import retrofit2.http.Path;
+import rx.Observable;
 import rx.Single;
 
 /**
  * Cypherpunk API
  */
 public interface CypherpunkService {
-    String ENDPOINT = "https://cypherpunk.engineering";
+    String ENDPOINT = "https://cypherpunk.com";
 
-    @POST("/account/authenticate/userpasswd")
-    Single<LoginResult> login(
+    @POST("/api/v0/account/authenticate/userpasswd")
+    Single<AccountStatusResult> login(
             @Body LoginRequest loginRequest);
 
-    @POST("/account/register/signup")
-    Single<LoginResult> signup(
+    @POST("/api/v0/account/register/signup")
+    Single<AccountStatusResult> signup(
             @Body SignUpRequest loginRequest);
 
-    @POST("/account/identify/email")
+    @POST("/api/v0/account/identify/email")
     Single<ResponseBody> identifyEmail(
-            @Body IdentifyEmailRequest identifyEmailRequest);
+            @Body EmailRequest emailRequest);
 
-    @GET("/api/subscription/status")
-    Single<StatusResult> getStatus();
+    @GET("/api/v0/account/status")
+    Single<AccountStatusResult> getAccountStatus();
 
-    @GET("/api/vpn/serverList")
-    Single<Map<String, Map<String, RegionResult[]>>> serverList();
+    @GET("/api/v0/account/status")
+    Observable<AccountStatusResult> getAccountStatusObservable();
 
-    @POST("/api/v1/account/email/change")
+    @GET("/api/v0/location/list/{accountType}")
+    Single<Map<String, RegionResult>> serverList(@Path(value = "accountType", encoded = true) String accountType);
+
+    @POST("/api/v0/account/email/change")
     Single<ResponseBody> changeEmail(
-            @Body ChangeEmailRequest identifyEmailRequest);
+            @Body ChangeEmailRequest changeEmailRequest);
+
+    @POST("/api/v0/account/password/change")
+    Single<ResponseBody> changePassword(
+            @Body ChangePasswordRequest changePasswordRequest);
+
+    @POST("/api/v0/account/password/recover")
+    Single<ResponseBody> recoverPassword(
+            @Body EmailRequest emailRequest);
+
+    @POST("/api/v0/account/email/confirm")
+    Single<ResponseBody> resendEmail(
+            @Body EmailRequest emailRequest);
+
+    @POST("/api/v0/account/upgrade/GooglePlay")
+    Single<AccountStatusResult> upgradeAccount(
+            @Body UpgradeAccountRequest emailRequest);
+
 }

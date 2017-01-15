@@ -27,9 +27,9 @@ public class VpnButton extends FrameLayout {
 
     private CompoundButton.OnCheckedChangeListener listener;
 
-    private ObjectAnimator anim;
-    private VpnCoreButton buttonView;
-    private Drawable frame;
+    private final ObjectAnimator anim;
+    private final VpnCoreButton buttonView;
+    private final Drawable frame;
 
     @Retention(RetentionPolicy.SOURCE)
     @IntDef({DISCONNECTED, CONNECTING, CONNECTED})

@@ -1,11 +1,11 @@
 package com.cypherpunk.privacy.data.api.json;
 
 
-public class IdentifyEmailRequest {
+public class EmailRequest {
 
     private final String email;
 
-    public IdentifyEmailRequest(String email) {
+    public EmailRequest(String email) {
         this.email = email;
     }
 }

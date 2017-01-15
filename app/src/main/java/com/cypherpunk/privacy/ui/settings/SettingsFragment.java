@@ -14,6 +14,7 @@ import android.view.View;
 import com.cypherpunk.privacy.R;
 import com.cypherpunk.privacy.model.CypherpunkSetting;
 import com.cypherpunk.privacy.model.SettingItem;
+import com.cypherpunk.privacy.utils.ResourceUtil;
 import com.cypherpunk.privacy.vpn.CypherpunkVpnStatus;
 
 import java.util.ArrayList;
@@ -22,7 +23,6 @@ public class SettingsFragment extends PreferenceFragmentCompat {
 
     private static final int REQUEST_LIST_SETTING = 1;
 
-    private CypherpunkSetting cypherpunkSetting;
     private Preference protocol;
     private Preference remotePort;
     private Preference vpnPortLocal;
@@ -44,7 +44,7 @@ public class SettingsFragment extends PreferenceFragmentCompat {
         preferenceManager.setSharedPreferencesName("cypherpunk_setting");
         addPreferencesFromResource(R.xml.preference_settings);
 
-        cypherpunkSetting = new CypherpunkSetting();
+        CypherpunkSetting cypherpunkSetting = new CypherpunkSetting();
 
         findPreference("application").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
@@ -63,7 +63,7 @@ public class SettingsFragment extends PreferenceFragmentCompat {
         });
 
         protocol = findPreference("vpn_backend");
-        protocol.setSummary(getStringByKey(cypherpunkSetting.vpnBackend));
+        protocol.setSummary(ResourceUtil.getStringByKey(getContext(), cypherpunkSetting.vpnBackend));
         protocol.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
@@ -89,7 +89,7 @@ public class SettingsFragment extends PreferenceFragmentCompat {
         });
 
         firewall = findPreference("privacy_firewall_mode");
-        firewall.setSummary(getStringByKey(cypherpunkSetting.privacyFirewallMode));
+        firewall.setSummary(ResourceUtil.getStringByKey(getContext(), cypherpunkSetting.privacyFirewallMode));
         firewall.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
@@ -115,7 +115,7 @@ public class SettingsFragment extends PreferenceFragmentCompat {
         */
 
         vpnCryptoProfile = findPreference("vpn_crypto_profile");
-        vpnCryptoProfile.setSummary(getStringByKey(cypherpunkSetting.vpnCryptoProfile));
+        vpnCryptoProfile.setSummary(ResourceUtil.getStringByKey(getContext(), cypherpunkSetting.vpnCryptoProfile));
         vpnCryptoProfile.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
@@ -138,7 +138,8 @@ public class SettingsFragment extends PreferenceFragmentCompat {
             switch (updateKey) {
                 case "vpn_backend":
                     cypherpunkSetting.vpnBackend = data.getStringExtra(ListPreferenceActivity.EXTRA_SELECTED_VALUE);
-                    protocol.setSummary(getStringByKey(data.getStringExtra(ListPreferenceActivity.EXTRA_SELECTED_VALUE)));
+                    protocol.setSummary(
+                            ResourceUtil.getStringByKey(getContext(), data.getStringExtra(ListPreferenceActivity.EXTRA_SELECTED_VALUE)));
                     break;
                 case "vpn_port_remote":
                     cypherpunkSetting.vpnPortRemote = data.getStringExtra(ListPreferenceActivity.EXTRA_SELECTED_VALUE);
@@ -146,12 +147,14 @@ public class SettingsFragment extends PreferenceFragmentCompat {
                     break;
                 case "privacy_firewall_mode":
                     cypherpunkSetting.privacyFirewallMode = data.getStringExtra(ListPreferenceActivity.EXTRA_SELECTED_VALUE);
-                    firewall.setSummary(getStringByKey(data.getStringExtra(ListPreferenceActivity.EXTRA_SELECTED_VALUE)));
+                    firewall.setSummary(
+                            ResourceUtil.getStringByKey(getContext(), data.getStringExtra(ListPreferenceActivity.EXTRA_SELECTED_VALUE)));
                     break;
                 case "vpn_crypto_profile":
                     cypherpunkSetting.vpnCryptoProfile = data.getStringExtra(ListPreferenceActivity.EXTRA_SELECTED_VALUE);
                     String stringExtra = data.getStringExtra(ListPreferenceActivity.EXTRA_SELECTED_VALUE);
-                    vpnCryptoProfile.setSummary(getStringByKey(stringExtra));
+                    vpnCryptoProfile.setSummary(
+                            ResourceUtil.getStringByKey(getContext(), stringExtra));
                     break;
                 /*
                 case "vpn_port_local":
@@ -170,18 +173,6 @@ public class SettingsFragment extends PreferenceFragmentCompat {
         }
     }
 
-    private String getStringByKey(String key) {
-        String packageName = getContext().getPackageName();
-        int id = getResources().getIdentifier(key, "string", packageName);
-        String str;
-        try {
-            str = getResources().getString(id);
-        } catch (Exception NotFoundException) {
-            str = key;
-        }
-        return str;
-    }
-
     private ArrayList<SettingItem> getSettingItemList(@ArrayRes int keyListRes, @ArrayRes int descriptionListRes) {
         String[] keyList = getResources().getStringArray(keyListRes);
         String[] descriptionList = new String[0];
@@ -191,7 +182,8 @@ public class SettingsFragment extends PreferenceFragmentCompat {
         ArrayList<SettingItem> list = new ArrayList<>();
         for (int i = 0; i < keyList.length; i++) {
             list.add(new SettingItem(keyList[i],
-                    getStringByKey(keyList[i]), descriptionListRes != 0 ? getStringByKey(descriptionList[i]) : ""));
+                    ResourceUtil.getStringByKey(getContext(), keyList[i]),
+                    descriptionListRes != 0 ? ResourceUtil.getStringByKey(getContext(), descriptionList[i]) : ""));
         }
         return list;
     }
@@ -230,8 +222,11 @@ public class SettingsFragment extends PreferenceFragmentCompat {
                     keylen = "setting_vpn_crypto_keylen_rsa4096";
             }
             list.add(new SettingItem(
-                    keyList[i], getStringByKey(keyList[i]), descriptionListRes != 0 ? getStringByKey(descriptionList[i]) : "",
-                    getStringByKey(cipher), getStringByKey(auth), getStringByKey(keylen)));
+                    keyList[i], ResourceUtil.getStringByKey(getContext(), keyList[i]),
+                    descriptionListRes != 0 ? ResourceUtil.getStringByKey(getContext(), descriptionList[i]) : "",
+                    ResourceUtil.getStringByKey(getContext(), cipher),
+                    ResourceUtil.getStringByKey(getContext(), auth),
+                    ResourceUtil.getStringByKey(getContext(), keylen)));
         }
         return list;
     }

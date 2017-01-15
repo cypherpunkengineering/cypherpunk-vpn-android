@@ -7,10 +7,10 @@ import android.view.animation.Transformation;
 
 public class HeightAnimation extends Animation {
 
-    private int targetHeight;
-    private int startHeight;
+    private final int targetHeight;
+    private final int startHeight;
 
-    private View view;
+    private final View view;
 
     public HeightAnimation(int targetHeight, View view) {
         this.targetHeight = targetHeight;

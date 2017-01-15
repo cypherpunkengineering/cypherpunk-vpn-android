@@ -14,8 +14,8 @@ import com.cypherpunk.privacy.R;
 
 public class DividerDecoration extends RecyclerView.ItemDecoration {
 
-    private Paint paint;
-    private int dividerHeight;
+    private final Paint paint;
+    private final int dividerHeight;
 
     public DividerDecoration(Context context) {
         paint = new Paint(Paint.ANTI_ALIAS_FLAG);

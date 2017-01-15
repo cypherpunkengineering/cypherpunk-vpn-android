@@ -1,10 +1,9 @@
 package com.cypherpunk.privacy.dagger;
 
-import com.cypherpunk.privacy.data.api.CookieManager;
+import com.cypherpunk.privacy.BuildConfig;
+import com.cypherpunk.privacy.data.api.CookieInterceptor;
 import com.cypherpunk.privacy.data.api.CypherpunkService;
-import com.cypherpunk.privacy.data.api.JsonipService;
-
-import java.util.concurrent.TimeUnit;
+import com.cypherpunk.privacy.data.api.UserAgentInterceptor;
 
 import javax.inject.Singleton;
 
@@ -22,10 +21,11 @@ public class ClientModule {
     @Provides
     public OkHttpClient provideHttpClient() {
         OkHttpClient.Builder builder = new OkHttpClient.Builder();
-        builder.cookieJar(new CookieManager());
+        builder.interceptors().add(new CookieInterceptor());
+        builder.interceptors().add(new UserAgentInterceptor("CypherpunkPrivacy/Android/" + BuildConfig.VERSION_NAME));
         HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
         logging.setLevel(HttpLoggingInterceptor.Level.BODY);
-        //builder.addInterceptor(logging);
+        builder.addInterceptor(logging);
         return builder.build();
     }
 
@@ -43,23 +43,5 @@ public class ClientModule {
     @Singleton
     public CypherpunkService provideCypherpunkService(Retrofit retrofit) {
         return retrofit.create(CypherpunkService.class);
-    }
-
-    @Provides
-    @Singleton
-    public JsonipService provideJsonipService() {
-        //TODO:
-        OkHttpClient.Builder builder = new OkHttpClient.Builder();
-        HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
-        logging.setLevel(HttpLoggingInterceptor.Level.BODY);
-        builder.readTimeout(3, TimeUnit.SECONDS);
-        //builder.addInterceptor(logging);
-
-        Retrofit build = new Retrofit.Builder().client(builder.build())
-                .baseUrl(JsonipService.ENDPOINT)
-                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
-                .addConverterFactory(MoshiConverterFactory.create())
-                .build();
-        return build.create(JsonipService.class);
     }
 }

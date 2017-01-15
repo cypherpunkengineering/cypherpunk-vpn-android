@@ -11,7 +11,6 @@ import android.support.v4.app.TaskStackBuilder;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,19 +18,18 @@ import android.view.ViewGroup;
 import com.cypherpunk.privacy.CypherpunkApplication;
 import com.cypherpunk.privacy.R;
 import com.cypherpunk.privacy.data.api.CypherpunkService;
-import com.cypherpunk.privacy.data.api.UserManager;
-import com.cypherpunk.privacy.data.api.json.LoginRequest;
-import com.cypherpunk.privacy.data.api.json.LoginResult;
+import com.cypherpunk.privacy.data.api.json.AccountStatusResult;
 import com.cypherpunk.privacy.data.api.json.RegionResult;
 import com.cypherpunk.privacy.databinding.ActivityTutorialBinding;
 import com.cypherpunk.privacy.model.CypherpunkSetting;
 import com.cypherpunk.privacy.model.Region;
+import com.cypherpunk.privacy.model.UserSettingPref;
 import com.cypherpunk.privacy.ui.main.MainActivity;
+import com.google.firebase.analytics.FirebaseAnalytics;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import javax.inject.Inject;
 
@@ -49,7 +47,6 @@ import rx.subscriptions.Subscriptions;
 public class TutorialActivity extends AppCompatActivity {
 
     private ActivityTutorialBinding binding;
-    private IntroductionPagerAdapter adapter;
     private Subscription subscription = Subscriptions.empty();
 
     private static final int GRANT_VPN_PERMISSION = 1;
@@ -76,7 +73,7 @@ public class TutorialActivity extends AppCompatActivity {
             getServerList();
         }
 
-        adapter = new IntroductionPagerAdapter(this);
+        IntroductionPagerAdapter adapter = new IntroductionPagerAdapter(this);
         binding.pager.setAdapter(adapter);
         binding.indicator.setViewPager(binding.pager);
         binding.pager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
@@ -105,6 +102,9 @@ public class TutorialActivity extends AppCompatActivity {
                         setting.analytics = true;
                         setting.save();
 
+                        // enable firebase
+                        FirebaseAnalytics.getInstance(getApplicationContext()).setAnalyticsCollectionEnabled(true);
+
                         goToMainScreen();
                         break;
                     }
@@ -118,6 +118,9 @@ public class TutorialActivity extends AppCompatActivity {
                 CypherpunkSetting setting = new CypherpunkSetting();
                 setting.analytics = false;
                 setting.save();
+
+                // disable firebase
+                FirebaseAnalytics.getInstance(getApplicationContext()).setAnalyticsCollectionEnabled(false);
 
                 goToMainScreen();
             }
@@ -139,49 +142,53 @@ public class TutorialActivity extends AppCompatActivity {
 
     private void getServerList() {
         subscription = webService
-                .login(new LoginRequest(UserManager.getMailAddress(), UserManager.getPassword()))
-                .flatMap(new Func1<LoginResult, Single<Map<String, Map<String, RegionResult[]>>>>() {
+                .getAccountStatus()
+                .flatMap(new Func1<AccountStatusResult, Single<Map<String, RegionResult>>>() {
                     @Override
-                    public Single<Map<String, Map<String, RegionResult[]>>> call(LoginResult result) {
-                        return webService.serverList();
+                    public Single<Map<String, RegionResult>> call(AccountStatusResult result) {
+                        UserSettingPref userPref = new UserSettingPref();
+                        userPref.userStatusType = result.getAccount().type;
+                        userPref.save();
+                        return webService.serverList(userPref.userStatusType);
                     }
                 })
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new SingleSubscriber<Map<String, Map<String, RegionResult[]>>>() {
+                .subscribe(new SingleSubscriber<Map<String, RegionResult>>() {
                                @Override
-                               public void onSuccess(Map<String, Map<String, RegionResult[]>> result) {
+                               public void onSuccess(Map<String, RegionResult> result) {
                                    realm.beginTransaction();
                                    List<String> updateRegionIdList = new ArrayList<>();
-                                   for (Map.Entry<String, Map<String, RegionResult[]>> area : result.entrySet()) {
-                                       Set<Map.Entry<String, RegionResult[]>> areaSet = area.getValue().entrySet();
-                                       for (Map.Entry<String, RegionResult[]> country : areaSet) {
-                                           RegionResult[] regions = country.getValue();
-                                           for (RegionResult regionResult : regions) {
-                                               Region region = realm.where(Region.class)
-                                                       .equalTo("id", regionResult.getId()).findFirst();
-                                               if (region != null) {
-                                                   region.setRegionName(regionResult.getRegionName());
-                                                   region.setOvHostname(regionResult.getOvHostname());
-                                                   region.setOvDefault(regionResult.getOvDefault());
-                                                   region.setOvNone(regionResult.getOvNone());
-                                                   region.setOvStrong(regionResult.getOvStrong());
-                                                   region.setOvStealth(regionResult.getOvStealth());
-                                               } else {
-                                                   region = new Region(
-                                                           regionResult.getId(),
-                                                           country.getKey(),
-                                                           regionResult.getRegionName(),
-                                                           regionResult.getOvHostname(),
-                                                           regionResult.getOvDefault(),
-                                                           regionResult.getOvNone(),
-                                                           regionResult.getOvStrong(),
-                                                           regionResult.getOvStealth());
-                                                   realm.copyToRealm(region);
-                                               }
-                                               updateRegionIdList.add(region.getId());
-                                           }
+                                   for (Map.Entry<String, RegionResult> resultEntry : result.entrySet()) {
+                                       RegionResult regionResult = resultEntry.getValue();
+                                       Region region = realm.where(Region.class)
+                                               .equalTo("id", regionResult.getId()).findFirst();
+                                       if (region != null) {
+                                           region.setRegion(regionResult.getRegion());
+                                           region.setCountry(regionResult.getCountry());
+                                           region.setRegionName(regionResult.getName());
+                                           region.setAuthorized(regionResult.isAuthorized());
+                                           region.setOvHostname(regionResult.getOvHostname());
+                                           region.setOvDefault(regionResult.getOvDefault());
+                                           region.setOvNone(regionResult.getOvNone());
+                                           region.setOvStrong(regionResult.getOvStrong());
+                                           region.setOvStealth(regionResult.getOvStealth());
+                                       } else {
+                                           region = new Region(
+                                                   regionResult.getId(),
+                                                   regionResult.getRegion(),
+                                                   regionResult.getCountry(),
+                                                   regionResult.getName(),
+                                                   regionResult.getLevel(),
+                                                   regionResult.isAuthorized(),
+                                                   regionResult.getOvHostname(),
+                                                   regionResult.getOvDefault(),
+                                                   regionResult.getOvNone(),
+                                                   regionResult.getOvStrong(),
+                                                   regionResult.getOvStealth());
+                                           realm.copyToRealm(region);
                                        }
+                                       updateRegionIdList.add(region.getId());
                                    }
                                    RealmResults<Region> oldRegion = realm.where(Region.class)
                                            .not()
@@ -192,13 +199,10 @@ public class TutorialActivity extends AppCompatActivity {
                                    oldRegion.deleteAllFromRealm();
                                    realm.commitTransaction();
 
-                                   // TODO: 一番上のを選択している
                                    CypherpunkSetting setting = new CypherpunkSetting();
-                                   if (TextUtils.isEmpty(setting.regionId)) {
-                                       Region first = realm.where(Region.class).findFirst();
-                                       setting.regionId = first.getId();
-                                       setting.save();
-                                   }
+                                   Region first = realm.where(Region.class).equalTo("authorized", true).findFirst();
+                                   setting.regionId = first.getId();
+                                   setting.save();
                                }
 
                                @Override
@@ -206,6 +210,7 @@ public class TutorialActivity extends AppCompatActivity {
                                    error.printStackTrace();
                                }
                            }
+
                 );
 
     }

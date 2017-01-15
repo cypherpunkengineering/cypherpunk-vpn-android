@@ -22,10 +22,10 @@ public class VpnSwitch extends SwitchCompat {
     public static final int CONNECTING = 1;
     public static final int CONNECTED = 2;
 
-    private Drawable drawableConnectThumb;
-    private Drawable drawableConnectTrack;
-    private int colorConnectThumb;
-    private int colorConnectTrack;
+    private final Drawable drawableConnectThumb;
+    private final Drawable drawableConnectTrack;
+    private final int colorConnectThumb;
+    private final int colorConnectTrack;
 
     @Retention(RetentionPolicy.SOURCE)
     @IntDef({DISCONNECTED, CONNECTING, CONNECTED})

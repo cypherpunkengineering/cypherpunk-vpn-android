@@ -42,6 +42,7 @@ import java.util.Vector;
 
 import com.cypherpunk.privacy.R;
 import com.cypherpunk.privacy.model.CypherpunkSetting;
+import com.cypherpunk.privacy.ui.main.MainActivity;
 
 import de.blinkt.openvpn.VpnProfile;
 //import de.blinkt.openvpn.activities.LogWindow;
@@ -193,6 +194,9 @@ public class OpenVPNService extends VpnService implements StateListener, Callbac
         nbuilder.setContentIntent(getLogPendingIntent());
         nbuilder.setSmallIcon(icon);
 
+        Intent notificationIntent = new Intent(this.getApplicationContext(), MainActivity.class);
+        PendingIntent contentIntent = PendingIntent.getActivity(this.getApplicationContext(), 0, notificationIntent, 0);
+        nbuilder.setContentIntent(contentIntent);
 
         if (when != 0)
             nbuilder.setWhen(when);
@@ -615,7 +619,7 @@ public class OpenVPNService extends VpnService implements StateListener, Callbac
 
         VpnStatus.logInfo(R.string.last_openvpn_tun_config);
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && mProfile.mAllowLocalLAN) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP /*&& mProfile.mAllowLocalLAN*/) {
             allowAllAFFamilies(builder);
         }
 

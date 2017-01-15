@@ -111,7 +111,7 @@ public class CypherpunkVPN {
             cp.parseConfig(new StringReader(conf));
             vpnProfile = cp.convertProfile();
             ProfileManager.setTemporaryProfile(vpnProfile);
-            vpnProfile.mName = region.getRegionName() + ", " + region.getCountryCode();
+            vpnProfile.mName = region.getRegionName() + ", " + region.getCountry();
 
             //log("vpn profile check: "+vpnProfile.checkProfile(context));
         }
@@ -214,32 +214,37 @@ public class CypherpunkVPN {
         list.add("tls-version-min 1.2");
         list.add("remote-cert-eku \"TLS Web Server Authentication\"");
         list.add("verify-x509-name " + region.getOvHostname() + " name");
+        list.add("tls-cipher TLS-DHE-RSA-WITH-AES-256-GCM-SHA384:TLS-DHE-RSA-WITH-AES-256-CBC-SHA256:TLS-DHE-RSA-WITH-AES-128-GCM-SHA256:TLS-DHE-RSA-WITH-AES-128-CBC-SHA256");
+        list.add("auth SHA256");
+
+        // ipv6 kill
+        list.add("ifconfig-ipv6 fd25::1/64 ::1");
+        list.add("route-ipv6 ::/0 ::1");
 
         // vpn protocol + remote port
-        String proto = "udp";
         int rport = 7133;
         if (cypherpunkSetting.vpnPortRemote != null && cypherpunkSetting.vpnPortRemote.length() > 0)
         {
             switch (cypherpunkSetting.vpnPortRemote)
             {
                 case "UDP/7133":
-                    proto = "udp";
+                    list.add("proto udp");
                     rport = 7133;
                     break;
                 case "UDP/5060":
-                    proto = "udp";
+                    list.add("proto udp");
                     rport = 5060;
                     break;
                 case "UDP/53":
-                    proto = "udp";
+                    list.add("proto udp");
                     rport = 53;
                     break;
                 case "TCP/7133":
-                    proto = "tcp";
+                    list.add("proto tcp");
                     rport = 7133;
                     break;
                 case "TCP/443":
-                    proto = "tcp";
+                    list.add("proto tcp");
                     rport = 443;
                     break;
             }
@@ -251,32 +256,21 @@ public class CypherpunkVPN {
             switch (cypherpunkSetting.vpnCryptoProfile)
             {
                 case "setting_vpn_crypto_profile_none":
-                    list.add("proto " + proto);
                     list.add("remote " + region.getOvNone() + " " + rport);
-                    list.add("tls-cipher TLS-DHE-RSA-WITH-AES-128-GCM-SHA256:TLS-DHE-RSA-WITH-AES-128-CBC-SHA256");
+                    list.add("ncp-disable");
                     list.add("cipher none");
-                    list.add("auth SHA1");
                     break;
                 case "setting_vpn_crypto_profile_default":
-                    list.add("proto " + proto);
                     list.add("remote " + region.getOvDefault() + " " + rport);
-                    list.add("tls-cipher TLS-DHE-RSA-WITH-AES-128-GCM-SHA256:TLS-DHE-RSA-WITH-AES-128-CBC-SHA256");
-                    list.add("cipher AES-128-CBC");
-                    list.add("auth SHA256");
+                    list.add("ncp-ciphers AES-128-GCM:AES-128-CBC");
                     break;
                 case "setting_vpn_crypto_profile_strong":
-                    list.add("proto " + proto);
                     list.add("remote " + region.getOvStrong() + " " + rport);
-                    list.add("tls-cipher TLS-DHE-RSA-WITH-AES-256-GCM-SHA384:TLS-DHE-RSA-WITH-AES-256-CBC-SHA256");
-                    list.add("cipher AES-256-CBC");
-                    list.add("auth SHA512");
+                    list.add("ncp-ciphers AES-256-GCM:AES-256-CBC");
                     break;
                 case "setting_vpn_crypto_profile_stealth":
-                    list.add("proto " + proto);
                     list.add("remote " + region.getOvStealth() + " " + rport);
-                    list.add("tls-cipher TLS-DHE-RSA-WITH-AES-128-GCM-SHA256:TLS-DHE-RSA-WITH-AES-128-CBC-SHA256");
-                    list.add("cipher AES-128-CBC");
-                    list.add("auth SHA256");
+                    list.add("ncp-ciphers AES-128-GCM:AES-128-CBC");
                     list.add("scramble obfuscate cypherpunk-xor-key"); // requires xorpatch'd openvpn
                     break;
             }
@@ -325,8 +319,8 @@ public class CypherpunkVPN {
         log("username is "+ UserManager.getMailAddress());
         */
         list.add("<auth-user-pass>");
-        list.add(UserManager.getMailAddress());
-        list.add(UserManager.getPassword());
+        list.add(UserManager.getVpnUsername());
+        list.add(UserManager.getVpnPassword());
         list.add("</auth-user-pass>");
 
         // append contents of openvpn.conf
@@ -350,7 +344,7 @@ public class CypherpunkVPN {
         String conf = TextUtils.join("\n", confLines);
 
         // debug print
-        // for (String line : confLines) log(line);
+        for (String line : confLines) log(line);
 
         return conf;
     }

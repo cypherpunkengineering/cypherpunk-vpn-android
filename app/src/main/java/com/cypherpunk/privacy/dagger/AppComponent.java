@@ -1,14 +1,16 @@
 package com.cypherpunk.privacy.dagger;
 
+import com.cypherpunk.privacy.ui.account.AccountSettingsFragment;
+import com.cypherpunk.privacy.ui.account.EditEmailActivity;
+import com.cypherpunk.privacy.ui.account.EditPasswordActivity;
+import com.cypherpunk.privacy.ui.account.UpgradePlanActivity;
 import com.cypherpunk.privacy.ui.main.MainActivity;
-import com.cypherpunk.privacy.ui.main.RegionFragment;
-import com.cypherpunk.privacy.ui.settings.AccountSettingsFragment;
-import com.cypherpunk.privacy.ui.settings.EditEmailActivity;
+import com.cypherpunk.privacy.ui.region.RegionFragment;
 import com.cypherpunk.privacy.ui.setup.TutorialActivity;
+import com.cypherpunk.privacy.ui.signin.ConfirmationEmailActivity;
 import com.cypherpunk.privacy.ui.signin.IdentifyEmailActivity;
 import com.cypherpunk.privacy.ui.signin.SignInActivity;
 import com.cypherpunk.privacy.ui.signin.SignUpActivity;
-import com.cypherpunk.privacy.ui.status.StatusActivity;
 
 import javax.inject.Singleton;
 
@@ -19,23 +21,25 @@ import io.realm.Realm;
 @Singleton
 public interface AppComponent {
 
-    void inject(MainActivity target);
-
     void inject(SignInActivity target);
 
     void inject(SignUpActivity target);
 
-    void inject(StatusActivity target);
-
     void inject(AccountSettingsFragment target);
 
     void inject(IdentifyEmailActivity target);
+
+    void inject(ConfirmationEmailActivity target);
 
     void inject(RegionFragment target);
 
     void inject(TutorialActivity target);
 
     void inject(EditEmailActivity target);
+
+    void inject(EditPasswordActivity target);
+
+    void inject(UpgradePlanActivity target);
 
     Realm getDefaultRealm();
 }

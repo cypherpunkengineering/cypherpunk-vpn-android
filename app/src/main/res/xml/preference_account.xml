@@ -4,15 +4,16 @@
 
     <Preference
         android:layout="@layout/preference_header"
+        android:selectable="false"
         android:title="@string/settings_header_account" />
 
-    <com.cypherpunk.privacy.ui.settings.AccountPreference android:key="account" />
+    <com.cypherpunk.privacy.ui.account.AccountPreference android:key="account" />
 
     <PreferenceCategory android:title="@string/account_setting_category_settings">
 
         <Preference
             android:key="upgrade"
-            android:title="Upgrade" />
+            android:title="@string/account_setting_upgrade" />
 
         <Preference
             android:key="email"

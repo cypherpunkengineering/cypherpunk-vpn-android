@@ -33,10 +33,6 @@
         <item name="windowNoTitle">true</item>
     </style>
 
-    <style name="AppTheme.NoActionBar.TransparentStatusBar" />
-
-    <style name="AppTheme.NoActionBar.TransparentStatusBar.Main" />
-
     <style name="AppTheme.ButtonTransparent">
         <item name="colorButtonNormal">#33ffffff</item>
     </style>
@@ -179,4 +175,13 @@
         <item name="android:textColor">#f8e71c</item>
     </style>
 
+    <style name="TextAppearance.Cypherpunk.Policy" parent="TextAppearance.AppCompat">
+        <item name="android:textColor">#cccccc</item>
+        <item name="android:textSize">12sp</item>
+    </style>
+
+    <style name="TextAppearance.Cypherpunk.PolicyLink" parent="TextAppearance.AppCompat">
+        <item name="android:textColor">#fff</item>
+        <item name="android:textSize">12sp</item>
+    </style>
 </resources>

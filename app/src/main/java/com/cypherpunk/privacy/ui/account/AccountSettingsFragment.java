@@ -1,7 +1,9 @@
-package com.cypherpunk.privacy.ui.settings;
+package com.cypherpunk.privacy.ui.account;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.TaskStackBuilder;
 import android.support.v4.content.ContextCompat;
@@ -14,29 +16,29 @@ import com.cypherpunk.privacy.CypherpunkApplication;
 import com.cypherpunk.privacy.R;
 import com.cypherpunk.privacy.data.api.CypherpunkService;
 import com.cypherpunk.privacy.data.api.UserManager;
-import com.cypherpunk.privacy.data.api.json.LoginRequest;
-import com.cypherpunk.privacy.data.api.json.LoginResult;
-import com.cypherpunk.privacy.data.api.json.StatusResult;
+import com.cypherpunk.privacy.data.api.json.AccountStatusResult;
 import com.cypherpunk.privacy.model.UserSettingPref;
-import com.cypherpunk.privacy.ui.account.PremiumFreeActivity;
 import com.cypherpunk.privacy.ui.signin.IdentifyEmailActivity;
 import com.cypherpunk.privacy.vpn.CypherpunkVPN;
 
 import javax.inject.Inject;
 
-import rx.Single;
+import retrofit2.adapter.rxjava.HttpException;
 import rx.SingleSubscriber;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 import rx.subscriptions.Subscriptions;
 
 
 public class AccountSettingsFragment extends PreferenceFragmentCompat {
 
+    private static final int REQUEST_UPGRADE_PLAN = 1;
+    private static final int REQUEST_EDIT_EMAIL = 2;
+
     private AccountPreference accountPreference;
     private Subscription subscription = Subscriptions.empty();
+    private boolean confirmed;
 
     @Inject
     CypherpunkService webService;
@@ -60,8 +62,8 @@ public class AccountSettingsFragment extends PreferenceFragmentCompat {
         accountPreference = (AccountPreference) findPreference("account");
         if (!TextUtils.isEmpty(user.userStatusRenewal)) {
             accountPreference.setUsernameText(user.mail);
-            accountPreference.setRenewal(user.userStatusRenewal);
-            accountPreference.setExpiration(user.userStatusExpiration);
+            accountPreference.setType(user.userStatusType);
+            accountPreference.setRenewalAndExpiration(user.userStatusRenewal, user.userStatusExpiration);
         }
 
         getStatus();
@@ -90,10 +92,14 @@ public class AccountSettingsFragment extends PreferenceFragmentCompat {
         findPreference("upgrade").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
-                startActivity(new Intent(getActivity(), UpgradePlanActivity.class));
+                startActivityForResult(new Intent(getActivity(), UpgradePlanActivity.class), REQUEST_UPGRADE_PLAN);
                 return true;
             }
         });
+        boolean upgradeVisible = !"annually".equals(user.userStatusRenewal) &&
+                !"forever".equals(user.userStatusRenewal) &&
+                !"lifetime".equals(user.userStatusRenewal);
+        findPreference("upgrade").setVisible(upgradeVisible);
 
         findPreference("contact_us").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
@@ -106,7 +112,7 @@ public class AccountSettingsFragment extends PreferenceFragmentCompat {
         email.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
-                startActivity(new Intent(getActivity(), EditEmailActivity.class));
+                startActivityForResult(new Intent(getActivity(), EditEmailActivity.class), REQUEST_EDIT_EMAIL);
                 return true;
             }
         });
@@ -118,6 +124,33 @@ public class AccountSettingsFragment extends PreferenceFragmentCompat {
                 return true;
             }
         });
+
+        findPreference("rate").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                startActivity(new Intent(Intent.ACTION_VIEW,
+                        Uri.parse(getString(R.string.store_url))));
+                return true;
+            }
+        });
+
+        findPreference("contact_us").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                startActivity(new Intent(Intent.ACTION_VIEW,
+                        Uri.parse(getString(R.string.contact_us_url))));
+                return true;
+            }
+        });
+
+        findPreference("help").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                startActivity(new Intent(Intent.ACTION_VIEW,
+                        Uri.parse(getString(R.string.help_url))));
+                return true;
+            }
+        });
     }
 
     @Override
@@ -126,34 +159,73 @@ public class AccountSettingsFragment extends PreferenceFragmentCompat {
         subscription.unsubscribe();
     }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == Activity.RESULT_OK) {
+            switch (requestCode) {
+                case REQUEST_UPGRADE_PLAN: {
+                    UserSettingPref statusPref = new UserSettingPref();
+
+                    final String renewal = statusPref.userStatusRenewal;
+
+                    accountPreference.setUsernameText(statusPref.mail);
+                    accountPreference.setType(statusPref.userStatusType);
+                    accountPreference.setRenewalAndExpiration(renewal, statusPref.userStatusExpiration);
+
+                    boolean upgradeVisible = !"annually".equals(renewal) &&
+                            !"forever".equals(renewal) &&
+                            !"lifetime".equals(renewal);
+                    findPreference("upgrade").setVisible(upgradeVisible);
+                    break;
+                }
+                case REQUEST_EDIT_EMAIL: {
+                    UserSettingPref statusPref = new UserSettingPref();
+                    accountPreference.setUsernameText(statusPref.mail);
+                    break;
+                }
+            }
+        }
+    }
+
     private void getStatus() {
-        subscription = webService
-                .login(new LoginRequest(UserManager.getMailAddress(), UserManager.getPassword()))
-                .flatMap(new Func1<LoginResult, Single<StatusResult>>() {
-                    @Override
-                    public Single<StatusResult> call(LoginResult result) {
-                        return webService.getStatus();
-                    }
-                })
+        subscription = webService.getAccountStatus()
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new SingleSubscriber<StatusResult>() {
+                .subscribe(new SingleSubscriber<AccountStatusResult>() {
                     @Override
-                    public void onSuccess(StatusResult status) {
+                    public void onSuccess(AccountStatusResult accountStatus) {
+                        final String type = accountStatus.getAccount().type;
+                        final String renewal = accountStatus.getSubscription().renewal;
+                        final String expiration = accountStatus.getSubscription().expiration;
+
                         UserSettingPref statusPref = new UserSettingPref();
-                        statusPref.userStatusType = status.getType();
-                        statusPref.userStatusRenewal = status.getRenewal();
-                        statusPref.userStatusExpiration = status.getExpiration();
+                        statusPref.userStatusType = type;
+                        statusPref.userStatusRenewal = renewal;
+                        statusPref.userStatusExpiration = expiration;
                         statusPref.save();
 
+                        /*if (!confirmed) {
+                            startActivity(ConfirmationEmailActivity.createIntent(getActivity(), statusPref.mail));
+                        }*/
+
                         accountPreference.setUsernameText(statusPref.mail);
-                        accountPreference.setRenewal(status.getRenewal());
-                        accountPreference.setExpiration(status.getExpiration());
+                        accountPreference.setType(type);
+                        accountPreference.setRenewalAndExpiration(renewal, expiration);
                     }
 
                     @Override
                     public void onError(Throwable error) {
                         error.printStackTrace();
+                        if (error instanceof HttpException) {
+                            HttpException httpException = (HttpException) error;
+                            if (httpException.code() == 400) {
+                                Intent intent = new Intent(getContext(), IdentifyEmailActivity.class);
+                                TaskStackBuilder builder = TaskStackBuilder.create(getContext());
+                                builder.addNextIntent(intent);
+                                builder.startActivities();
+                            }
+                        }
                     }
                 });
     }

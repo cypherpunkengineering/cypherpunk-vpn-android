@@ -9,26 +9,31 @@
     <string name="main_status_connected">You are protected</string>
     <string name="vpn_cancel">Cancel</string>
     <string name="main_sign_up">Sign Up and get a 7-Day Free Premium Trial</string>
-    <string name="drawer_close">close drawer</string>
-    <string name="drawer_open">open drawer</string>
+
+    <!-- url -->
+    <string name="store_url">https://play.google.com/store/apps/details?id=com.cypherpunk.privacy</string>
+    <string name="contact_us_url">https://cypherpunk.zendesk.com/hc/requests/new</string>
+    <string name="help_url">https://support.cypherpunk.com/hc</string>
+    <string name="terms_of_service_url">https://cypherpunk.com/tos</string>
+    <string name="privacy_policy_url">https://cypherpunk.com/privacy</string>
+
+    <string name="share_subject">Get 30 Days Premium Free [Cypherpunk]</string>
+    <string name="share_text">We’ll give you both 30 days free! https://play.google.com/store/apps/details?id=com.cypherpunk.privacy</string>
 
     <!-- sign in-->
-    <string name="title_activity_sign_up">Sign Up</string>
     <string name="error_field_required">This field is required</string>
     <string name="error_invalid_email">invalid email</string>
     <string name="sign_in_button_sign_in">Log In</string>
     <string name="no_internet">No internet</string>
+    <string name="email_already_registered">email address is already registered</string>
+    <string name="api_error">Error</string>
     <string name="invalid_mail_password">invalid password</string>
     <string name="sign_in_forgot_password">Forgot password?</string>
-    <string name="sign_in_email_hint">Username/Email</string>
+    <string name="sign_in_set_password_recovery">We sent you password recovery email.</string>
     <string name="sign_in_password_hint">Password</string>
-    <string name="sign_in_no_account">Don’t have an account yet?</string>
-    <string name="sign_in_sign_up">Sign Up</string>
     <string name="sign_up_password_hint">Password</string>
     <string name="sign_up_email_hint">Email</string>
     <string name="sign_up_button_sign_up">Sign Up</string>
-    <string name="sign_up_free_premium_trial_2_line">Sign up and start your 7 day\n Free Premium Trial now!</string>
-    <string name="sign_up_free_premium_trial">Sign up and start your 7 day Free Premium Trial now!</string>
     <string name="sign_in_welcome_back">Welcome back!</string>
     <string name="sign_up_text">Hello! Please set your password</string>
 
@@ -37,6 +42,7 @@
     <string name="confirmation_email_text2">Please check your Email App and\n do something….</string>
     <string name="confirmation_back_login">Back to Log In</string>
     <string name="resend_email">Resend Email</string>
+    <string name="confirmation_email_resend">We sent you email</string>
 
     <!-- identify email -->
     <string name="identify_email_text">Welcome to Cypherpunk</string>
@@ -49,9 +55,6 @@
     <string name="title_activity_reset_password">Reset your password</string>
 
     <!-- setting -->
-    <string name="title_activity_settings">Configuration</string>
-    <string name="tab_settings_account">Account</string>
-    <string name="tab_settings_advanced_settings">Settings</string>
     <string name="mode_description_text">‘Speed and Country’ mode is very fast, because it is not encrypted.\n Omnicos directe al desirabilite de un nov lingua franca: On refusa continuar payar custosi traductores. At solmen va esser necessi far uniform grammatica, pronunciation e plu sommun paroles.</string>
     <string name="settings_mode_max_privacy">Max privacy</string>
     <string name="settings_mode_max_speed">Max speed</string>
@@ -63,7 +66,6 @@
     <string name="action_send">send</string>
     <string name="action_done">done</string>
     <string name="setting_connect_dialog_message">Reconnect to apply new settings?</string>
-    <string name="setting_configuration">Configuration</string>
 
     <!-- account -->
 
@@ -131,8 +133,8 @@
     <string name="setting_network_summary">Privacy when you need it most</string>
     <string name="title_activity_network">Manage trusted networks</string>
     <!-- per-app vpn settings -->
-    <string name="setting_application">Privacy for individual apps</string>
-    <string name="setting_application_summary">Configure apps to connect directly without privacy protection</string>
+    <string name="setting_application">VPN Split Tunnel</string>
+    <string name="setting_application_summary">Configure which apps to route through VPN</string>
     <!-- vpn port remote -->
     <string name="setting_vpn_port_remote">VPN Server Port</string>
     <string name="setting_vpn_port_remote_summary">Use alternate remote TCP/UDP port for VPN</string>
@@ -163,12 +165,18 @@
     <string name="account_setting_help">Help</string>
     <string name="account_setting_logout">Log out</string>
 
-    <string name="account_plan_none">Free</string>
-    <string name="account_plan_monthly">Monthly Premium</string>
-    <string name="account_plan_semiannually">Semiannually Premium</string>
-    <string name="account_plan_annually">Annually Premium</string>
-    <string name="account_plan_expiration_format">dd/MM/yyyy</string>
-    <string name="account_plan_expiration">Renews On %1$s</string>
+    <string name="account_type_free">Free</string>
+    <string name="account_type_premium">Premium</string>
+    <string name="account_type_organization">Organization</string>
+    <string name="account_type_developer">Developer</string>
+    <string name="account_plan_monthly">Monthly</string>
+    <string name="account_plan_semiannually">Semiannually</string>
+    <string name="account_plan_annually">Annually</string>
+    <string name="account_plan_forever">Forever</string>
+    <string name="account_plan_expiration_format">MMM dd, yyyy</string>
+    <string name="account_plan_expiration_forever">Forever</string>
+    <string name="account_plan_expiration_date">Renews %1$s on %2$s</string>
+    <string name="account_plan_expiration_nodate">Renews %1$s</string>
 
     <!-- edit profile-->
     <string name="title_activity_edit_email">Update Email</string>
@@ -215,10 +223,9 @@
     <string name="premium_free_facebook">Facebook</string>
     <string name="premium_free_twitter">Twitter</string>
     <string name="premium_free_email">Email</string>
+    <string name="premium_free_share">Share</string>
 
     <!-- introduction -->
-    <string name="introduction_exist_account">Have an account already?</string>
-    <string name="introduction_sign_in">Log In</string>
     <string name="introduction_start_free_now">Start Free Now</string>
     <string name="introduction_sign_up">Sign up for 7-day Free Premium Trial</string>
     <string name="introduction_premium">Get a Premium plan</string>
@@ -243,12 +250,6 @@
     <string name="tutorial_allow">Allow</string>
 
     <!-- select region -->
-    <string name="title_activity_locations">Locations</string>
-    <string name="location_favorite">FAVORITE</string>
-    <string name="location_recommended">RECOMMENDED</string>
-    <string name="location_all_locations">ALL LOCATIONS</string>
-    <string name="select_region_sort_by_distance">Sort by distance</string>
-    <string name="title_activity_sort_region">Sort by distance</string>
     <string name="select_region_connect_dialog_message">Do you want to connect now?</string>
     <string name="region_fastest_location">Fastest Location</string>
 
@@ -268,11 +269,32 @@
     <string name="network_wifi_description">Add the networks you trust. Cypherpunk will NOT automatically connect through the VPN when you connect to these trusted networks.</string>
     <string name="network_other_networks">OTHER NETWORKS</string>
     <string name="network_other_auto_secure_connections">Auto secure connections</string>
-    <string name="introduction_login">Log In</string>
     <string name="introduction_type_email">Type your email</string>
     <string name="tutorial_1_title">Setting Up Your VPN</string>
     <string name="tutorial_1_text">Please grant permission to Cypherpunk Privacy for connecting a VPN from your device.</string>
     <string name="tutorial_2_title">One Final Step</string>
     <string name="tutorial_2_text">Share anonymized analytics about your VPN connections to help make Cypherpunk Privacy faster and more reliable.</string>
+    <string name="tutorial_don_t_allow">Don’t allow</string>
+    <string name="region_list_favorite">FAVORITE</string>
+    <string name="region_list_recent">RECENT</string>
+    <string name="region_list_all">ALL</string>
+    <string name="sign_up_policy1">"By signing up, you agree to our "</string>
+    <string name="sign_up_policy2">Terms of Service</string>
+    <string name="sign_up_policy3">" and confirm that you have read the "</string>
+    <string name="sign_up_policy4">Privacy Policy</string>
+    <string name="sign_up_policy5">.</string>
 
+    <string name="region_list_dev">DEVELOPER</string>
+    <string name="region_list_na">NORTH AMERICA</string>
+    <string name="region_list_sa">CENTRAL &amp; SOUTH AMERICA</string>
+    <string name="region_list_cr">CARIBBEAN</string>
+    <string name="region_list_op">OCEANIA &amp; PACIFIC</string>
+    <string name="region_list_eu">EUROPE</string>
+    <string name="region_list_me">MIDDLE EAST</string>
+    <string name="region_list_af">AFRICA</string>
+    <string name="region_list_as">ASIA</string>
+
+    <string name="region_level_badge_dev">DEV</string>
+    <string name="region_level_badge_premium">PREMIUM</string>
+    <string name="region_level_badge_unavailable">UNAVAILABLE</string>
 </resources>

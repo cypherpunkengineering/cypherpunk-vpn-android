@@ -46,6 +46,7 @@ public class SettingConnectDialogFragment extends DialogFragment {
                 if (listener != null) {
                     listener.onConnectDialogButtonClick();
                 }
+                dismiss();
             }
         });
         view.findViewById(R.id.later_button).setOnClickListener(new View.OnClickListener() {

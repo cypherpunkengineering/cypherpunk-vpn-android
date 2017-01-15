@@ -19,7 +19,7 @@ import java.util.List;
 
 public class ApplicationAdapter extends RecyclerView.Adapter<ApplicationAdapter.ViewHolder> {
 
-    private List<AppData> items = new ArrayList<>();
+    private final List<AppData> items = new ArrayList<>();
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -28,13 +28,13 @@ public class ApplicationAdapter extends RecyclerView.Adapter<ApplicationAdapter.
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, final int position) {
+    public void onBindViewHolder(final ViewHolder holder, final int position) {
         ApplicationItemView appItemView = holder.getBinding().applicationItem;
         appItemView.setApp(items.get(position));
         appItemView.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                items.get(position).check = isChecked;
+                items.get(holder.getAdapterPosition()).check = isChecked;
             }
         });
         holder.getBinding().executePendingBindings();
@@ -53,7 +53,7 @@ public class ApplicationAdapter extends RecyclerView.Adapter<ApplicationAdapter.
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
-        private ListItemApplicationBinding binding;
+        private final ListItemApplicationBinding binding;
 
         public ViewHolder(View view) {
             super(view);

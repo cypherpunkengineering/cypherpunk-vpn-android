@@ -15,6 +15,7 @@
             android:layout_height="wrap_content"
             android:background="@drawable/button_main_region"
             android:clickable="true">
+
             <include layout="@layout/divider" />
 
             <LinearLayout
@@ -29,7 +30,7 @@
                     android:layout_width="@dimen/national_flag_width"
                     android:layout_height="@dimen/national_flag_height"
                     android:layout_gravity="center_vertical"
-                    android:layout_marginRight="16dp"
+                    android:layout_marginRight="10dp"
                     tools:ignore="ContentDescription"
                     tools:src="@drawable/flag_us" />
 
@@ -39,8 +40,19 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:textAppearance="?android:textAppearanceLarge"
-                    android:textSize="20sp"
+                    android:textSize="18sp"
                     tools:text="USA WEST" />
+
+                <com.cypherpunk.privacy.widget.RegionTagView
+                    android:id="@+id/region_tag"
+                    android:layout_width="wrap_content"
+                    android:layout_height="19dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="12dp"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="4dp"
+                    android:paddingRight="4dp"
+                    android:textSize="12sp" />
 
             </LinearLayout>
 
