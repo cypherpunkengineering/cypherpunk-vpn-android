@@ -112,6 +112,13 @@ public class CypherpunkVPN {
             vpnProfile = cp.convertProfile();
             ProfileManager.setTemporaryProfile(vpnProfile);
             vpnProfile.mName = region.getRegionName() + ", " + region.getCountry();
+            for (String pkg : cypherpunkSetting.disableAppPackageName.split(","))
+            {
+                //log("pkg from prefs: " + pkg);
+                vpnProfile.mAllowedAppsVpn.add(pkg);
+            }
+            //for (String pkg : vpnProfile.mAllowedAppsVpn)
+                //log("pkg in profile: " + pkg);
 
             //log("vpn profile check: "+vpnProfile.checkProfile(context));
         }
