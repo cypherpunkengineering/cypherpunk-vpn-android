@@ -20,7 +20,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginBottom="16dp"
-            android:src="@drawable/header_logo_vector"
+            android:src="@drawable/logo"
             tools:ignore="ContentDescription" />
 
         <android.support.v4.view.ViewPager

@@ -31,7 +31,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:src="@drawable/header_logo_vector"
+                android:src="@drawable/logo"
                 tools:ignore="ContentDescription" />
 
             <com.cypherpunk.privacy.widget.TypefaceTextView
