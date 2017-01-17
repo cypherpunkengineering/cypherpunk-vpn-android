@@ -47,5 +47,6 @@
     <drawable name="window_background_transparent">#d5163138</drawable>
 
     <color name="drawer_background">@color/dark_green</color>
+    <color name="text_color_light">@color/light_green</color>
 
 </resources>
