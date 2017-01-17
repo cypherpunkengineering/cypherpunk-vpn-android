@@ -1,4 +1,5 @@
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
@@ -11,7 +12,7 @@
 
         <include
             android:id="@+id/toolbar"
-            layout="@layout/toolbar" />
+            layout="@layout/toolbar"/>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -24,18 +25,11 @@
 
             <ImageView
                 android:layout_width="wrap_content"
-                android:layout_height="?android:actionBarSize"
-                android:layout_gravity="center"
-                android:layout_marginTop="16dp"
-                android:src="@drawable/helmet_color_big_vector"
-                tools:ignore="ContentDescription" />
-
-            <ImageView
-                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:layout_marginTop="48dp"
                 android:src="@drawable/logo"
-                tools:ignore="ContentDescription" />
+                tools:ignore="ContentDescription"/>
 
             <com.cypherpunk.privacy.widget.TypefaceTextView
                 android:layout_width="wrap_content"
@@ -46,7 +40,7 @@
                 android:gravity="center_horizontal"
                 android:text="@string/sign_up_text"
                 android:textSize="18sp"
-                app:fontName="DosisMedium" />
+                app:fontName="DosisMedium"/>
 
             <android.support.design.widget.TextInputLayout
                 style="@style/Widget.Cypherpunk.TextInputLayout"
@@ -64,7 +58,7 @@
                     android:imeOptions="actionDone"
                     android:inputType="textPassword"
                     android:maxLines="1"
-                    android:theme="@style/EditTextColorControl" />
+                    android:theme="@style/EditTextColorControl"/>
 
             </android.support.design.widget.TextInputLayout>
 
@@ -74,15 +68,15 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:text="@string/sign_up_button_sign_up" />
+                android:text="@string/sign_up_button_sign_up"/>
 
             <com.cypherpunk.privacy.widget.TypefaceTextView
                 android:id="@+id/text"
                 android:layout_width="300dp"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="26dp"
-                android:lineSpacingExtra="6sp"
                 android:gravity="center_horizontal"
-                android:layout_height="wrap_content" />
+                android:lineSpacingExtra="6sp"/>
 
         </LinearLayout>
 
