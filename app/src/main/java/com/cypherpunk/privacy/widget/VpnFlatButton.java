@@ -56,7 +56,7 @@ public class VpnFlatButton extends FrameLayout {
         setClickable(true);
 
         imageView = new ImageView(context);
-        imageView.setImageResource(R.drawable.io_btn_big_orange);
+        imageView.setImageResource(R.drawable.connecting);
         addView(imageView, new LayoutParams(
                 ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, Gravity.BOTTOM));
 

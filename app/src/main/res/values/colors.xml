@@ -2,12 +2,10 @@
 <resources>
     <color name="colorPrimary">@android:color/transparent</color>
     <color name="colorPrimaryDark">#26000000</color>
-    <color name="colorAccent">#f8cf1c</color>
+    <color name="colorAccent">@color/light_green</color>
 
     <color name="divider">#4dffffff</color>
     <color name="account_grade_unchecked">#666666</color>
-    <color name="switch_thumb_connect">#f5d80d</color>
-    <color name="switch_track_connect">@color/colorAccent</color>
     <color name="vpn_button_frame_connected">#996ec909</color>
     <color name="vpn_button_frame_disconnected">#99f11a35</color>
     <color name="vpn_button_pressed">#26000000</color>
@@ -34,9 +32,19 @@
     <color name="plan_badge_text">#034698</color>
     <color name="plan_price">#000000</color>
     <color name="plan_text">#333333</color>
-    <color name="drawer_background">#1560bd</color>
     <color name="region_selected_text">#ffc933</color>
     <color name="region_disabled_text">#80ffffff</color>
     <color name="region_badge_premium_text">#453908</color>
     <color name="region_badge_unavailable">#59ffffff</color>
+
+    <color name="dark_green">#163138</color>
+    <color name="light_green">#5fbbc4</color>
+    <color name="green">#5fbbc4</color>
+
+    <drawable name="window_background">#163138</drawable>
+    <drawable name="window_background_transparent">#d5163138</drawable>
+
+    <color name="drawer_background">@color/dark_green</color>
+    <color name="text_color_light">@color/light_green</color>
+
 </resources>

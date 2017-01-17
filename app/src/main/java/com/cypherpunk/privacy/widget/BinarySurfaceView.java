@@ -84,7 +84,7 @@ public class BinarySurfaceView extends SurfaceView implements SurfaceHolder.Call
 
             tileDrawable = new TileDrawable(tileWidth, tileHeight, rowCount, columnCount,
                     keyItemGenerator, keyItemDrawer);
-            background = ContextCompat.getDrawable(context, R.drawable.window_background_indigo);
+            background = ContextCompat.getDrawable(context, R.drawable.window_background);
 
             final Point displaySize = new Point();
             getDisplay().getSize(displaySize);

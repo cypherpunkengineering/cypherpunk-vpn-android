@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
     <LinearLayout
@@ -9,33 +10,26 @@
 
         <ImageView
             android:layout_width="wrap_content"
-            android:layout_height="?android:actionBarSize"
-            android:layout_gravity="center"
-            android:layout_marginTop="16dp"
-            android:src="@drawable/helmet_color_big_vector"
-            tools:ignore="ContentDescription" />
-
-        <ImageView
-            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginBottom="16dp"
-            android:src="@drawable/header_logo_vector"
-            tools:ignore="ContentDescription" />
+            android:layout_marginTop="48dp"
+            android:src="@drawable/logo"
+            tools:ignore="ContentDescription"/>
 
         <android.support.v4.view.ViewPager
             android:id="@+id/pager"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_marginBottom="8dp"
-            android:layout_weight="1" />
+            android:layout_weight="1"/>
 
         <com.cypherpunk.privacy.widget.PageIndicator
             android:id="@+id/indicator"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginBottom="24dp" />
+            android:layout_marginBottom="24dp"/>
 
         <com.cypherpunk.privacy.widget.TypefaceButton
             android:id="@+id/start_button"
@@ -45,7 +39,7 @@
             android:layout_marginBottom="32dp"
             android:layout_marginLeft="28dp"
             android:layout_marginRight="28dp"
-            android:text="@string/introduction_type_email" />
+            android:text="@string/introduction_type_email"/>
 
     </LinearLayout>
 

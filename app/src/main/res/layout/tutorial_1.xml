@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center_horizontal"
@@ -13,7 +15,7 @@
         android:layout_marginTop="32dp"
         android:text="@string/tutorial_1_title"
         android:textSize="26sp"
-        app:fontName="DosisMedium" />
+        app:fontName="DosisMedium"/>
 
     <com.cypherpunk.privacy.widget.TypefaceTextView
         android:layout_width="wrap_content"
@@ -23,17 +25,18 @@
         android:layout_marginRight="40dp"
         android:gravity="center_horizontal"
         android:text="@string/tutorial_1_text"
+        android:textColor="@color/text_color_light"
         android:textSize="16sp"
-        app:fontName="DosisMedium" />
+        app:fontName="DosisMedium"/>
 
-    <com.cypherpunk.privacy.widget.TypefaceTextView
+    <ImageView
         android:layout_width="300dp"
-        android:layout_height="164dp"
+        android:layout_height="match_parent"
         android:layout_marginBottom="40dp"
         android:layout_marginLeft="32dp"
         android:layout_marginRight="32dp"
-        android:background="#80d7d7d7"
         android:gravity="center"
-        android:text="1" />
+        android:src="@drawable/setting_up_vpn"
+        tools:ignore="ContentDescription"/>
 
 </LinearLayout>
