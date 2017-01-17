@@ -2,6 +2,7 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center_horizontal"
@@ -28,13 +29,14 @@
         android:textSize="16sp"
         app:fontName="DosisMedium"/>
 
-    <com.cypherpunk.privacy.widget.TypefaceTextView
+    <ImageView
         android:layout_width="300dp"
-        android:layout_height="164dp"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="40dp"
         android:layout_marginLeft="32dp"
         android:layout_marginRight="32dp"
-        android:background="#80d7d7d7"
         android:gravity="center"
-        android:text="2"/>
+        android:src="@drawable/one_final_step"
+        tools:ignore="ContentDescription"/>
 
 </LinearLayout>
