@@ -269,15 +269,17 @@ public class CypherpunkVPN {
                     break;
                 case "setting_vpn_crypto_profile_default":
                     list.add("remote " + region.getOvDefault() + " " + rport);
-                    list.add("ncp-ciphers AES-128-GCM:AES-128-CBC");
+                    list.add("cipher AES-128-GCM");
                     break;
                 case "setting_vpn_crypto_profile_strong":
                     list.add("remote " + region.getOvStrong() + " " + rport);
-                    list.add("ncp-ciphers AES-256-GCM:AES-256-CBC");
+                    list.add("cipher AES-256-GCM");
+                    list.add("ncp-disable");
                     break;
                 case "setting_vpn_crypto_profile_stealth":
                     list.add("remote " + region.getOvStealth() + " " + rport);
-                    list.add("ncp-ciphers AES-128-GCM:AES-128-CBC");
+                    list.add("cipher AES-128-GCM");
+                    list.add("ncp-disable");
                     list.add("scramble obfuscate cypherpunk-xor-key"); // requires xorpatch'd openvpn
                     break;
             }
