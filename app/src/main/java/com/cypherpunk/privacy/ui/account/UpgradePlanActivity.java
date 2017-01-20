@@ -64,9 +64,9 @@ public class UpgradePlanActivity extends AppCompatActivity {
             actionBar.setHomeAsUpIndicator(R.drawable.close_vector);
         }
 
-        binding.monthlyPlan.setPlan("1 MONTH", "$ 8.99", false);
-        binding.semiannuallyPlan.setPlan("6 MONTHS", "$ 7.49", false);
-        binding.annuallyPlan.setPlan("12 MONTHS", "$ 4.99", true);
+        binding.monthlyPlan.setPlan("1 MONTH", "$12.95", false);
+        binding.semiannuallyPlan.setPlan("6 MONTHS", "$ 9.99", false);
+        binding.annuallyPlan.setPlan("12 MONTHS", "$ 8.32", true);
 
         final List<String> oldSkus = getOldSkus();
 
@@ -154,9 +154,9 @@ public class UpgradePlanActivity extends AppCompatActivity {
     }
 
     private static final String PUBLIC_KEY = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAjG76qnaQN3mpl2g5CqND9KIm5oKkKt9vb7bW2i8+Si/8FI2yQKTaKnkGtOxRRNhy0y50S2oNFyuasxWFLHtDCHpodVI9rvJ5zAc+z79Qxrgke1SMzDU1z+oSf3/HWa2yVcAVyBolbvLtras7TXCsKIIWaXbMwccN3L2tW0kZkNkGryqlJJ0Nw/zGCmOY6t5hDZ5Ogh4avlND14naO4P4OqtE0eJh5BJ8WQFUe5mHvp8QLOsN0E6hUr2kf7pLMi9MZ3CR9fFvIk9phiPiB8vDD35c4b22SD5EcWgJCIiIVI6IPhg3cJo4H8ZnKd0O6xmEvAal7YRScGQRMcp6aZLu3wIDAQAB";
-    static final String SKU_MONTHLY = "monthly899";
-    static final String SKU_SEMIANNUALLY = "semiannually4499";
-    static final String SKU_ANNUALLY = "annually5999";
+    static final String SKU_MONTHLY = "monthly1295";
+    static final String SKU_SEMIANNUALLY = "semiannually5995";
+    static final String SKU_ANNUALLY = "annually9995";
     static final int RC_REQUEST = 10001;
 
     private IabHelper helper;
