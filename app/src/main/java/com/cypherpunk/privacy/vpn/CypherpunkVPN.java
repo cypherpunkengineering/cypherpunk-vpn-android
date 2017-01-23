@@ -228,6 +228,9 @@ public class CypherpunkVPN {
         list.add("ifconfig-ipv6 fd25::1/64 ::1");
         list.add("route-ipv6 ::/0 ::1");
 
+		// disable ncp
+        list.add("ncp-disable");
+
         // vpn protocol + remote port
         int rport = 7133;
         if (cypherpunkSetting.vpnPortRemote != null && cypherpunkSetting.vpnPortRemote.length() > 0)
@@ -264,7 +267,6 @@ public class CypherpunkVPN {
             {
                 case "setting_vpn_crypto_profile_none":
                     list.add("remote " + region.getOvNone() + " " + rport);
-                    list.add("ncp-disable");
                     list.add("cipher none");
                     break;
                 case "setting_vpn_crypto_profile_default":
@@ -274,12 +276,10 @@ public class CypherpunkVPN {
                 case "setting_vpn_crypto_profile_strong":
                     list.add("remote " + region.getOvStrong() + " " + rport);
                     list.add("cipher AES-256-GCM");
-                    list.add("ncp-disable");
                     break;
                 case "setting_vpn_crypto_profile_stealth":
                     list.add("remote " + region.getOvStealth() + " " + rport);
                     list.add("cipher AES-128-GCM");
-                    list.add("ncp-disable");
                     list.add("scramble obfuscate cypherpunk-xor-key"); // requires xorpatch'd openvpn
                     break;
             }
