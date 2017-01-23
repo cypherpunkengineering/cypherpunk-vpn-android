@@ -253,9 +253,13 @@ public class CypherpunkVPN {
                     list.add("proto tcp");
                     rport = 7133;
                     break;
-                case "TCP/443":
+                case "TCP/5060":
                     list.add("proto tcp");
-                    rport = 443;
+                    rport = 5060;
+                    break;
+                case "TCP/53":
+                    list.add("proto tcp");
+                    rport = 53;
                     break;
             }
         }

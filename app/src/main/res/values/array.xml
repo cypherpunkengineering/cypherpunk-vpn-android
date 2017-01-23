@@ -19,7 +19,8 @@
         <item>UDP/5060</item>
         <item>UDP/53</item>
         <item>TCP/7133</item>
-        <item>TCP/443</item>
+        <item>TCP/5060</item>
+        <item>TCP/53</item>
     </string-array>
 
     <string-array name="privacy_firewall_mode_value">
