@@ -39,17 +39,17 @@
     </string-array>
 
     <string-array name="vpn_crypto_profile_value">
-        <item>setting_vpn_crypto_profile_none</item>
-        <item>setting_vpn_crypto_profile_default</item>
         <item>setting_vpn_crypto_profile_strong</item>
         <item>setting_vpn_crypto_profile_stealth</item>
+        <item>setting_vpn_crypto_profile_default</item>
+        <item>setting_vpn_crypto_profile_none</item>
     </string-array>
 
     <string-array name="vpn_crypto_profile_description">
-        <item>setting_vpn_crypto_profile_none_desc</item>
-        <item>setting_vpn_crypto_profile_default_desc</item>
         <item>setting_vpn_crypto_profile_strong_desc</item>
         <item>setting_vpn_crypto_profile_stealth_desc</item>
+        <item>setting_vpn_crypto_profile_default_desc</item>
+        <item>setting_vpn_crypto_profile_none_desc</item>
     </string-array>
 
     <string-array name="vpn_crypto_cipher_value">

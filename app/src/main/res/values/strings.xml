@@ -78,18 +78,18 @@
 
     <!-- crypto profile settings -->
     <string name="setting_vpn_crypto_profile">Privacy Mode</string>
-    <!-- crypto profile: none -->
-    <string name="setting_vpn_crypto_profile_none">Max Speed</string>
-    <string name="setting_vpn_crypto_profile_none_desc">No additional encryption</string>
-    <!-- crypto profile: default -->
-    <string name="setting_vpn_crypto_profile_default">Recommended Default</string>
-    <string name="setting_vpn_crypto_profile_default_desc">Great balance of speed and privacy</string>
     <!-- crypto profile: strong -->
     <string name="setting_vpn_crypto_profile_strong">Max Privacy</string>
-    <string name="setting_vpn_crypto_profile_strong_desc">Strong Encryption</string>
+    <string name="setting_vpn_crypto_profile_strong_desc">Maximum encryption settings</string>
     <!-- crypto profile: stealth -->
     <string name="setting_vpn_crypto_profile_stealth">Max Freedom</string>
-    <string name="setting_vpn_crypto_profile_stealth_desc">Stealth Encryption for anti-censorship</string>
+    <string name="setting_vpn_crypto_profile_stealth_desc">Stealth mode for anti-censorship</string>
+    <!-- crypto profile: default -->
+    <string name="setting_vpn_crypto_profile_default">Recommended Default</string>
+    <string name="setting_vpn_crypto_profile_default_desc">Good balance of speed and privacy</string>
+    <!-- crypto profile: none -->
+    <string name="setting_vpn_crypto_profile_none">Max Speed</string>
+    <string name="setting_vpn_crypto_profile_none_desc">No additional encryption for fastest speeds</string>
     <!-- crypto profile cipher -->
     <string name="setting_vpn_crypto_cipher">Cipher</string>
     <string name="setting_vpn_crypto_cipher_none">NONE</string>

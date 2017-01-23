@@ -201,19 +201,19 @@ public class SettingsFragment extends PreferenceFragmentCompat {
         String keylen = null;
         for (int i = 0; i < keyList.length; i++) {
             switch (keyList[i]) {
+                case "setting_vpn_crypto_profile_none":
+                    cipher = "setting_vpn_crypto_cipher_none";
+                    auth = "setting_vpn_crypto_auth_sha256";
+                    keylen = "setting_vpn_crypto_keylen_rsa4096";
+                    break;
                 case "setting_vpn_crypto_profile_default":
                     cipher = "setting_vpn_crypto_cipher_aes128cbc";
                     auth = "setting_vpn_crypto_auth_sha256";
                     keylen = "setting_vpn_crypto_keylen_rsa4096";
                     break;
-                case "setting_vpn_crypto_profile_none":
-                    cipher = "setting_vpn_crypto_cipher_none";
-                    auth = "setting_vpn_crypto_auth_sha1";
-                    keylen = "setting_vpn_crypto_keylen_rsa4096";
-                    break;
                 case "setting_vpn_crypto_profile_strong":
                     cipher = "setting_vpn_crypto_cipher_aes256cbc";
-                    auth = "setting_vpn_crypto_auth_sha512";
+                    auth = "setting_vpn_crypto_auth_sha256";
                     keylen = "setting_vpn_crypto_keylen_rsa4096";
                     break;
                 case "setting_vpn_crypto_profile_stealth":
