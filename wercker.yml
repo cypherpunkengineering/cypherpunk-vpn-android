@@ -37,9 +37,17 @@ deploy:
         - add-ssh-key:
             keyname: cypherpunkbuilder
         - script:
-            name: Archive apk to build repo server
+            name: Upload artifacts, send slack notification
             code: |
               mkdir -p $HOME/.ssh/
               echo '[builds-upload.cypherpunk.engineering]:92,[208.111.52.44]:92 ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBNSZo/sp3Q5fG4Yeg7CtzRmI90UyARIXXp5oaIk5O1xQcRi9mDdd1hCxuenvgFieyuKUeK8vxxshdN03tJc1yDU=' > $HOME/.ssh/known_hosts
               BUILD_NUMBER=`date +%s`
-              scp -P92 "app/build/outputs/apk/app-debug.apk" "upload@builds-upload.cypherpunk.engineering:/data/builds/`printf 'cypherpunk-privacy-android-%05d' ${BUILD_NUMBER}`.apk"
+              PKG="app/build/outputs/apk/app-debug.apk"
+              ARTIFACT="`printf 'cypherpunk-privacy-android-%05d' ${BUILD_NUMBER}`.apk"
+              cp "${PKG}" "${ARTIFACT}"
+              echo "Uploading build to builds repo..."
+              scp -P92 "${ARTIFACT}" upload@builds-upload.cypherpunk.engineering:/data/builds/
+              echo "Uploading build to GCS bucket..."
+              gsutil cp "${ARTIFACT}" gs://builds.cypherpunk.com/builds/android/
+              echo "Sending notification to slack..."
+              curl -X POST --data "payload={\"text\": \"cypherpunk-privacy-android build ${BUILD_NUMBER} is now available from https://download.cypherpunk.com/builds/android/${ARTIFACT}\"}" https://hooks.slack.com/services/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
