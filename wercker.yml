@@ -47,6 +47,8 @@ deploy:
               cp "${PKG}" "${ARTIFACT}"
               echo "Uploading build to builds repo..."
               scp -P92 "${ARTIFACT}" upload@builds-upload.cypherpunk.engineering:/data/builds/
+              echo "Getting GCS credentials from environment"
+              echo "${gsutil_credstore}"|base64 -d|tar -C $HOME -zxf -
               echo "Uploading build to GCS bucket..."
               gsutil cp "${ARTIFACT}" gs://builds.cypherpunk.com/builds/android/
               echo "Sending notification to slack..."
