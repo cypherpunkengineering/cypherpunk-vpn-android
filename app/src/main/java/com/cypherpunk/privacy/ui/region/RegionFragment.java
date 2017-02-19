@@ -121,7 +121,23 @@ public class RegionFragment extends Fragment {
                     // 既に選択されている
                     return;
                 }
+                setting.vpnDnsCypherplay = false;
+                setting.save();
                 selectRegion(realm.where(Region.class).equalTo("id", regionId).findFirst());
+            }
+
+            @Override
+            protected void onCypherplayClick() {
+                //TODO: fastest location
+                Region region = realm.where(Region.class).findFirst();
+                CypherpunkSetting setting = new CypherpunkSetting();
+                if (region.getId().equals(setting.regionId)) {
+                    // 既に選択されている
+                    return;
+                }
+                setting.vpnDnsCypherplay = true;
+                setting.save();
+                selectRegion(region);
             }
 
             @Override
@@ -133,6 +149,8 @@ public class RegionFragment extends Fragment {
                     // 既に選択されている
                     return;
                 }
+                setting.vpnDnsCypherplay = false;
+                setting.save();
                 selectRegion(region);
             }
         };

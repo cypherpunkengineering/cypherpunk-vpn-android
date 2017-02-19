@@ -257,8 +257,8 @@
 
     <!-- select region -->
     <string name="select_region_connect_dialog_message">Do you want to connect now?</string>
+    <string name="region_cypherplay">Cypherplay</string>
     <string name="region_fastest_location">Fastest Location</string>
-
 
     <!-- connect dialog -->
     <string name="connect_dialog_positive">CONNECT</string>
