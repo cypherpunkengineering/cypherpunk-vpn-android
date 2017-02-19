@@ -117,7 +117,7 @@ public class NetworkActivity extends AppCompatActivity {
 
     private View buildListHeader() {
         final View header = LayoutInflater.from(this)
-                .inflate(R.layout.list_item_header_neteork_secure, binding.list, false);
+                .inflate(R.layout.list_item_header_network_secure, binding.list, false);
         final SwitchCompat autoSecureSwitch = (SwitchCompat) header.findViewById(R.id.auto_secure_switch);
         autoSecureSwitch.setChecked(cypherpunkSetting.autoSecureUntrusted);
         header.findViewById(R.id.auto_secure_container).setOnClickListener(new View.OnClickListener() {

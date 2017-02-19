@@ -30,7 +30,8 @@ public class RegionAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
     private static final int ITEM_VIEW_TYPE_ITEM = 1;
     private static final int ITEM_VIEW_TYPE_DIVIDER = 2;
-    private static final int ITEM_VIEW_TYPE_FASTEST_LOCATION = 3;
+    private static final int ITEM_VIEW_TYPE_CYPHERPLAY = 3;
+    private static final int ITEM_VIEW_TYPE_FASTEST_LOCATION = 4;
 
     private final List<Object> items = new ArrayList<>();
 
@@ -50,6 +51,8 @@ public class RegionAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     protected void onItemClick(@NonNull String regionId) {
     }
 
+    protected void onCypherplayClick() {
+    }
     protected void onFastestLocationClick() {
     }
 
@@ -59,6 +62,9 @@ public class RegionAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             case ITEM_VIEW_TYPE_ITEM:
                 return new RegionViewHolder(LayoutInflater.from(parent.getContext())
                         .inflate(R.layout.list_item_region, parent, false));
+            case ITEM_VIEW_TYPE_CYPHERPLAY:
+                return new ViewHolder(LayoutInflater.from(parent.getContext())
+                        .inflate(R.layout.list_item_region_cypherplay, parent, false));
             case ITEM_VIEW_TYPE_FASTEST_LOCATION:
                 return new ViewHolder(LayoutInflater.from(parent.getContext())
                         .inflate(R.layout.list_item_region_fastest_location, parent, false));
@@ -124,6 +130,14 @@ public class RegionAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                     binding.favorite.setAlpha(0.5f);
                 }
                 break;
+            case ITEM_VIEW_TYPE_CYPHERPLAY:
+                holder.itemView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        onCypherplayClick();
+                    }
+                });
+                break;
             case ITEM_VIEW_TYPE_FASTEST_LOCATION:
                 holder.itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -151,6 +165,9 @@ public class RegionAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         if (items.get(position) instanceof Region) {
             return ITEM_VIEW_TYPE_ITEM;
         }
+        if (items.get(position) instanceof Cypherplay) {
+            return ITEM_VIEW_TYPE_CYPHERPLAY;
+        }
         if (items.get(position) instanceof FastestLocation) {
             return ITEM_VIEW_TYPE_FASTEST_LOCATION;
         }
@@ -171,6 +188,7 @@ public class RegionAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                               @NonNull List<Region> opItems
                               ) {
         clear();
+        items.add(new Cypherplay());
         items.add(new FastestLocation());
         addFavoriteItems(favoriteItems);
         addRecentlyConnectedItems(recentlyConnectedItems);
@@ -257,6 +275,8 @@ public class RegionAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         }
     }
 
+    private class Cypherplay {
+    }
     private class FastestLocation {
     }
 }

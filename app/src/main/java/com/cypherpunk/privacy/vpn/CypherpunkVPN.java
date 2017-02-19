@@ -326,6 +326,16 @@ public class CypherpunkVPN {
         else
             list.add("redirect-gateway autolocal block-local");
 
+        // build DNS settings according to cypherplay/blocker settings
+        int dns = 10;
+        if (cypherpunkSetting.vpnDnsBlockAds) dns += 1;
+        if (cypherpunkSetting.vpnDnsBlockMalware) dns += 2;
+        if (cypherpunkSetting.vpnDnsCypherplay) dns += 4;
+        list.add("pull-filter ignore \"dhcp-option DNS 10.10.10.10\"");
+        list.add("pull-filter ignore \"route 10.10.10.10 255.255.255.255\"");
+        list.add("dhcp-option DNS 10.10.10." + dns);
+        list.add("route 10.10.10." + dns);
+
         // append username/password
         /*
         log("password is "+ UserManager.getPassword());
@@ -357,7 +367,7 @@ public class CypherpunkVPN {
         String conf = TextUtils.join("\n", confLines);
 
         // debug print
-        for (String line : confLines) log(line);
+        //for (String line : confLines) log(line);
 
         return conf;
     }
