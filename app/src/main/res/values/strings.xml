@@ -23,8 +23,8 @@
     <!-- sign in-->
     <string name="error_field_required">This field is required</string>
     <string name="error_invalid_email">invalid email</string>
-    <string name="sign_in_button_sign_in">Log In</string>
-    <string name="no_internet">No internet</string>
+    <string name="sign_in_button_sign_in">Sign In</string>
+    <string name="no_internet">Hmm, seems you aren\'t connected to the internet?</string>
     <string name="email_already_registered">email address is already registered</string>
     <string name="api_error">Error</string>
     <string name="invalid_mail_password">invalid password</string>
@@ -38,11 +38,11 @@
     <string name="sign_up_text">Hello! Please set your password</string>
 
     <!-- confirmation email -->
-    <string name="confirmation_email_text">We sent you confirmation via Email</string>
-    <string name="confirmation_email_text2">Please check your Email App and\n do something….</string>
-    <string name="confirmation_back_login">Back to Log In</string>
+    <string name="confirmation_email_text">Check your Inbox</string>
+    <string name="confirmation_email_text2">Follow the instructions sent via\nemail to activate your account.</string>
+    <string name="confirmation_back_login">Back to Sign In</string>
     <string name="resend_email">Resend Email</string>
-    <string name="confirmation_email_resend">We sent you email</string>
+    <string name="confirmation_email_resend">Re-send confirmation email</string>
 
     <!-- identify email -->
     <string name="identify_email_text">Welcome to Cypherpunk</string>
@@ -158,12 +158,12 @@
     <string name="account_setting_email">Email</string>
     <string name="account_setting_password">Password</string>
     <string name="account_setting_category_more">More</string>
-    <string name="account_setting_premium_free">Get 30 Days Premium Free</string>
+    <string name="account_setting_premium_free">Share Cypherpunk with a Friend</string>
     <string name="account_setting_rate">Rate Our Service</string>
-    <string name="account_setting_contact">Message the Founders</string>
-    <string name="account_setting_contact_summary">We love interacting with our users, all messages are responded within 12 hours.</string>
+    <string name="account_setting_contact">Open a Support Ticket</string>
+    <string name="account_setting_contact_summary">Your satisfaction is important to us!</string>
     <string name="account_setting_help">Help</string>
-    <string name="account_setting_logout">Log out</string>
+    <string name="account_setting_logout">Sign out</string>
 
     <string name="account_type_free">Free</string>
     <string name="account_type_premium">Premium</string>
