@@ -13,7 +13,7 @@
 
     <PreferenceCategory
         android:layout="@layout/custom_preference_category"
-        android:title="@string/setting_category_auto_protection">
+        android:title="@string/setting_category_privacy_settings">
 
         <SwitchPreferenceCompat
             android:key="vpn_auto_start_connect"
@@ -23,6 +23,14 @@
             android:key="trusted_network"
             android:summary="@string/setting_network_summary"
             android:title="@string/setting_network" />
+
+        <SwitchPreferenceCompat
+            android:key="vpn_dns_block_ads"
+            android:title="@string/setting_vpn_dns_block_ads" />
+
+        <SwitchPreferenceCompat
+            android:key="vpn_dns_block_malware"
+            android:title="@string/setting_vpn_dns_block_malware" />
 
     </PreferenceCategory>
 

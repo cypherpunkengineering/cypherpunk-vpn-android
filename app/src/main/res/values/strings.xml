@@ -72,6 +72,8 @@
     <!-- startup settings -->
     <string name="setting_category_startup">Startup</string>
     <string name="setting_vpn_auto_start_connect">Auto-connect on device boot</string>
+    <string name="setting_vpn_dns_block_ads">Block Ads</string>
+    <string name="setting_vpn_dns_block_malware">Block Malware</string>
 
     <!-- privacy settings -->
     <string name="setting_category_privacy_settings">Privacy Settings</string>
@@ -117,7 +119,6 @@
     <string name="setting_privacy_firewall_mode_always_desc">Privacy Firewall will always engage the internet killswitch, preventing any leak while not on the Cypherpunk Privacy Network, even while the VPN is off.</string>
 
     <!-- advanced setting -->
-    <string name="setting_category_auto_protection">Automatic Protection</string>
     <string name="setting_category_advanced">Advanced Settings</string>
     <string name="setting_category_advanced_settings">Advanced Settings</string>
     <string name="setting_category_vpn_settings">VPN Settings</string>
@@ -165,14 +166,19 @@
     <string name="account_setting_help">Help</string>
     <string name="account_setting_logout">Sign out</string>
 
+    <!-- account type -->
     <string name="account_type_free">Free</string>
     <string name="account_type_premium">Premium</string>
     <string name="account_type_organization">Organization</string>
     <string name="account_type_developer">Developer</string>
+
+    <!-- subscription type -->
     <string name="account_plan_monthly">Monthly</string>
     <string name="account_plan_semiannually">Semiannually</string>
     <string name="account_plan_annually">Annually</string>
     <string name="account_plan_forever">Forever</string>
+
+    <!-- subscription expiration -->
     <string name="account_plan_expiration_format">MMM dd, yyyy</string>
     <string name="account_plan_expiration_forever">Forever</string>
     <string name="account_plan_expiration_date">Renews %1$s on %2$s</string>
