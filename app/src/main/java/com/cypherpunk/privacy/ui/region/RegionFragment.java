@@ -122,15 +122,39 @@ public class RegionFragment extends Fragment {
                     // 既に選択されている
                     return;
                 }
+
+                // disable cypherplay mode for ordinary locations
                 setting.vpnDnsCypherplay = false;
                 setting.save();
+
+                // select region matching the selected id
                 selectRegion(realm.where(Region.class).equalTo("id", regionId).findFirst());
+            }
+
+            protected Region getFastestLocation()
+            {
+                // select to fastest location
+                Region fastestLocation = null;
+                try
+                {
+                    fastestLocation = realm.where(Region.class)
+                                     .notEqualTo("latency", -1)
+                                     .findAllSorted("latency", Sort.ASCENDING)
+                                     .first();
+                }
+                catch (Exception e)
+                {
+                    fastestLocation = realm.where(Region.class)
+                            .findAllSorted("latency", Sort.ASCENDING)
+                            .first();
+                }
+
+                return fastestLocation;
             }
 
             @Override
             protected void onCypherplayClick() {
-                //TODO: fastest location
-                Region region = realm.where(Region.class).findFirst();
+                Region region = getFastestLocation();
                 CypherpunkSetting setting = new CypherpunkSetting();
                 setting.vpnDnsCypherplay = true;
                 setting.save();
@@ -139,8 +163,7 @@ public class RegionFragment extends Fragment {
 
             @Override
             protected void onFastestLocationClick() {
-                //TODO: fastest location
-                Region region = realm.where(Region.class).findFirst();
+                Region region = getFastestLocation();
                 CypherpunkSetting setting = new CypherpunkSetting();
                 setting.vpnDnsCypherplay = false;
                 setting.save();
@@ -321,9 +344,14 @@ public class RegionFragment extends Fragment {
                                    refreshRegionList();
 
                                    CypherpunkSetting setting = new CypherpunkSetting();
-                                   Region region = realm.where(Region.class).equalTo("id", setting.regionId).findFirst();
+                                   Region region = null;//realm.where(Region.class).equalTo("id", setting.regionId).findFirst();
                                    if (region == null) {
-                                       region = realm.where(Region.class).equalTo("authorized", true).findFirst();
+                                       region = realm.where(Region.class)
+                                               .equalTo("authorized", true)
+                                               .notEqualTo("ovDefault", "")
+                                               //.notEqualTo("latency", -1)
+                                               .findAllSorted("latency", Sort.ASCENDING)
+                                               .first();
                                        setting.regionId = region.getId();
                                        setting.save();
                                    }

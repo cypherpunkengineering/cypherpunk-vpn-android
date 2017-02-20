@@ -2,10 +2,15 @@ package com.cypherpunk.privacy.vpn;
 
 import android.util.Log;
 
+import com.cypherpunk.privacy.CypherpunkApplication;
 import com.cypherpunk.privacy.model.Region;
 
 import java.net.InetSocketAddress;
 import java.net.Socket;
+
+import io.realm.Realm;
+
+import static com.cypherpunk.privacy.BR.setting;
 
 /**
  * Created by jmaurice on 2017/02/20.
@@ -15,11 +20,15 @@ public class ServerPingerThinger extends Thread
 {
     private static void log(String str) { Log.w("ServerPingerThinger", str); }
 
-    public String locationId;
     public InetSocketAddress address;
-    public long delay = 0;
+    public String locationId;
+
     public int timeout = 10 * 1000;
     public long latency = -2;
+    public long delay = 0;
+
+    private Region location;
+    private Realm realm;
 
     public static void pingLocation(Region location)
     {
@@ -64,8 +73,16 @@ public class ServerPingerThinger extends Thread
             return;
         }
 
-        // save result in location object
+        if (latency < 0)
+            return;
+
         log("Location "+ locationId + " ping time: " + latency + "ms");
-        // location.setLatency(latency);
+
+        // save result in realm
+        realm = CypherpunkApplication.instance.getAppComponent().getDefaultRealm();
+        realm.beginTransaction();
+        location = realm.where(Region.class).equalTo("id", locationId).findFirst();
+        location.setLatency(latency);
+        realm.commitTransaction();
     }
 }
