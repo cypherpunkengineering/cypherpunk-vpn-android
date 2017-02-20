@@ -18,6 +18,7 @@ import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.StringReader;
+import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -51,6 +52,14 @@ public class CypherpunkVPN {
         if (singleton == null)
             singleton = new CypherpunkVPN();
         return singleton;
+    }
+
+    public static boolean protectSocket(Socket s)
+    {
+        if (getInstance().service == null)
+            return false;
+
+        return getInstance().service.protect(s);
     }
 
     public Region getRegion() { return region; }

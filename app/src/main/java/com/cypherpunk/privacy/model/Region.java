@@ -28,6 +28,8 @@ public class Region implements RealmModel {
     @Required
     private String level;
 
+    private long latency;
+
     @Required
     private String country;
 
@@ -73,6 +75,7 @@ public class Region implements RealmModel {
         this.country = country;
         this.regionName = regionName;
         this.level = level;
+        this.latency = -1;
         this.authorized = authorized;
 
         this.ovHostname = ovHostname;
@@ -108,6 +111,16 @@ public class Region implements RealmModel {
 
     public String getLevel() {
         return level;
+    }
+
+    public void setLevel(String level) { this.level = level; }
+
+    public long getLatency() {
+        return latency;
+    }
+
+    public void setLatency(long latency) {
+        this.latency = latency;
     }
 
     public boolean isAuthorized() {

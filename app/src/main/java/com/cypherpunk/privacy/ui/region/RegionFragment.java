@@ -22,6 +22,7 @@ import com.cypherpunk.privacy.model.CypherpunkSetting;
 import com.cypherpunk.privacy.model.Region;
 import com.cypherpunk.privacy.model.UserSettingPref;
 import com.cypherpunk.privacy.utils.ResourceUtil;
+import com.cypherpunk.privacy.vpn.ServerPingerThinger;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -280,6 +281,7 @@ public class RegionFragment extends Fragment {
                                        if (region != null) {
                                            region.setRegion(regionResult.getRegion());
                                            region.setCountry(regionResult.getCountry());
+                                           region.setLevel(regionResult.getLevel());
                                            region.setRegionName(regionResult.getName());
                                            region.setAuthorized(regionResult.isAuthorized());
                                            region.setOvHostname(regionResult.getOvHostname());
@@ -303,6 +305,9 @@ public class RegionFragment extends Fragment {
                                            realm.copyToRealm(region);
                                        }
                                        updateRegionIdList.add(region.getId());
+
+                                       if (region.isAuthorized())
+                                           ServerPingerThinger.pingLocation(region);
                                    }
                                    RealmResults<Region> oldRegion = realm.where(Region.class)
                                            .not()
