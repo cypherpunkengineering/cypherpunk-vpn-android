@@ -138,13 +138,15 @@ public class RegionFragment extends Fragment {
                 try
                 {
                     fastestLocation = realm.where(Region.class)
-                                     .notEqualTo("latency", -1)
-                                     .findAllSorted("latency", Sort.ASCENDING)
-                                     .first();
+                            .notEqualTo("latency", -1)
+                            .notEqualTo("level", "developer")
+                            .findAllSorted("latency", Sort.ASCENDING)
+                            .first();
                 }
                 catch (Exception e)
                 {
                     fastestLocation = realm.where(Region.class)
+                            .notEqualTo("level", "developer")
                             .findAllSorted("latency", Sort.ASCENDING)
                             .first();
                 }
