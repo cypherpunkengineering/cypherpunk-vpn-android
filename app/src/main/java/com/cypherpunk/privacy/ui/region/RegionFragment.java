@@ -344,7 +344,7 @@ public class RegionFragment extends Fragment {
                                    refreshRegionList();
 
                                    CypherpunkSetting setting = new CypherpunkSetting();
-                                   Region region = null;//realm.where(Region.class).equalTo("id", setting.regionId).findFirst();
+                                   Region region = realm.where(Region.class).equalTo("id", setting.regionId).findFirst();
                                    if (region == null) {
                                        region = realm.where(Region.class)
                                                .equalTo("authorized", true)
