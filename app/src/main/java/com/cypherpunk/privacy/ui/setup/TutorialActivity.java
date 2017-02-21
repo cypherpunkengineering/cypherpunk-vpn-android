@@ -25,6 +25,8 @@ import com.cypherpunk.privacy.model.CypherpunkSetting;
 import com.cypherpunk.privacy.model.Region;
 import com.cypherpunk.privacy.model.UserSettingPref;
 import com.cypherpunk.privacy.ui.main.MainActivity;
+import com.cypherpunk.privacy.ui.region.RegionFragment;
+import com.cypherpunk.privacy.vpn.ServerPingerThinger;
 import com.google.firebase.analytics.FirebaseAnalytics;
 
 import java.util.ArrayList;
@@ -166,6 +168,7 @@ public class TutorialActivity extends AppCompatActivity {
                                        if (region != null) {
                                            region.setRegion(regionResult.getRegion());
                                            region.setCountry(regionResult.getCountry());
+                                           region.setLevel(regionResult.getLevel());
                                            region.setRegionName(regionResult.getName());
                                            region.setAuthorized(regionResult.isAuthorized());
                                            region.setOvHostname(regionResult.getOvHostname());
@@ -199,10 +202,14 @@ public class TutorialActivity extends AppCompatActivity {
                                    oldRegion.deleteAllFromRealm();
                                    realm.commitTransaction();
 
-                                   CypherpunkSetting setting = new CypherpunkSetting();
-                                   Region first = realm.where(Region.class).equalTo("authorized", true).findFirst();
-                                   setting.regionId = first.getId();
-                                   setting.save();
+                                   // after realm db is updated above, start pinging new location data
+                                   for (Map.Entry<String, RegionResult> resultEntry : result.entrySet())
+                                   {
+                                       RegionResult regionResult = resultEntry.getValue();
+                                       Region region = realm.where(Region.class)
+                                               .equalTo("id", regionResult.getId()).findFirst();
+                                       ServerPingerThinger.pingLocation(region);
+                                   }
                                }
 
                                @Override

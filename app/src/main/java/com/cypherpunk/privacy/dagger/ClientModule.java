@@ -24,7 +24,7 @@ public class ClientModule {
         builder.interceptors().add(new CookieInterceptor());
         builder.interceptors().add(new UserAgentInterceptor("CypherpunkPrivacy/Android/" + BuildConfig.VERSION_NAME));
         HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
-        logging.setLevel(HttpLoggingInterceptor.Level.BODY);
+        //logging.setLevel(HttpLoggingInterceptor.Level.BODY);
         builder.addInterceptor(logging);
         return builder.build();
     }

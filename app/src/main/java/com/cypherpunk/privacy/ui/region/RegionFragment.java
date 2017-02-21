@@ -38,6 +38,7 @@ import io.realm.Realm;
 import io.realm.RealmChangeListener;
 import io.realm.RealmResults;
 import io.realm.Sort;
+import io.realm.annotations.Index;
 import rx.Single;
 import rx.SingleSubscriber;
 import rx.Subscription;
@@ -90,6 +91,18 @@ public class RegionFragment extends Fragment {
 
         getServerList();
         CypherpunkSetting setting = new CypherpunkSetting();
+
+        // if no location set, select fastest region using available data
+        if (TextUtils.isEmpty(setting.regionId))
+        {
+            Region first = ServerPingerThinger.getFastestLocation();
+            if (first != null)
+            {
+                setting.regionId = first.getId();
+                setting.save();
+            }
+        }
+
         if (!TextUtils.isEmpty(setting.regionId)) {
             Region region = realm.where(Region.class).equalTo("id", setting.regionId).findFirst();
             if (region != null) {
@@ -118,10 +131,6 @@ public class RegionFragment extends Fragment {
             @Override
             protected void onItemClick(@NonNull final String regionId) {
                 CypherpunkSetting setting = new CypherpunkSetting();
-                if (setting.regionId.equals(regionId)) {
-                    // 既に選択されている
-                    return;
-                }
 
                 // disable cypherplay mode for ordinary locations
                 setting.vpnDnsCypherplay = false;
@@ -131,45 +140,28 @@ public class RegionFragment extends Fragment {
                 selectRegion(realm.where(Region.class).equalTo("id", regionId).findFirst());
             }
 
-            protected Region getFastestLocation()
-            {
-                // select to fastest location
-                Region fastestLocation = null;
-                try
-                {
-                    fastestLocation = realm.where(Region.class)
-                            .notEqualTo("latency", -1)
-                            .notEqualTo("level", "developer")
-                            .findAllSorted("latency", Sort.ASCENDING)
-                            .first();
-                }
-                catch (Exception e)
-                {
-                    fastestLocation = realm.where(Region.class)
-                            .notEqualTo("level", "developer")
-                            .findAllSorted("latency", Sort.ASCENDING)
-                            .first();
-                }
-
-                return fastestLocation;
-            }
-
             @Override
             protected void onCypherplayClick() {
-                Region region = getFastestLocation();
-                CypherpunkSetting setting = new CypherpunkSetting();
-                setting.vpnDnsCypherplay = true;
-                setting.save();
-                selectRegion(region);
+                Region region = ServerPingerThinger.getFastestLocation();
+                if (region != null)
+                {
+                    CypherpunkSetting setting = new CypherpunkSetting();
+                    setting.vpnDnsCypherplay = true;
+                    setting.save();
+                    selectRegion(region);
+                }
             }
 
             @Override
             protected void onFastestLocationClick() {
-                Region region = getFastestLocation();
-                CypherpunkSetting setting = new CypherpunkSetting();
-                setting.vpnDnsCypherplay = false;
-                setting.save();
-                selectRegion(region);
+                Region region = ServerPingerThinger.getFastestLocation();
+                if (region != null)
+                {
+                    CypherpunkSetting setting = new CypherpunkSetting();
+                    setting.vpnDnsCypherplay = false;
+                    setting.save();
+                    selectRegion(region);
+                }
             }
         };
         binding.list.setAdapter(adapter);
@@ -330,9 +322,6 @@ public class RegionFragment extends Fragment {
                                            realm.copyToRealm(region);
                                        }
                                        updateRegionIdList.add(region.getId());
-
-                                       if (region.isAuthorized())
-                                           ServerPingerThinger.pingLocation(region);
                                    }
                                    RealmResults<Region> oldRegion = realm.where(Region.class)
                                            .not()
@@ -345,17 +334,32 @@ public class RegionFragment extends Fragment {
 
                                    refreshRegionList();
 
+                                   // after realm db is updated above, start pinging new location data
+                                   for (Map.Entry<String, RegionResult> resultEntry : result.entrySet())
+                                   {
+                                       RegionResult regionResult = resultEntry.getValue();
+                                       Region region = realm.where(Region.class)
+                                               .equalTo("id", regionResult.getId()).findFirst();
+                                       ServerPingerThinger.pingLocation(region);
+                                   }
+
+                                   // check if previously selected region is still available
                                    CypherpunkSetting setting = new CypherpunkSetting();
-                                   Region region = realm.where(Region.class).equalTo("id", setting.regionId).findFirst();
-                                   if (region == null) {
-                                       region = realm.where(Region.class)
-                                               .equalTo("authorized", true)
-                                               .notEqualTo("ovDefault", "")
-                                               //.notEqualTo("latency", -1)
-                                               .findAllSorted("latency", Sort.ASCENDING)
-                                               .first();
-                                       setting.regionId = region.getId();
-                                       setting.save();
+                                   Region region = realm.where(Region.class)
+                                           .equalTo("id", setting.regionId)
+                                           .equalTo("authorized", true)
+                                           .contains("ovDefault", ".")
+                                           .findFirst();
+
+                                   // if not, find a new one
+                                   if (region == null)
+                                   {
+                                       region = ServerPingerThinger.getFastestLocation();
+                                       if (region != null)
+                                       {
+                                           setting.regionId = region.getId();
+                                           setting.save();
+                                       }
                                    }
                                    int nationalFlagResId = ResourceUtil.getFlagDrawableByKey(getContext(), region.getCountry().toLowerCase());
                                    updateRegion(region);

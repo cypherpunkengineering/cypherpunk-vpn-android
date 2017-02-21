@@ -7,8 +7,12 @@ import com.cypherpunk.privacy.model.Region;
 
 import java.net.InetSocketAddress;
 import java.net.Socket;
+import java.util.List;
+import java.util.Arrays;
+import java.util.Collections;
 
 import io.realm.Realm;
+import io.realm.Sort;
 
 import static com.cypherpunk.privacy.BR.setting;
 
@@ -18,23 +22,31 @@ import static com.cypherpunk.privacy.BR.setting;
 
 public class ServerPingerThinger extends Thread
 {
-    private static void log(String str) { Log.w("ServerPingerThinger", str); }
-
     public InetSocketAddress address;
     public String locationId;
 
-    public int timeout = 10 * 1000;
-    public long latency = -2;
-    public long delay = 0;
+    private static void log(String str) { Log.w("ServerPingerThinger", str); }
 
-    private Region location;
-    private Realm realm;
+    public static boolean isPingable(Region location)
+    {
+        if (location.getOvDefault().length() < 7)
+            return false;
+
+        if (location.isAuthorized() == false)
+            return false;
+
+        return true;
+    }
 
     public static void pingLocation(Region location)
     {
-        if (location.getOvDefault() == null || location.getOvDefault().length() < 7)
+        if (isPingable(location) == false)
         {
-            log("Skipping ping for unavailable location " + location.getId());
+            log("Skipping ping for location " + location.getId());
+
+            // update latency to -1 when locations become unavailable
+            updateLocationLatency(location.getId(), -1);
+
             return;
         }
         ServerPingerThinger pinger = new ServerPingerThinger();
@@ -43,29 +55,111 @@ public class ServerPingerThinger extends Thread
         pinger.start();
     }
 
+    public static Region getFastestLocation()
+    {
+        // select to fastest location
+        Realm realm = CypherpunkApplication.instance.getAppComponent().getDefaultRealm();
+        Region fastestLocation = null;
+
+        try // first get locations which have valid latency data
+        {
+            fastestLocation = realm.where(Region.class)
+                    .equalTo("authorized", true)
+                    .contains("ovDefault", ".")
+                    .notEqualTo("level", "developer")
+                    .notEqualTo("latency", -1)
+                    .findAllSorted("latency", Sort.ASCENDING)
+                    .first();
+        }
+        catch (IndexOutOfBoundsException e)
+        {
+        }
+        catch (Exception e)
+        {
+        }
+
+        // if no latency data, just return any location
+        if (fastestLocation == null)
+        {
+            try
+            {
+                fastestLocation = realm.where(Region.class)
+                        .equalTo("authorized", true)
+                        .contains("ovDefault", ".")
+                        .notEqualTo("level", "developer")
+                        .findAllSorted("latency", Sort.ASCENDING)
+                        .first();
+            }
+            catch (IndexOutOfBoundsException e)
+            {
+            }
+            catch (Exception e)
+            {
+            }
+        }
+
+        // dont forget to close realm
+        realm.close();
+
+        // however, might still be null if no locations available
+        return fastestLocation;
+    }
+
+    private static void updateLocationLatency(String locationId, long latency)
+    {
+        Realm realm = CypherpunkApplication.instance.getAppComponent().getDefaultRealm();
+        realm.beginTransaction();
+
+        // save result in realm
+        Region location = realm.where(Region.class).equalTo("id", locationId).findFirst();
+        location.setLatency(latency);
+        realm.commitTransaction();
+
+        // dont forget to close realm
+        realm.close();
+    }
+
     @Override
     public void run()
     {
+        int timeout = 5 * 1000;
+        long latency, l1, l2;
+        boolean socketProtected = false;
+
         log("Starting ping for location: " + locationId + " -> " + address.toString());
 
         try
         {
-            // allocate a socket
-            Socket sock = new Socket();
-            sock.setTcpNoDelay(true);
+            // allocate a socket or two
+            Socket sock1 = new Socket();
+            sock1.setTcpNoDelay(true);
+            Socket sock2 = new Socket();
+            sock2.setTcpNoDelay(true);
 
-            // add a delay
-            Thread.sleep(delay);
+            // protect sockets so it doesn't go thru VPN connection
+            socketProtected = CypherpunkVPN.protectSocket(sock1);
+            socketProtected = CypherpunkVPN.protectSocket(sock2);
 
-            // protect socket so it doesn't go thru VPN connection
-            boolean socketProtected = CypherpunkVPN.protectSocket(sock);
+            // sleep for a random delay before pinging
+            Thread.sleep((long)(Math.random() * 1000));
 
             // calculate latency as time to perform TCP connect()
-            long start = System.currentTimeMillis();
-            sock.connect(address, timeout);
-            long end = System.currentTimeMillis();
-            sock.close();
-            latency = end - start;
+            long s1 = System.currentTimeMillis();
+            sock1.connect(address, timeout);
+            long e1 = System.currentTimeMillis();
+            sock1.close();
+
+            // do another one, why not
+            long s2 = System.currentTimeMillis();
+            sock2.connect(address, timeout);
+            long e2 = System.currentTimeMillis();
+            sock2.close();
+
+            // get best of 2 pings
+            l1 = e1 - s1;
+            l2 = e2 - s2;
+            List<Long> list = Arrays.asList(l1, l2);
+            latency = Collections.min(list);
         }
         catch (Exception e)
         {
@@ -76,13 +170,7 @@ public class ServerPingerThinger extends Thread
         if (latency < 0)
             return;
 
-        log("Location "+ locationId + " ping time: " + latency + "ms");
-
-        // save result in realm
-        realm = CypherpunkApplication.instance.getAppComponent().getDefaultRealm();
-        realm.beginTransaction();
-        location = realm.where(Region.class).equalTo("id", locationId).findFirst();
-        location.setLatency(latency);
-        realm.commitTransaction();
+        log("Location " + locationId + " ping time: " + latency + "ms, socket protected: "+socketProtected);
+        updateLocationLatency(locationId, latency);
     }
 }
