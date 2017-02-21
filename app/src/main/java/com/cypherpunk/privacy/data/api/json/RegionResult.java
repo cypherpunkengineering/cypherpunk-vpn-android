@@ -61,6 +61,11 @@ public class RegionResult
         return level;
     }
 
+    public void setLevel(String level)
+    {
+        this.level = level;
+    }
+
     public boolean isAuthorized() {
         return authorized;
     }

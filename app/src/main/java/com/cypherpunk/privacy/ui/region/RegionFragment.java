@@ -22,6 +22,7 @@ import com.cypherpunk.privacy.model.CypherpunkSetting;
 import com.cypherpunk.privacy.model.Region;
 import com.cypherpunk.privacy.model.UserSettingPref;
 import com.cypherpunk.privacy.utils.ResourceUtil;
+import com.cypherpunk.privacy.vpn.ServerPingerThinger;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -121,15 +122,41 @@ public class RegionFragment extends Fragment {
                     // 既に選択されている
                     return;
                 }
+
+                // disable cypherplay mode for ordinary locations
                 setting.vpnDnsCypherplay = false;
                 setting.save();
+
+                // select region matching the selected id
                 selectRegion(realm.where(Region.class).equalTo("id", regionId).findFirst());
+            }
+
+            protected Region getFastestLocation()
+            {
+                // select to fastest location
+                Region fastestLocation = null;
+                try
+                {
+                    fastestLocation = realm.where(Region.class)
+                            .notEqualTo("latency", -1)
+                            .notEqualTo("level", "developer")
+                            .findAllSorted("latency", Sort.ASCENDING)
+                            .first();
+                }
+                catch (Exception e)
+                {
+                    fastestLocation = realm.where(Region.class)
+                            .notEqualTo("level", "developer")
+                            .findAllSorted("latency", Sort.ASCENDING)
+                            .first();
+                }
+
+                return fastestLocation;
             }
 
             @Override
             protected void onCypherplayClick() {
-                //TODO: fastest location
-                Region region = realm.where(Region.class).findFirst();
+                Region region = getFastestLocation();
                 CypherpunkSetting setting = new CypherpunkSetting();
                 setting.vpnDnsCypherplay = true;
                 setting.save();
@@ -138,8 +165,7 @@ public class RegionFragment extends Fragment {
 
             @Override
             protected void onFastestLocationClick() {
-                //TODO: fastest location
-                Region region = realm.where(Region.class).findFirst();
+                Region region = getFastestLocation();
                 CypherpunkSetting setting = new CypherpunkSetting();
                 setting.vpnDnsCypherplay = false;
                 setting.save();
@@ -280,6 +306,7 @@ public class RegionFragment extends Fragment {
                                        if (region != null) {
                                            region.setRegion(regionResult.getRegion());
                                            region.setCountry(regionResult.getCountry());
+                                           region.setLevel(regionResult.getLevel());
                                            region.setRegionName(regionResult.getName());
                                            region.setAuthorized(regionResult.isAuthorized());
                                            region.setOvHostname(regionResult.getOvHostname());
@@ -303,6 +330,9 @@ public class RegionFragment extends Fragment {
                                            realm.copyToRealm(region);
                                        }
                                        updateRegionIdList.add(region.getId());
+
+                                       if (region.isAuthorized())
+                                           ServerPingerThinger.pingLocation(region);
                                    }
                                    RealmResults<Region> oldRegion = realm.where(Region.class)
                                            .not()
@@ -318,7 +348,12 @@ public class RegionFragment extends Fragment {
                                    CypherpunkSetting setting = new CypherpunkSetting();
                                    Region region = realm.where(Region.class).equalTo("id", setting.regionId).findFirst();
                                    if (region == null) {
-                                       region = realm.where(Region.class).equalTo("authorized", true).findFirst();
+                                       region = realm.where(Region.class)
+                                               .equalTo("authorized", true)
+                                               .notEqualTo("ovDefault", "")
+                                               //.notEqualTo("latency", -1)
+                                               .findAllSorted("latency", Sort.ASCENDING)
+                                               .first();
                                        setting.regionId = region.getId();
                                        setting.save();
                                    }
