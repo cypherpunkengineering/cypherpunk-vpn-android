@@ -15,14 +15,19 @@
         android:layout="@layout/custom_preference_category"
         android:title="@string/setting_category_privacy_settings">
 
+        <Preference
+            android:key="trusted_network"
+            android:summary="@string/setting_network_summary"
+            android:title="@string/setting_network" />
+
         <SwitchPreferenceCompat
             android:key="vpn_auto_start_connect"
             android:title="@string/setting_vpn_auto_start_connect" />
 
         <Preference
-            android:key="trusted_network"
-            android:summary="@string/setting_network_summary"
-            android:title="@string/setting_network" />
+            android:id="@+id/preference"
+            android:key="vpn_crypto_profile"
+            android:title="@string/setting_vpn_crypto_profile" />
 
         <SwitchPreferenceCompat
             android:key="vpn_dns_block_ads"
@@ -43,11 +48,6 @@
         app:layout="@layout/custom_preference_category">
 
         <Preference
-            android:id="@+id/preference"
-            android:key="vpn_crypto_profile"
-            android:title="@string/setting_vpn_crypto_profile" />
-
-        <Preference
             android:key="privacy_firewall_mode"
             android:title="@string/setting_privacy_firewall_mode" />
 
@@ -65,11 +65,11 @@
             android:summary="@string/setting_vpn_port_remote_summary"
             android:title="@string/setting_vpn_port_remote" />
 
+        <!--
         <Preference
             android:key="vpn_backend"
             android:title="@string/setting_vpn_backend" />
 
-        <!--
         <Preference
             android:key="vpn_port_local"
             android:summary="@string/setting_vpn_port_local_summary"

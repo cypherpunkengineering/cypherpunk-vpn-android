@@ -62,6 +62,7 @@ public class SettingsFragment extends PreferenceFragmentCompat {
             }
         });
 
+        /*
         protocol = findPreference("vpn_backend");
         protocol.setSummary(ResourceUtil.getStringByKey(getContext(), cypherpunkSetting.vpnBackend));
         protocol.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
@@ -74,6 +75,7 @@ public class SettingsFragment extends PreferenceFragmentCompat {
                 return true;
             }
         });
+        */
 
         remotePort = findPreference("vpn_port_remote");
         //remotePort.setSummary(getStringByKey(cypherpunkSetting.vpnPortRemote));
