@@ -3,6 +3,7 @@ package com.cypherpunk.privacy.widget;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Typeface;
+import android.support.v7.widget.AppCompatTextView;
 import android.util.AttributeSet;
 import android.widget.TextView;
 
@@ -12,7 +13,7 @@ import com.cypherpunk.privacy.utils.FontUtil;
 /**
  * Dosis font TextView
  */
-public class TypefaceTextView extends TextView {
+public class TypefaceTextView extends AppCompatTextView {
 
     public static final int DOSIS_REGULAR = 0;
     public static final int DOSIS_MEDIUM = 1;
@@ -25,7 +26,7 @@ public class TypefaceTextView extends TextView {
     }
 
     public TypefaceTextView(Context context, AttributeSet attrs) {
-        this(context, attrs, 0);
+        this(context, attrs, android.R.attr.textViewStyle);
     }
 
     public TypefaceTextView(Context context, AttributeSet attrs, int defStyleAttr) {
