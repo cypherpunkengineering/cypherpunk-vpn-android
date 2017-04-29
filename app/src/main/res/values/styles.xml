@@ -1,6 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <style name="CypherPunk" parent="Theme.AppCompat">
+        <item name="android:windowBackground">@drawable/window_background</item>
+    </style>
+
+    <style name="CypherPunk.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
     <style name="ButtonTheme">
         <item name="colorAccent">@color/nice_blue</item>
     </style>
