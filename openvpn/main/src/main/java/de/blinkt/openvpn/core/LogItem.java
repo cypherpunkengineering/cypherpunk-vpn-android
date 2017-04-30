@@ -27,7 +27,7 @@ import java.util.FormatFlagsConversionMismatchException;
 import java.util.Locale;
 import java.util.UnknownFormatConversionException;
 
-import com.cypherpunk.privacy.R;
+import com.cypherpunk.privacy.vpn.R;
 
 /**
  * Created by arne on 24.04.16.

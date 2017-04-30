@@ -38,7 +38,6 @@ import io.realm.Realm;
 import io.realm.RealmChangeListener;
 import io.realm.RealmResults;
 import io.realm.Sort;
-import io.realm.annotations.Index;
 import rx.Single;
 import rx.SingleSubscriber;
 import rx.Subscription;
@@ -87,17 +86,13 @@ public class RegionFragment extends Fragment {
         ((CypherpunkApplication) getActivity().getApplication()).getAppComponent().inject(this);
         binding = DataBindingUtil.bind(getView());
 
-        realm = CypherpunkApplication.instance.getAppComponent().getDefaultRealm();
-
         getServerList();
         CypherpunkSetting setting = new CypherpunkSetting();
 
         // if no location set, select fastest region using available data
-        if (TextUtils.isEmpty(setting.regionId))
-        {
+        if (TextUtils.isEmpty(setting.regionId)) {
             Region first = ServerPingerThinger.getFastestLocation();
-            if (first != null)
-            {
+            if (first != null) {
                 setting.regionId = first.getId();
                 setting.save();
             }
@@ -143,8 +138,7 @@ public class RegionFragment extends Fragment {
             @Override
             protected void onCypherplayClick() {
                 Region region = ServerPingerThinger.getFastestLocation();
-                if (region != null)
-                {
+                if (region != null) {
                     CypherpunkSetting setting = new CypherpunkSetting();
                     setting.vpnDnsCypherplay = true;
                     setting.save();
@@ -155,8 +149,7 @@ public class RegionFragment extends Fragment {
             @Override
             protected void onFastestLocationClick() {
                 Region region = ServerPingerThinger.getFastestLocation();
-                if (region != null)
-                {
+                if (region != null) {
                     CypherpunkSetting setting = new CypherpunkSetting();
                     setting.vpnDnsCypherplay = false;
                     setting.save();
@@ -171,6 +164,7 @@ public class RegionFragment extends Fragment {
                 refreshRegionList();
             }
         };
+        realm = CypherpunkApplication.instance.getAppComponent().getDefaultRealm();
         realm.addChangeListener(realmChangeListener);
         refreshRegionList();
 
@@ -183,10 +177,15 @@ public class RegionFragment extends Fragment {
     }
 
     @Override
-    public void onDestroy() {
-        super.onDestroy();
+    public void onDestroyView() {
         realm.removeChangeListener(realmChangeListener);
         realm.close();
+        super.onDestroyView();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
         subscription.unsubscribe();
     }
 
@@ -335,8 +334,7 @@ public class RegionFragment extends Fragment {
                                    refreshRegionList();
 
                                    // after realm db is updated above, start pinging new location data
-                                   for (Map.Entry<String, RegionResult> resultEntry : result.entrySet())
-                                   {
+                                   for (Map.Entry<String, RegionResult> resultEntry : result.entrySet()) {
                                        RegionResult regionResult = resultEntry.getValue();
                                        Region region = realm.where(Region.class)
                                                .equalTo("id", regionResult.getId()).findFirst();
@@ -352,11 +350,9 @@ public class RegionFragment extends Fragment {
                                            .findFirst();
 
                                    // if not, find a new one
-                                   if (region == null)
-                                   {
+                                   if (region == null) {
                                        region = ServerPingerThinger.getFastestLocation();
-                                       if (region != null)
-                                       {
+                                       if (region != null) {
                                            setting.regionId = region.getId();
                                            setting.save();
                                        }

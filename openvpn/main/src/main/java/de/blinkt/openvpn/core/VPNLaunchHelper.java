@@ -17,7 +17,7 @@ import java.io.InputStream;
 import java.util.Arrays;
 import java.util.Vector;
 
-import com.cypherpunk.privacy.R;
+import com.cypherpunk.privacy.vpn.R;
 import de.blinkt.openvpn.VpnProfile;
 
 public class VPNLaunchHelper {
