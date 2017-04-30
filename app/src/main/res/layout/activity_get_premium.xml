@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <LinearLayout
@@ -9,9 +10,9 @@
 
         <include
             android:id="@+id/toolbar"
-            layout="@layout/toolbar" />
+            layout="@layout/toolbar"/>
 
-        <include layout="@layout/divider" />
+        <include layout="@layout/divider"/>
 
         <com.cypherpunk.privacy.widget.TypefaceTextView
             android:layout_width="wrap_content"
@@ -21,7 +22,7 @@
             android:layout_marginTop="24dp"
             android:text="@string/premium_enter_your_email"
             android:textSize="18sp"
-            app:fontName="DosisMedium" />
+            app:fontName="DosisMedium"/>
 
         <android.support.design.widget.TextInputLayout
             style="@style/Widget.Cypherpunk.TextInputLayout"
@@ -39,7 +40,7 @@
                 android:hint="@string/premium_email_hint"
                 android:inputType="textEmailAddress"
                 android:maxLines="1"
-                android:theme="@style/EditTextColorControl" />
+                android:theme="@style/EditTextColorControl"/>
 
         </android.support.design.widget.TextInputLayout>
 
@@ -50,27 +51,27 @@
             android:layout_marginBottom="16dp"
             android:text="@string/premium_select_your_plan"
             android:textSize="18sp"
-            app:fontName="DosisSemiBold" />
+            app:fontName="DosisSemiBold"/>
 
         <com.cypherpunk.privacy.widget.PlanView
             android:id="@+id/month_plan"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:layout_marginBottom="16dp" />
+            android:layout_marginBottom="16dp"/>
 
         <com.cypherpunk.privacy.widget.PlanView
             android:id="@+id/six_month_plan"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:layout_marginBottom="16dp" />
+            android:layout_marginBottom="16dp"/>
 
         <com.cypherpunk.privacy.widget.PlanView
             android:id="@+id/annually_plan"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal" />
+            android:layout_gravity="center_horizontal"/>
 
     </LinearLayout>
 

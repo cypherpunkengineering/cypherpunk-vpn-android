@@ -25,7 +25,6 @@ import com.cypherpunk.privacy.model.CypherpunkSetting;
 import com.cypherpunk.privacy.model.Region;
 import com.cypherpunk.privacy.model.UserSettingPref;
 import com.cypherpunk.privacy.ui.main.MainActivity;
-import com.cypherpunk.privacy.ui.region.RegionFragment;
 import com.cypherpunk.privacy.vpn.ServerPingerThinger;
 import com.google.firebase.analytics.FirebaseAnalytics;
 
@@ -203,8 +202,7 @@ public class TutorialActivity extends AppCompatActivity {
                                    realm.commitTransaction();
 
                                    // after realm db is updated above, start pinging new location data
-                                   for (Map.Entry<String, RegionResult> resultEntry : result.entrySet())
-                                   {
+                                   for (Map.Entry<String, RegionResult> resultEntry : result.entrySet()) {
                                        RegionResult regionResult = resultEntry.getValue();
                                        Region region = realm.where(Region.class)
                                                .equalTo("id", regionResult.getId()).findFirst();

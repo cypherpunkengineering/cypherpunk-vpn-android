@@ -53,6 +53,7 @@ public class RegionAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
     protected void onCypherplayClick() {
     }
+
     protected void onFastestLocationClick() {
     }
 
@@ -175,18 +176,18 @@ public class RegionAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     }
 
     public void addRegionList(
-                              @NonNull List<Region> favoriteItems,
-                              @NonNull List<Region> recentlyConnectedItems,
-                              @NonNull List<Region> devItems,
-                              @NonNull List<Region> naItems,
-                              @NonNull List<Region> saItems,
-                              @NonNull List<Region> crItems,
-                              @NonNull List<Region> euItems,
-                              @NonNull List<Region> meItems,
-                              @NonNull List<Region> afItems,
-                              @NonNull List<Region> asItems,
-                              @NonNull List<Region> opItems
-                              ) {
+            @NonNull List<Region> favoriteItems,
+            @NonNull List<Region> recentlyConnectedItems,
+            @NonNull List<Region> devItems,
+            @NonNull List<Region> naItems,
+            @NonNull List<Region> saItems,
+            @NonNull List<Region> crItems,
+            @NonNull List<Region> euItems,
+            @NonNull List<Region> meItems,
+            @NonNull List<Region> afItems,
+            @NonNull List<Region> asItems,
+            @NonNull List<Region> opItems
+    ) {
         clear();
         items.add(new Cypherplay());
         items.add(new FastestLocation());
@@ -277,6 +278,7 @@ public class RegionAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
     private class Cypherplay {
     }
+
     private class FastestLocation {
     }
 }

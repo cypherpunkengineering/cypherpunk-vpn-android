@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="connection_status_text_size">25sp</dimen>
     <dimen name="binary_text">21dp</dimen>

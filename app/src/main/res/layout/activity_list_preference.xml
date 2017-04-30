@@ -8,16 +8,16 @@
 
         <include
             android:id="@+id/toolbar"
-            layout="@layout/toolbar" />
+            layout="@layout/toolbar"/>
 
-        <include layout="@layout/divider" />
+        <include layout="@layout/divider"/>
 
         <ListView
             android:id="@+id/list"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:divider="@color/divider"
-            android:dividerHeight="1dp" />
+            android:dividerHeight="1dp"/>
 
     </LinearLayout>
 

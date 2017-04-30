@@ -54,22 +54,21 @@ public class Region implements RealmModel {
     }
 
     public Region
-    (
-         @NonNull String id,
-         @NonNull String region,
-         @NonNull String country,
-         @NonNull String regionName,
-         @NonNull String level,
-         boolean authorized,
+            (
+                    @NonNull String id,
+                    @NonNull String region,
+                    @NonNull String country,
+                    @NonNull String regionName,
+                    @NonNull String level,
+                    boolean authorized,
 
-         @NonNull String ovHostname,
+                    @NonNull String ovHostname,
 
-         @NonNull String[] ovDefault,
-         @NonNull String[] ovNone,
-         @NonNull String[] ovStrong,
-         @NonNull String[] ovStealth
-    )
-    {
+                    @NonNull String[] ovDefault,
+                    @NonNull String[] ovNone,
+                    @NonNull String[] ovStrong,
+                    @NonNull String[] ovStealth
+            ) {
         this.id = id;
         this.region = region;
         this.country = country;
@@ -87,7 +86,9 @@ public class Region implements RealmModel {
         this.lastConnectedDate = new Date(0);
     }
 
-    public String getId() { return id; }
+    public String getId() {
+        return id;
+    }
 
     public String getRegion() {
         return region;
@@ -97,13 +98,17 @@ public class Region implements RealmModel {
         this.region = region;
     }
 
-    public String getCountry() { return country; }
+    public String getCountry() {
+        return country;
+    }
 
     public void setCountry(String country) {
         this.country = country;
     }
 
-    public String getRegionName() { return regionName; }
+    public String getRegionName() {
+        return regionName;
+    }
 
     public void setRegionName(String regionName) {
         this.regionName = regionName;
@@ -113,7 +118,9 @@ public class Region implements RealmModel {
         return level;
     }
 
-    public void setLevel(String level) { this.level = level; }
+    public void setLevel(String level) {
+        this.level = level;
+    }
 
     public long getLatency() {
         return latency;
@@ -131,8 +138,13 @@ public class Region implements RealmModel {
         this.authorized = authorized;
     }
 
-    public String getOvHostname() { return ovHostname; }
-    public void setOvHostname(String ovHostname) { this.ovHostname = ovHostname; }
+    public String getOvHostname() {
+        return ovHostname;
+    }
+
+    public void setOvHostname(String ovHostname) {
+        this.ovHostname = ovHostname;
+    }
 
     public String getOvDefault() {
         return ovDefault;

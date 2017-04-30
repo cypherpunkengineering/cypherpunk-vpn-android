@@ -1,18 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+<manifest
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.cypherpunk.privacy">
 
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
-    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
-    <uses-permission android:name="com.android.vending.BILLING" />
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE"/>
+    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
+    <uses-permission android:name="com.android.vending.BILLING"/>
 
-    <uses-feature android:name="android.hardware.leanback" android:required="false" />
-    <uses-feature android:name="android.hardware.touchscreen" android:required="false"/>
+    <uses-feature
+        android:name="android.hardware.leanback"
+        android:required="false"/>
+    <uses-feature
+        android:name="android.hardware.touchscreen"
+        android:required="false"/>
 
     <application
         android:name=".CypherpunkApplication"
@@ -22,18 +27,20 @@
         android:theme="@style/AppTheme"
         tools:replace="android:allowBackup">
 
-        <meta-data android:name="firebase_analytics_collection_enabled" android:value="false" />
+        <meta-data
+            android:name="firebase_analytics_collection_enabled"
+            android:value="false"/>
 
         <receiver android:name=".ui.main.CypherpunkBootReceiver">
             <intent-filter android:priority="9001">
-                <action android:name="android.intent.action.BOOT_COMPLETED" />
-                <action android:name="android.intent.action.MY_PACKAGE_REPLACED" />
+                <action android:name="android.intent.action.BOOT_COMPLETED"/>
+                <action android:name="android.intent.action.MY_PACKAGE_REPLACED"/>
             </intent-filter>
         </receiver>
         <receiver android:name=".ui.main.CypherpunkWifiReceiver">
             <intent-filter>
-                <action android:name="android.net.wifi.supplicant.CONNECTION_CHANGE" />
-                <action android:name="android.net.wifi.STATE_CHANGE" />
+                <action android:name="android.net.wifi.supplicant.CONNECTION_CHANGE"/>
+                <action android:name="android.net.wifi.STATE_CHANGE"/>
             </intent-filter>
         </receiver>
 
@@ -41,8 +48,8 @@
             android:name=".ui.main.MainActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
 
@@ -54,11 +61,12 @@
             android:theme="@android:style/Theme.Dialog">
             tools:ignore="ExportedActivity">
         </activity>
+
         <service
             android:name="de.blinkt.openvpn.core.OpenVPNService"
             android:permission="android.permission.BIND_VPN_SERVICE">
             <intent-filter>
-                <action android:name="android.net.VpnService" />
+                <action android:name="android.net.VpnService"/>
             </intent-filter>
         </service>
         <service
@@ -68,59 +76,59 @@
             android:permission="android.permission.BIND_QUICK_SETTINGS_TILE"
             android:value="true">
             <intent-filter>
-                <action android:name="android.service.quicksettings.action.QS_TILE" />
+                <action android:name="android.service.quicksettings.action.QS_TILE"/>
             </intent-filter>
             <meta-data
                 android:name="android.service.quicksettings.ACTIVE_TILE"
-                android:value="false" />
+                android:value="false"/>
         </service>
 
         <activity
             android:name=".ui.signin.SignInActivity"
             android:theme="@style/AppTheme.NoActionBar"
-            android:windowSoftInputMode="adjustResize" />
+            android:windowSoftInputMode="adjustResize"/>
         <activity
             android:name=".ui.signin.SignUpActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar"/>
         <activity
             android:name=".ui.signin.IdentifyEmailActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar"/>
         <activity
             android:name=".ui.signin.ConfirmationEmailActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar"/>
         <activity
             android:name=".ui.setup.TutorialActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar"/>
         <activity
             android:name=".ui.signin.ResetPasswordActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar"/>
         <activity
             android:name=".ui.account.PremiumFreeActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar"/>
         <activity
             android:name=".ui.settings.ListPreferenceActivity"
-            android:theme="@style/AppTheme.DialogWhenLarge" />
+            android:theme="@style/AppTheme.DialogWhenLarge"/>
         <activity
             android:name=".ui.settings.LocalPortActivity"
-            android:theme="@style/AppTheme.DialogWhenLarge" />
+            android:theme="@style/AppTheme.DialogWhenLarge"/>
         <activity
             android:name=".ui.settings.ApplicationSettingsActivity"
-            android:theme="@style/AppTheme.DialogWhenLarge" />
+            android:theme="@style/AppTheme.DialogWhenLarge"/>
         <activity
             android:name=".ui.settings.NetworkActivity"
-            android:theme="@style/AppTheme.DialogWhenLarge" />
+            android:theme="@style/AppTheme.DialogWhenLarge"/>
         <activity
             android:name=".ui.account.ContactActivity"
-            android:theme="@style/AppTheme.DialogWhenLarge" />
+            android:theme="@style/AppTheme.DialogWhenLarge"/>
         <activity
             android:name=".ui.account.EditEmailActivity"
-            android:theme="@style/AppTheme.DialogWhenLarge" />
+            android:theme="@style/AppTheme.DialogWhenLarge"/>
         <activity
             android:name=".ui.account.EditPasswordActivity"
-            android:theme="@style/AppTheme.DialogWhenLarge" />
+            android:theme="@style/AppTheme.DialogWhenLarge"/>
         <activity
             android:name=".ui.account.UpgradePlanActivity"
-            android:theme="@style/AppTheme.DialogWhenLarge" />
+            android:theme="@style/AppTheme.DialogWhenLarge"/>
     </application>
 
 </manifest>

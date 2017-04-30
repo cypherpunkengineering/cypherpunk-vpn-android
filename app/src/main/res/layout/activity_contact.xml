@@ -8,14 +8,14 @@
 
         <include
             android:id="@+id/toolbar"
-            layout="@layout/toolbar" />
+            layout="@layout/toolbar"/>
 
-        <include layout="@layout/divider" />
+        <include layout="@layout/divider"/>
 
         <FrameLayout
             android:layout_width="match_parent"
-            android:background="@color/background"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:background="@color/background">
 
             <android.support.v7.widget.AppCompatEditText
                 android:id="@+id/contact_text"
@@ -25,7 +25,7 @@
                 android:layout_marginRight="16dp"
                 android:layout_marginTop="16dp"
                 android:hint="@string/contact_us_hint"
-                android:textColorHint="@color/edit_text_hint" />
+                android:textColorHint="@color/edit_text_hint"/>
 
         </FrameLayout>
 

@@ -82,8 +82,7 @@ public class AccountPreference extends Preference {
 
     private static final String DATE_FORMAT_PATTERN = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
 
-    public void setRenewalAndExpiration(@NonNull String renewal, @NonNull String expiration)
-    {
+    public void setRenewalAndExpiration(@NonNull String renewal, @NonNull String expiration) {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat(DATE_FORMAT_PATTERN, Locale.getDefault());
         Date date;
 

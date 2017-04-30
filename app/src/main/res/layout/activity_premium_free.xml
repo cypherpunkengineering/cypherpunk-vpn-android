@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
@@ -10,9 +11,9 @@
 
         <include
             android:id="@+id/toolbar"
-            layout="@layout/toolbar" />
+            layout="@layout/toolbar"/>
 
-        <include layout="@layout/divider" />
+        <include layout="@layout/divider"/>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -28,14 +29,14 @@
                 android:layout_marginTop="24dp"
                 android:text="@string/premium_free_text"
                 android:textSize="18sp"
-                app:fontName="DosisMedium" />
+                app:fontName="DosisMedium"/>
 
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="24dp"
                 android:src="@drawable/illust_gift"
-                tools:ignore="ContentDescription" />
+                tools:ignore="ContentDescription"/>
 
             <com.cypherpunk.privacy.widget.TypefaceButton
                 android:id="@+id/share_button"
@@ -43,7 +44,7 @@
                 android:layout_width="300dp"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"
-                android:text="@string/premium_free_share" />
+                android:text="@string/premium_free_share"/>
 
         </LinearLayout>
 

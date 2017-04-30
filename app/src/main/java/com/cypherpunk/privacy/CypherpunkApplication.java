@@ -6,7 +6,6 @@ import com.cypherpunk.privacy.dagger.AppComponent;
 import com.cypherpunk.privacy.dagger.DaggerAppComponent;
 import com.cypherpunk.privacy.model.CypherpunkSetting;
 import com.cypherpunk.privacy.model.UserSettingPref;
-//import com.deploygate.sdk.DeployGate;
 import com.orhanobut.hawk.Hawk;
 import com.orhanobut.hawk.HawkBuilder;
 import com.os.operando.garum.Configuration;
@@ -35,7 +34,9 @@ public class CypherpunkApplication extends Application {
         //noinspection unchecked
         builder.setModelClasses(CypherpunkSetting.class, UserSettingPref.class);
         Garum.initialize(builder.create());
+
         //DeployGate.install(this);
+
         Hawk.init(this)
                 .setStorage(HawkBuilder.newSharedPrefStorage(this))
                 .setEncryptionMethod(HawkBuilder.EncryptionMethod.MEDIUM)

@@ -1,16 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
-        <import type="android.view.View" />
+        <import type="android.view.View"/>
 
-        <import type="android.text.TextUtils" />
+        <import type="android.text.TextUtils"/>
 
         <variable
             name="setting"
-            type="com.cypherpunk.privacy.model.SettingItem" />
+            type="com.cypherpunk.privacy.model.SettingItem"/>
     </data>
 
     <merge>
@@ -24,7 +25,7 @@
             android:layout_marginRight="16dp"
             android:button="@drawable/radio_setting_item"
             android:clickable="false"
-            android:focusable="false" />
+            android:focusable="false"/>
 
         <com.cypherpunk.privacy.widget.TypefaceTextView
             android:id="@+id/title"
@@ -35,7 +36,7 @@
             android:layout_toRightOf="@id/button"
             android:text="@{setting.value}"
             android:textSize="18sp"
-            tools:text="Automatic" />
+            tools:text="Automatic"/>
 
         <com.cypherpunk.privacy.widget.TypefaceTextView
             android:id="@+id/description"
@@ -50,7 +51,7 @@
             tools:text="(Default) - Firewall will be enabled when you
 connect and disables when you disconnect from
 a location. It will remain on if your connection
-suddenly drops" />
+suddenly drops"/>
 
         <LinearLayout
             android:id="@+id/detail_container"
@@ -67,7 +68,7 @@ suddenly drops" />
                 android:layout_height="wrap_content"
                 android:layout_marginRight="4dp"
                 android:text="@string/setting_vpn_crypto_cipher"
-                android:textColor="#99ffffff" />
+                android:textColor="#99ffffff"/>
 
             <com.cypherpunk.privacy.widget.TypefaceTextView
                 android:id="@+id/cipher"
@@ -75,14 +76,14 @@ suddenly drops" />
                 android:layout_height="wrap_content"
                 android:layout_marginRight="16dp"
                 android:textColor="#fff"
-                tools:text="XXX-123" />
+                tools:text="XXX-123"/>
 
             <com.cypherpunk.privacy.widget.TypefaceTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="4dp"
                 android:text="@string/setting_vpn_crypto_auth"
-                android:textColor="#99ffffff" />
+                android:textColor="#99ffffff"/>
 
             <com.cypherpunk.privacy.widget.TypefaceTextView
                 android:id="@+id/auth"
@@ -90,21 +91,21 @@ suddenly drops" />
                 android:layout_height="wrap_content"
                 android:layout_marginRight="16dp"
                 android:textColor="#fff"
-                tools:text="XXX-123" />
+                tools:text="XXX-123"/>
 
             <com.cypherpunk.privacy.widget.TypefaceTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="4dp"
                 android:text="@string/setting_vpn_crypto_keylen"
-                android:textColor="#99ffffff" />
+                android:textColor="#99ffffff"/>
 
             <com.cypherpunk.privacy.widget.TypefaceTextView
                 android:id="@+id/key"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="#fff"
-                tools:text="XXX-1234" />
+                tools:text="XXX-1234"/>
 
         </LinearLayout>
     </merge>

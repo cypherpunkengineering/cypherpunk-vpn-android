@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
@@ -21,7 +22,7 @@
                 android:layout_height="?android:actionBarSize"
                 android:layout_gravity="center"
                 android:src="@drawable/logo"
-                tools:ignore="ContentDescription" />
+                tools:ignore="ContentDescription"/>
 
         </android.support.v7.widget.Toolbar>
 
@@ -32,7 +33,7 @@
             android:layout_marginTop="38dp"
             android:text="@string/select_mode_title"
             android:textSize="22sp"
-            app:fontName="DosisMedium" />
+            app:fontName="DosisMedium"/>
 
         <RadioGroup
             android:id="@+id/radio_group"
@@ -50,7 +51,7 @@
                 android:drawableTop="@drawable/settings_privacy_vector"
                 android:text="@string/settings_mode_max_privacy"
                 android:textSize="14sp"
-                android:theme="@style/AppTheme.RadioButton" />
+                android:theme="@style/AppTheme.RadioButton"/>
 
             <com.cypherpunk.privacy.widget.TypefaceRadioButton
                 android:id="@+id/max_speed_radio_button"
@@ -61,7 +62,7 @@
                 android:drawableTop="@drawable/settings_rocket_vector"
                 android:text="@string/settings_mode_max_speed"
                 android:textSize="14sp"
-                android:theme="@style/AppTheme.RadioButton" />
+                android:theme="@style/AppTheme.RadioButton"/>
 
             <com.cypherpunk.privacy.widget.TypefaceRadioButton
                 android:id="@+id/max_freedom_radio_button"
@@ -72,7 +73,7 @@
                 android:drawableTop="@drawable/settings_freedom_vector"
                 android:text="@string/settings_mode_max_freedom"
                 android:textSize="14sp"
-                android:theme="@style/AppTheme.RadioButton" />
+                android:theme="@style/AppTheme.RadioButton"/>
 
         </RadioGroup>
 
@@ -83,7 +84,7 @@
             android:layout_marginBottom="8dp"
             android:textSize="22sp"
             app:fontName="DosisMedium"
-            tools:text="max freedom mode" />
+            tools:text="max freedom mode"/>
 
         <com.cypherpunk.privacy.widget.TypefaceTextView
             android:id="@+id/selected_mode_description"
@@ -92,7 +93,7 @@
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
             android:text="@string/mode_description_text"
-            android:textSize="14sp" />
+            android:textSize="14sp"/>
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -110,7 +111,7 @@
                 android:background="?android:attr/selectableItemBackground"
                 android:clickable="true"
                 android:gravity="center"
-                android:text="@string/select_mode_skip" />
+                android:text="@string/select_mode_skip"/>
 
             <com.cypherpunk.privacy.widget.TypefaceButton
                 android:id="@+id/ok_button"
@@ -120,7 +121,7 @@
                 android:layout_marginLeft="40dp"
                 android:layout_marginRight="40dp"
                 android:layout_marginTop="16dp"
-                android:text="@string/select_mode_connect" />
+                android:text="@string/select_mode_connect"/>
 
         </RelativeLayout>
 

@@ -29,7 +29,6 @@ import de.blinkt.openvpn.core.OpenVPNService;
 import de.blinkt.openvpn.core.ProfileManager;
 import de.blinkt.openvpn.core.VPNLaunchHelper;
 import io.realm.Realm;
-import io.realm.RealmResults;
 
 /**
  * Created by jmaurice on 7/12/16.
@@ -47,44 +46,45 @@ public class CypherpunkVPN {
     private OpenVPNService service = null;
 
     @NonNull
-    public static synchronized CypherpunkVPN getInstance()
-    {
+    public static synchronized CypherpunkVPN getInstance() {
         if (singleton == null)
             singleton = new CypherpunkVPN();
         return singleton;
     }
 
-    public static boolean protectSocket(Socket s)
-    {
+    public static boolean protectSocket(Socket s) {
         if (getInstance().service == null)
             return false;
 
         return getInstance().service.protect(s);
     }
 
-    public Region getRegion() { return region; }
-    public void setRegion(Region region) { this.region = region; }
+    public Region getRegion() {
+        return region;
+    }
 
-    private ServiceConnection connection = new ServiceConnection()
-    {
+    public void setRegion(Region region) {
+        this.region = region;
+    }
+
+    private ServiceConnection connection = new ServiceConnection() {
         @Override
-        public void onServiceConnected(ComponentName componentName, IBinder iBinder)
-        {
+        public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
             OpenVPNService.LocalBinder binder = (OpenVPNService.LocalBinder) iBinder;
             service = binder.getService();
         }
 
         @Override
-        public void onServiceDisconnected(ComponentName componentName)
-        {
+        public void onServiceDisconnected(ComponentName componentName) {
             service = null;
         }
     };
 
-    private void log(String str) { Log.w("CypherpunkVPN", str); }
+    private void log(String str) {
+        Log.w("CypherpunkVPN", str);
+    }
 
-    public void toggle(final Context context, final Context baseContext)
-    {
+    public void toggle(final Context context, final Context baseContext) {
         CypherpunkVpnStatus status = CypherpunkVpnStatus.getInstance();
 
         if (status.isDisconnected()) {
@@ -99,8 +99,7 @@ public class CypherpunkVPN {
         }
     }
 
-    public void start(final Context context, final Context baseContext)
-    {
+    public void start(final Context context, final Context baseContext) {
         log("start()");
 
         CypherpunkSetting cypherpunkSetting = new CypherpunkSetting();
@@ -108,11 +107,9 @@ public class CypherpunkVPN {
         serviceIntent.setAction(OpenVPNService.START_SERVICE);
         context.bindService(serviceIntent, connection, Context.BIND_AUTO_CREATE);
 
-        try
-        {
+        try {
             conf = generateConfig(context);
-            if (conf == null)
-            {
+            if (conf == null) {
                 log("Unable to generate OpenVPN profile!");
                 return;
             }
@@ -121,13 +118,10 @@ public class CypherpunkVPN {
             vpnProfile = cp.convertProfile();
             ProfileManager.setTemporaryProfile(vpnProfile);
             vpnProfile.mName = region.getRegionName() + ", " + region.getCountry();
-            for (String pkg : cypherpunkSetting.disableAppPackageName.split(","))
-            {
+            for (String pkg : cypherpunkSetting.disableAppPackageName.split(",")) {
                 vpnProfile.mAllowedAppsVpn.add(pkg);
             }
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             log("Exception while generating OpenVPN profile");
             log(e.getLocalizedMessage());
             e.printStackTrace();
@@ -143,11 +137,9 @@ public class CypherpunkVPN {
         }.start();
     }
 
-    public void stop(final Context context, final Context baseContext)
-    {
+    public void stop(final Context context, final Context baseContext) {
         log("stop()");
-        if (service != null)
-        {
+        if (service != null) {
             OpenVPNManagement manager = service.getManagement();
             if (manager == null)
                 return;
@@ -155,10 +147,8 @@ public class CypherpunkVPN {
             manager.stopVPN(false);
             // privacy firewall killswitch
             CypherpunkSetting cypherpunkSetting = new CypherpunkSetting();
-            if (cypherpunkSetting.privacyFirewallMode != null && cypherpunkSetting.privacyFirewallMode.length() > 0)
-            {
-                switch (cypherpunkSetting.privacyFirewallMode)
-                {
+            if (cypherpunkSetting.privacyFirewallMode != null && cypherpunkSetting.privacyFirewallMode.length() > 0) {
+                switch (cypherpunkSetting.privacyFirewallMode) {
                     case "setting_privacy_firewall_mode_auto":
                         service.stopKillSwitch();
                         break;
@@ -172,8 +162,7 @@ public class CypherpunkVPN {
         }
     }
 
-    private String generateConfig(Context context)
-    {
+    private String generateConfig(Context context) {
         log("generateConfig()");
 
         List<String> list = new ArrayList<String>();
@@ -183,13 +172,10 @@ public class CypherpunkVPN {
 
         // get currently selected location
         Realm realm = null;
-        try
-        {
+        try {
             realm = CypherpunkApplication.instance.getAppComponent().getDefaultRealm();
             region = realm.where(Region.class).equalTo("id", cypherpunkSetting.regionId).findFirst();
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             log("Exception while getting Location");
             e.printStackTrace();
             if (realm != null)
@@ -232,15 +218,13 @@ public class CypherpunkVPN {
         list.add("ifconfig-ipv6 fd25::1/64 ::1");
         list.add("route-ipv6 ::/0 ::1");
 
-		// disable ncp
+        // disable ncp
         list.add("ncp-disable");
 
         // vpn protocol + remote port
         int rport = 7133;
-        if (cypherpunkSetting.vpnPortRemote != null && cypherpunkSetting.vpnPortRemote.length() > 0)
-        {
-            switch (cypherpunkSetting.vpnPortRemote)
-            {
+        if (cypherpunkSetting.vpnPortRemote != null && cypherpunkSetting.vpnPortRemote.length() > 0) {
+            switch (cypherpunkSetting.vpnPortRemote) {
                 case "UDP/7133":
                     list.add("proto udp");
                     rport = 7133;
@@ -269,10 +253,8 @@ public class CypherpunkVPN {
         }
 
         // vpn crypto profile
-        if (cypherpunkSetting.vpnCryptoProfile != null && cypherpunkSetting.vpnCryptoProfile.length() > 0)
-        {
-            switch (cypherpunkSetting.vpnCryptoProfile)
-            {
+        if (cypherpunkSetting.vpnCryptoProfile != null && cypherpunkSetting.vpnCryptoProfile.length() > 0) {
+            switch (cypherpunkSetting.vpnCryptoProfile) {
                 case "setting_vpn_crypto_profile_none":
                     list.add("remote " + region.getOvNone() + " " + rport);
                     list.add("cipher none");
@@ -299,22 +281,17 @@ public class CypherpunkVPN {
         if (cypherpunkSetting.vpnPortLocal != null && cypherpunkSetting.vpnPortLocal.length() > 0)
             lport = Integer.parseInt(cypherpunkSetting.vpnPortLocal);
         */
-        if (lport > 0 && lport < 65535)
-        {
+        if (lport > 0 && lport < 65535) {
             list.add("lport " + lport);
             list.add("bind");
-        }
-        else
-        {
+        } else {
             // need "nobind" to bind to a random port
             list.add("nobind");
         }
 
         // privacy firewall killswitch
-        if (cypherpunkSetting.privacyFirewallMode != null && cypherpunkSetting.privacyFirewallMode.length() > 0)
-        {
-            switch (cypherpunkSetting.privacyFirewallMode)
-            {
+        if (cypherpunkSetting.privacyFirewallMode != null && cypherpunkSetting.privacyFirewallMode.length() > 0) {
+            switch (cypherpunkSetting.privacyFirewallMode) {
                 case "setting_privacy_firewall_mode_auto":
                 case "setting_privacy_firewall_mode_always":
                     list.add("persist-tun");
@@ -351,8 +328,7 @@ public class CypherpunkVPN {
         list.add("</auth-user-pass>");
 
         // append contents of openvpn.conf
-        try
-        {
+        try {
             InputStream is = context.getAssets().open("openvpn.conf");
             InputStreamReader isr = new InputStreamReader(is);
             BufferedReader br = new BufferedReader(isr);
@@ -360,9 +336,7 @@ public class CypherpunkVPN {
 
             while ((line = br.readLine()) != null)
                 list.add(line);
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             log("unable to read openvpn.conf: " + e.toString());
             return null;
         }

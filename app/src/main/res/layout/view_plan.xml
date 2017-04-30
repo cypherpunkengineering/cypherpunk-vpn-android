@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
@@ -23,7 +24,7 @@
                 android:textColor="@color/plan_price"
                 android:textSize="22sp"
                 app:fontName="DosisMedium"
-                tools:text="6 MONTHS" />
+                tools:text="6 MONTHS"/>
 
             <com.cypherpunk.privacy.widget.TypefaceTextView
                 android:id="@+id/price"
@@ -36,7 +37,7 @@
                 android:textSize="26sp"
                 app:fontName="DosisBold"
                 tools:ignore="RtlHardcoded"
-                tools:text="$ 9.99" />
+                tools:text="$ 9.99"/>
 
             <com.cypherpunk.privacy.widget.TypefaceTextView
                 android:id="@id/month"
@@ -50,7 +51,7 @@
                 android:textColor="#666666"
                 android:textSize="14sp"
                 app:fontName="DosisRegular"
-                tools:ignore="RtlHardcoded" />
+                tools:ignore="RtlHardcoded"/>
 
         </RelativeLayout>
 
@@ -66,7 +67,7 @@
             android:visibility="invisible"
             app:fontName="DosisSemiBold"
             tools:ignore="RtlHardcoded"
-            tools:visibility="visible" />
+            tools:visibility="visible"/>
 
         <com.cypherpunk.privacy.widget.TypefaceTextView
             android:id="@+id/current_plan"
@@ -78,7 +79,7 @@
             android:text="@string/plan_current"
             android:textSize="14sp"
             android:visibility="invisible"
-            app:fontName="DosisMedium" />
+            app:fontName="DosisMedium"/>
 
     </FrameLayout>
 
