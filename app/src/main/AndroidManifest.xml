@@ -50,7 +50,6 @@
             android:name=".ui.main.CypherpunkLaunchVPN"
             android:autoRemoveFromRecents="true"
             android:excludeFromRecents="true"
-            android:label="@string/vpn_launch_title"
             android:taskAffinity=".ui.main.CypherpunkLaunchVPN"
             android:theme="@android:style/Theme.Dialog">
             tools:ignore="ExportedActivity">

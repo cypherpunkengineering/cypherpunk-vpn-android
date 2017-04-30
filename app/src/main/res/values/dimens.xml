@@ -1,11 +1,9 @@
 <resources>
     <dimen name="connection_status_text_size">25sp</dimen>
-    <dimen name="vpn_button_icon_padding">28dp</dimen>
     <dimen name="binary_text">21dp</dimen>
     <dimen name="binary_text_width">16dp</dimen>
     <dimen name="binary_text_height">21dp</dimen>
     <dimen name="world_map_margin">8dp</dimen>
-    <dimen name="list_divider">10dp</dimen>
     <dimen name="divider">1dp</dimen>
     <dimen name="national_flag_width">32dp</dimen>
     <dimen name="national_flag_height">24dp</dimen>

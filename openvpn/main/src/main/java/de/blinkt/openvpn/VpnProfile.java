@@ -847,53 +847,6 @@ public class VpnProfile implements Serializable, Cloneable {
 
     }
 
-    //! Return an error if something is wrong
-    public int checkProfile(Context context) {
-        if (mAuthenticationType == TYPE_KEYSTORE || mAuthenticationType == TYPE_USERPASS_KEYSTORE) {
-            if (mAlias == null)
-                return R.string.no_keystore_cert_selected;
-        }
-
-        if (!mUsePull || mAuthenticationType == TYPE_STATICKEYS) {
-            if (mIPv4Address == null || cidrToIPAndNetmask(mIPv4Address) == null)
-                return R.string.ipv4_format_error;
-        }
-        if (!mUseDefaultRoute) {
-            if (!TextUtils.isEmpty(mCustomRoutes) && getCustomRoutes(mCustomRoutes).size() == 0)
-                return R.string.custom_route_format_error;
-
-            if (!TextUtils.isEmpty(mExcludedRoutes) && getCustomRoutes(mExcludedRoutes).size() == 0)
-                return R.string.custom_route_format_error;
-
-        }
-
-        if (mUseTLSAuth && TextUtils.isEmpty(mTLSAuthFilename))
-            return R.string.missing_tlsauth;
-
-        if ((mAuthenticationType == TYPE_USERPASS_CERTIFICATES || mAuthenticationType == TYPE_CERTIFICATES)
-                && (TextUtils.isEmpty(mClientCertFilename) || TextUtils.isEmpty(mClientKeyFilename)))
-            return R.string.missing_certificates;
-
-        if ((mAuthenticationType == TYPE_CERTIFICATES || mAuthenticationType == TYPE_USERPASS_CERTIFICATES)
-                && TextUtils.isEmpty(mCaFilename))
-            return R.string.missing_ca_certificate;
-
-
-        boolean noRemoteEnabled = true;
-        for (Connection c : mConnections)
-            if (c.mEnabled)
-                noRemoteEnabled = false;
-
-        if (noRemoteEnabled)
-            return R.string.remote_no_server_selected;
-
-        // Everything okay
-        return R.string.no_error_found;
-
-    }
-
-    //! Openvpn asks for a "Private Key", this should be pkcs12 key
-    //
     public String getPasswordPrivateKey() {
         if (mTransientPCKS12PW != null) {
             String pwcopy = mTransientPCKS12PW;
