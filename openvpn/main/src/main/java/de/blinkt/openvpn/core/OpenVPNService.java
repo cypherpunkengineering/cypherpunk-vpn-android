@@ -909,14 +909,6 @@ public class OpenVPNService extends VpnService implements StateListener, Callbac
                 (device.startsWith("tun") || "(null)".equals(device) || "vpnservice-tun".equals(device));
     }
 
-    public void setMtu(int mtu) {
-        mMtu = mtu;
-    }
-
-    public void setLocalIP(CIDRIP cdrip) {
-        mLocalIP = cdrip;
-    }
-
     public void setLocalIP(String local, String netmask, int mtu, String mode) {
         mLocalIP = new CIDRIP(local, netmask);
         mMtu = mtu;
