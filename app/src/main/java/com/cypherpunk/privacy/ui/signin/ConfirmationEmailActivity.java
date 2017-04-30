@@ -70,10 +70,10 @@ public class ConfirmationEmailActivity extends AppCompatActivity {
         binding.backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(ConfirmationEmailActivity.this, IdentifyEmailActivity.class);
-                TaskStackBuilder builder = TaskStackBuilder.create(ConfirmationEmailActivity.this);
-                builder.addNextIntent(intent);
-                builder.startActivities();
+                final Context context = ConfirmationEmailActivity.this;
+                TaskStackBuilder.create(context)
+                        .addNextIntent(IdentifyEmailActivity.createIntent(context))
+                        .startActivities();
             }
         });
 

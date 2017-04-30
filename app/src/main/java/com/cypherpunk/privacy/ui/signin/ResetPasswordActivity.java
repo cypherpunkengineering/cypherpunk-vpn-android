@@ -1,6 +1,5 @@
 package com.cypherpunk.privacy.ui.signin;
 
-import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
@@ -78,10 +77,9 @@ public class ResetPasswordActivity extends AppCompatActivity {
             focusView.requestFocus();
         } else {
             // success
-            Intent intent = new Intent(this, IdentifyEmailActivity.class);
-            TaskStackBuilder builder = TaskStackBuilder.create(this);
-            builder.addNextIntent(intent);
-            builder.startActivities();
+            TaskStackBuilder.create(this)
+                    .addNextIntent(IdentifyEmailActivity.createIntent(this))
+                    .startActivities();
             finish();
         }
     }

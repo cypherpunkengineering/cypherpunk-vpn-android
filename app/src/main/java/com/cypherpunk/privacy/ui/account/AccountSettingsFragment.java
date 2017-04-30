@@ -220,10 +220,9 @@ public class AccountSettingsFragment extends PreferenceFragmentCompat {
                         if (error instanceof HttpException) {
                             HttpException httpException = (HttpException) error;
                             if (httpException.code() == 400) {
-                                Intent intent = new Intent(getContext(), IdentifyEmailActivity.class);
-                                TaskStackBuilder builder = TaskStackBuilder.create(getContext());
-                                builder.addNextIntent(intent);
-                                builder.startActivities();
+                                TaskStackBuilder.create(getContext())
+                                        .addNextIntent(IdentifyEmailActivity.createIntent(getContext()))
+                                        .startActivities();
                             }
                         }
                     }
@@ -233,10 +232,9 @@ public class AccountSettingsFragment extends PreferenceFragmentCompat {
     private void signOut() {
         CypherpunkVPN.getInstance().stop(getActivity().getApplicationContext(), getActivity().getBaseContext());
         UserManager.clearUser();
-        Intent intent = new Intent(getActivity(), IdentifyEmailActivity.class);
-        TaskStackBuilder builder = TaskStackBuilder.create(getActivity());
-        builder.addNextIntent(intent);
-        builder.startActivities();
+        TaskStackBuilder.create(getContext())
+                .addNextIntent(IdentifyEmailActivity.createIntent(getContext()))
+                .startActivities();
         getActivity().finish();
     }
 }
