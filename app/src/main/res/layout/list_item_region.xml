@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
@@ -19,7 +20,7 @@
             android:layout_marginLeft="16dp"
             android:layout_marginRight="12dp"
             tools:ignore="ContentDescription"
-            tools:src="@drawable/flag_us" />
+            tools:src="@drawable/flag_us"/>
 
         <com.cypherpunk.privacy.widget.TypefaceTextView
             android:id="@+id/region_name"
@@ -33,7 +34,7 @@
             android:textSize="18sp"
             app:fontName="DosisMedium"
             tools:ignore="RtlHardcoded,RtlSymmetry"
-            tools:text="US" />
+            tools:text="US"/>
 
         <com.cypherpunk.privacy.widget.RegionTagView
             android:id="@+id/region_tag"
@@ -45,7 +46,7 @@
             android:gravity="center_vertical"
             android:paddingLeft="4dp"
             android:paddingRight="4dp"
-            android:textSize="12sp" />
+            android:textSize="12sp"/>
 
         <com.cypherpunk.privacy.widget.StarView
             android:id="@+id/favorite"
@@ -57,7 +58,7 @@
             android:layout_marginEnd="8dp"
             android:layout_marginRight="11dp"
             android:background="?android:selectableItemBackground"
-            android:padding="10dp" />
+            android:padding="10dp"/>
 
     </RelativeLayout>
 

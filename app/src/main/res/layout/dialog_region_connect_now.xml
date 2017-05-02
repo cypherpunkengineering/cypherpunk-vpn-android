@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -17,7 +18,7 @@
         android:text="@string/select_region_connect_dialog_message"
         android:textColor="@color/dialog_text"
         android:textSize="18sp"
-        app:fontName="DosisMedium" />
+        app:fontName="DosisMedium"/>
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -32,7 +33,7 @@
             android:layout_height="@dimen/national_flag_height"
             android:layout_marginRight="8dp"
             android:src="@drawable/flag_us"
-            tools:ignore="ContentDescription,RtlHardcoded" />
+            tools:ignore="ContentDescription,RtlHardcoded"/>
 
         <com.cypherpunk.privacy.widget.TypefaceTextView
             android:id="@+id/city_name"
@@ -41,7 +42,7 @@
             android:textColor="@color/dialog_text"
             android:textSize="16sp"
             app:fontName="DosisMedium"
-            tools:text="US" />
+            tools:text="US"/>
 
     </LinearLayout>
 
@@ -52,7 +53,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_marginBottom="8dp"
-        android:text="@string/connect_dialog_positive" />
+        android:text="@string/connect_dialog_positive"/>
 
     <com.cypherpunk.privacy.widget.TypefaceTextView
         android:id="@+id/later_button"
@@ -66,6 +67,6 @@
         android:text="@string/connect_dialog_negative"
         android:textColor="@color/dialog_text"
         android:textSize="14sp"
-        app:fontName="DosisMedium" />
+        app:fontName="DosisMedium"/>
 
 </LinearLayout>

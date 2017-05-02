@@ -89,15 +89,12 @@ public class NetworkActivity extends AppCompatActivity {
     @NonNull
     private List<Network> getNetworks() {
         List<WifiConfiguration> configuredNetworks = getConfiguredNetworks();
-        if (configuredNetworks != null)
-        {
-            for (WifiConfiguration configuredNetwork : configuredNetworks)
-            {
+        if (configuredNetworks != null) {
+            for (WifiConfiguration configuredNetwork : configuredNetworks) {
                 String ssid = configuredNetwork.SSID.replace("\"", "");
                 Network network = realm.where(Network.class)
                         .equalTo("ssid", ssid).findFirst();
-                if (network == null)
-                {
+                if (network == null) {
                     realm.beginTransaction();
                     realm.copyToRealm(new Network(ssid));
                     realm.commitTransaction();

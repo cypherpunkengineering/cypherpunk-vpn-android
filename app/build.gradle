@@ -20,9 +20,9 @@ android {
         }
 
         release {
-			lintOptions {
-				disable 'MissingTranslation'
-			}
+            lintOptions {
+                disable 'MissingTranslation'
+            }
 //            storeFile rootProject.file("certificate/sample.keystore")
 //            storePassword "sample"
 //            keyAlias "sample"

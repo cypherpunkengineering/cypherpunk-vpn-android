@@ -16,9 +16,10 @@ import de.blinkt.openvpn.core.VpnStatus;
  */
 
 @TargetApi(Build.VERSION_CODES.N)
-public class CypherpunkTileService extends TileService implements VpnStatus.StateListener
-{
-    private static void log(String str) { Log.w("CypherpunkTileService", str); }
+public class CypherpunkTileService extends TileService implements VpnStatus.StateListener {
+    private static void log(String str) {
+        Log.w("CypherpunkTileService", str);
+    }
 
     @TargetApi(Build.VERSION_CODES.N)
     @Override
@@ -41,8 +42,7 @@ public class CypherpunkTileService extends TileService implements VpnStatus.Stat
     }
 
     @Override
-    public void onClick()
-    {
+    public void onClick() {
         super.onClick();
         log("onClick()");
 
@@ -50,24 +50,20 @@ public class CypherpunkTileService extends TileService implements VpnStatus.Stat
         i.setClass(this, CypherpunkLaunchVPN.class);
         i.setFlags(
                 Intent.FLAG_ACTIVITY_NEW_TASK
-                | Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS
-                | Intent.FLAG_ACTIVITY_NO_HISTORY
-                | Intent.FLAG_ACTIVITY_NO_ANIMATION
+                        | Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS
+                        | Intent.FLAG_ACTIVITY_NO_HISTORY
+                        | Intent.FLAG_ACTIVITY_NO_ANIMATION
         );
         i.putExtra(CypherpunkLaunchVPN.TILE_CLICK, true);
         this.startActivity(i);
     }
 
     @Override
-    public void updateState(String state, String logmessage, int localizedResId, VpnStatus.ConnectionStatus level)
-    {
+    public void updateState(String state, String logmessage, int localizedResId, VpnStatus.ConnectionStatus level) {
         Tile t = getQsTile();
-        if (level == VpnStatus.ConnectionStatus.LEVEL_AUTH_FAILED || level == VpnStatus.ConnectionStatus.LEVEL_NOTCONNECTED)
-        {
+        if (level == VpnStatus.ConnectionStatus.LEVEL_AUTH_FAILED || level == VpnStatus.ConnectionStatus.LEVEL_NOTCONNECTED) {
             t.setState(Tile.STATE_INACTIVE);
-        }
-        else
-        {
+        } else {
             t.setState(Tile.STATE_ACTIVE);
         }
         t.updateTile();

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
@@ -10,7 +11,7 @@
 
         <include
             android:id="@+id/toolbar"
-            layout="@layout/toolbar" />
+            layout="@layout/toolbar"/>
 
         <ScrollView
             android:layout_width="match_parent"
@@ -22,13 +23,13 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <include layout="@layout/divider" />
+                <include layout="@layout/divider"/>
 
                 <com.cypherpunk.privacy.widget.WorldMapView
                     android:id="@+id/map"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp" />
+                    android:layout_marginTop="16dp"/>
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -43,7 +44,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_horizontal"
                         android:textSize="16sp"
-                        tools:text="Connected" />
+                        tools:text="Connected"/>
 
                     <com.cypherpunk.privacy.widget.TimeTexView
                         android:id="@+id/time"
@@ -56,7 +57,7 @@
                         android:drawableStart="@drawable/time_vector"
                         android:textSize="16sp"
                         app:fontName="InconsolataRegular"
-                        tools:text="00:14:25" />
+                        tools:text="00:14:25"/>
 
                 </LinearLayout>
 
@@ -80,7 +81,7 @@
                         android:layout_marginBottom="4dp"
                         android:text="@string/ip_original"
                         android:textSize="16sp"
-                        app:fontName="DosisSemiBold" />
+                        app:fontName="DosisSemiBold"/>
 
                     <com.cypherpunk.privacy.widget.TypefaceTextView
                         android:id="@+id/original_ip"
@@ -90,7 +91,7 @@
                         android:textColor="@color/status_disconnected"
                         android:textSize="28sp"
                         app:fontName="InconsolataRegular"
-                        tools:text="181.41.221.60" />
+                        tools:text="181.41.221.60"/>
 
                     <LinearLayout
                         android:layout_width="wrap_content"
@@ -102,7 +103,7 @@
                             android:layout_height="@dimen/national_flag_height"
                             android:layout_marginRight="12dp"
                             android:src="@drawable/flag_us"
-                            tools:ignore="ContentDescription" />
+                            tools:ignore="ContentDescription"/>
 
                         <com.cypherpunk.privacy.widget.TypefaceTextView
                             android:id="@+id/original_location"
@@ -110,7 +111,7 @@
                             android:layout_height="wrap_content"
                             android:drawablePadding="12dp"
                             android:text="Japan"
-                            android:textSize="16sp" />
+                            android:textSize="16sp"/>
 
                     </LinearLayout>
 
@@ -135,7 +136,7 @@
                         android:layout_marginBottom="4dp"
                         android:text="@string/ip_new"
                         android:textSize="16sp"
-                        app:fontName="DosisSemiBold" />
+                        app:fontName="DosisSemiBold"/>
 
                     <com.cypherpunk.privacy.widget.TypefaceTextView
                         android:id="@+id/new_ip"
@@ -145,7 +146,7 @@
                         android:text="@string/status_ip_loading"
                         android:textColor="@color/status_connected"
                         android:textSize="28sp"
-                        app:fontName="InconsolataRegular" />
+                        app:fontName="InconsolataRegular"/>
 
                     <LinearLayout
                         android:layout_width="wrap_content"
@@ -157,7 +158,7 @@
                             android:layout_height="@dimen/national_flag_height"
                             android:layout_marginRight="12dp"
                             android:src="@drawable/flag_us"
-                            tools:ignore="ContentDescription" />
+                            tools:ignore="ContentDescription"/>
 
                         <com.cypherpunk.privacy.widget.TypefaceTextView
                             android:id="@+id/new_location"
@@ -165,7 +166,7 @@
                             android:layout_height="wrap_content"
                             android:drawablePadding="12dp"
                             android:textSize="16sp"
-                            tools:text="Japan" />
+                            tools:text="Japan"/>
 
                     </LinearLayout>
                 </LinearLayout>
@@ -184,7 +185,7 @@
                     android:paddingLeft="32dp"
                     android:paddingRight="32dp"
                     android:text="@string/status_change_ip_address"
-                    android:textSize="16sp" />
+                    android:textSize="16sp"/>
 
             </LinearLayout>
 

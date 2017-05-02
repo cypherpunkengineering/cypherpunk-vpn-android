@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.cypherpunk.privacy.widget.TypefaceTextView xmlns:android="http://schemas.android.com/apk/res/android"
+<com.cypherpunk.privacy.widget.TypefaceTextView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+android:id/title"
     android:layout_width="match_parent"
@@ -12,4 +13,4 @@
     android:paddingTop="16dip"
     android:textAppearance="@style/TextAppearance.AppCompat.Body2"
     android:textColor="@color/colorAccent"
-    app:fontName="DosisMedium" />
+    app:fontName="DosisMedium"/>

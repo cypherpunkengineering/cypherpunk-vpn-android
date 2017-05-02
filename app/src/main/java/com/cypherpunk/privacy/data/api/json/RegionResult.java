@@ -1,8 +1,7 @@
 package com.cypherpunk.privacy.data.api.json;
 
 
-public class RegionResult
-{
+public class RegionResult {
     private String id;
 
     private String name;
@@ -61,8 +60,7 @@ public class RegionResult
         return level;
     }
 
-    public void setLevel(String level)
-    {
+    public void setLevel(String level) {
         this.level = level;
     }
 

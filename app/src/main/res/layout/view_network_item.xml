@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:ignore="RtlHardcoded">
 
-        <data>
+    <data>
 
-            <variable
-                name="network"
-                type="com.cypherpunk.privacy.model.Network" />
+        <variable
+            name="network"
+            type="com.cypherpunk.privacy.model.Network"/>
 
-        </data>
+    </data>
 
     <merge>
 
@@ -23,11 +23,11 @@
             android:background="@color/background"
             android:gravity="center_vertical"
             android:paddingLeft="16dp"
-            android:text="@{network.ssid}"
             android:paddingRight="16dp"
+            android:text="@{network.ssid}"
             android:textSize="18sp"
             app:fontName="DosisMedium"
-            tools:text="ssid" />
+            tools:text="ssid"/>
 
         <android.support.v7.widget.SwitchCompat
             android:id="@+id/button"
@@ -38,13 +38,13 @@
             android:checked="@{network.trusted? true : false}"
             android:clickable="false"
             android:focusable="false"
-            android:paddingRight="16dp" />
+            android:paddingRight="16dp"/>
 
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_alignParentBottom="true"
-            android:background="@color/divider" />
+            android:background="@color/divider"/>
 
     </merge>
 

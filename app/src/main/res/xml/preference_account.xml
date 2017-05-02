@@ -1,28 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+<PreferenceScreen
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
     <Preference
         android:layout="@layout/preference_header"
         android:selectable="false"
-        android:title="@string/settings_header_account" />
+        android:title="@string/settings_header_account"/>
 
-    <com.cypherpunk.privacy.ui.account.AccountPreference android:key="account" />
+    <com.cypherpunk.privacy.ui.account.AccountPreference android:key="account"/>
 
     <PreferenceCategory android:title="@string/account_setting_category_settings">
 
         <Preference
             android:key="upgrade"
-            android:title="@string/account_setting_upgrade" />
+            android:title="@string/account_setting_upgrade"/>
 
         <Preference
             android:key="email"
             android:title="@string/account_setting_email"
-            tools:summary="wiz@wiz.biz" />
+            tools:summary="wiz@wiz.biz"/>
 
         <Preference
             android:key="password"
-            android:title="@string/account_setting_password" />
+            android:title="@string/account_setting_password"/>
 
     </PreferenceCategory>
 
@@ -30,24 +31,24 @@
 
         <Preference
             android:key="premium_free"
-            android:title="@string/account_setting_premium_free" />
+            android:title="@string/account_setting_premium_free"/>
 
         <Preference
             android:key="rate"
-            android:title="@string/account_setting_rate" />
+            android:title="@string/account_setting_rate"/>
 
         <Preference
             android:key="contact_us"
             android:summary="@string/account_setting_contact_summary"
-            android:title="@string/account_setting_contact" />
+            android:title="@string/account_setting_contact"/>
 
         <Preference
             android:key="help"
-            android:title="@string/account_setting_help" />
+            android:title="@string/account_setting_help"/>
 
         <Preference
             android:key="log_out"
-            android:title="@string/account_setting_logout" />
+            android:title="@string/account_setting_logout"/>
 
     </PreferenceCategory>
 

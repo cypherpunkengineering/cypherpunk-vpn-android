@@ -32,7 +32,6 @@ import android.view.Window;
 import android.view.animation.Animation;
 import android.widget.CompoundButton;
 
-import com.cypherpunk.privacy.CypherpunkApplication;
 import com.cypherpunk.privacy.R;
 import com.cypherpunk.privacy.data.api.UserManager;
 import com.cypherpunk.privacy.ui.account.AccountSettingsFragment;
@@ -49,10 +48,7 @@ import com.cypherpunk.privacy.widget.VpnFlatButton;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 
-import javax.inject.Inject;
-
 import de.blinkt.openvpn.core.VpnStatus;
-import io.realm.Realm;
 
 public class MainActivity extends AppCompatActivity
         implements VpnStatus.StateListener, RateDialogFragment.RateDialogListener,

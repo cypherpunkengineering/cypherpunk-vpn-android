@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
     <RelativeLayout
@@ -11,8 +12,8 @@
             android:id="@+id/pager"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="16dp"
-            android:layout_above="@+id/ok_button"/>
+            android:layout_above="@+id/ok_button"
+            android:layout_marginTop="16dp"/>
 
         <com.cypherpunk.privacy.widget.TypefaceButton
             android:id="@id/ok_button"
@@ -22,7 +23,7 @@
             android:layout_above="@+id/do_not_allow_button"
             android:layout_centerHorizontal="true"
             android:layout_marginBottom="16dp"
-            android:text="@string/tutorial_allow" />
+            android:text="@string/tutorial_allow"/>
 
         <com.cypherpunk.privacy.widget.TypefaceTextView
             android:id="@id/do_not_allow_button"
@@ -37,7 +38,7 @@
             android:text="@string/tutorial_don_t_allow"
             android:textSize="16sp"
             android:visibility="invisible"
-            tools:visibility="visible" />
+            tools:visibility="visible"/>
 
         <com.cypherpunk.privacy.widget.PageIndicator
             android:id="@id/indicator"
@@ -47,7 +48,7 @@
             android:layout_centerHorizontal="true"
             android:layout_gravity="center"
             android:layout_marginBottom="32dp"
-            android:padding="10dp" />
+            android:padding="10dp"/>
 
     </RelativeLayout>
 

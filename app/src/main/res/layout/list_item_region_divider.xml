@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
@@ -13,12 +14,12 @@
             android:id="@+id/text"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:gravity="center_vertical"
             android:layout_marginLeft="16dp"
-            android:textSize="13sp"
+            android:gravity="center_vertical"
             android:textColor="#99ffffff"
+            android:textSize="13sp"
             app:fontName="DosisMedium"
-            tools:text="FAVORITE" />
+            tools:text="FAVORITE"/>
 
     </LinearLayout>
 

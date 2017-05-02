@@ -154,21 +154,17 @@ public class ApplicationSettingsActivity extends AppCompatActivity {
                         ApplicationInfo system = null;
                         final PackageManager pm = getPackageManager();
 
-                        try
-                        {
+                        try {
                             system = pm.getApplicationInfo("android", PackageManager.GET_META_DATA);
                             androidSystemId = system.uid;
-                        }
-                        catch (PackageManager.NameNotFoundException e)
-                        {
+                        } catch (PackageManager.NameNotFoundException e) {
                         }
 
                         List<ApplicationInfo> installedAppList = pm.getInstalledApplications(PackageManager.GET_META_DATA);
-                        for (ApplicationInfo app : installedAppList)
-                        {
+                        for (ApplicationInfo app : installedAppList) {
                             if (pm.checkPermission(Manifest.permission.INTERNET, app.packageName) == PackageManager.PERMISSION_GRANTED &&
                                     app.uid != androidSystemId)
-                            subscriber.onNext(new AppData(app.loadLabel(pm).toString(), app.loadIcon(pm), app.packageName));
+                                subscriber.onNext(new AppData(app.loadLabel(pm).toString(), app.loadIcon(pm), app.packageName));
                         }
                         subscriber.onCompleted();
                     }
