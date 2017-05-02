@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.wifi.WifiManager;
-import android.util.Log;
 
 import com.cypherpunk.privacy.CypherpunkApplication;
 import com.cypherpunk.privacy.model.CypherpunkSetting;
@@ -14,6 +13,7 @@ import com.cypherpunk.privacy.model.Network;
 
 import io.realm.Realm;
 import io.realm.RealmResults;
+import timber.log.Timber;
 
 /**
  * Created by jmaurice on 2016/10/12.
@@ -22,13 +22,8 @@ import io.realm.RealmResults;
 public class CypherpunkWifiReceiver extends BroadcastReceiver {
     private static String currentSSID = null;
 
-    private void log(String str) {
-        Log.w("CypherpunkWifiReceiver", str);
-    }
-
     @Override
     public void onReceive(Context context, Intent intent) {
-        //log("onReceive()");
 
         NetworkInfo networkInfo = intent.getParcelableExtra(WifiManager.EXTRA_NETWORK_INFO);
 
@@ -55,7 +50,7 @@ public class CypherpunkWifiReceiver extends BroadcastReceiver {
 
     private void onWifiConnected(Context context) {
         String ssid = getCurrentWifiSSID(context);
-        log("onWiFiConnected(" + ssid + ")");
+        Timber.d("onWiFiConnected(" + ssid + ")");
 
         boolean trustedNetwork = isWifiTrusted(ssid);
 
@@ -69,7 +64,7 @@ public class CypherpunkWifiReceiver extends BroadcastReceiver {
     }
 
     private void onWifiDisconnected(Context context) {
-        log("onWiFiDisconnected()");
+        Timber.d("onWiFiDisconnected()");
 
         CypherpunkSetting cypherpunkSetting = new CypherpunkSetting();
         if (cypherpunkSetting.autoSecureOther) {
@@ -86,11 +81,11 @@ public class CypherpunkWifiReceiver extends BroadcastReceiver {
             String quotedSSID = '"' + network.getSsid() + '"';
             if (quotedSSID.equals(ssid)) {
                 if (network.isTrusted()) {
-                    log("SSID " + ssid + " is trusted");
+                    Timber.d("SSID " + ssid + " is trusted");
                     trustedNetwork = true;
                     break;
                 } else {
-                    log("SSID " + ssid + " is NOT trusted");
+                    Timber.d("SSID " + ssid + " is NOT trusted");
                     trustedNetwork = false;
                     break;
                 }
@@ -111,7 +106,7 @@ public class CypherpunkWifiReceiver extends BroadcastReceiver {
     }
 
     private void startIntent(Context context, String intention) {
-        log("startIntent()");
+        Timber.d("startIntent()");
         Intent i = new Intent(CypherpunkLaunchVPN.AUTO_START);
         i.setClass(context, CypherpunkLaunchVPN.class);
         i.setFlags(

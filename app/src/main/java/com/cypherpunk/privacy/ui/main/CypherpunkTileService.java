@@ -5,11 +5,11 @@ import android.content.Intent;
 import android.os.Build;
 import android.service.quicksettings.Tile;
 import android.service.quicksettings.TileService;
-import android.util.Log;
 
 import com.cypherpunk.privacy.vpn.CypherpunkVpnStatus;
 
 import de.blinkt.openvpn.core.VpnStatus;
+import timber.log.Timber;
 
 /**
  * Created by jmaurice on 2016/10/04.
@@ -17,9 +17,6 @@ import de.blinkt.openvpn.core.VpnStatus;
 
 @TargetApi(Build.VERSION_CODES.N)
 public class CypherpunkTileService extends TileService implements VpnStatus.StateListener {
-    private static void log(String str) {
-        Log.w("CypherpunkTileService", str);
-    }
 
     @TargetApi(Build.VERSION_CODES.N)
     @Override
@@ -44,7 +41,7 @@ public class CypherpunkTileService extends TileService implements VpnStatus.Stat
     @Override
     public void onClick() {
         super.onClick();
-        log("onClick()");
+        Timber.d("onClick()");
 
         Intent i = new Intent(CypherpunkLaunchVPN.TILE_CLICK);
         i.setClass(this, CypherpunkLaunchVPN.class);

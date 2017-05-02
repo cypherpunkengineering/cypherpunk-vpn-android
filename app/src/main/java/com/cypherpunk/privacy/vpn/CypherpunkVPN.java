@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.IBinder;
 import android.text.TextUtils;
-import android.util.Log;
 
 import com.android.annotations.NonNull;
 import com.cypherpunk.privacy.CypherpunkApplication;
@@ -29,6 +28,7 @@ import de.blinkt.openvpn.core.OpenVPNService;
 import de.blinkt.openvpn.core.ProfileManager;
 import de.blinkt.openvpn.core.VPNLaunchHelper;
 import io.realm.Realm;
+import timber.log.Timber;
 
 /**
  * Created by jmaurice on 7/12/16.
@@ -80,10 +80,6 @@ public class CypherpunkVPN {
         }
     };
 
-    private void log(String str) {
-        Log.w("CypherpunkVPN", str);
-    }
-
     public void toggle(final Context context, final Context baseContext) {
         CypherpunkVpnStatus status = CypherpunkVpnStatus.getInstance();
 
@@ -100,7 +96,7 @@ public class CypherpunkVPN {
     }
 
     public void start(final Context context, final Context baseContext) {
-        log("start()");
+        Timber.d("start()");
 
         CypherpunkSetting cypherpunkSetting = new CypherpunkSetting();
         Intent serviceIntent = new Intent(baseContext, OpenVPNService.class);
@@ -110,7 +106,7 @@ public class CypherpunkVPN {
         try {
             conf = generateConfig(context);
             if (conf == null) {
-                log("Unable to generate OpenVPN profile!");
+                Timber.d("Unable to generate OpenVPN profile!");
                 return;
             }
             cp = new ConfigParser();
@@ -122,8 +118,8 @@ public class CypherpunkVPN {
                 vpnProfile.mAllowedAppsVpn.add(pkg);
             }
         } catch (Exception e) {
-            log("Exception while generating OpenVPN profile");
-            log(e.getLocalizedMessage());
+            Timber.e("Exception while generating OpenVPN profile");
+            Timber.e(e.getLocalizedMessage());
             e.printStackTrace();
             return;
         }
@@ -131,14 +127,14 @@ public class CypherpunkVPN {
         new Thread() {
             @Override
             public void run() {
-                log("new Thread() -> VPNLaunchHelper()");
+                Timber.d("new Thread() -> VPNLaunchHelper()");
                 VPNLaunchHelper.startOpenVpn(vpnProfile, baseContext);
             }
         }.start();
     }
 
     public void stop(final Context context, final Context baseContext) {
-        log("stop()");
+        Timber.d("stop()");
         if (service != null) {
             OpenVPNManagement manager = service.getManagement();
             if (manager == null)
@@ -163,7 +159,7 @@ public class CypherpunkVPN {
     }
 
     private String generateConfig(Context context) {
-        log("generateConfig()");
+        Timber.d("generateConfig()");
 
         List<String> list = new ArrayList<String>();
 
@@ -176,8 +172,8 @@ public class CypherpunkVPN {
             realm = CypherpunkApplication.instance.getAppComponent().getDefaultRealm();
             region = realm.where(Region.class).equalTo("id", cypherpunkSetting.regionId).findFirst();
         } catch (Exception e) {
-            log("Exception while getting Location");
-            e.printStackTrace();
+            Timber.e("Exception while getting Location");
+            Timber.e(e);
             if (realm != null)
                 realm.close();
             return null;
@@ -337,7 +333,7 @@ public class CypherpunkVPN {
             while ((line = br.readLine()) != null)
                 list.add(line);
         } catch (Exception e) {
-            log("unable to read openvpn.conf: " + e.toString());
+            Timber.e("unable to read openvpn.conf: " + e.toString());
             return null;
         }
 

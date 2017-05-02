@@ -3,20 +3,18 @@ package com.cypherpunk.privacy.ui.main;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
+
+import timber.log.Timber;
 
 /**
  * Created by jmaurice on 2016/09/29.
  */
 
 public class CypherpunkBootReceiver extends BroadcastReceiver {
-    private static void log(String str) {
-        Log.w("CypherpunkBootReceiver", str);
-    }
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        log("onReceive()");
+        Timber.d("onReceive()");
 
         final String action = intent.getAction();
         if (action.equals(Intent.ACTION_BOOT_COMPLETED) || action.equals(Intent.ACTION_MY_PACKAGE_REPLACED)) {
@@ -25,7 +23,7 @@ public class CypherpunkBootReceiver extends BroadcastReceiver {
     }
 
     private void startIntent(Context context) {
-        log("startIntent()");
+        Timber.d("startIntent()");
         Intent i = new Intent(CypherpunkLaunchVPN.AUTO_START);
         i.setClass(context, CypherpunkLaunchVPN.class);
         i.setFlags(
