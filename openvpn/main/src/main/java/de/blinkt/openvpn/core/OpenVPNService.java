@@ -14,6 +14,7 @@ import android.app.UiModeManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.net.ConnectivityManager;
@@ -30,6 +31,8 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.cypherpunk.privacy.vpn.R;
+
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -40,12 +43,7 @@ import java.util.Collection;
 import java.util.Locale;
 import java.util.Vector;
 
-import com.cypherpunk.privacy.R;
-import com.cypherpunk.privacy.model.CypherpunkSetting;
-import com.cypherpunk.privacy.ui.main.MainActivity;
-
 import de.blinkt.openvpn.VpnProfile;
-//import de.blinkt.openvpn.activities.LogWindow;
 import de.blinkt.openvpn.core.VpnStatus.ByteCountListener;
 import de.blinkt.openvpn.core.VpnStatus.ConnectionStatus;
 import de.blinkt.openvpn.core.VpnStatus.StateListener;
@@ -88,18 +86,15 @@ public class OpenVPNService extends VpnService implements StateListener, Callbac
     private Runnable mOpenVPNThread;
     private int mOpenVPNfd = -1;
 
-    public void closeOpenVPNtun(int fdint)
-    {
+    public void closeOpenVPNtun(int fdint) {
         mOpenVPNfd = fdint;
     }
 
-    public void stopKillSwitch()
-    {
+    public void stopKillSwitch() {
         endVpnService();
     }
 
-    public boolean isKillSwitchActive()
-    {
+    public boolean isKillSwitchActive() {
         return (mOpenVPNfd != -1);
     }
 
@@ -136,10 +131,8 @@ public class OpenVPNService extends VpnService implements StateListener, Callbac
     }
 
     // Similar to revoke but do not try to stop process
-    public void processDied()
-    {
-        if (!mProfile.mPersistTun)
-        {
+    public void processDied() {
+        if (!mProfile.mPersistTun) {
             endVpnService();
         }
     }
@@ -165,10 +158,8 @@ public class OpenVPNService extends VpnService implements StateListener, Callbac
         mService = null;
     }
 
-    private void closeOpenVPNfdIfOpen()
-    {
-        if (mOpenVPNfd != -1)
-        {
+    private void closeOpenVPNfdIfOpen() {
+        if (mOpenVPNfd != -1) {
             NativeUtils.jniclose(mOpenVPNfd);
             mOpenVPNfd = -1;
         }
@@ -194,7 +185,9 @@ public class OpenVPNService extends VpnService implements StateListener, Callbac
         nbuilder.setContentIntent(getLogPendingIntent());
         nbuilder.setSmallIcon(icon);
 
-        Intent notificationIntent = new Intent(this.getApplicationContext(), MainActivity.class);
+        final Intent notificationIntent = new Intent(Intent.ACTION_MAIN);
+        notificationIntent.addCategory(Intent.CATEGORY_LAUNCHER);
+        notificationIntent.setPackage(getApplication().getPackageName());
         PendingIntent contentIntent = PendingIntent.getActivity(this.getApplicationContext(), 0, notificationIntent, 0);
         nbuilder.setContentIntent(contentIntent);
 
@@ -323,7 +316,7 @@ public class OpenVPNService extends VpnService implements StateListener, Callbac
         //PendingIntent startLW = PendingIntent.getActivity(this, 0, intent, 0);
         //intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
         //return startLW;
-		return null;
+        return null;
 
     }
 
@@ -410,7 +403,7 @@ public class OpenVPNService extends VpnService implements StateListener, Callbac
                 Log.d("OpenVPN", "Got no last connected profile on null intent. Assuming always on.");
                 mProfile = ProfileManager.getAlwaysOnVPN(this);
 
-                if (mProfile==null) {
+                if (mProfile == null) {
                     stopSelf(startId);
                     return START_NOT_STICKY;
                 }
@@ -469,17 +462,10 @@ public class OpenVPNService extends VpnService implements StateListener, Callbac
         // An old running VPN should now be exited
         mStarting = false;
 
-        // Start a new session by creating a new thread.
-        /*
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-
-        mOvpn3 = prefs.getBoolean("ovpn3", false);
-        if (!"ovpn3".equals(BuildConfig.FLAVOR))
-            mOvpn3 = false;
-        */
-        CypherpunkSetting cypherpunkSetting = new CypherpunkSetting();
-        switch (cypherpunkSetting.vpnBackend)
-        {
+        // see CypherpunkSetting#vpnBackend
+        final SharedPreferences pref = getSharedPreferences("cypherpunk_setting", MODE_PRIVATE);
+        final String vpnBackend = pref.getString("vpn_backend", "setting_vpn_backend_openvpn23");
+        switch (vpnBackend) {
             case "setting_vpn_protocol_openvpn31":
                 mOvpn3 = true;
                 break;
@@ -526,21 +512,21 @@ public class OpenVPNService extends VpnService implements StateListener, Callbac
         }
 
         new Handler(getMainLooper()).post(new Runnable() {
-                         @Override
-                         public void run() {
-                             if (mDeviceStateReceiver != null)
-                                 unregisterDeviceStateReceiver();
+                                              @Override
+                                              public void run() {
+                                                  if (mDeviceStateReceiver != null)
+                                                      unregisterDeviceStateReceiver();
 
-                             registerDeviceStateReceiver(mManagement);
-                         }
-                     }
+                                                  registerDeviceStateReceiver(mManagement);
+                                              }
+                                          }
 
-                );
+        );
     }
 
     private void stopOldOpenVPNProcess() {
         if (mManagement != null) {
-            if (mOpenVPNThread!=null)
+            if (mOpenVPNThread != null)
                 ((OpenVPNThread) mOpenVPNThread).setReplaceConnection();
             if (mManagement.stopVPN(true)) {
                 // an old was asked to exit, wait 1s

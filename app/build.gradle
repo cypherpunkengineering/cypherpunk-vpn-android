@@ -2,26 +2,17 @@ apply plugin: 'com.android.application'
 apply plugin: 'realm-android'
 
 android {
-    compileSdkVersion 24
-    buildToolsVersion '25'
+    compileSdkVersion rootProject.ext.compileSdkVersion
+    buildToolsVersion rootProject.ext.buildToolsVersion
 
     defaultConfig {
         applicationId "com.cypherpunk.privacy"
         minSdkVersion 15
-        targetSdkVersion 24
+        targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 69
         versionName "0.7.3"
 
         vectorDrawables.generatedDensities = ['hdpi', 'xhdpi', 'xxhdpi']
-    }
-    sourceSets {
-        main {
-            java.srcDirs += [ '../openvpn/main/src/main/java', '../openvpn/main/src/ovpn3/java' ]
-            res.srcDirs += '../openvpn/main/src/main/res'
-            assets.srcDirs += [ '../openvpn/main/src/main/assets', '../openvpn/main/ovpnlibs/assets' ]
-            jniLibs.srcDirs += '../openvpn/main/ovpnlibs/jniLibs'
-            jni.srcDirs = [] // disable automatic ndk-build
-        }
     }
     signingConfigs {
         debug {
@@ -59,11 +50,12 @@ android {
     }
 }
 
+
 dependencies {
+    compile project(':vpn')
     compile fileTree(dir: 'libs', include: ['*.jar'])
     testCompile 'junit:junit:4.12'
 
-    def supportLibraryVersion = '24.2.1'
     def daggerVersion = '2.6'
 
     compile "com.android.support:appcompat-v7:${supportLibraryVersion}"
