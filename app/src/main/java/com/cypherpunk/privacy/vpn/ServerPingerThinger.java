@@ -1,7 +1,5 @@
 package com.cypherpunk.privacy.vpn;
 
-import android.util.Log;
-
 import com.cypherpunk.privacy.CypherpunkApplication;
 import com.cypherpunk.privacy.model.Region;
 
@@ -13,6 +11,7 @@ import java.util.List;
 
 import io.realm.Realm;
 import io.realm.Sort;
+import timber.log.Timber;
 
 /**
  * Created by jmaurice on 2017/02/20.
@@ -21,10 +20,6 @@ import io.realm.Sort;
 public class ServerPingerThinger extends Thread {
     public InetSocketAddress address;
     public String locationId;
-
-    private static void log(String str) {
-        Log.w("ServerPingerThinger", str);
-    }
 
     public static boolean isPingable(Region location) {
         if (location.getOvDefault().length() < 7)
@@ -38,7 +33,7 @@ public class ServerPingerThinger extends Thread {
 
     public static void pingLocation(Region location) {
         if (isPingable(location) == false) {
-            log("Skipping ping for location " + location.getId());
+            Timber.d("Skipping ping for location " + location.getId());
 
             // update latency to -1 when locations become unavailable
             updateLocationLatency(location.getId(), -1);
@@ -109,7 +104,7 @@ public class ServerPingerThinger extends Thread {
         long latency, l1, l2;
         boolean socketProtected = false;
 
-        log("Starting ping for location: " + locationId + " -> " + address.toString());
+        Timber.d("Starting ping for location: " + locationId + " -> " + address.toString());
 
         try {
             // allocate a socket or two
@@ -143,14 +138,14 @@ public class ServerPingerThinger extends Thread {
             List<Long> list = Arrays.asList(l1, l2);
             latency = Collections.min(list);
         } catch (Exception e) {
-            log("Exception while pinging location " + locationId + ": " + e.toString());
+            Timber.e("Exception while pinging location " + locationId + ": " + e.toString());
             return;
         }
 
         if (latency < 0)
             return;
 
-        log("Location " + locationId + " ping time: " + latency + "ms, socket protected: " + socketProtected);
+        Timber.d("Location " + locationId + " ping time: " + latency + "ms, socket protected: " + socketProtected);
         updateLocationLatency(locationId, latency);
     }
 }

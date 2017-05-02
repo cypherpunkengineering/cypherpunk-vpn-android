@@ -16,7 +16,6 @@ import android.support.annotation.Size;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.util.Pair;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.util.SparseArray;
 import android.view.Surface;
 import android.view.SurfaceHolder;
@@ -29,6 +28,8 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.util.ArrayList;
 import java.util.Random;
+
+import timber.log.Timber;
 
 
 public class BinarySurfaceView extends SurfaceView implements SurfaceHolder.Callback {
@@ -116,7 +117,7 @@ public class BinarySurfaceView extends SurfaceView implements SurfaceHolder.Call
                 if (DUMP_FPS) {
                     actualFps++;
                     if (now % 1000 < lastDrawTime % 1000) {
-                        Log.d(TAG, "fps: " + actualFps);
+                        Timber.d(TAG, "fps: " + actualFps);
                         actualFps = 0;
                     }
                 }
@@ -148,7 +149,7 @@ public class BinarySurfaceView extends SurfaceView implements SurfaceHolder.Call
                     }
                 }
             } catch (Exception e) {
-                Log.e(TAG, "exception thrown in drawTiles()", e);
+                Timber.e(TAG, "exception thrown in drawTiles()", e);
                 return;
             } finally {
                 if (canvas != null)

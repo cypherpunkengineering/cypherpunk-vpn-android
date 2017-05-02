@@ -23,7 +23,6 @@ import android.text.Spanned;
 import android.text.TextUtils;
 import android.text.style.TextAppearanceSpan;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -49,6 +48,7 @@ import com.google.firebase.analytics.FirebaseAnalytics;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 
 import de.blinkt.openvpn.core.VpnStatus;
+import timber.log.Timber;
 
 public class MainActivity extends AppCompatActivity
         implements VpnStatus.StateListener, RateDialogFragment.RateDialogListener,
@@ -250,12 +250,8 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-    private static void log(String str) {
-        Log.w("CypherpunkVPN", str);
-    }
-
     private void startVpn() {
-        log("startVpn()");
+        Timber.d("startVpn()");
         Intent intent = VpnService.prepare(MainActivity.this);
         if (intent != null) {
             startActivityForResult(intent, REQUEST_VPN_START);
@@ -269,7 +265,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void stopVpn() {
-        log("stopVpn()");
+        Timber.d("stopVpn()");
         if (status.isDisconnected()) {
             return;
         }
