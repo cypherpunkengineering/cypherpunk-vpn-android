@@ -99,6 +99,9 @@ dependencies {
     // https://github.com/JakeWharton/timber
     compile 'com.jakewharton.timber:timber:4.5.1'
 
+    // http://stackoverflow.com/questions/42583759/databinding-not-working-after-upgrade-android-studio-2-3
+    provided 'com.android.databinding:compiler:2.3.0'
+
     androidTestCompile 'com.android.support.test:runner:0.5'
     androidTestCompile 'com.android.support.test:rules:0.5'
     androidTestCompile 'com.android.support.test.espresso:espresso-core:2.2.2'
