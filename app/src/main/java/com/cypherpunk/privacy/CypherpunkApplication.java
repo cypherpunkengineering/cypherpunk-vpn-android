@@ -1,6 +1,7 @@
 package com.cypherpunk.privacy;
 
 import android.app.Application;
+import android.support.annotation.VisibleForTesting;
 
 import com.cypherpunk.privacy.dagger.AppComponent;
 import com.cypherpunk.privacy.dagger.DaggerAppComponent;
@@ -45,5 +46,10 @@ public class CypherpunkApplication extends Application {
 
     public AppComponent getAppComponent() {
         return appComponent;
+    }
+
+    @VisibleForTesting
+    public void setAppComponent(AppComponent component) {
+        this.appComponent = component;
     }
 }

@@ -22,8 +22,8 @@
     <color name="vpn_state_not_connected">#cccccc</color>
     <color name="vpn_state_connected">#ffffff</color>
     <color name="edit_text_hint">#80ffffff</color>
-    <color name="input_layout_control_normal">#f8cf1c</color>
-    <color name="world_map_line">#f8cf1c</color>
+    <color name="input_layout_control_normal">@color/golden_yellow</color>
+    <color name="world_map_line">@color/golden_yellow</color>
     <color name="status_connected">#a7d40a</color>
     <color name="status_disconnected">#e15013</color>
     <color name="search_view_hint_text">#80ffffff</color>
@@ -37,14 +37,29 @@
     <color name="region_badge_premium_text">#453908</color>
     <color name="region_badge_unavailable">#59ffffff</color>
 
-    <color name="dark_green">#163138</color>
-    <color name="light_green">#5fbbc4</color>
-    <color name="green">#5fbbc4</color>
+    <color name="dark_green">@color/dark_blue_grey</color>
+    <color name="light_green">@color/seafoam_blue</color>
+    <color name="green">@color/seafoam_blue</color>
 
-    <drawable name="window_background">#163138</drawable>
-    <drawable name="window_background_transparent">#d5163138</drawable>
+    <drawable name="window_background">#163238</drawable>
+    <drawable name="window_background_transparent">#d5163238</drawable>
 
     <color name="drawer_background">@color/dark_green</color>
     <color name="text_color_light">@color/light_green</color>
+
+    <!-- new -->
+    <color name="black">#302f2f</color>
+    <color name="dark_navy_blue">#010011</color>
+    <color name="dark_blue_grey_two">#0d1e26</color>
+    <color name="dark_blue_grey">#163238</color>
+    <color name="dark_slate_blue">#19474c</color>
+    <color name="nice_blue">#1987bd</color>
+    <color name="greeny_blue">#50aeb7</color>
+    <color name="seafoam_blue">#5fbbc4</color>
+    <color name="nasty_green">#67b13f</color>
+    <color name="robin_egg_blue">#8dfffc</color>
+    <color name="dark_cream">#ffe49a</color>
+    <color name="golden_yellow">#f8cf1c</color>
+    <color name="peach">#ffb179</color>
 
 </resources>

@@ -74,10 +74,9 @@ public class MainActivity extends AppCompatActivity
         }
 
         if (!UserManager.isSignedIn()) {
-            Intent intent = new Intent(this, IdentifyEmailActivity.class);
-            TaskStackBuilder builder = TaskStackBuilder.create(this);
-            builder.addNextIntent(intent);
-            builder.startActivities();
+            TaskStackBuilder.create(this)
+                    .addNextIntent(IdentifyEmailActivity.createIntent(this))
+                    .startActivities();
             finish();
         }
 

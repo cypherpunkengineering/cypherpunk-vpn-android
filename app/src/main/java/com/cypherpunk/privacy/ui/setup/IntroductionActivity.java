@@ -40,7 +40,7 @@ public class IntroductionActivity extends AppCompatActivity {
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        startActivity(new Intent(IntroductionActivity.this, IdentifyEmailActivity.class));
+                        startActivity(IdentifyEmailActivity.createIntent(IntroductionActivity.this));
                     }
                 });
 
