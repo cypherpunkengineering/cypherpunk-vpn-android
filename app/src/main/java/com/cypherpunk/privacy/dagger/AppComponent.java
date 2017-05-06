@@ -8,7 +8,7 @@ import com.cypherpunk.privacy.ui.region.RegionFragment;
 import com.cypherpunk.privacy.ui.setup.TutorialActivity;
 import com.cypherpunk.privacy.ui.signin.ConfirmationEmailActivity;
 import com.cypherpunk.privacy.ui.signin.IdentifyEmailActivity;
-import com.cypherpunk.privacy.ui.signin.SignInActivity;
+import com.cypherpunk.privacy.ui.signin.LoginActivity;
 import com.cypherpunk.privacy.ui.signin.SignUpActivity;
 
 import javax.inject.Singleton;
@@ -20,7 +20,7 @@ import io.realm.Realm;
 @Singleton
 public interface AppComponent {
 
-    void inject(SignInActivity target);
+    void inject(LoginActivity target);
 
     void inject(SignUpActivity target);
 

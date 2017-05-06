@@ -84,9 +84,9 @@
         </service>
 
         <activity
-            android:name=".ui.signin.SignInActivity"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:windowSoftInputMode="adjustResize"/>
+            android:name=".ui.signin.LoginActivity"
+            android:theme="@style/CypherPunk.NoActionBar"
+            android:windowSoftInputMode="stateAlwaysVisible"/>
         <activity
             android:name=".ui.signin.SignUpActivity"
             android:theme="@style/AppTheme.NoActionBar"/>
