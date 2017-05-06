@@ -12,7 +12,7 @@ import com.cypherpunk.privacy.dagger.RealmModule;
 import com.cypherpunk.privacy.data.api.CypherpunkService;
 import com.cypherpunk.privacy.data.api.json.EmailRequest;
 import com.cypherpunk.privacy.ui.signin.IdentifyEmailActivity;
-import com.cypherpunk.privacy.ui.signin.SignInActivity;
+import com.cypherpunk.privacy.ui.signin.LoginActivity;
 import com.cypherpunk.privacy.ui.signin.SignUpActivity;
 
 import org.junit.Before;
@@ -119,7 +119,7 @@ public class IdentifyEmailActivityUiTest {
         // ボタンクリック
         onView(withId(R.id.submit_button)).perform(click());
 
-        intended(allOf(hasComponent(SignInActivity.class.getName()), hasExtra(is("email"), notNullValue())));
+        intended(allOf(hasComponent(LoginActivity.class.getName()), hasExtra(is("email"), notNullValue())));
     }
 
     @Test

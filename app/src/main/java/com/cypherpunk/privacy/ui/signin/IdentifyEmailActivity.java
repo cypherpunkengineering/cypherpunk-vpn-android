@@ -131,7 +131,7 @@ public class IdentifyEmailActivity extends AppCompatActivity {
                             dialog.dismiss();
                             dialog = null;
                         }
-                        startActivity(SignInActivity.createIntent(context, email));
+                        startActivity(LoginActivity.createIntent(context, email));
                     }
 
                     @Override

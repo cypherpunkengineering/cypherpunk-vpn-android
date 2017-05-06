@@ -157,7 +157,7 @@ public class SignUpActivity extends AppCompatActivity {
                                 HttpException httpException = (HttpException) error;
                                 if (httpException.code() == 409) {
                                     Toast.makeText(SignUpActivity.this, R.string.email_already_registered, Toast.LENGTH_SHORT).show();
-                                    startActivity(SignInActivity.createIntent(SignUpActivity.this, email));
+                                    startActivity(LoginActivity.createIntent(SignUpActivity.this, email));
                                 }
                             }
                         }

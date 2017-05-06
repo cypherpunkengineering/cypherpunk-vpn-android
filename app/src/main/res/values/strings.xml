@@ -24,19 +24,21 @@
     <!-- sign in-->
     <string name="error_field_required">This field is required</string>
     <string name="error_invalid_email">invalid email</string>
-    <string name="sign_in_button_sign_in">Sign In</string>
     <string name="no_internet">Hmm, seems you aren\'t connected to the internet?</string>
     <string name="email_already_registered">email address is already registered</string>
     <string name="api_error">Error</string>
     <string name="invalid_mail_password">invalid password</string>
-    <string name="sign_in_forgot_password">Forgot password?</string>
-    <string name="sign_in_set_password_recovery">We sent you password recovery email.</string>
-    <string name="sign_in_password_hint">Password</string>
     <string name="sign_up_password_hint">Password</string>
     <string name="sign_up_email_hint">Email</string>
     <string name="sign_up_button_sign_up">Sign Up</string>
-    <string name="sign_in_welcome_back">Welcome back!</string>
     <string name="sign_up_text">Hello! Please set your password</string>
+
+    <!-- login -->
+    <string name="login_header">Welcome back.</string>
+    <string name="login">Login</string>
+    <string name="login_forgot_password"><u>Forgot password?</u></string>
+    <string name="login_sent_password_recovery">We sent you password recovery email.</string>
+    <string name="login_hint">Password</string>
 
     <!-- confirmation email -->
     <string name="confirmation_email_text">Check your Inbox</string>
