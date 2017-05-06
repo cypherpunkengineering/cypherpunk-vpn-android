@@ -48,7 +48,7 @@
     <!-- identify email -->
     <string name="identify_email_hint">Email</string>
     <string name="identify_email_get_started">Get Started</string>
-    <string name="identify_email_header1">Welcome to</string>
+    <string name="identify_email_header">Welcome to</string>
     <string name="identify_email_message">Please input your email to begin.</string>
 
     <!-- reset password -->
