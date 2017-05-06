@@ -3,6 +3,8 @@
 
     <style name="CypherPunk" parent="Theme.AppCompat">
         <item name="android:windowBackground">@drawable/window_background</item>
+        <item name="colorPrimary">@color/dark_background</item>
+        <item name="colorPrimaryDark">@color/title_bar_background</item>
     </style>
 
     <style name="CypherPunk.NoActionBar">

@@ -11,21 +11,29 @@
         android:id="@+id/header_background"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:background="@color/dark_navy_blue"
+        android:background="@color/title_bar_background"
         app:layout_constraintDimensionRatio="h,9:2"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"/>
+
+    <android.support.v4.widget.Space
+        android:id="@+id/space"
+        android:layout_width="10dp"
+        android:layout_height="1dp"
+        app:layout_constraintBottom_toBottomOf="@+id/header_background"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"/>
 
     <ImageView
         android:id="@+id/arrow"
         android:layout_width="24dp"
         android:layout_height="12dp"
         android:src="@drawable/arrow_drop_down_vector"
-        android:tint="@color/dark_navy_blue"
+        android:tint="@color/title_bar_background"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/header_background"
+        app:layout_constraintTop_toTopOf="@+id/space"
         tools:ignore="ContentDescription"/>
 
     <com.cypherpunk.privacy.widget.TypefaceTextView
@@ -33,7 +41,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="2dp"
-        android:text="@string/identify_email_header1"
+        android:text="@string/identify_email_header"
         android:textColor="@color/greeny_blue"
         android:textSize="16sp"
         app:fontName="DosisMedium"
