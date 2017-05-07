@@ -1,55 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center_horizontal"
+    android:orientation="vertical">
 
-    <RelativeLayout
+    <com.cypherpunk.privacy.widget.UnswipeablePager
+        android:id="@+id/pager"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="0dp"
+        android:layout_marginTop="16dp"
+        android:layout_weight="1"/>
 
-        <com.cypherpunk.privacy.widget.UnswipeablePager
-            android:id="@+id/pager"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_above="@+id/ok_button"
-            android:layout_marginTop="16dp"/>
+    <com.cypherpunk.privacy.widget.TypefaceButton
+        android:id="@+id/positive_button"
+        style="@style/Widget.CypherPunk.Button.Colored"
+        android:layout_width="180dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:text="@string/tutorial_allow"
+        android:theme="@style/ButtonTheme"/>
 
-        <com.cypherpunk.privacy.widget.TypefaceButton
-            android:id="@id/ok_button"
-            style="@style/Widget.Cypherpunk.YellowButton"
-            android:layout_width="220dp"
-            android:layout_height="wrap_content"
-            android:layout_above="@+id/do_not_allow_button"
-            android:layout_centerHorizontal="true"
-            android:layout_marginBottom="16dp"
-            android:text="@string/tutorial_allow"/>
+    <com.cypherpunk.privacy.widget.TypefaceTextView
+        android:id="@+id/negative_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:background="?android:selectableItemBackground"
+        android:clickable="true"
+        android:paddingBottom="8dp"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:paddingTop="8dp"
+        android:text="@string/tutorial_do_not_allow"
+        android:textSize="16sp"
+        android:visibility="invisible"
+        tools:visibility="visible"/>
 
-        <com.cypherpunk.privacy.widget.TypefaceTextView
-            android:id="@id/do_not_allow_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_above="@+id/indicator"
-            android:layout_centerHorizontal="true"
-            android:layout_marginBottom="8dp"
-            android:background="?android:selectableItemBackground"
-            android:clickable="true"
-            android:padding="8dp"
-            android:text="@string/tutorial_don_t_allow"
-            android:textSize="16sp"
-            android:visibility="invisible"
-            tools:visibility="visible"/>
+    <com.cypherpunk.privacy.widget.PageIndicator
+        android:id="@+id/indicator"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginBottom="32dp"
+        android:padding="10dp"/>
 
-        <com.cypherpunk.privacy.widget.PageIndicator
-            android:id="@id/indicator"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
-            android:layout_gravity="center"
-            android:layout_marginBottom="32dp"
-            android:padding="10dp"/>
-
-    </RelativeLayout>
-
-</layout>
+</LinearLayout>

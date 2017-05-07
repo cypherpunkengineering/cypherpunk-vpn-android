@@ -3,10 +3,12 @@ package com.cypherpunk.privacy.ui.setup;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
-import android.databinding.DataBindingUtil;
 import android.net.VpnService;
 import android.os.Bundle;
+import android.support.annotation.LayoutRes;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.annotation.StringRes;
 import android.support.v4.app.TaskStackBuilder;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -14,28 +16,30 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.cypherpunk.privacy.CypherpunkApplication;
 import com.cypherpunk.privacy.R;
 import com.cypherpunk.privacy.data.api.CypherpunkService;
 import com.cypherpunk.privacy.data.api.json.AccountStatusResult;
 import com.cypherpunk.privacy.data.api.json.RegionResult;
-import com.cypherpunk.privacy.databinding.ActivityTutorialBinding;
+import com.cypherpunk.privacy.domain.service.ServerService;
 import com.cypherpunk.privacy.model.CypherpunkSetting;
 import com.cypherpunk.privacy.model.Region;
 import com.cypherpunk.privacy.model.UserSettingPref;
 import com.cypherpunk.privacy.ui.main.MainActivity;
-import com.cypherpunk.privacy.vpn.ServerPingerThinger;
+import com.cypherpunk.privacy.widget.PageIndicator;
 import com.google.firebase.analytics.FirebaseAnalytics;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 
 import javax.inject.Inject;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+import butterknife.OnPageChange;
 import io.realm.Realm;
-import io.realm.RealmResults;
 import rx.Single;
 import rx.SingleSubscriber;
 import rx.Subscription;
@@ -43,14 +47,17 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 import rx.subscriptions.Subscriptions;
+import timber.log.Timber;
 
-
+/**
+ * get account type and server list during tutorial.
+ */
 public class TutorialActivity extends AppCompatActivity {
 
-    private ActivityTutorialBinding binding;
-    private Subscription subscription = Subscriptions.empty();
-
     private static final int GRANT_VPN_PERMISSION = 1;
+
+    @NonNull
+    private Subscription subscription = Subscriptions.empty();
 
     @Inject
     Realm realm;
@@ -58,174 +65,146 @@ public class TutorialActivity extends AppCompatActivity {
     @Inject
     CypherpunkService webService;
 
+    @BindView(R.id.pager)
+    ViewPager pager;
+
+    @BindView(R.id.positive_button)
+    TextView positiveButton;
+
+    @BindView(R.id.negative_button)
+    TextView negativeButton;
+
+    private IntroductionPagerAdapter adapter;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_tutorial);
+        ButterKnife.bind(this);
+
         CypherpunkApplication.instance.getAppComponent().inject(this);
 
         if (!getResources().getBoolean(R.bool.is_tablet)) {
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         }
 
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_tutorial);
-
-        long count = realm.where(Region.class).count();
+        final long count = realm.where(Region.class).count();
         if (count == 0) {
             getServerList();
         }
 
-        IntroductionPagerAdapter adapter = new IntroductionPagerAdapter(this);
-        binding.pager.setAdapter(adapter);
-        binding.indicator.setViewPager(binding.pager);
-        binding.pager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
-            @Override
-            public void onPageSelected(int position) {
-                super.onPageSelected(position);
-                binding.doNotAllowButton.setVisibility(position == 1 ? View.VISIBLE : View.INVISIBLE);
-            }
-        });
+        adapter = new IntroductionPagerAdapter(this);
+        pager.setAdapter(adapter);
 
-        binding.okButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                int currentItem = binding.pager.getCurrentItem();
-                switch (currentItem) {
-                    case 0: {
-                        Intent intent = VpnService.prepare(getApplicationContext());
-                        if (intent != null)
-                            startActivityForResult(intent, GRANT_VPN_PERMISSION);
-                        else
-                            onActivityResult(GRANT_VPN_PERMISSION, RESULT_OK, null);
-                        break;
-                    }
-                    case 1: {
-                        CypherpunkSetting setting = new CypherpunkSetting();
-                        setting.analytics = true;
-                        setting.save();
+        final PageIndicator indicator = ButterKnife.findById(this, R.id.indicator);
+        indicator.setViewPager(pager);
 
-                        // enable firebase
-                        FirebaseAnalytics.getInstance(getApplicationContext()).setAnalyticsCollectionEnabled(true);
+        onPageSelected(0);
+    }
 
-                        goToMainScreen();
-                        break;
-                    }
+    @OnPageChange(R.id.pager)
+    void onPageSelected(int position) {
+        final TutorialItem item = adapter.getItem(position);
+        positiveButton.setText(item.buttonStringId);
+        negativeButton.setVisibility(item.type == TutorialType.ANALYTICS ? View.VISIBLE : View.INVISIBLE);
+    }
+
+    @OnClick(R.id.positive_button)
+    void onPositiveButtonClicked() {
+        final TutorialItem item = adapter.getItem(pager.getCurrentItem());
+        switch (item.type) {
+            case EXPLANATION:
+                moveToNextPage();
+                break;
+
+            case VPN_PERMISSION:
+                final Intent intent = VpnService.prepare(getApplicationContext());
+                if (intent != null) {
+                    startActivityForResult(intent, GRANT_VPN_PERMISSION);
+                } else {
+                    moveToNextPage();
                 }
-            }
-        });
+                break;
 
-        binding.doNotAllowButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                CypherpunkSetting setting = new CypherpunkSetting();
-                setting.analytics = false;
-                setting.save();
+            case ANALYTICS:
+                setAnalytics(true);
+                moveToNextPage();
+                break;
+        }
+    }
 
-                // disable firebase
-                FirebaseAnalytics.getInstance(getApplicationContext()).setAnalyticsCollectionEnabled(false);
-
-                goToMainScreen();
-            }
-        });
+    @OnClick(R.id.negative_button)
+    void onNegativeButtonClicked() {
+        final TutorialItem item = adapter.getItem(pager.getCurrentItem());
+        switch (item.type) {
+            case ANALYTICS:
+                setAnalytics(false);
+                moveToNextPage();
+                break;
+        }
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == RESULT_OK) {
-            switch (requestCode) {
-                case GRANT_VPN_PERMISSION:
-                    int currentItem = binding.pager.getCurrentItem();
-                    binding.pager.setCurrentItem(++currentItem);
-                    break;
-            }
+        if (resultCode == RESULT_OK && requestCode == GRANT_VPN_PERMISSION) {
+            moveToNextPage();
+        }
+    }
+
+    private void setAnalytics(boolean enabled) {
+        final CypherpunkSetting setting = new CypherpunkSetting();
+        setting.analytics = enabled;
+        setting.save();
+
+        FirebaseAnalytics.getInstance(getApplicationContext())
+                .setAnalyticsCollectionEnabled(enabled);
+    }
+
+    private void moveToNextPage() {
+        final int position = pager.getCurrentItem();
+        if (position < adapter.getCount() - 1) {
+            pager.setCurrentItem(position + 1);
+        } else {
+            TaskStackBuilder.create(this)
+                    .addNextIntent(new Intent(this, MainActivity.class))
+                    .startActivities();
+            finish();
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        final int currentItem = pager.getCurrentItem();
+        if (currentItem > 0) {
+            pager.setCurrentItem(currentItem - 1);
         }
     }
 
     private void getServerList() {
-        subscription = webService
-                .getAccountStatus()
+        subscription = webService.getAccountStatus()
                 .flatMap(new Func1<AccountStatusResult, Single<Map<String, RegionResult>>>() {
                     @Override
                     public Single<Map<String, RegionResult>> call(AccountStatusResult result) {
-                        UserSettingPref userPref = new UserSettingPref();
-                        userPref.userStatusType = result.getAccount().type;
-                        userPref.save();
-                        return webService.serverList(userPref.userStatusType);
+                        final String type = result.getAccount().type;
+                        UserSettingPref.updateUserStatusType(type);
+                        return webService.serverList(type);
                     }
                 })
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new SingleSubscriber<Map<String, RegionResult>>() {
-                               @Override
-                               public void onSuccess(Map<String, RegionResult> result) {
-                                   realm.beginTransaction();
-                                   List<String> updateRegionIdList = new ArrayList<>();
-                                   for (Map.Entry<String, RegionResult> resultEntry : result.entrySet()) {
-                                       RegionResult regionResult = resultEntry.getValue();
-                                       Region region = realm.where(Region.class)
-                                               .equalTo("id", regionResult.getId()).findFirst();
-                                       if (region != null) {
-                                           region.setRegion(regionResult.getRegion());
-                                           region.setCountry(regionResult.getCountry());
-                                           region.setLevel(regionResult.getLevel());
-                                           region.setRegionName(regionResult.getName());
-                                           region.setAuthorized(regionResult.isAuthorized());
-                                           region.setOvHostname(regionResult.getOvHostname());
-                                           region.setOvDefault(regionResult.getOvDefault());
-                                           region.setOvNone(regionResult.getOvNone());
-                                           region.setOvStrong(regionResult.getOvStrong());
-                                           region.setOvStealth(regionResult.getOvStealth());
-                                       } else {
-                                           region = new Region(
-                                                   regionResult.getId(),
-                                                   regionResult.getRegion(),
-                                                   regionResult.getCountry(),
-                                                   regionResult.getName(),
-                                                   regionResult.getLevel(),
-                                                   regionResult.isAuthorized(),
-                                                   regionResult.getOvHostname(),
-                                                   regionResult.getOvDefault(),
-                                                   regionResult.getOvNone(),
-                                                   regionResult.getOvStrong(),
-                                                   regionResult.getOvStealth());
-                                           realm.copyToRealm(region);
-                                       }
-                                       updateRegionIdList.add(region.getId());
-                                   }
-                                   RealmResults<Region> oldRegion = realm.where(Region.class)
-                                           .not()
-                                           .beginGroup()
-                                           .in("id", updateRegionIdList.toArray(new String[updateRegionIdList.size()]))
-                                           .endGroup()
-                                           .findAll();
-                                   oldRegion.deleteAllFromRealm();
-                                   realm.commitTransaction();
+                    @Override
+                    public void onSuccess(Map<String, RegionResult> result) {
+                        final ServerService serverService = new ServerService(realm);
+                        serverService.updateServerList(result);
+                    }
 
-                                   // after realm db is updated above, start pinging new location data
-                                   for (Map.Entry<String, RegionResult> resultEntry : result.entrySet()) {
-                                       RegionResult regionResult = resultEntry.getValue();
-                                       Region region = realm.where(Region.class)
-                                               .equalTo("id", regionResult.getId()).findFirst();
-                                       ServerPingerThinger.pingLocation(region);
-                                   }
-                               }
-
-                               @Override
-                               public void onError(Throwable error) {
-                                   error.printStackTrace();
-                               }
-                           }
-
-                );
-
-    }
-
-    @Override
-    public void onBackPressed() {
-        int currentItem = binding.pager.getCurrentItem();
-        if (currentItem != 0) {
-            binding.pager.setCurrentItem(--currentItem);
-        }
+                    @Override
+                    public void onError(Throwable e) {
+                        Timber.e(e);
+                    }
+                });
     }
 
     @Override
@@ -235,26 +214,49 @@ public class TutorialActivity extends AppCompatActivity {
         subscription.unsubscribe();
     }
 
-    private void goToMainScreen() {
-        Intent intent = new Intent(TutorialActivity.this, MainActivity.class);
-        TaskStackBuilder builder = TaskStackBuilder.create(TutorialActivity.this);
-        builder.addNextIntent(intent);
-        builder.startActivities();
+    private enum TutorialType {
+        EXPLANATION,
+        VPN_PERMISSION,
+        ANALYTICS,
+    }
+
+    private static class TutorialItem {
+        @NonNull
+        private final TutorialType type;
+        @LayoutRes
+        private final int layoutResId;
+        @StringRes
+        private final int buttonStringId;
+
+        private TutorialItem(@NonNull TutorialType type, int layoutResId, int buttonStringId) {
+            this.type = type;
+            this.layoutResId = layoutResId;
+            this.buttonStringId = buttonStringId;
+        }
     }
 
     private static class IntroductionPagerAdapter extends PagerAdapter {
 
-        private static final int[] layouts = {R.layout.tutorial_1, R.layout.tutorial_2};
+        private static final TutorialItem[] ITEMS = {
+                new TutorialItem(TutorialType.EXPLANATION, R.layout.tutorial_general, R.string.tutorial_next),
+                new TutorialItem(TutorialType.EXPLANATION, R.layout.tutorial_cypherplay, R.string.tutorial_next),
+                new TutorialItem(TutorialType.VPN_PERMISSION, R.layout.tutorial_setup_vpn, R.string.tutorial_allow),
+                new TutorialItem(TutorialType.ANALYTICS, R.layout.tutorial_analytics, R.string.tutorial_allow),
+        };
 
         private final LayoutInflater inflater;
 
-        public IntroductionPagerAdapter(Context context) {
+        IntroductionPagerAdapter(@NonNull Context context) {
             inflater = LayoutInflater.from(context);
+        }
+
+        TutorialItem getItem(int position) {
+            return ITEMS[position];
         }
 
         @Override
         public int getCount() {
-            return layouts.length;
+            return ITEMS.length;
         }
 
         @Override
@@ -264,7 +266,7 @@ public class TutorialActivity extends AppCompatActivity {
 
         @Override
         public Object instantiateItem(ViewGroup container, int position) {
-            View view = inflater.inflate(layouts[position], container, false);
+            final View view = inflater.inflate(ITEMS[position].layoutResId, container, false);
             container.addView(view);
             return view;
         }
