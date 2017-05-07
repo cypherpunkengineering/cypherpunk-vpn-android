@@ -89,7 +89,8 @@
             android:windowSoftInputMode="stateAlwaysVisible"/>
         <activity
             android:name=".ui.signin.SignUpActivity"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:theme="@style/CypherPunk.NoActionBar"
+            android:windowSoftInputMode="stateAlwaysVisible"/>
         <activity
             android:name=".ui.signin.IdentifyEmailActivity"
             android:theme="@style/CypherPunk.NoActionBar"

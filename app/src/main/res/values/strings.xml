@@ -28,10 +28,19 @@
     <string name="email_already_registered">email address is already registered</string>
     <string name="api_error">Error</string>
     <string name="invalid_mail_password">invalid password</string>
-    <string name="sign_up_password_hint">Password</string>
     <string name="sign_up_email_hint">Email</string>
-    <string name="sign_up_button_sign_up">Sign Up</string>
-    <string name="sign_up_text">Hello! Please set your password</string>
+
+    <string name="welcome_to">Welcome to</string>
+
+    <!-- sign up -->
+    <string name="sign_up_message">Hello! Please set your password</string>
+    <string name="sign_up_hint">Password</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="sign_up_policy1">"By signing up, you agree to our "</string>
+    <string name="sign_up_policy2">Terms of Service</string>
+    <string name="sign_up_policy3">" and confirm that you have read the "</string>
+    <string name="sign_up_policy4">Privacy Policy</string>
+    <string name="sign_up_policy5">.</string>
 
     <!-- login -->
     <string name="login_header">Welcome back.</string>
@@ -50,7 +59,6 @@
     <!-- identify email -->
     <string name="identify_email_hint">Email</string>
     <string name="identify_email_get_started">Get Started</string>
-    <string name="identify_email_header">Welcome to</string>
     <string name="identify_email_message">Please input your email to begin.</string>
 
     <!-- reset password -->
@@ -288,11 +296,6 @@
     <string name="region_list_favorite">FAVORITE</string>
     <string name="region_list_recent">RECENT</string>
     <string name="region_list_all">ALL</string>
-    <string name="sign_up_policy1">"By signing up, you agree to our "</string>
-    <string name="sign_up_policy2">Terms of Service</string>
-    <string name="sign_up_policy3">" and confirm that you have read the "</string>
-    <string name="sign_up_policy4">Privacy Policy</string>
-    <string name="sign_up_policy5">.</string>
 
     <string name="region_list_dev">DEVELOPER</string>
     <string name="region_list_na">NORTH AMERICA</string>

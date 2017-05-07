@@ -41,7 +41,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="2dp"
-        android:text="@string/identify_email_header"
+        android:text="@string/welcome_to"
         android:textColor="@color/greeny_blue"
         android:textSize="16sp"
         app:fontName="DosisMedium"
