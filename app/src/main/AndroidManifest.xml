@@ -97,7 +97,7 @@
             android:windowSoftInputMode="stateAlwaysVisible"/>
         <activity
             android:name=".ui.signin.ConfirmationEmailActivity"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:theme="@style/CypherPunk.NoActionBar"/>
         <activity
             android:name=".ui.setup.TutorialActivity"
             android:theme="@style/CypherPunk.NoActionBar"/>

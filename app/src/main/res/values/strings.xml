@@ -50,10 +50,12 @@
     <string name="login_hint">Password</string>
 
     <!-- confirmation email -->
-    <string name="confirmation_email_text">Check your Inbox</string>
-    <string name="confirmation_email_text2">Follow the instructions sent via\nemail to activate your account.</string>
+    <string name="confirmation_email_header">Setting up…</string>
+    <string name="confirmation_email_status1">Awaiting email confirmation…</string>
+    <string name="confirmation_email_status2">We haven\'t received your email confirmation yet.</string>
+    <string name="confirmation_email_check_again">Check again</string>
+    <string name="confirmation_email_resend_email">Resend email</string>
     <string name="confirmation_back_login">Back to Sign In</string>
-    <string name="resend_email">Resend Email</string>
     <string name="confirmation_email_resend">Re-send confirmation email</string>
 
     <!-- identify email -->
