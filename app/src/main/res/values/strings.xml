@@ -265,7 +265,13 @@
     <string name="select_mode_skip">Skip</string>
 
     <!-- tutorial -->
+    <string name="tutorial_next">Next</string>
     <string name="tutorial_allow">Allow</string>
+    <string name="tutorial_do_not_allow">Don’t allow</string>
+    <string name="tutorial_1_title">Setting Up Your VPN</string>
+    <string name="tutorial_1_text">Please grant permission to Cypherpunk Privacy for connecting a VPN from your device.</string>
+    <string name="tutorial_2_title">One Final Step</string>
+    <string name="tutorial_2_text">Share anonymized analytics about your VPN connections to help make Cypherpunk Privacy faster and more reliable.</string>
 
     <!-- select region -->
     <string name="select_region_connect_dialog_message">Do you want to connect now?</string>
@@ -288,11 +294,6 @@
     <string name="network_other_networks">OTHER NETWORKS</string>
     <string name="network_other_auto_secure_connections">Auto secure connections</string>
     <string name="introduction_type_email">Type your email</string>
-    <string name="tutorial_1_title">Setting Up Your VPN</string>
-    <string name="tutorial_1_text">Please grant permission to Cypherpunk Privacy for connecting a VPN from your device.</string>
-    <string name="tutorial_2_title">One Final Step</string>
-    <string name="tutorial_2_text">Share anonymized analytics about your VPN connections to help make Cypherpunk Privacy faster and more reliable.</string>
-    <string name="tutorial_don_t_allow">Don’t allow</string>
     <string name="region_list_favorite">FAVORITE</string>
     <string name="region_list_recent">RECENT</string>
     <string name="region_list_all">ALL</string>

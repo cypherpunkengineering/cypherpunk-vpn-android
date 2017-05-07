@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center_horizontal"
+    android:orientation="vertical"
+    tools:context=".ui.setup.TutorialActivity">
+
+    <com.cypherpunk.privacy.widget.TypefaceTextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="32dp"
+        android:layout_marginTop="32dp"
+        android:text="CypherPlay explanation"
+        android:textColor="?android:textColorPrimary"
+        android:textSize="22sp"
+        app:fontName="DosisBold"/>
+
+    <com.cypherpunk.privacy.widget.TypefaceTextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="40dp"
+        android:layout_marginLeft="40dp"
+        android:layout_marginRight="40dp"
+        android:gravity="center_horizontal"
+        android:lineSpacingMultiplier="1.2"
+        android:text="need design spec"
+        android:textColor="@color/greeny_blue"
+        android:textSize="18sp"
+        app:fontName="DosisMedium"/>
+
+    <ImageView
+        android:layout_width="300dp"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="40dp"
+        android:layout_marginLeft="32dp"
+        android:layout_marginRight="32dp"
+        tools:ignore="ContentDescription"/>
+
+</LinearLayout>

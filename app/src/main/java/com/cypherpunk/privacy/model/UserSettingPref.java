@@ -19,4 +19,10 @@ public class UserSettingPref extends PrefModel {
 
     @PrefKey("user_status_expiration")
     public String userStatusExpiration;
+
+    public static void updateUserStatusType(String type) {
+        final UserSettingPref userPref = new UserSettingPref();
+        userPref.userStatusType = type;
+        userPref.save();
+    }
 }
