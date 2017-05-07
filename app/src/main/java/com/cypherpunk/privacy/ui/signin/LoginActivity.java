@@ -71,7 +71,7 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_sign_in);
+        setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
 
         ((CypherpunkApplication) getApplication()).getAppComponent().inject(this);
@@ -112,18 +112,18 @@ public class LoginActivity extends AppCompatActivity {
     @OnEditorAction(R.id.edit_text)
     boolean onEditorAction(int id) {
         if (id == EditorInfo.IME_ACTION_DONE) {
-            attemptSignIn();
+            login();
             return true;
         }
         return false;
     }
 
-    @OnClick(R.id.sign_in_button)
-    void onSignInButtonClicked() {
-        attemptSignIn();
+    @OnClick(R.id.login_button)
+    void onLoginButtonClicked() {
+        login();
     }
 
-    private void attemptSignIn() {
+    private void login() {
         final EditText editText = textInputLayout.getEditText();
         assert editText != null;
         final String password = editText.getText().toString();
