@@ -102,9 +102,6 @@
             android:name=".ui.setup.TutorialActivity"
             android:theme="@style/CypherPunk.NoActionBar"/>
         <activity
-            android:name=".ui.signin.ResetPasswordActivity"
-            android:theme="@style/AppTheme.NoActionBar"/>
-        <activity
             android:name=".ui.account.PremiumFreeActivity"
             android:theme="@style/AppTheme.NoActionBar"/>
         <activity
