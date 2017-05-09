@@ -28,7 +28,6 @@
     <string name="email_already_registered">email address is already registered</string>
     <string name="api_error">Error</string>
     <string name="invalid_mail_password">invalid password</string>
-    <string name="sign_up_email_hint">Email</string>
 
     <string name="welcome_to">Welcome to</string>
 
@@ -62,11 +61,6 @@
     <string name="identify_email_hint">Email</string>
     <string name="identify_email_get_started">Get Started</string>
     <string name="identify_email_message">Please input your email to begin.</string>
-
-    <!-- reset password -->
-    <string name="reset_password_submit">Submit</string>
-    <string name="reset_password_text">Enter your email address \n to reset your password.</string>
-    <string name="title_activity_reset_password">Reset your password</string>
 
     <!-- setting -->
     <string name="mode_description_text">‘Speed and Country’ mode is very fast, because it is not encrypted.\n Omnicos directe al desirabilite de un nov lingua franca: On refusa continuar payar custosi traductores. At solmen va esser necessi far uniform grammatica, pronunciation e plu sommun paroles.</string>
