@@ -30,8 +30,8 @@
     <PreferenceCategory android:title="@string/account_setting_category_more">
 
         <Preference
-            android:key="premium_free"
-            android:title="@string/account_setting_premium_free"/>
+            android:key="share"
+            android:title="@string/account_setting_share"/>
 
         <Preference
             android:key="rate"

@@ -73,11 +73,10 @@ public class AccountSettingsFragment extends PreferenceFragmentCompat {
         Preference email = findPreference("email");
         email.setSummary(UserManager.getMailAddress());
 
-        // TODO: すでに課金していたら表示しなくて良さそう
-        findPreference("premium_free").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+        findPreference("share").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
-                startActivity(new Intent(getActivity(), PremiumFreeActivity.class));
+                startActivity(ShareActivity.createIntent(getContext()));
                 return true;
             }
         });
