@@ -261,7 +261,6 @@
     <string name="select_mode_skip">Skip</string>
 
     <!-- tutorial -->
-    <string name="tutorial_next">Next</string>
     <string name="tutorial_allow">Allow</string>
     <string name="tutorial_do_not_allow">Don’t allow</string>
     <string name="tutorial_1_title">Setting Up Your VPN</string>

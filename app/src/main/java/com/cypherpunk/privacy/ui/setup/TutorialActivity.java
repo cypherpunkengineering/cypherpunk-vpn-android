@@ -113,10 +113,6 @@ public class TutorialActivity extends AppCompatActivity {
     void onPositiveButtonClicked() {
         final TutorialItem item = adapter.getItem(pager.getCurrentItem());
         switch (item.type) {
-            case EXPLANATION:
-                moveToNextPage();
-                break;
-
             case VPN_PERMISSION:
                 final Intent intent = VpnService.prepare(getApplicationContext());
                 if (intent != null) {
@@ -215,7 +211,6 @@ public class TutorialActivity extends AppCompatActivity {
     }
 
     private enum TutorialType {
-        EXPLANATION,
         VPN_PERMISSION,
         ANALYTICS,
     }
@@ -238,8 +233,6 @@ public class TutorialActivity extends AppCompatActivity {
     private static class IntroductionPagerAdapter extends PagerAdapter {
 
         private static final TutorialItem[] ITEMS = {
-                new TutorialItem(TutorialType.EXPLANATION, R.layout.tutorial_general, R.string.tutorial_next),
-                new TutorialItem(TutorialType.EXPLANATION, R.layout.tutorial_cypherplay, R.string.tutorial_next),
                 new TutorialItem(TutorialType.VPN_PERMISSION, R.layout.tutorial_setup_vpn, R.string.tutorial_allow),
                 new TutorialItem(TutorialType.ANALYTICS, R.layout.tutorial_analytics, R.string.tutorial_allow),
         };
