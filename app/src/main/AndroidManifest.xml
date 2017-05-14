@@ -117,9 +117,6 @@
             android:name=".ui.settings.NetworkActivity"
             android:theme="@style/AppTheme.DialogWhenLarge"/>
         <activity
-            android:name=".ui.account.ContactActivity"
-            android:theme="@style/AppTheme.DialogWhenLarge"/>
-        <activity
             android:name=".ui.account.EditEmailActivity"
             android:theme="@style/CypherPunk.DialogWhenLarge.NoActionBar"/>
         <activity
