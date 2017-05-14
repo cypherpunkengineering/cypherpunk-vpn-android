@@ -31,6 +31,7 @@ import com.cypherpunk.privacy.data.api.UserManager;
 import com.cypherpunk.privacy.data.api.json.AccountStatusResult;
 import com.cypherpunk.privacy.data.api.json.SignUpRequest;
 import com.cypherpunk.privacy.ui.common.FullScreenProgressDialog;
+import com.cypherpunk.privacy.ui.common.Urls;
 
 import java.net.UnknownHostException;
 
@@ -214,7 +215,7 @@ public class SignUpActivity extends AppCompatActivity {
             sb.setSpan(new ClickableSpan() {
                 @Override
                 public void onClick(View widget) {
-                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.terms_of_service_url))));
+                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(Urls.TERMS_OF_SERVICE)));
                 }
             }, start, end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
             sb.setSpan(linkTextAppearanceSpan, start, end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
@@ -230,7 +231,7 @@ public class SignUpActivity extends AppCompatActivity {
             sb.setSpan(new ClickableSpan() {
                 @Override
                 public void onClick(View widget) {
-                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.privacy_policy_url))));
+                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(Urls.PRIVACY_POLICY)));
                 }
             }, start, end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
             sb.setSpan(linkTextAppearanceSpan, start, end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);

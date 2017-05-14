@@ -18,6 +18,7 @@ import com.cypherpunk.privacy.data.api.CypherpunkService;
 import com.cypherpunk.privacy.data.api.UserManager;
 import com.cypherpunk.privacy.data.api.json.AccountStatusResult;
 import com.cypherpunk.privacy.model.UserSettingPref;
+import com.cypherpunk.privacy.ui.common.Urls;
 import com.cypherpunk.privacy.ui.signin.IdentifyEmailActivity;
 import com.cypherpunk.privacy.vpn.CypherpunkVPN;
 
@@ -72,14 +73,6 @@ public class AccountSettingsFragment extends PreferenceFragmentCompat {
         Preference email = findPreference("email");
         email.setSummary(UserManager.getMailAddress());
 
-        findPreference("log_out").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-            @Override
-            public boolean onPreferenceClick(Preference preference) {
-                signOut();
-                return true;
-            }
-        });
-
         // TODO: すでに課金していたら表示しなくて良さそう
         findPreference("premium_free").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
@@ -101,14 +94,6 @@ public class AccountSettingsFragment extends PreferenceFragmentCompat {
                 !"lifetime".equals(user.userStatusRenewal);
         findPreference("upgrade").setVisible(upgradeVisible);
 
-        findPreference("contact_us").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-            @Override
-            public boolean onPreferenceClick(Preference preference) {
-                startActivity(new Intent(getActivity(), ContactActivity.class));
-                return true;
-            }
-        });
-
         email.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
@@ -128,26 +113,33 @@ public class AccountSettingsFragment extends PreferenceFragmentCompat {
         findPreference("rate").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
-                startActivity(new Intent(Intent.ACTION_VIEW,
-                        Uri.parse(getString(R.string.store_url))));
+                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(Urls.STORE)));
                 return true;
             }
         });
 
+        // Open a Support Ticket
         findPreference("contact_us").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
-                startActivity(new Intent(Intent.ACTION_VIEW,
-                        Uri.parse(getString(R.string.contact_us_url))));
+                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(Urls.CONTACT_US)));
                 return true;
             }
         });
 
+        // Go to Help Center
         findPreference("help").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
-                startActivity(new Intent(Intent.ACTION_VIEW,
-                        Uri.parse(getString(R.string.help_url))));
+                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(Urls.HELP)));
+                return true;
+            }
+        });
+
+        findPreference("log_out").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                signOut();
                 return true;
             }
         });

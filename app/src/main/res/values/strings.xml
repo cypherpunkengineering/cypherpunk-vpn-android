@@ -12,12 +12,6 @@
     <string name="main_sign_up">Sign Up and get a 7-Day Free Premium Trial</string>
 
     <!-- url -->
-    <string name="store_url">https://play.google.com/store/apps/details?id=com.cypherpunk.privacy</string>
-    <string name="contact_us_url">https://cypherpunk.zendesk.com/hc/requests/new</string>
-    <string name="help_url">https://support.cypherpunk.com/hc</string>
-    <string name="terms_of_service_url">https://cypherpunk.com/terms-of-service</string>
-    <string name="privacy_policy_url">https://cypherpunk.com/privacy-policy</string>
-
     <string name="share_subject">Get 30 Days Premium Free [Cypherpunk]</string>
     <string name="share_text">We’ll give you both 30 days free! https://play.google.com/store/apps/details?id=com.cypherpunk.privacy</string>
 
