@@ -11,10 +11,6 @@
     <string name="vpn_cancel">Cancel</string>
     <string name="main_sign_up">Sign Up and get a 7-Day Free Premium Trial</string>
 
-    <!-- url -->
-    <string name="share_subject">Get 30 Days Premium Free [Cypherpunk]</string>
-    <string name="share_text">We’ll give you both 30 days free! https://play.google.com/store/apps/details?id=com.cypherpunk.privacy</string>
-
     <!-- sign in-->
     <string name="error_field_required">This field is required</string>
     <string name="error_invalid_email">invalid email</string>
@@ -161,7 +157,7 @@
     <string name="account_setting_email">Email</string>
     <string name="account_setting_password">Password</string>
     <string name="account_setting_category_more">More</string>
-    <string name="account_setting_premium_free">Share Cypherpunk with a Friend</string>
+    <string name="account_setting_share">Share Cypherpunk with a Friend</string>
     <string name="account_setting_rate">Rate Our Service</string>
     <string name="account_setting_contact">Open a Support Ticket</string>
     <string name="account_setting_contact_summary">Your satisfaction is important to us!</string>
@@ -220,14 +216,12 @@
     <string name="plan_current">Current Plan</string>
     <string name="upgrade_text">Get Cypherpunk Premium\nSelect your plan</string>
 
-
-    <!-- premium free -->
-    <string name="title_activity_premium_free">Get 30 Days Premium Free</string>
-    <string name="premium_free_text">For every friend who signs up,\n we’ll give you both 30 days free!</string>
-    <string name="premium_free_facebook">Facebook</string>
-    <string name="premium_free_twitter">Twitter</string>
-    <string name="premium_free_email">Email</string>
-    <string name="premium_free_share">Share</string>
+    <!-- share -->
+    <string name="title_activity_share">Share with your friends</string>
+    <string name="share_message">Like Cypherpunk Privacy?\nPlease share with your friends!</string>
+    <string name="share">Share</string>
+    <string name="share_subject">Checkout cypherpunk</string>
+    <string name="share_text">Checkout cypherpunk https://play.google.com/store/apps/details?id=com.cypherpunk.privacy</string>
 
     <!-- introduction -->
     <string name="introduction_start_free_now">Start Free Now</string>

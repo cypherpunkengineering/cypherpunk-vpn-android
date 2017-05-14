@@ -102,9 +102,6 @@
             android:name=".ui.setup.TutorialActivity"
             android:theme="@style/CypherPunk.NoActionBar"/>
         <activity
-            android:name=".ui.account.PremiumFreeActivity"
-            android:theme="@style/AppTheme.NoActionBar"/>
-        <activity
             android:name=".ui.settings.ListPreferenceActivity"
             android:theme="@style/AppTheme.DialogWhenLarge"/>
         <activity
@@ -117,10 +114,16 @@
             android:name=".ui.settings.NetworkActivity"
             android:theme="@style/AppTheme.DialogWhenLarge"/>
         <activity
+            android:name=".ui.account.ShareActivity"
+            android:label=""
+            android:theme="@style/CypherPunk.NoActionBar"/>
+        <activity
             android:name=".ui.account.EditEmailActivity"
+            android:label=""
             android:theme="@style/CypherPunk.DialogWhenLarge.NoActionBar"/>
         <activity
             android:name=".ui.account.EditPasswordActivity"
+            android:label=""
             android:theme="@style/CypherPunk.DialogWhenLarge.NoActionBar"/>
         <activity
             android:name=".ui.account.UpgradePlanActivity"
