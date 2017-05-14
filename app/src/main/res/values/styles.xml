@@ -12,6 +12,15 @@
         <item name="windowNoTitle">true</item>
     </style>
 
+    <style name="CypherPunk.DialogWhenLarge" parent="Theme.AppCompat.DialogWhenLarge">
+        <item name="android:windowBackground">@drawable/window_background</item>
+    </style>
+
+    <style name="CypherPunk.DialogWhenLarge.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
     <style name="ButtonTheme">
         <item name="colorAccent">@color/nice_blue</item>
     </style>

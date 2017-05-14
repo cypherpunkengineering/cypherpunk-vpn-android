@@ -121,7 +121,7 @@
             android:theme="@style/AppTheme.DialogWhenLarge"/>
         <activity
             android:name=".ui.account.EditEmailActivity"
-            android:theme="@style/AppTheme.DialogWhenLarge"/>
+            android:theme="@style/CypherPunk.DialogWhenLarge.NoActionBar"/>
         <activity
             android:name=".ui.account.EditPasswordActivity"
             android:theme="@style/AppTheme.DialogWhenLarge"/>
