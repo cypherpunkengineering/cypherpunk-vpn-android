@@ -1,15 +1,20 @@
 package com.cypherpunk.privacy.ui.account;
 
+import android.content.Context;
 import android.content.pm.ActivityInfo;
-import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Patterns;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import com.cypherpunk.privacy.CypherpunkApplication;
@@ -17,13 +22,15 @@ import com.cypherpunk.privacy.R;
 import com.cypherpunk.privacy.data.api.CypherpunkService;
 import com.cypherpunk.privacy.data.api.UserManager;
 import com.cypherpunk.privacy.data.api.json.ChangeEmailRequest;
-import com.cypherpunk.privacy.databinding.ActivityEditEmailBinding;
-import com.cypherpunk.privacy.ui.signin.ProgressFragment;
+import com.cypherpunk.privacy.ui.common.FullScreenProgressDialog;
 
 import java.net.UnknownHostException;
 
 import javax.inject.Inject;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnTextChanged;
 import okhttp3.ResponseBody;
 import rx.SingleSubscriber;
 import rx.Subscription;
@@ -33,34 +40,62 @@ import rx.subscriptions.Subscriptions;
 
 public class EditEmailActivity extends AppCompatActivity {
 
-    private ActivityEditEmailBinding binding;
-    private ProgressFragment dialogFragment = ProgressFragment.newInstance();
+    @NonNull
     private Subscription subscription = Subscriptions.empty();
+
+    @Nullable
+    private FullScreenProgressDialog dialog;
 
     @Inject
     CypherpunkService webService;
 
+    @BindView(R.id.text_input_layout_email)
+    TextInputLayout emailTextInputLayout;
+
+    @BindView(R.id.text_input_layout_confirm_email)
+    TextInputLayout confirmEmailTextInputLayout;
+
+    @BindView(R.id.text_input_layout_current_password)
+    TextInputLayout currentPasswordTextInputLayout;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_edit_email);
+        ButterKnife.bind(this);
+
         ((CypherpunkApplication) getApplication()).getAppComponent().inject(this);
 
         if (!getResources().getBoolean(R.bool.is_tablet)) {
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         }
 
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_edit_email);
+        final Toolbar toolbar = ButterKnife.findById(this, R.id.toolbar);
 
-        setSupportActionBar(binding.toolbar.toolbar);
-        ActionBar actionBar = getSupportActionBar();
+        setSupportActionBar(toolbar);
+        final ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
-            actionBar.setDisplayShowTitleEnabled(false);
-            binding.toolbar.title.setText(R.string.title_activity_edit_email);
             actionBar.setHomeAsUpIndicator(R.drawable.close_vector);
         }
+    }
 
-        binding.email.requestFocus();
+    @OnTextChanged(R.id.email)
+    void onEmailTextChanged() {
+        emailTextInputLayout.setError(null);
+        emailTextInputLayout.setErrorEnabled(false);
+    }
+
+    @OnTextChanged(R.id.confirm_email)
+    void onConfirmEmailTextChanged() {
+        confirmEmailTextInputLayout.setError(null);
+        confirmEmailTextInputLayout.setErrorEnabled(false);
+    }
+
+    @OnTextChanged(R.id.current_password)
+    void onCurrentPasswordTextChanged() {
+        currentPasswordTextInputLayout.setError(null);
+        currentPasswordTextInputLayout.setErrorEnabled(false);
     }
 
     @Override
@@ -75,10 +110,9 @@ public class EditEmailActivity extends AppCompatActivity {
             case android.R.id.home:
                 finish();
                 return true;
+
             case R.id.action_done:
-                if (validateEmailAndPassword()) {
-                    updateEmail(binding.email.getText().toString(), binding.currentPassword.getText().toString());
-                }
+                updateEmail();
                 return true;
         }
         return super.onOptionsItemSelected(item);
@@ -87,77 +121,94 @@ public class EditEmailActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         subscription.unsubscribe();
+        if (dialog != null) {
+            dialog.dismiss();
+            dialog = null;
+        }
         super.onDestroy();
     }
 
-    private boolean validateEmailAndPassword() {
-        binding.email.setError(null);
-        binding.confirmEmail.setError(null);
-        binding.currentPassword.setError(null);
+    private void updateEmail() {
+        final EditText emailEditText = emailTextInputLayout.getEditText();
+        assert emailEditText != null;
+        final String email = emailEditText.getText().toString();
 
-        String newEmail = binding.email.getText().toString();
-        String confirmEmail = binding.confirmEmail.getText().toString();
-        String currentPassword = binding.currentPassword.getText().toString();
+        final EditText confirmEmailEditText = confirmEmailTextInputLayout.getEditText();
+        assert confirmEmailEditText != null;
+        final String confirmEmail = confirmEmailEditText.getText().toString();
 
-        boolean result = true;
+        final EditText currentPasswordEditText = currentPasswordTextInputLayout.getEditText();
+        assert currentPasswordEditText != null;
+        final String currentPassword = currentPasswordEditText.getText().toString();
 
-        if (TextUtils.isEmpty(newEmail)) {
-            binding.email.setError(getString(R.string.error_field_required));
-            result = false;
+        View focusView = null;
+
+        if (TextUtils.isEmpty(email)) {
+            emailTextInputLayout.setError(getString(R.string.error_field_required));
+            focusView = emailEditText;
+        } else if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+            emailTextInputLayout.setError(getString(R.string.error_invalid_email));
+            focusView = emailEditText;
         }
 
         if (TextUtils.isEmpty(confirmEmail)) {
-            binding.confirmEmail.setError(getString(R.string.error_field_required));
-            result = false;
+            confirmEmailTextInputLayout.setError(getString(R.string.error_field_required));
+            if (focusView == null) {
+                focusView = confirmEmailEditText;
+            }
+        } else if (!TextUtils.equals(email, confirmEmail)) {
+            confirmEmailTextInputLayout.setError(getString(R.string.edit_email_account_error_do_not_match));
+            if (focusView == null) {
+                focusView = confirmEmailEditText;
+            }
         }
 
         if (TextUtils.isEmpty(currentPassword)) {
-            binding.currentPassword.setError(getString(R.string.error_field_required));
-            result = false;
+            currentPasswordTextInputLayout.setError(getString(R.string.error_field_required));
+            if (focusView == null) {
+                focusView = currentPasswordEditText;
+            }
         }
 
-        if (!isValidEmail(newEmail)) {
-            binding.email.setError(getString(R.string.error_invalid_email));
-            result = false;
+        if (focusView != null) {
+            focusView.requestFocus();
+            return;
         }
 
-        if (!newEmail.equals(confirmEmail)) {
-            binding.confirmEmail.setError(getString(R.string.edit_email_account_error_do_not_match));
-            result = false;
-        }
+        dialog = new FullScreenProgressDialog(this);
+        dialog.show();
 
-        return result;
-    }
+        final Context context = this;
 
-    private void updateEmail(@NonNull final String email, @NonNull final String password) {
-        dialogFragment.show(getSupportFragmentManager());
-
-        subscription = webService
-                .changeEmail(new ChangeEmailRequest(email, password))
+        subscription = webService.changeEmail(new ChangeEmailRequest(email, currentPassword))
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new SingleSubscriber<ResponseBody>() {
                     @Override
                     public void onSuccess(ResponseBody result) {
-                        dialogFragment.dismiss();
+                        if (dialog != null) {
+                            dialog.dismiss();
+                            dialog = null;
+                        }
+
                         UserManager.saveMailAddress(email);
+
                         setResult(RESULT_OK);
                         finish();
                     }
 
                     @Override
                     public void onError(Throwable error) {
-                        dialogFragment.dismiss();
+                        if (dialog != null) {
+                            dialog.dismiss();
+                            dialog = null;
+                        }
                         if (error instanceof UnknownHostException) {
-                            Toast.makeText(EditEmailActivity.this, R.string.no_internet, Toast.LENGTH_SHORT).show();
+                            Toast.makeText(context, R.string.no_internet, Toast.LENGTH_SHORT).show();
                         } else {
-                            Toast.makeText(EditEmailActivity.this, R.string.api_error, Toast.LENGTH_SHORT).show();
+                            Toast.makeText(context, R.string.api_error, Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
-    }
-
-    private boolean isValidEmail(CharSequence text) {
-        return !TextUtils.isEmpty(text) && Patterns.EMAIL_ADDRESS.matcher(text).matches();
     }
 }
