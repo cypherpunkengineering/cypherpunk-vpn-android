@@ -124,7 +124,7 @@
             android:theme="@style/CypherPunk.DialogWhenLarge.NoActionBar"/>
         <activity
             android:name=".ui.account.EditPasswordActivity"
-            android:theme="@style/AppTheme.DialogWhenLarge"/>
+            android:theme="@style/CypherPunk.DialogWhenLarge.NoActionBar"/>
         <activity
             android:name=".ui.account.UpgradePlanActivity"
             android:theme="@style/AppTheme.DialogWhenLarge"/>
