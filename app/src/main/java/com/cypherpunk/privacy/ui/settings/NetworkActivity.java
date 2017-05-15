@@ -24,6 +24,7 @@ import com.cypherpunk.privacy.CypherpunkApplication;
 import com.cypherpunk.privacy.R;
 import com.cypherpunk.privacy.model.CypherpunkSetting;
 import com.cypherpunk.privacy.model.Network;
+import com.cypherpunk.privacy.ui.common.DividerDecoration;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,4 +1,4 @@
-package com.cypherpunk.privacy.ui.settings;
+package com.cypherpunk.privacy.ui.common;
 
 import android.content.Context;
 import android.graphics.Canvas;
@@ -12,7 +12,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 import com.cypherpunk.privacy.R;
-
 
 public class DividerDecoration extends RecyclerView.ItemDecoration {
 

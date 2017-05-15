@@ -56,7 +56,6 @@
     <string name="settings_header_account">Account</string>
     <string name="action_send">send</string>
     <string name="action_done">done</string>
-    <string name="setting_connect_dialog_message">Reconnect to apply new settings?</string>
 
 
     <!-- account setting -->
@@ -148,10 +147,6 @@
     <string name="region_cypherplay">Cypherplay</string>
     <string name="region_fastest_location">Fastest Location</string>
 
-    <!-- connect dialog -->
-    <string name="connect_dialog_positive">CONNECT</string>
-    <string name="connect_dialog_negative">Not now</string>
-
     <!-- quick settings tile -->
     <string name="qs_tile_title">Privacy VPN</string>
 
@@ -175,8 +170,6 @@
     <string name="region_level_badge_unavailable">UNAVAILABLE</string>
 
 
-
-
     <!-- cypherpunk settings -->
     <string name="settings_header_configuration">Configuration</string>
     <string name="settings_header_configuration_basic">Basic Settings</string>
@@ -194,6 +187,16 @@
     <string name="setting_vpn_remote_port">Remote Port</string>
     <string name="setting_split_tunnel">Split Tunnel</string>
     <string name="setting_split_tunnel_summary">Configure which apps to route through VPN</string>
+
+    <!-- preference key -->¬
+    <string name="setting_preference_network">preference_network</string>
+    <string name="setting_preference_auto_connect">vpn_auto_start_connect</string>
+    <string name="setting_preference_block_malware">vpn_dns_block_malware</string>
+    <string name="setting_preference_block_ads">vpn_dns_block_ads</string>
+    <string name="setting_preference_internet_kill_switch">preference_internet_kill_switch</string>
+    <string name="setting_preference_tunnel_mode">preference_tunnel_mode</string>
+    <string name="setting_preference_remote_port">preference_remote_port</string>
+    <string name="setting_preference_split_tunnel">preference_split_tunnel</string>
 
     <!-- trusted network -->
     <string name="title_activity_network">Manage trusted networks</string>
@@ -245,5 +248,10 @@
     <!-- split tunnel -->
     <string name="title_activity_split_tunnel">Per application settings</string>
     <string name="split_tunnel_search_hint">Search Apps</string>
+
+    <!-- connect dialog -->
+    <string name="connect_dialog_message">Reconnect to apply new settings?</string>
+    <string name="connect_dialog_connect">Connect</string>
+    <string name="connect_dialog_later">Not now</string>
 
 </resources>

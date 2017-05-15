@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.StringRes;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -18,7 +19,6 @@ import android.widget.TextView;
 import com.cypherpunk.privacy.R;
 import com.cypherpunk.privacy.model.CypherpunkSetting;
 import com.cypherpunk.privacy.model.CypherpunkSetting.TunnelMode;
-import com.cypherpunk.privacy.utils.ResourceUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -69,10 +69,10 @@ public class TunnelModeActivity extends AppCompatActivity {
             checkableList.add(checkable);
 
             final TextView nameView = ButterKnife.findById(view, R.id.title);
-            nameView.setText(ResourceUtil.getTitleFor(mode));
+            nameView.setText(getTitleFor(mode));
 
             final TextView summaryView = ButterKnife.findById(view, R.id.summary);
-            summaryView.setText(ResourceUtil.getSummaryFor(mode));
+            summaryView.setText(getSummaryFor(mode));
 
             final TextView cypherView = ButterKnife.findById(view, R.id.cipher_value);
             cypherView.setText(mode.cipher().value());
@@ -92,7 +92,7 @@ public class TunnelModeActivity extends AppCompatActivity {
                         }
                         checkable.setChecked(true);
 
-                        cypherpunkSetting.updateTunnelMode(mode);
+                        update(mode);
                     }
                 }
             });
@@ -105,6 +105,11 @@ public class TunnelModeActivity extends AppCompatActivity {
         }
     }
 
+    private void update(@NonNull TunnelMode tunnelMode) {
+        cypherpunkSetting.updateTunnelMode(tunnelMode);
+        setResult(RESULT_OK);
+    }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -113,5 +118,37 @@ public class TunnelModeActivity extends AppCompatActivity {
                 return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @StringRes
+    public static int getTitleFor(@NonNull CypherpunkSetting.TunnelMode mode) {
+        switch (mode) {
+            case RECOMMENDED:
+                return R.string.tunnel_mode_recommended_title;
+            case MAX_SPEED:
+                return R.string.tunnel_mode_max_speed_title;
+            case MAX_PRIVACY:
+                return R.string.tunnel_mode_max_privacy_title;
+            case MAX_STEALTH:
+                return R.string.tunnel_mode_max_stealth_title;
+            default:
+                throw new IllegalArgumentException();
+        }
+    }
+
+    @StringRes
+    public static int getSummaryFor(@NonNull CypherpunkSetting.TunnelMode mode) {
+        switch (mode) {
+            case RECOMMENDED:
+                return R.string.tunnel_mode_recommended_summary;
+            case MAX_SPEED:
+                return R.string.tunnel_mode_max_speed_summary;
+            case MAX_PRIVACY:
+                return R.string.tunnel_mode_max_privacy_summary;
+            case MAX_STEALTH:
+                return R.string.tunnel_mode_max_stealth_summary;
+            default:
+                throw new IllegalArgumentException();
+        }
     }
 }

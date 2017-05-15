@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    >
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
     <Preference
         android:layout="@layout/preference_header"
@@ -17,28 +15,31 @@
         android:title="@string/setting_category_app_settings">
 
         <Preference
-            android:key="trusted_network"
+            android:key="@string/setting_preference_network"
             android:summary="@string/setting_network_summary"
             android:title="@string/setting_network"/>
 
+        <!--suppress AndroidElementNotAllowed -->
         <SwitchPreferenceCompat
-            android:key="vpn_auto_start_connect"
+            android:key="@string/setting_preference_auto_connect"
             android:title="@string/setting_vpn_auto_start_connect"/>
 
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/setting_category_privacy_settings">
 
+        <!--suppress AndroidElementNotAllowed -->
         <SwitchPreferenceCompat
-            android:key="vpn_dns_block_malware"
+            android:key="@string/setting_preference_block_malware"
             android:title="@string/setting_vpn_dns_block_malware"/>
 
+        <!--suppress AndroidElementNotAllowed -->
         <SwitchPreferenceCompat
-            android:key="vpn_dns_block_ads"
+            android:key="@string/setting_preference_block_ads"
             android:title="@string/setting_vpn_dns_block_ads"/>
 
         <Preference
-            android:key="internet_kill_switch"
+            android:key="@string/setting_preference_internet_kill_switch"
             android:title="@string/setting_internet_kill_switch"/>
 
     </PreferenceCategory>
@@ -46,8 +47,7 @@
     <PreferenceCategory android:title="@string/setting_category_connection_settings">
 
         <Preference
-            android:id="@+id/preference"
-            android:key="tunnel_mode"
+            android:key="@string/setting_preference_tunnel_mode"
             android:title="@string/setting_tunnel_mode"/>
 
     </PreferenceCategory>
@@ -57,11 +57,11 @@
         android:title="@string/settings_header_configuration_advanced"/>
 
     <Preference
-        android:key="vpn_port_remote"
+        android:key="@string/setting_preference_remote_port"
         android:title="@string/setting_vpn_remote_port"/>
 
     <Preference
-        android:key="split_tunnel"
+        android:key="@string/setting_preference_split_tunnel"
         android:summary="@string/setting_split_tunnel_summary"
         android:title="@string/setting_split_tunnel"/>
 

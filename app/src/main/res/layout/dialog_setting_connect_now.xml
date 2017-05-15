@@ -14,19 +14,19 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
-        android:text="@string/setting_connect_dialog_message"
-        android:textColor="@color/dialog_text"
+        android:text="@string/connect_dialog_message"
         android:textSize="18sp"
         app:fontName="DosisMedium"/>
 
     <com.cypherpunk.privacy.widget.TypefaceButton
-        android:id="@+id/rate_button"
+        android:id="@+id/connect_button"
         style="@style/Widget.Cypherpunk.YellowButton"
         android:layout_width="260dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_marginBottom="8dp"
-        android:text="@string/connect_dialog_positive"/>
+        android:text="@string/connect_dialog_connect"
+        android:textAllCaps="true"/>
 
     <com.cypherpunk.privacy.widget.TypefaceTextView
         android:id="@+id/later_button"
@@ -34,11 +34,9 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:background="?android:attr/selectableItemBackground"
-        android:clickable="true"
         android:gravity="center"
         android:padding="8dp"
-        android:text="@string/connect_dialog_negative"
-        android:textColor="@color/dialog_text"
+        android:text="@string/connect_dialog_later"
         android:textSize="14sp"
         app:fontName="DosisMedium"/>
 
