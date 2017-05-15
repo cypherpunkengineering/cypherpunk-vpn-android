@@ -143,17 +143,16 @@ public class CypherpunkVPN {
             manager.stopVPN(false);
             // privacy firewall killswitch
             CypherpunkSetting cypherpunkSetting = new CypherpunkSetting();
-            if (cypherpunkSetting.privacyFirewallMode != null && cypherpunkSetting.privacyFirewallMode.length() > 0) {
-                switch (cypherpunkSetting.privacyFirewallMode) {
-                    case "setting_privacy_firewall_mode_auto":
-                        service.stopKillSwitch();
-                        break;
-                    case "setting_privacy_firewall_mode_always":
-                        break;
-                    case "setting_privacy_firewall_mode_never":
-                        service.stopKillSwitch();
-                        break;
-                }
+            final CypherpunkSetting.InternetKillSwitch internetKillSwitch = cypherpunkSetting.internetKillSwitch();
+            switch (internetKillSwitch) {
+                case AUTOMATIC:
+                    service.stopKillSwitch();
+                    break;
+                case ALWAYS_ON:
+                    break;
+                case OFF:
+                    service.stopKillSwitch();
+                    break;
             }
         }
     }
@@ -286,15 +285,14 @@ public class CypherpunkVPN {
         }
 
         // privacy firewall killswitch
-        if (cypherpunkSetting.privacyFirewallMode != null && cypherpunkSetting.privacyFirewallMode.length() > 0) {
-            switch (cypherpunkSetting.privacyFirewallMode) {
-                case "setting_privacy_firewall_mode_auto":
-                case "setting_privacy_firewall_mode_always":
-                    list.add("persist-tun");
-                    break;
-                case "setting_privacy_firewall_mode_never":
-                    break;
-            }
+        final CypherpunkSetting.InternetKillSwitch internetKillSwitch = cypherpunkSetting.internetKillSwitch();
+        switch (internetKillSwitch) {
+            case AUTOMATIC:
+            case ALWAYS_ON:
+                list.add("persist-tun");
+                break;
+            case OFF:
+                break;
         }
 
         // privacy firewall exempt LAN from killswitch

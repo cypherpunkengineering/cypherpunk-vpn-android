@@ -1,5 +1,7 @@
 package com.cypherpunk.privacy.model;
 
+import android.support.annotation.NonNull;
+
 import com.os.operando.garum.annotations.DefaultBoolean;
 import com.os.operando.garum.annotations.DefaultString;
 import com.os.operando.garum.annotations.Pref;
@@ -28,7 +30,7 @@ public class CypherpunkSetting extends PrefModel {
 
     @PrefKey("privacy_firewall_mode")
     @DefaultString("setting_privacy_firewall_mode_never")
-    public String privacyFirewallMode;
+    public String internetKillSwitchValue;
 
     @PrefKey("privacy_firewall_exempt_lan")
     @DefaultBoolean(true)
@@ -73,4 +75,37 @@ public class CypherpunkSetting extends PrefModel {
     @PrefKey("analytics")
     @DefaultBoolean(false)
     public boolean analytics;
+
+    @NonNull
+    public InternetKillSwitch internetKillSwitch() {
+        return InternetKillSwitch.find(internetKillSwitchValue);
+    }
+
+    public void updateInternetKillSwitch(@NonNull InternetKillSwitch internetKillSwitch) {
+        internetKillSwitchValue = internetKillSwitch.value;
+        save();
+    }
+
+    public enum InternetKillSwitch {
+        AUTOMATIC("setting_privacy_firewall_mode_auto"),
+        OFF("setting_privacy_firewall_mode_never"),
+        ALWAYS_ON("setting_privacy_firewall_mode_always");
+
+        @NonNull
+        private final String value;
+
+        InternetKillSwitch(@NonNull String value) {
+            this.value = value;
+        }
+
+        @NonNull
+        public static InternetKillSwitch find(String value) {
+            for (InternetKillSwitch internetKillSwitch : values()) {
+                if (internetKillSwitch.value.equals(value)) {
+                    return internetKillSwitch;
+                }
+            }
+            return OFF;
+        }
+    }
 }

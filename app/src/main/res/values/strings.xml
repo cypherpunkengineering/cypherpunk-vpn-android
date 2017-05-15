@@ -223,33 +223,16 @@
     <string name="network_wifi_description">Add the networks you trust. Cypherpunk will NOT automatically connect through the VPN when you connect to these trusted networks.</string>
 
     <!-- internet kill switch -->
-    <string name="setting_privacy_firewall_mode">Privacy Firewall</string>
-    <!-- privacy firewall mode: never -->
-    <string name="setting_privacy_firewall_mode_never">Off</string>
-    <string name="setting_privacy_firewall_mode_never_desc">Privacy Firewall is disabled</string>
-    <!-- privacy firewall mode: auto -->
-    <string name="setting_privacy_firewall_mode_auto">Auto</string>
-    <string name="setting_privacy_firewall_mode_auto_desc">Privacy Firewall will automatically engage the internet killswitch while the VPN is on, preventing any leak while not on the Cypherpunk Privacy Network.</string>
-    <!-- privacy firewall mode: always -->
-    <string name="setting_privacy_firewall_mode_always">Always</string>
-    <string name="setting_privacy_firewall_mode_always_desc">Privacy Firewall will always engage the internet killswitch, preventing any leak while not on the Cypherpunk Privacy Network, even while the VPN is off.</string>
-
-    <string-array name="privacy_firewall_mode_value">
-        <item>setting_privacy_firewall_mode_never</item>
-        <item>setting_privacy_firewall_mode_auto</item>
-        <!--
-        <item>setting_privacy_firewall_mode_always</item>
-        -->
-    </string-array>
-
-    <string-array name="privacy_firewall_mode_description">
-        <item>setting_privacy_firewall_mode_never_desc</item>
-        <item>setting_privacy_firewall_mode_auto_desc</item>
-        <!--
-        <item>setting_privacy_firewall_mode_always_desc</item>
-        -->
-    </string-array>
-
+    <string name="title_activity_internet_kill_switch">Internet Killswitch</string>
+    <string name="internet_kill_switch_description">Prevent accidental privacy leaks by disabling all internet connectivity if you are disconnected from the Cypherpunk Privacy Network</string>
+    <string name="internet_kill_switch_automatic_title">Automatic [recommended]</string>
+    <string name="internet_kill_switch_automatic_summary">Enable the killswitch while connecting protecting you in case of accidental disconnections.</string>
+    <string name="internet_kill_switch_off_title">Off</string>
+    <string name="internet_kill_switch_off_summary">Don\'t use the killswitch feature.</string>
+    <string name="internet_kill_switch_always_on_title">Always On</string>
+    <string name="internet_kill_switch_always_on_summary">Only allow internet access through the Cypherpunk Privary Network.</string>
+    <string name="internet_kill_switch_warning">warning:</string>
+    <string name="internet_kill_switch_warning_summary">You will not be able to access the internet while disconnected!</string>
 
     <string name="region_list_favorite">FAVORITE</string>
     <string name="region_list_recent">RECENT</string>
