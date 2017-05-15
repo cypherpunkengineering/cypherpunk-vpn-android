@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center_horizontal"
-    tools:context=".ui.signin.SignUpActivity">
+    tools:context=".ui.startup.SignUpActivity">
 
     <View
         android:id="@+id/header_background"

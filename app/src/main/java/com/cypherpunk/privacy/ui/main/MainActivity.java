@@ -36,7 +36,7 @@ import com.cypherpunk.privacy.ui.account.AccountSettingsFragment;
 import com.cypherpunk.privacy.ui.region.RegionFragment;
 import com.cypherpunk.privacy.ui.settings.SettingConnectDialogFragment;
 import com.cypherpunk.privacy.ui.settings.SettingsFragment;
-import com.cypherpunk.privacy.ui.signin.IdentifyEmailActivity;
+import com.cypherpunk.privacy.ui.startup.IdentifyEmailActivity;
 import com.cypherpunk.privacy.vpn.CypherpunkVPN;
 import com.cypherpunk.privacy.vpn.CypherpunkVpnStatus;
 import com.cypherpunk.privacy.widget.BinaryTextureView;

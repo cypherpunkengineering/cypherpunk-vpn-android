@@ -136,7 +136,7 @@ public class SplitTunnelActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.application_settings, menu);
+        getMenuInflater().inflate(R.menu.menu_search, menu);
 
         final SearchView searchView = (SearchView) menu.findItem(R.id.action_search).getActionView();
         searchView.setQueryHint(getString(R.string.split_tunnel_search_hint));

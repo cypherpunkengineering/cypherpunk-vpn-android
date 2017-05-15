@@ -99,7 +99,7 @@ public class EditPasswordActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.edit_profile, menu);
+        getMenuInflater().inflate(R.menu.menu_done, menu);
         return true;
     }
 

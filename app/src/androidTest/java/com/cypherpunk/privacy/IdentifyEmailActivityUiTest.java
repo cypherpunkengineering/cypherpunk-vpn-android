@@ -11,9 +11,9 @@ import com.cypherpunk.privacy.dagger.DaggerAppComponent;
 import com.cypherpunk.privacy.dagger.RealmModule;
 import com.cypherpunk.privacy.data.api.CypherpunkService;
 import com.cypherpunk.privacy.data.api.json.EmailRequest;
-import com.cypherpunk.privacy.ui.signin.IdentifyEmailActivity;
-import com.cypherpunk.privacy.ui.signin.LoginActivity;
-import com.cypherpunk.privacy.ui.signin.SignUpActivity;
+import com.cypherpunk.privacy.ui.startup.IdentifyEmailActivity;
+import com.cypherpunk.privacy.ui.startup.LoginActivity;
+import com.cypherpunk.privacy.ui.startup.SignUpActivity;
 
 import org.junit.Before;
 import org.junit.Rule;
