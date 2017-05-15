@@ -102,6 +102,10 @@
             android:name=".ui.setup.TutorialActivity"
             android:theme="@style/CypherPunk.NoActionBar"/>
         <activity
+            android:name=".ui.settings.NetworkActivity"
+            android:label=""
+            android:theme="@style/CypherPunk.DialogWhenLarge.NoActionBar"/>
+        <activity
             android:name=".ui.settings.ListPreferenceActivity"
             android:theme="@style/AppTheme.DialogWhenLarge"/>
         <activity
@@ -109,9 +113,6 @@
             android:theme="@style/AppTheme.DialogWhenLarge"/>
         <activity
             android:name=".ui.settings.ApplicationSettingsActivity"
-            android:theme="@style/AppTheme.DialogWhenLarge"/>
-        <activity
-            android:name=".ui.settings.NetworkActivity"
             android:theme="@style/AppTheme.DialogWhenLarge"/>
         <activity
             android:name=".ui.account.ShareActivity"

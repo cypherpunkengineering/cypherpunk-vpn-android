@@ -57,7 +57,7 @@ public class SettingsFragment extends PreferenceFragmentCompat {
         findPreference("trusted_network").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
-                startActivity(new Intent(getActivity(), NetworkActivity.class));
+                startActivity(NetworkActivity.createIntent(getContext()));
                 return true;
             }
         });
