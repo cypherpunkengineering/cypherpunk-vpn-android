@@ -22,11 +22,12 @@ import java.util.ArrayList;
 public class SettingsFragment extends PreferenceFragmentCompat {
 
     private static final int REQUEST_LIST_SETTING = 1;
+    private static final int REQUEST_CODE_INTERNET_KILL_SWITCH = 2;
 
     private Preference protocol;
     private Preference remotePort;
     private Preference vpnPortLocal;
-    private Preference firewall;
+    private Preference internetKillSwitch;
     private Preference vpnCryptoProfile;
 
     @Override
@@ -44,7 +45,7 @@ public class SettingsFragment extends PreferenceFragmentCompat {
         preferenceManager.setSharedPreferencesName("cypherpunk_setting");
         addPreferencesFromResource(R.xml.preference_settings);
 
-        CypherpunkSetting cypherpunkSetting = new CypherpunkSetting();
+        final CypherpunkSetting cypherpunkSetting = new CypherpunkSetting();
 
         findPreference("split_tunnel").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
@@ -62,6 +63,18 @@ public class SettingsFragment extends PreferenceFragmentCompat {
             }
         });
 
+        // Internet Kill Switch
+        internetKillSwitch = findPreference("internet_kill_switch");
+        internetKillSwitch.setSummary(ResourceUtil.getStringFor(cypherpunkSetting.internetKillSwitch()));
+        internetKillSwitch.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                startActivityForResult(InternetKillSwitchActivity.createIntent(getContext()),
+                        REQUEST_CODE_INTERNET_KILL_SWITCH);
+                return true;
+            }
+        });
+
         remotePort = findPreference("vpn_port_remote");
 //        remotePort.setSummary(getStringByKey(cypherpunkSetting.vpnPortRemote));
         remotePort.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
@@ -75,18 +88,6 @@ public class SettingsFragment extends PreferenceFragmentCompat {
             }
         });
 
-        firewall = findPreference("internet_kill_switch");
-        firewall.setSummary(ResourceUtil.getStringByKey(getContext(), cypherpunkSetting.privacyFirewallMode));
-        firewall.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-            @Override
-            public boolean onPreferenceClick(Preference preference) {
-                startActivityForResult(ListPreferenceActivity.createIntent(getActivity(),
-                        "privacy_firewall_mode", firewall.getTitle(), new CypherpunkSetting().privacyFirewallMode,
-                        getSettingItemList(R.array.privacy_firewall_mode_value, R.array.privacy_firewall_mode_description)),
-                        REQUEST_LIST_SETTING);
-                return true;
-            }
-        });
 
         vpnCryptoProfile = findPreference("tunnel_mode");
         vpnCryptoProfile.setSummary(ResourceUtil.getStringByKey(getContext(), cypherpunkSetting.vpnCryptoProfile));
@@ -119,11 +120,6 @@ public class SettingsFragment extends PreferenceFragmentCompat {
                     cypherpunkSetting.vpnPortRemote = data.getStringExtra(ListPreferenceActivity.EXTRA_SELECTED_VALUE);
 //                    remotePort.setSummary(getStringByKey(data.getStringExtra(ListPreferenceActivity.EXTRA_SELECTED_VALUE)));
                     break;
-                case "privacy_firewall_mode":
-                    cypherpunkSetting.privacyFirewallMode = data.getStringExtra(ListPreferenceActivity.EXTRA_SELECTED_VALUE);
-                    firewall.setSummary(
-                            ResourceUtil.getStringByKey(getContext(), data.getStringExtra(ListPreferenceActivity.EXTRA_SELECTED_VALUE)));
-                    break;
                 case "vpn_crypto_profile":
                     cypherpunkSetting.vpnCryptoProfile = data.getStringExtra(ListPreferenceActivity.EXTRA_SELECTED_VALUE);
                     String stringExtra = data.getStringExtra(ListPreferenceActivity.EXTRA_SELECTED_VALUE);
@@ -138,6 +134,12 @@ public class SettingsFragment extends PreferenceFragmentCompat {
                 SettingConnectDialogFragment dialogFragment = SettingConnectDialogFragment.newInstance();
                 dialogFragment.show(getFragmentManager());
             }
+        }
+        switch (requestCode) {
+            case REQUEST_CODE_INTERNET_KILL_SWITCH:
+                final CypherpunkSetting cypherpunkSetting = new CypherpunkSetting();
+                internetKillSwitch.setSummary(ResourceUtil.getStringFor(cypherpunkSetting.internetKillSwitch()));
+                break;
         }
     }
 
