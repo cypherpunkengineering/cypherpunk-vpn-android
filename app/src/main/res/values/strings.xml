@@ -58,35 +58,29 @@
     <string name="settings_mode_max_speed">Max speed</string>
     <string name="settings_mode_max_freedom">Max freedom</string>
     <string name="settings_header_account">Account</string>
-    <string name="settings_header_configuration">Configuration</string>
-    <string name="settings_header_configuration_basic">Basic Settings</string>
-    <string name="settings_header_configuration_advanced">Advanced Settings</string>
     <string name="action_send">send</string>
     <string name="action_done">done</string>
     <string name="setting_connect_dialog_message">Reconnect to apply new settings?</string>
 
-    <!-- account -->
-
-    <!-- startup settings -->
-    <string name="setting_category_startup">Startup</string>
-    <string name="setting_vpn_auto_start_connect">Auto-connect on device boot</string>
-    <string name="setting_vpn_dns_block_ads">Block Ads</string>
-    <string name="setting_vpn_dns_block_malware">Block Malware</string>
-
-    <!-- privacy settings -->
+    <!-- settings -->
+    <string name="settings_header_configuration">Configuration</string>
+    <string name="settings_header_configuration_basic">Basic Settings</string>
+    <string name="settings_header_configuration_advanced">Advanced Settings</string>
+    <string name="setting_category_app_settings">App Settings</string>
     <string name="setting_category_privacy_settings">Privacy Settings</string>
+    <string name="setting_category_connection_settings">Connection Settings</string>
+    <string name="setting_network">Auto-connect on untrusted networks</string>
+    <string name="setting_network_summary">Privacy when you need it most</string>
+    <string name="setting_vpn_auto_start_connect">Auto-connect on device boot</string>
+    <string name="setting_vpn_dns_block_malware">Block Malware</string>
+    <string name="setting_vpn_dns_block_ads">Block Ads</string>
+    <string name="setting_internet_kill_switch">Leak Protection</string>
+    <string name="setting_tunnel_mode">Tunnel Mode</string>
+    <string name="setting_vpn_remote_port">Remote Port</string>
+    <string name="setting_split_tunnel">Split Tunnel</string>
+    <string name="setting_split_tunnel_summary">Configure which apps to route through VPN</string>
 
-    <!-- crypto profile settings -->
-    <string name="setting_vpn_crypto_profile">Privacy Mode</string>
-    <!-- crypto profile: strong -->
-    <string name="setting_vpn_crypto_profile_strong">Max Privacy</string>
-    <string name="setting_vpn_crypto_profile_strong_desc">Maximum encryption settings</string>
-    <!-- crypto profile: stealth -->
-    <string name="setting_vpn_crypto_profile_stealth">Max Freedom</string>
-    <string name="setting_vpn_crypto_profile_stealth_desc">Stealth mode for anti-censorship</string>
-    <!-- crypto profile: default -->
-    <string name="setting_vpn_crypto_profile_default">Recommended Default</string>
-    <string name="setting_vpn_crypto_profile_default_desc">Good balance of speed and privacy</string>
+
     <!-- crypto profile: none -->
     <string name="setting_vpn_crypto_profile_none">Max Speed</string>
     <string name="setting_vpn_crypto_profile_none_desc">No additional encryption for fastest speeds</string>
@@ -103,52 +97,6 @@
     <!-- crypto profile keylen -->
     <string name="setting_vpn_crypto_keylen">Key</string>
     <string name="setting_vpn_crypto_keylen_rsa4096">RSA-4096</string>
-
-    <!-- privacy firewall mode -->
-    <string name="setting_privacy_firewall_mode">Privacy Firewall</string>
-    <!-- privacy firewall mode: never -->
-    <string name="setting_privacy_firewall_mode_never">Off</string>
-    <string name="setting_privacy_firewall_mode_never_desc">Privacy Firewall is disabled</string>
-    <!-- privacy firewall mode: auto -->
-    <string name="setting_privacy_firewall_mode_auto">Auto</string>
-    <string name="setting_privacy_firewall_mode_auto_desc">Privacy Firewall will automatically engage the internet killswitch while the VPN is on, preventing any leak while not on the Cypherpunk Privacy Network.</string>
-    <!-- privacy firewall mode: always -->
-    <string name="setting_privacy_firewall_mode_always">Always</string>
-    <string name="setting_privacy_firewall_mode_always_desc">Privacy Firewall will always engage the internet killswitch, preventing any leak while not on the Cypherpunk Privacy Network, even while the VPN is off.</string>
-
-    <!-- advanced setting -->
-    <string name="setting_category_advanced">Advanced Settings</string>
-    <string name="setting_category_advanced_settings">Advanced Settings</string>
-    <string name="setting_category_vpn_settings">VPN Settings</string>
-
-    <!-- backend settings -->
-    <string name="setting_vpn_backend">VPN Backend</string>
-    <string name="setting_vpn_backend_openvpn23">OpenVPN 2.3</string>
-    <string name="setting_vpn_backend_openvpn23_desc">OpenVPN 2.3 is trusted and stable.</string>
-    <string name="setting_vpn_backend_openvpn31">OpenVPN 3.1</string>
-    <string name="setting_vpn_backend_openvpn31_desc">OpenVPN 3.1 is still experimental.</string>
-    <!-- manage trusted networks -->
-    <string name="setting_network">Auto-connect on untrusted networks</string>
-    <string name="setting_network_summary">Privacy when you need it most</string>
-    <string name="title_activity_network">Manage trusted networks</string>
-    <!-- per-app vpn settings -->
-    <string name="setting_application">VPN Split Tunnel</string>
-    <string name="setting_application_summary">Configure which apps to route through VPN</string>
-    <!-- vpn port remote -->
-    <string name="setting_vpn_port_remote">VPN Server Port</string>
-    <string name="setting_vpn_port_remote_summary">Use alternate remote TCP/UDP port for VPN</string>
-    <!-- vpn port local -->
-    <string name="setting_vpn_port_local">VPN Local Port</string>
-    <string name="setting_vpn_port_local_summary">Use alternate local TCP/UDP port for VPN</string>
-    <!-- vpn port forwarding -->
-    <string name="setting_vpn_port_forwarding">Port Forwarding</string>
-    <string name="setting_vpn_port_forwarding_summary">Allow incoming connection to your mobile device over an external port</string>
-    <!-- vpn use small packets -->
-    <string name="setting_small_packets">Use small packets</string>
-    <string name="setting_small_packets_summary">Optimized packet size for improved connectivity to various router and mobile networks</string>
-    <!-- vpn use openvpn3 -->
-    <string name="setting_use_openvpn3">Enable experimental OpenVPN 3 support</string>
-    <string name="setting_use_openvpn3_summary">OpenVPN 3 features performance enhancements but is still alpha quality.</string>
 
     <!-- account setting -->
     <string name="account_setting_category_type">Account Type</string>
@@ -265,6 +213,7 @@
     <string name="qs_tile_title">Privacy VPN</string>
 
     <!-- trusted network -->
+    <string name="title_activity_network">Manage trusted networks</string>
     <string name="network_auto_secure">Auto-secure</string>
     <string name="network_auto_secure_description">Cypherpunk can automatically secure connections to untrusted networks.</string>
     <string name="newt_work_auto_secure_connections">Auto secure connections</string>
@@ -272,6 +221,35 @@
     <string name="network_other_auto_secure_connections">Auto secure connections</string>
     <string name="network_wifi_networks">Wi-Fi Networks</string>
     <string name="network_wifi_description">Add the networks you trust. Cypherpunk will NOT automatically connect through the VPN when you connect to these trusted networks.</string>
+
+    <!-- internet kill switch -->
+    <string name="setting_privacy_firewall_mode">Privacy Firewall</string>
+    <!-- privacy firewall mode: never -->
+    <string name="setting_privacy_firewall_mode_never">Off</string>
+    <string name="setting_privacy_firewall_mode_never_desc">Privacy Firewall is disabled</string>
+    <!-- privacy firewall mode: auto -->
+    <string name="setting_privacy_firewall_mode_auto">Auto</string>
+    <string name="setting_privacy_firewall_mode_auto_desc">Privacy Firewall will automatically engage the internet killswitch while the VPN is on, preventing any leak while not on the Cypherpunk Privacy Network.</string>
+    <!-- privacy firewall mode: always -->
+    <string name="setting_privacy_firewall_mode_always">Always</string>
+    <string name="setting_privacy_firewall_mode_always_desc">Privacy Firewall will always engage the internet killswitch, preventing any leak while not on the Cypherpunk Privacy Network, even while the VPN is off.</string>
+
+    <string-array name="privacy_firewall_mode_value">
+        <item>setting_privacy_firewall_mode_never</item>
+        <item>setting_privacy_firewall_mode_auto</item>
+        <!--
+        <item>setting_privacy_firewall_mode_always</item>
+        -->
+    </string-array>
+
+    <string-array name="privacy_firewall_mode_description">
+        <item>setting_privacy_firewall_mode_never_desc</item>
+        <item>setting_privacy_firewall_mode_auto_desc</item>
+        <!--
+        <item>setting_privacy_firewall_mode_always_desc</item>
+        -->
+    </string-array>
+
 
     <string name="region_list_favorite">FAVORITE</string>
     <string name="region_list_recent">RECENT</string>
