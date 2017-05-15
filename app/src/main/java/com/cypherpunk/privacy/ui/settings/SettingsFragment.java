@@ -23,6 +23,7 @@ public class SettingsFragment extends PreferenceFragmentCompat {
 
     private static final int REQUEST_LIST_SETTING = 1;
     private static final int REQUEST_CODE_INTERNET_KILL_SWITCH = 2;
+    private static final int REQUEST_CODE_REMOTE_PORT = 3;
 
     private Preference protocol;
     private Preference remotePort;
@@ -76,14 +77,12 @@ public class SettingsFragment extends PreferenceFragmentCompat {
         });
 
         remotePort = findPreference("vpn_port_remote");
-//        remotePort.setSummary(getStringByKey(cypherpunkSetting.vpnPortRemote));
+        remotePort.setSummary(ResourceUtil.getStringFor(cypherpunkSetting.remotePort()));
         remotePort.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
-                startActivityForResult(ListPreferenceActivity.createIntent(getActivity(),
-                        "vpn_port_remote", remotePort.getTitle(), new CypherpunkSetting().vpnPortRemote,
-                        getSettingItemList(R.array.vpn_port_remote_value, 0)),
-                        REQUEST_LIST_SETTING);
+                startActivityForResult(RemotePortActivity.createIntent(getContext()),
+                        REQUEST_CODE_REMOTE_PORT);
                 return true;
             }
         });
@@ -111,15 +110,6 @@ public class SettingsFragment extends PreferenceFragmentCompat {
             String updateKey = data.getStringExtra(ListPreferenceActivity.EXTRA_KEY);
             CypherpunkSetting cypherpunkSetting = new CypherpunkSetting();
             switch (updateKey) {
-                case "vpn_backend":
-                    cypherpunkSetting.vpnBackend = data.getStringExtra(ListPreferenceActivity.EXTRA_SELECTED_VALUE);
-                    protocol.setSummary(
-                            ResourceUtil.getStringByKey(getContext(), data.getStringExtra(ListPreferenceActivity.EXTRA_SELECTED_VALUE)));
-                    break;
-                case "vpn_port_remote":
-                    cypherpunkSetting.vpnPortRemote = data.getStringExtra(ListPreferenceActivity.EXTRA_SELECTED_VALUE);
-//                    remotePort.setSummary(getStringByKey(data.getStringExtra(ListPreferenceActivity.EXTRA_SELECTED_VALUE)));
-                    break;
                 case "vpn_crypto_profile":
                     cypherpunkSetting.vpnCryptoProfile = data.getStringExtra(ListPreferenceActivity.EXTRA_SELECTED_VALUE);
                     String stringExtra = data.getStringExtra(ListPreferenceActivity.EXTRA_SELECTED_VALUE);
@@ -135,27 +125,15 @@ public class SettingsFragment extends PreferenceFragmentCompat {
                 dialogFragment.show(getFragmentManager());
             }
         }
+        final CypherpunkSetting cypherpunkSetting = new CypherpunkSetting();
         switch (requestCode) {
             case REQUEST_CODE_INTERNET_KILL_SWITCH:
-                final CypherpunkSetting cypherpunkSetting = new CypherpunkSetting();
                 internetKillSwitch.setSummary(ResourceUtil.getStringFor(cypherpunkSetting.internetKillSwitch()));
                 break;
+            case REQUEST_CODE_REMOTE_PORT:
+                remotePort.setSummary(ResourceUtil.getStringFor(cypherpunkSetting.remotePort()));
+                break;
         }
-    }
-
-    private ArrayList<SettingItem> getSettingItemList(@ArrayRes int keyListRes, @ArrayRes int descriptionListRes) {
-        String[] keyList = getResources().getStringArray(keyListRes);
-        String[] descriptionList = new String[0];
-        if (descriptionListRes != 0) {
-            descriptionList = getResources().getStringArray(descriptionListRes);
-        }
-        ArrayList<SettingItem> list = new ArrayList<>();
-        for (int i = 0; i < keyList.length; i++) {
-            list.add(new SettingItem(keyList[i],
-                    ResourceUtil.getStringByKey(getContext(), keyList[i]),
-                    descriptionListRes != 0 ? ResourceUtil.getStringByKey(getContext(), descriptionList[i]) : ""));
-        }
-        return list;
     }
 
     private ArrayList<SettingItem> getEncryptingSettingItemList(@ArrayRes int keyListRes, @ArrayRes int descriptionListRes) {

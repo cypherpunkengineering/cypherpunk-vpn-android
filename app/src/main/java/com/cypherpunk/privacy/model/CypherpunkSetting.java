@@ -44,9 +44,12 @@ public class CypherpunkSetting extends PrefModel {
     @DefaultString("setting_vpn_backend_openvpn23")
     public String vpnBackend;
 
-    @PrefKey("vpn_port_remote")
+    @PrefKey("vpn_remote_port_category")
     @DefaultString("")
-    public String vpnPortRemote;
+    public String vpnRemotePortCategory;
+
+    @PrefKey("vpn_remote_port_port")
+    public int vpnRemotePortPort;
 
     @PrefKey("vpn_port_local")
     @DefaultString("")
@@ -106,6 +109,70 @@ public class CypherpunkSetting extends PrefModel {
                 }
             }
             return OFF;
+        }
+    }
+
+    @NonNull
+    public RemotePort remotePort() {
+        final RemotePortCategory category = RemotePortCategory.find(vpnRemotePortCategory);
+        final RemotePortPort port = RemotePortPort.find(vpnRemotePortPort);
+        return new RemotePort(category, port);
+    }
+
+    public void updateRemotePort(@NonNull RemotePort remotePort) {
+        vpnRemotePortCategory = remotePort.category.name();
+        vpnRemotePortPort = remotePort.port.value;
+        save();
+    }
+
+    public static class RemotePort {
+        public final RemotePortCategory category;
+        public final RemotePortPort port;
+
+        public RemotePort(RemotePortCategory category, RemotePortPort port) {
+            this.category = category;
+            this.port = port;
+        }
+    }
+
+    public enum RemotePortCategory {
+        UDP,
+        TCP;
+
+        @NonNull
+        public static RemotePortCategory find(String value) {
+            for (RemotePortCategory category : values()) {
+                if (category.name().equals(value)) {
+                    return category;
+                }
+            }
+            return UDP;
+        }
+    }
+
+    public enum RemotePortPort {
+        PORT_7133(7133),
+        PORT_5060(5060),
+        PORT_53(53);
+
+        private final int value;
+
+        RemotePortPort(int value) {
+            this.value = value;
+        }
+
+        @NonNull
+        public static RemotePortPort find(int value) {
+            for (RemotePortPort port : values()) {
+                if (port.value == value) {
+                    return port;
+                }
+            }
+            return PORT_7133;
+        }
+
+        public int value() {
+            return value;
         }
     }
 }

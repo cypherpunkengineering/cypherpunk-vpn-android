@@ -41,4 +41,8 @@ public class ResourceUtil {
                 throw new IllegalArgumentException();
         }
     }
+
+    public static String getStringFor(@NonNull CypherpunkSetting.RemotePort remotePort) {
+        return remotePort.category.name() + " " + remotePort.port.value();
+    }
 }

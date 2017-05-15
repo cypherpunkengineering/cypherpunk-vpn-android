@@ -14,16 +14,6 @@
         -->
     </string-array>
 
-    <string-array name="vpn_port_remote_value">
-        <item>UDP/7133</item>
-        <item>UDP/5060</item>
-        <item>UDP/53</item>
-        <item>TCP/7133</item>
-        <item>TCP/5060</item>
-        <item>TCP/53</item>
-    </string-array>
-
-
     <string-array name="vpn_crypto_profile_value">
         <item>setting_vpn_crypto_profile_strong</item>
         <item>setting_vpn_crypto_profile_stealth</item>
