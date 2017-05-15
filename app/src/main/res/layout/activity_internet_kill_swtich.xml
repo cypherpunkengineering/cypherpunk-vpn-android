@@ -52,7 +52,7 @@
             app:layout_constraintTop_toTopOf="parent"/>
 
         <RadioButton
-            android:id="@+id/internet_kill_switch_automatic_check"
+            android:id="@+id/checkable"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="8dp"
@@ -77,7 +77,7 @@
             android:textColor="?android:textColorPrimary"
             android:textSize="16sp"
             app:fontName="DosisMedium"
-            app:layout_constraintLeft_toRightOf="@+id/internet_kill_switch_automatic_check"
+            app:layout_constraintLeft_toRightOf="@id/checkable"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent"/>
 
@@ -116,7 +116,7 @@
             app:layout_constraintTop_toTopOf="parent"/>
 
         <RadioButton
-            android:id="@+id/internet_kill_switch_off_check"
+            android:id="@id/checkable"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="8dp"
@@ -141,7 +141,7 @@
             android:textColor="?android:textColorPrimary"
             android:textSize="16sp"
             app:fontName="DosisMedium"
-            app:layout_constraintLeft_toRightOf="@+id/internet_kill_switch_off_check"
+            app:layout_constraintLeft_toRightOf="@id/checkable"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent"/>
 
@@ -176,7 +176,7 @@
             app:layout_constraintTop_toTopOf="parent"/>
 
         <RadioButton
-            android:id="@+id/internet_kill_switch_always_on_check"
+            android:id="@id/checkable"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="8dp"
@@ -201,7 +201,7 @@
             android:textColor="?android:textColorPrimary"
             android:textSize="16sp"
             app:fontName="DosisMedium"
-            app:layout_constraintLeft_toRightOf="@+id/internet_kill_switch_always_on_check"
+            app:layout_constraintLeft_toRightOf="@id/checkable"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent"/>
 

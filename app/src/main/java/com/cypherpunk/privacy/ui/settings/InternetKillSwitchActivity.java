@@ -9,15 +9,17 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
-import android.widget.RadioButton;
+import android.view.View;
+import android.widget.Checkable;
 
 import com.cypherpunk.privacy.R;
 import com.cypherpunk.privacy.model.CypherpunkSetting;
 import com.cypherpunk.privacy.model.CypherpunkSetting.InternetKillSwitch;
 
-import butterknife.BindView;
+import java.util.ArrayList;
+import java.util.List;
+
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 
 public class InternetKillSwitchActivity extends AppCompatActivity {
 
@@ -26,15 +28,7 @@ public class InternetKillSwitchActivity extends AppCompatActivity {
         return new Intent(context, InternetKillSwitchActivity.class);
     }
 
-    @BindView(R.id.internet_kill_switch_automatic_check)
-    RadioButton automaticView;
-
-    @BindView(R.id.internet_kill_switch_off_check)
-    RadioButton offView;
-
-    @BindView(R.id.internet_kill_switch_always_on_check)
-    RadioButton alwaysOnView;
-
+    private final List<Checkable> checkableList = new ArrayList<>();
     private CypherpunkSetting cypherpunkSetting;
 
     @Override
@@ -57,51 +51,53 @@ public class InternetKillSwitchActivity extends AppCompatActivity {
         }
 
         cypherpunkSetting = new CypherpunkSetting();
-        updateChecked(cypherpunkSetting.internetKillSwitch());
-    }
+        final InternetKillSwitch internetKillSwitch = cypherpunkSetting.internetKillSwitch();
 
-    private void updateChecked(@NonNull InternetKillSwitch internetKillSwitch) {
-        switch (internetKillSwitch) {
-            case AUTOMATIC:
-                automaticView.setChecked(true);
-                offView.setChecked(false);
-                alwaysOnView.setChecked(false);
-                break;
-            case ALWAYS_ON:
-                automaticView.setChecked(false);
-                offView.setChecked(false);
-                alwaysOnView.setChecked(true);
-                break;
-            case OFF:
-            default:
-                automaticView.setChecked(false);
-                offView.setChecked(true);
-                alwaysOnView.setChecked(false);
-                break;
-        }
-    }
+        for (InternetKillSwitch killSwitch : InternetKillSwitch.values()) {
+            final int resId;
+            switch (killSwitch) {
+                case AUTOMATIC:
+                    resId = R.id.internet_kill_switch_automatic;
+                    break;
+                case ALWAYS_ON:
+                    resId = R.id.internet_kill_switch_always_on;
+                    break;
+                case OFF:
+                default:
+                    resId = R.id.internet_kill_switch_off;
+                    break;
+            }
 
-    @OnClick(R.id.internet_kill_switch_automatic)
-    void onAutomaticSelected() {
-        if (!automaticView.isChecked()) {
-            updateChecked(InternetKillSwitch.AUTOMATIC);
-            cypherpunkSetting.updateInternetKillSwitch(InternetKillSwitch.AUTOMATIC);
-        }
-    }
+            final View view = ButterKnife.findById(this, resId);
+            final Checkable checkable = ButterKnife.findById(view, R.id.checkable);
+            checkableList.add(checkable);
 
-    @OnClick(R.id.internet_kill_switch_off)
-    void onOffSelected() {
-        if (!offView.isChecked()) {
-            updateChecked(InternetKillSwitch.OFF);
-            cypherpunkSetting.updateInternetKillSwitch(InternetKillSwitch.OFF);
-        }
-    }
+            view.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (!checkable.isChecked()) {
+                        for (Checkable c : checkableList) {
+                            c.setChecked(false);
+                        }
+                        checkable.setChecked(true);
 
-    @OnClick(R.id.internet_kill_switch_always_on)
-    void onAlwaysOnSelected() {
-        if (!alwaysOnView.isChecked()) {
-            updateChecked(InternetKillSwitch.ALWAYS_ON);
-            cypherpunkSetting.updateInternetKillSwitch(InternetKillSwitch.ALWAYS_ON);
+                        switch (resId) {
+                            case R.id.internet_kill_switch_automatic:
+                                cypherpunkSetting.updateInternetKillSwitch(InternetKillSwitch.AUTOMATIC);
+                                break;
+                            case R.id.internet_kill_switch_off:
+                                cypherpunkSetting.updateInternetKillSwitch(InternetKillSwitch.OFF);
+                                break;
+                            case R.id.internet_kill_switch_always_on:
+                                cypherpunkSetting.updateInternetKillSwitch(InternetKillSwitch.ALWAYS_ON);
+                        }
+                    }
+                }
+            });
+
+            if (internetKillSwitch == killSwitch) {
+                checkable.setChecked(true);
+            }
         }
     }
 

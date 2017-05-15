@@ -140,10 +140,6 @@
     <string name="password_hint">New Password</string>
     <string name="current_password_hint">Current Password</string>
 
-    <!-- port-->
-    <string name="title_activity_local_port">Local port</string>
-    <string name="local_port_hint">Local port: Ex. 88888</string>
-
     <!-- application settings -->
     <string name="title_activity_application_settings">Per application settings</string>
     <string name="search_application_title">Search Apps</string>
@@ -233,6 +229,14 @@
     <string name="internet_kill_switch_always_on_summary">Only allow internet access through the Cypherpunk Privary Network.</string>
     <string name="internet_kill_switch_warning">warning:</string>
     <string name="internet_kill_switch_warning_summary">You will not be able to access the internet while disconnected!</string>
+
+    <!-- remote port-->
+    <string name="title_activity_remote_port">Remote port</string>
+    <string name="remote_port_udp">udp</string>
+    <string name="remote_port_tcp">tcp</string>
+    <string name="remote_port_7133">7133</string>
+    <string name="remote_port_5060">5060</string>
+    <string name="remote_port_53">53</string>
 
     <string name="region_list_favorite">FAVORITE</string>
     <string name="region_list_recent">RECENT</string>

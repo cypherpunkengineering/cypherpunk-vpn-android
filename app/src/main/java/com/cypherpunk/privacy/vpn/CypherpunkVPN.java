@@ -217,35 +217,9 @@ public class CypherpunkVPN {
         list.add("ncp-disable");
 
         // vpn protocol + remote port
-        int rport = 7133;
-        if (cypherpunkSetting.vpnPortRemote != null && cypherpunkSetting.vpnPortRemote.length() > 0) {
-            switch (cypherpunkSetting.vpnPortRemote) {
-                case "UDP/7133":
-                    list.add("proto udp");
-                    rport = 7133;
-                    break;
-                case "UDP/5060":
-                    list.add("proto udp");
-                    rport = 5060;
-                    break;
-                case "UDP/53":
-                    list.add("proto udp");
-                    rport = 53;
-                    break;
-                case "TCP/7133":
-                    list.add("proto tcp");
-                    rport = 7133;
-                    break;
-                case "TCP/5060":
-                    list.add("proto tcp");
-                    rport = 5060;
-                    break;
-                case "TCP/53":
-                    list.add("proto tcp");
-                    rport = 53;
-                    break;
-            }
-        }
+        final CypherpunkSetting.RemotePort remotePort = cypherpunkSetting.remotePort();
+        list.add("proto " + remotePort.category.name().toLowerCase());
+        int rport = remotePort.port.value();
 
         // vpn crypto profile
         if (cypherpunkSetting.vpnCryptoProfile != null && cypherpunkSetting.vpnCryptoProfile.length() > 0) {
