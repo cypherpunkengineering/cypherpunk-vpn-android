@@ -14,7 +14,7 @@
 
     <PreferenceCategory
         android:layout="@layout/custom_preference_category"
-        android:title="@string/setting_category_privacy_settings">
+        android:title="@string/setting_category_app_settings">
 
         <Preference
             android:key="trusted_network"
@@ -25,18 +25,34 @@
             android:key="vpn_auto_start_connect"
             android:title="@string/setting_vpn_auto_start_connect"/>
 
-        <Preference
-            android:id="@+id/preference"
-            android:key="vpn_crypto_profile"
-            android:title="@string/setting_vpn_crypto_profile"/>
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:layout="@layout/custom_preference_category"
+        android:title="@string/setting_category_privacy_settings">
+
+        <SwitchPreferenceCompat
+            android:key="vpn_dns_block_malware"
+            android:title="@string/setting_vpn_dns_block_malware"/>
 
         <SwitchPreferenceCompat
             android:key="vpn_dns_block_ads"
             android:title="@string/setting_vpn_dns_block_ads"/>
 
-        <SwitchPreferenceCompat
-            android:key="vpn_dns_block_malware"
-            android:title="@string/setting_vpn_dns_block_malware"/>
+        <Preference
+            android:key="internet_kill_switch"
+            android:title="@string/setting_internet_kill_switch"/>
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="@string/setting_category_connection_settings"
+        app:layout="@layout/custom_preference_category">
+
+        <Preference
+            android:id="@+id/preference"
+            android:key="tunnel_mode"
+            android:title="@string/setting_tunnel_mode"/>
 
     </PreferenceCategory>
 
@@ -44,43 +60,13 @@
         android:layout="@layout/preference_configuration_header"
         android:title="@string/settings_header_configuration_advanced"/>
 
-    <PreferenceCategory
-        android:title="@string/setting_category_privacy_settings"
-        app:layout="@layout/custom_preference_category">
+    <Preference
+        android:key="vpn_port_remote"
+        android:title="@string/setting_vpn_remote_port"/>
 
-        <Preference
-            android:key="privacy_firewall_mode"
-            android:title="@string/setting_privacy_firewall_mode"/>
-
-    </PreferenceCategory>
-
-    <PreferenceCategory android:title="@string/setting_category_vpn_settings">
-
-        <Preference
-            android:key="application"
-            android:summary="@string/setting_application_summary"
-            android:title="@string/setting_application"/>
-
-        <Preference
-            android:key="vpn_port_remote"
-            android:summary="@string/setting_vpn_port_remote_summary"
-            android:title="@string/setting_vpn_port_remote"/>
-
-        <!--
-        <Preference
-            android:key="vpn_backend"
-            android:title="@string/setting_vpn_backend" />
-
-        <Preference
-            android:key="vpn_port_local"
-            android:summary="@string/setting_vpn_port_local_summary"
-            android:title="@string/setting_vpn_port_local" />
-
-        <SwitchPreferenceCompat
-            android:key="vpn_port_forwarding"
-            android:summary="@string/setting_vpn_port_forwarding_summary"
-            android:title="@string/setting_vpn_port_forwarding" />
-        -->
-    </PreferenceCategory>
+    <Preference
+        android:key="split_tunnel"
+        android:summary="@string/setting_split_tunnel_summary"
+        android:title="@string/setting_split_tunnel"/>
 
 </PreferenceScreen>
