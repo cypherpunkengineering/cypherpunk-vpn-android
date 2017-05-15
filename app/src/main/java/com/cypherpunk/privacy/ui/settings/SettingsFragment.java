@@ -23,13 +23,14 @@ public class SettingsFragment extends PreferenceFragmentCompat {
 
     private static final int REQUEST_LIST_SETTING = 1;
     private static final int REQUEST_CODE_INTERNET_KILL_SWITCH = 2;
-    private static final int REQUEST_CODE_REMOTE_PORT = 3;
+    private static final int REQUEST_CODE_TUNNEL_MODE = 3;
+    private static final int REQUEST_CODE_REMOTE_PORT = 4;
 
     private Preference protocol;
     private Preference remotePort;
     private Preference vpnPortLocal;
     private Preference internetKillSwitch;
-    private Preference vpnCryptoProfile;
+    private Preference tunnelMode;
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -76,6 +77,19 @@ public class SettingsFragment extends PreferenceFragmentCompat {
             }
         });
 
+        // Tunnel Mode
+        tunnelMode = findPreference("tunnel_mode");
+        tunnelMode.setSummary(ResourceUtil.getStringFor(cypherpunkSetting.tunnelMode()));
+        tunnelMode.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                startActivityForResult(TunnelModeActivity.createIntent(getContext()),
+                        REQUEST_CODE_TUNNEL_MODE);
+                return true;
+            }
+        });
+
+        // Remote Port
         remotePort = findPreference("vpn_port_remote");
         remotePort.setSummary(ResourceUtil.getStringFor(cypherpunkSetting.remotePort()));
         remotePort.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
@@ -86,39 +100,12 @@ public class SettingsFragment extends PreferenceFragmentCompat {
                 return true;
             }
         });
-
-
-        vpnCryptoProfile = findPreference("tunnel_mode");
-        vpnCryptoProfile.setSummary(ResourceUtil.getStringByKey(getContext(), cypherpunkSetting.vpnCryptoProfile));
-        vpnCryptoProfile.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-            @Override
-            public boolean onPreferenceClick(Preference preference) {
-                startActivityForResult(ListPreferenceActivity.createIntent(getActivity(),
-                        "vpn_crypto_profile", vpnCryptoProfile.getTitle(),
-                        new CypherpunkSetting().vpnCryptoProfile, getEncryptingSettingItemList(
-                                R.array.vpn_crypto_profile_value, R.array.vpn_crypto_profile_description)),
-                        REQUEST_LIST_SETTING);
-                return true;
-            }
-        });
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == Activity.RESULT_OK) {
-            String updateKey = data.getStringExtra(ListPreferenceActivity.EXTRA_KEY);
-            CypherpunkSetting cypherpunkSetting = new CypherpunkSetting();
-            switch (updateKey) {
-                case "vpn_crypto_profile":
-                    cypherpunkSetting.vpnCryptoProfile = data.getStringExtra(ListPreferenceActivity.EXTRA_SELECTED_VALUE);
-                    String stringExtra = data.getStringExtra(ListPreferenceActivity.EXTRA_SELECTED_VALUE);
-                    vpnCryptoProfile.setSummary(
-                            ResourceUtil.getStringByKey(getContext(), stringExtra));
-                    break;
-            }
-            cypherpunkSetting.save();
-
             CypherpunkVpnStatus vpnStatus = new CypherpunkVpnStatus();
             if (vpnStatus.isConnected()) {
                 SettingConnectDialogFragment dialogFragment = SettingConnectDialogFragment.newInstance();
@@ -129,6 +116,9 @@ public class SettingsFragment extends PreferenceFragmentCompat {
         switch (requestCode) {
             case REQUEST_CODE_INTERNET_KILL_SWITCH:
                 internetKillSwitch.setSummary(ResourceUtil.getStringFor(cypherpunkSetting.internetKillSwitch()));
+                break;
+            case REQUEST_CODE_TUNNEL_MODE:
+                tunnelMode.setSummary(ResourceUtil.getStringFor(cypherpunkSetting.tunnelMode()));
                 break;
             case REQUEST_CODE_REMOTE_PORT:
                 remotePort.setSummary(ResourceUtil.getStringFor(cypherpunkSetting.remotePort()));

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    >
 
     <Preference
         android:layout="@layout/preference_header"
@@ -27,9 +27,7 @@
 
     </PreferenceCategory>
 
-    <PreferenceCategory
-        android:layout="@layout/custom_preference_category"
-        android:title="@string/setting_category_privacy_settings">
+    <PreferenceCategory android:title="@string/setting_category_privacy_settings">
 
         <SwitchPreferenceCompat
             android:key="vpn_dns_block_malware"
@@ -45,9 +43,7 @@
 
     </PreferenceCategory>
 
-    <PreferenceCategory
-        android:title="@string/setting_category_connection_settings"
-        app:layout="@layout/custom_preference_category">
+    <PreferenceCategory android:title="@string/setting_category_connection_settings">
 
         <Preference
             android:id="@+id/preference"
