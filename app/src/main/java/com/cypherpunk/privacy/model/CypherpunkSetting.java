@@ -79,6 +79,10 @@ public class CypherpunkSetting extends PrefModel {
     @DefaultBoolean(false)
     public boolean analytics;
 
+    //
+    // InternetKillSwitch
+    //
+
     @NonNull
     public InternetKillSwitch internetKillSwitch() {
         return InternetKillSwitch.find(internetKillSwitchValue);
@@ -111,6 +115,117 @@ public class CypherpunkSetting extends PrefModel {
             return OFF;
         }
     }
+
+    //
+    // TunnelMode
+    //
+
+    @NonNull
+    public TunnelMode tunnelMode() {
+        return TunnelMode.find(vpnCryptoProfile);
+    }
+
+    public void updateTunnelMode(@NonNull TunnelMode tunnelMode) {
+        vpnCryptoProfile = tunnelMode.name();
+        save();
+    }
+
+    public enum TunnelMode {
+        RECOMMENDED(TunnelModeCipher.AES_128_GCM, TunnelModeAuth.SHA_256, TunnelModeKey.RSA_4096),
+        MAX_SPEED(TunnelModeCipher.NONE, TunnelModeAuth.SHA_256, TunnelModeKey.RSA_4096),
+        MAX_PRIVACY(TunnelModeCipher.AES_256_GCM, TunnelModeAuth.SHA_256, TunnelModeKey.RSA_4096),
+        MAX_STEALTH(TunnelModeCipher.AES_128_GCM, TunnelModeAuth.SHA_256, TunnelModeKey.RSA_4096);
+
+        @NonNull
+        private final TunnelModeCipher cipher;
+        @NonNull
+        private final TunnelModeAuth auth;
+        @NonNull
+        private final TunnelModeKey key;
+
+        TunnelMode(@NonNull TunnelModeCipher cipher, @NonNull TunnelModeAuth auth, @NonNull TunnelModeKey key) {
+            this.cipher = cipher;
+            this.auth = auth;
+            this.key = key;
+        }
+
+        @NonNull
+        public TunnelModeCipher cipher() {
+            return cipher;
+        }
+
+        @NonNull
+        public TunnelModeAuth auth() {
+            return auth;
+        }
+
+        @NonNull
+        public TunnelModeKey key() {
+            return key;
+        }
+
+        @NonNull
+        public static TunnelMode find(String name) {
+            for (TunnelMode tunnelMode : values()) {
+                if (tunnelMode.name().equals(name)) {
+                    return tunnelMode;
+                }
+            }
+            return RECOMMENDED;
+        }
+    }
+
+    public enum TunnelModeCipher {
+        NONE("NONE"),
+        AES_128_GCM("AES-128-GCM"),
+        AES_256_GCM("AES-256-GCM");
+
+        @NonNull
+        private final String value;
+
+        TunnelModeCipher(@NonNull String value) {
+            this.value = value;
+        }
+
+        public String value() {
+            return value;
+        }
+    }
+
+    public enum TunnelModeAuth {
+        SHA_256("SHA-256");
+
+        @NonNull
+        private final String value;
+
+        TunnelModeAuth(@NonNull String value) {
+            this.value = value;
+        }
+
+        public String value() {
+            return value;
+        }
+    }
+
+    public enum TunnelModeKey {
+        RSA_4096("RSA-4096");
+
+        @NonNull
+        private final String value;
+
+        TunnelModeKey(@NonNull String value) {
+            this.value = value;
+        }
+
+        public String value() {
+            return value;
+        }
+
+    }
+
+    //
+    // RemotePort
+    //
 
     @NonNull
     public RemotePort remotePort() {

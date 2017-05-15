@@ -110,12 +110,13 @@
             android:label=""
             android:theme="@style/CypherPunk.DialogWhenLarge.NoActionBar"/>
         <activity
-            android:name=".ui.settings.RemotePortActivity"
+            android:name=".ui.settings.TunnelModeActivity"
             android:label=""
             android:theme="@style/CypherPunk.DialogWhenLarge.NoActionBar"/>
         <activity
-            android:name=".ui.settings.ListPreferenceActivity"
-            android:theme="@style/AppTheme.DialogWhenLarge"/>
+            android:name=".ui.settings.RemotePortActivity"
+            android:label=""
+            android:theme="@style/CypherPunk.DialogWhenLarge.NoActionBar"/>
         <activity
             android:name=".ui.settings.ApplicationSettingsActivity"
             android:theme="@style/AppTheme.DialogWhenLarge"/>

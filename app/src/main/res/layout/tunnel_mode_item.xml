@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="?android:selectableItemBackground"
+    android:focusable="true">
+
+    <View
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@color/background"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <RadioButton
+        android:id="@id/checkable"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:layout_marginStart="8dp"
+        android:clickable="false"
+        android:duplicateParentState="true"
+        android:focusable="false"
+        app:layout_constraintBottom_toBottomOf="@+id/title"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/title"
+        app:layout_constraintVertical_bias="0.523"
+        tools:ignore="ContentDescription"/>
+
+    <com.cypherpunk.privacy.widget.TypefaceTextView
+        android:id="@+id/title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="14dp"
+        android:textColor="?android:textColorPrimary"
+        android:textSize="16sp"
+        app:fontName="DosisMedium"
+        app:layout_constraintLeft_toRightOf="@id/checkable"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="@string/tunnel_mode_recommended_title"/>
+
+    <com.cypherpunk.privacy.widget.TypefaceTextView
+        android:id="@+id/summary"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        app:fontName="DosisRegular"
+        app:layout_constraintLeft_toLeftOf="@+id/title"
+        app:layout_constraintRight_toRightOf="@+id/title"
+        app:layout_constraintTop_toBottomOf="@+id/title"
+        tools:text="@string/tunnel_mode_recommended_summary"/>
+
+    <com.cypherpunk.privacy.widget.TypefaceTextView
+        android:id="@+id/cipher"
+        android:layout_width="106dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="@string/tunnel_mode_cipher"
+        android:textColor="@color/edit_text_hint"
+        android:textSize="12sp"
+        app:fontName="DosisRegular"
+        app:layout_constraintLeft_toLeftOf="@id/title"
+        app:layout_constraintTop_toBottomOf="@id/summary"/>
+
+    <com.cypherpunk.privacy.widget.TypefaceTextView
+        android:id="@+id/cipher_value"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="1dp"
+        android:paddingBottom="12dp"
+        android:textColor="?android:textColorPrimary"
+        app:fontName="DosisRegular"
+        app:layout_constraintLeft_toLeftOf="@+id/cipher"
+        app:layout_constraintTop_toBottomOf="@id/cipher"
+        tools:text="AES-128-GCM"/>
+
+    <com.cypherpunk.privacy.widget.TypefaceTextView
+        android:id="@+id/auth"
+        android:layout_width="70dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="@string/tunnel_mode_auth"
+        android:textColor="@color/edit_text_hint"
+        android:textSize="12sp"
+        app:fontName="DosisRegular"
+        app:layout_constraintLeft_toRightOf="@id/cipher"
+        app:layout_constraintTop_toBottomOf="@id/summary"/>
+
+    <com.cypherpunk.privacy.widget.TypefaceTextView
+        android:id="@+id/auth_value"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="2dp"
+        android:paddingBottom="12dp"
+        android:textColor="?android:textColorPrimary"
+        app:fontName="DosisRegular"
+        app:layout_constraintLeft_toLeftOf="@id/auth"
+        app:layout_constraintTop_toBottomOf="@id/auth"
+        tools:text="SHA-256"/>
+
+    <com.cypherpunk.privacy.widget.TypefaceTextView
+        android:id="@+id/key"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="@string/tunnel_mode_key"
+        android:textColor="@color/edit_text_hint"
+        android:textSize="12sp"
+        app:fontName="DosisRegular"
+        app:layout_constraintLeft_toRightOf="@id/auth"
+        app:layout_constraintTop_toBottomOf="@id/summary"/>
+
+    <com.cypherpunk.privacy.widget.TypefaceTextView
+        android:id="@+id/key_value"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="2dp"
+        android:paddingBottom="12dp"
+        android:textColor="?android:textColorPrimary"
+        app:fontName="DosisRegular"
+        app:layout_constraintLeft_toLeftOf="@id/key"
+        app:layout_constraintTop_toBottomOf="@id/key"
+        tools:text="RSA-4096"/>
+
+</android.support.constraint.ConstraintLayout>

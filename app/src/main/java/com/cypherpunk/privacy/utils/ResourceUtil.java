@@ -45,4 +45,52 @@ public class ResourceUtil {
     public static String getStringFor(@NonNull CypherpunkSetting.RemotePort remotePort) {
         return remotePort.category.name() + " " + remotePort.port.value();
     }
+
+    @StringRes
+    public static int getStringFor(@NonNull CypherpunkSetting.TunnelMode mode) {
+        switch (mode) {
+            case RECOMMENDED:
+                return R.string.tunnel_mode_recommended_title;
+            case MAX_SPEED:
+                return R.string.tunnel_mode_max_speed_title;
+            case MAX_PRIVACY:
+                return R.string.tunnel_mode_max_privacy_title;
+            case MAX_STEALTH:
+                return R.string.tunnel_mode_max_stealth_title;
+            default:
+                throw new IllegalArgumentException();
+        }
+    }
+
+    @StringRes
+    public static int getTitleFor(@NonNull CypherpunkSetting.TunnelMode mode) {
+        switch (mode) {
+            case RECOMMENDED:
+                return R.string.tunnel_mode_recommended_title;
+            case MAX_SPEED:
+                return R.string.tunnel_mode_max_speed_title;
+            case MAX_PRIVACY:
+                return R.string.tunnel_mode_max_privacy_title;
+            case MAX_STEALTH:
+                return R.string.tunnel_mode_max_stealth_title;
+            default:
+                throw new IllegalArgumentException();
+        }
+    }
+
+    @StringRes
+    public static int getSummaryFor(@NonNull CypherpunkSetting.TunnelMode mode) {
+        switch (mode) {
+            case RECOMMENDED:
+                return R.string.tunnel_mode_recommended_summary;
+            case MAX_SPEED:
+                return R.string.tunnel_mode_max_speed_summary;
+            case MAX_PRIVACY:
+                return R.string.tunnel_mode_max_privacy_summary;
+            case MAX_STEALTH:
+                return R.string.tunnel_mode_max_stealth_summary;
+            default:
+                throw new IllegalArgumentException();
+        }
+    }
 }
