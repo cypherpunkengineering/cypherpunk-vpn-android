@@ -58,23 +58,6 @@
     <string name="action_done">done</string>
     <string name="setting_connect_dialog_message">Reconnect to apply new settings?</string>
 
-    <!-- settings -->
-    <string name="settings_header_configuration">Configuration</string>
-    <string name="settings_header_configuration_basic">Basic Settings</string>
-    <string name="settings_header_configuration_advanced">Advanced Settings</string>
-    <string name="setting_category_app_settings">App Settings</string>
-    <string name="setting_category_privacy_settings">Privacy Settings</string>
-    <string name="setting_category_connection_settings">Connection Settings</string>
-    <string name="setting_network">Auto-connect on untrusted networks</string>
-    <string name="setting_network_summary">Privacy when you need it most</string>
-    <string name="setting_vpn_auto_start_connect">Auto-connect on device boot</string>
-    <string name="setting_vpn_dns_block_malware">Block Malware</string>
-    <string name="setting_vpn_dns_block_ads">Block Ads</string>
-    <string name="setting_internet_kill_switch">Leak Protection</string>
-    <string name="setting_tunnel_mode">Tunnel Mode</string>
-    <string name="setting_vpn_remote_port">Remote Port</string>
-    <string name="setting_split_tunnel">Split Tunnel</string>
-    <string name="setting_split_tunnel_summary">Configure which apps to route through VPN</string>
 
     <!-- account setting -->
     <string name="account_setting_category_type">Account Type</string>
@@ -118,10 +101,6 @@
     <string name="password_hint">New Password</string>
     <string name="current_password_hint">Current Password</string>
 
-    <!-- application settings -->
-    <string name="title_activity_application_settings">Per application settings</string>
-    <string name="search_application_title">Search Apps</string>
-
     <!-- status -->
     <string name="title_activity_status">Connection Status</string>
     <string name="status_change_ip_address">Change IP Address</string>
@@ -145,11 +124,6 @@
     <string name="share_subject">Checkout cypherpunk</string>
     <string name="share_text">Checkout cypherpunk https://play.google.com/store/apps/details?id=com.cypherpunk.privacy</string>
 
-    <!-- introduction -->
-    <string name="introduction_start_free_now">Start Free Now</string>
-    <string name="introduction_sign_up">Sign up for 7-day Free Premium Trial</string>
-    <string name="introduction_premium">Get a Premium plan</string>
-
     <!-- get a premium -->
     <string name="title_activity_get_premium">Get a Cypherpunk Premium Account</string>
     <string name="premium_email_hint">Email</string>
@@ -160,11 +134,6 @@
     <string name="rate_dialog_rate_now">Rate Now!</string>
     <string name="rate_dialog_later">Later</string>
     <string name="rate_text">Do you like Cypherpunk Privacy? Please take a moment to rate us! It is a huge help to us, and lets other people like you enjoy the internet privately and without censorship.</string>
-
-    <!-- select mode -->
-    <string name="select_mode_title">Select your Cypherpunk Privacy mode</string>
-    <string name="select_mode_connect">Connect</string>
-    <string name="select_mode_skip">Skip</string>
 
     <!-- tutorial -->
     <string name="tutorial_allow">Allow</string>
@@ -185,6 +154,46 @@
 
     <!-- quick settings tile -->
     <string name="qs_tile_title">Privacy VPN</string>
+
+
+    <string name="region_list_favorite">FAVORITE</string>
+    <string name="region_list_recent">RECENT</string>
+    <string name="region_list_all">ALL</string>
+
+    <string name="region_list_dev">DEVELOPER</string>
+    <string name="region_list_na">NORTH AMERICA</string>
+    <string name="region_list_sa">CENTRAL &amp; SOUTH AMERICA</string>
+    <string name="region_list_cr">CARIBBEAN</string>
+    <string name="region_list_op">OCEANIA &amp; PACIFIC</string>
+    <string name="region_list_eu">EUROPE</string>
+    <string name="region_list_me">MIDDLE EAST</string>
+    <string name="region_list_af">AFRICA</string>
+    <string name="region_list_as">ASIA</string>
+
+    <string name="region_level_badge_dev">DEV</string>
+    <string name="region_level_badge_premium">PREMIUM</string>
+    <string name="region_level_badge_unavailable">UNAVAILABLE</string>
+
+
+
+
+    <!-- cypherpunk settings -->
+    <string name="settings_header_configuration">Configuration</string>
+    <string name="settings_header_configuration_basic">Basic Settings</string>
+    <string name="settings_header_configuration_advanced">Advanced Settings</string>
+    <string name="setting_category_app_settings">App Settings</string>
+    <string name="setting_category_privacy_settings">Privacy Settings</string>
+    <string name="setting_category_connection_settings">Connection Settings</string>
+    <string name="setting_network">Auto-connect on untrusted networks</string>
+    <string name="setting_network_summary">Privacy when you need it most</string>
+    <string name="setting_vpn_auto_start_connect">Auto-connect on device boot</string>
+    <string name="setting_vpn_dns_block_malware">Block Malware</string>
+    <string name="setting_vpn_dns_block_ads">Block Ads</string>
+    <string name="setting_internet_kill_switch">Leak Protection</string>
+    <string name="setting_tunnel_mode">Tunnel Mode</string>
+    <string name="setting_vpn_remote_port">Remote Port</string>
+    <string name="setting_split_tunnel">Split Tunnel</string>
+    <string name="setting_split_tunnel_summary">Configure which apps to route through VPN</string>
 
     <!-- trusted network -->
     <string name="title_activity_network">Manage trusted networks</string>
@@ -233,21 +242,8 @@
     <string name="remote_port_5060">5060</string>
     <string name="remote_port_53">53</string>
 
-    <string name="region_list_favorite">FAVORITE</string>
-    <string name="region_list_recent">RECENT</string>
-    <string name="region_list_all">ALL</string>
+    <!-- split tunnel -->
+    <string name="title_activity_split_tunnel">Per application settings</string>
+    <string name="split_tunnel_search_hint">Search Apps</string>
 
-    <string name="region_list_dev">DEVELOPER</string>
-    <string name="region_list_na">NORTH AMERICA</string>
-    <string name="region_list_sa">CENTRAL &amp; SOUTH AMERICA</string>
-    <string name="region_list_cr">CARIBBEAN</string>
-    <string name="region_list_op">OCEANIA &amp; PACIFIC</string>
-    <string name="region_list_eu">EUROPE</string>
-    <string name="region_list_me">MIDDLE EAST</string>
-    <string name="region_list_af">AFRICA</string>
-    <string name="region_list_as">ASIA</string>
-
-    <string name="region_level_badge_dev">DEV</string>
-    <string name="region_level_badge_premium">PREMIUM</string>
-    <string name="region_level_badge_unavailable">UNAVAILABLE</string>
 </resources>
