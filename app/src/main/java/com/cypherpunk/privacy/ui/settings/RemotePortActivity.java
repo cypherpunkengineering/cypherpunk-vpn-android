@@ -88,7 +88,7 @@ public class RemotePortActivity extends AppCompatActivity {
                             }
                             checkable.setChecked(true);
 
-                            cypherpunkSetting.updateRemotePort(new CypherpunkSetting.RemotePort(category, port));
+                            update(new CypherpunkSetting.RemotePort(category, port));
                         }
                     }
                 });
@@ -100,6 +100,11 @@ public class RemotePortActivity extends AppCompatActivity {
                 }
             }
         }
+    }
+
+    private void update(@NonNull CypherpunkSetting.RemotePort remotePort) {
+        setResult(RESULT_OK);
+        cypherpunkSetting.updateRemotePort(remotePort);
     }
 
     @Override

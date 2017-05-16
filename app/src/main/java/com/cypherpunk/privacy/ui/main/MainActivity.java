@@ -6,7 +6,6 @@ import android.content.res.Resources;
 import android.databinding.DataBindingUtil;
 import android.graphics.Paint;
 import android.graphics.Rect;
-import android.net.Uri;
 import android.net.VpnService;
 import android.os.Build;
 import android.os.Bundle;
@@ -34,9 +33,7 @@ import android.widget.CompoundButton;
 import com.cypherpunk.privacy.R;
 import com.cypherpunk.privacy.data.api.UserManager;
 import com.cypherpunk.privacy.ui.account.AccountSettingsFragment;
-import com.cypherpunk.privacy.ui.common.Urls;
 import com.cypherpunk.privacy.ui.region.RegionFragment;
-import com.cypherpunk.privacy.ui.settings.RateDialogFragment;
 import com.cypherpunk.privacy.ui.settings.SettingConnectDialogFragment;
 import com.cypherpunk.privacy.ui.settings.SettingsFragment;
 import com.cypherpunk.privacy.ui.signin.IdentifyEmailActivity;
@@ -52,7 +49,7 @@ import de.blinkt.openvpn.core.VpnStatus;
 import timber.log.Timber;
 
 public class MainActivity extends AppCompatActivity
-        implements VpnStatus.StateListener, RateDialogFragment.RateDialogListener,
+        implements VpnStatus.StateListener,
         SettingConnectDialogFragment.ConnectDialogListener,
         RegionFragment.RegionFragmentListener {
 
@@ -229,11 +226,6 @@ public class MainActivity extends AppCompatActivity
     protected void onPause() {
         super.onPause();
         binding.binaryView.stopAnimation();
-    }
-
-    @Override
-    public void onRateNowButtonClick() {
-        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(Urls.STORE)));
     }
 
     @Override

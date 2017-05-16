@@ -4,70 +4,55 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.support.annotation.ArrayRes;
+import android.support.annotation.NonNull;
+import android.support.annotation.StringRes;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.preference.Preference;
 import android.support.v7.preference.PreferenceFragmentCompat;
 import android.support.v7.preference.PreferenceManager;
-import android.view.View;
 
 import com.cypherpunk.privacy.R;
 import com.cypherpunk.privacy.model.CypherpunkSetting;
-import com.cypherpunk.privacy.model.SettingItem;
-import com.cypherpunk.privacy.utils.ResourceUtil;
 import com.cypherpunk.privacy.vpn.CypherpunkVpnStatus;
-
-import java.util.ArrayList;
 
 public class SettingsFragment extends PreferenceFragmentCompat {
 
-    private static final int REQUEST_LIST_SETTING = 1;
     private static final int REQUEST_CODE_INTERNET_KILL_SWITCH = 2;
     private static final int REQUEST_CODE_TUNNEL_MODE = 3;
     private static final int REQUEST_CODE_REMOTE_PORT = 4;
 
-    private Preference protocol;
     private Preference remotePort;
-    private Preference vpnPortLocal;
     private Preference internetKillSwitch;
     private Preference tunnelMode;
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        View rootView = getView();
-        assert rootView != null;
         setDivider(new ColorDrawable(ContextCompat.getColor(getContext(), R.color.divider)));
         setDividerHeight(getContext().getResources().getDimensionPixelSize(R.dimen.divider));
     }
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
-        PreferenceManager preferenceManager = getPreferenceManager();
+        final PreferenceManager preferenceManager = getPreferenceManager();
         preferenceManager.setSharedPreferencesName("cypherpunk_setting");
+
         addPreferencesFromResource(R.xml.preference_settings);
 
         final CypherpunkSetting cypherpunkSetting = new CypherpunkSetting();
 
-        findPreference("split_tunnel").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-            @Override
-            public boolean onPreferenceClick(Preference preference) {
-                startActivity(new Intent(getActivity(), SplitTunnelActivity.class));
-                return true;
-            }
-        });
-
-        findPreference("trusted_network").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-            @Override
-            public boolean onPreferenceClick(Preference preference) {
-                startActivity(NetworkActivity.createIntent(getContext()));
-                return true;
-            }
-        });
+        findPreference(getString(R.string.setting_preference_network))
+                .setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+                    @Override
+                    public boolean onPreferenceClick(Preference preference) {
+                        startActivity(NetworkActivity.createIntent(getContext()));
+                        return true;
+                    }
+                });
 
         // Internet Kill Switch
-        internetKillSwitch = findPreference("internet_kill_switch");
-        internetKillSwitch.setSummary(ResourceUtil.getStringFor(cypherpunkSetting.internetKillSwitch()));
+        internetKillSwitch = findPreference(getString(R.string.setting_preference_internet_kill_switch));
+        internetKillSwitch.setSummary(getStringFor(cypherpunkSetting.internetKillSwitch()));
         internetKillSwitch.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
@@ -78,8 +63,8 @@ public class SettingsFragment extends PreferenceFragmentCompat {
         });
 
         // Tunnel Mode
-        tunnelMode = findPreference("tunnel_mode");
-        tunnelMode.setSummary(ResourceUtil.getStringFor(cypherpunkSetting.tunnelMode()));
+        tunnelMode = findPreference(getString(R.string.setting_preference_tunnel_mode));
+        tunnelMode.setSummary(getStringFor(cypherpunkSetting.tunnelMode()));
         tunnelMode.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
@@ -90,8 +75,8 @@ public class SettingsFragment extends PreferenceFragmentCompat {
         });
 
         // Remote Port
-        remotePort = findPreference("vpn_port_remote");
-        remotePort.setSummary(ResourceUtil.getStringFor(cypherpunkSetting.remotePort()));
+        remotePort = findPreference(getString(R.string.setting_preference_remote_port));
+        remotePort.setSummary(getStringFor(cypherpunkSetting.remotePort()));
         remotePort.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
@@ -100,29 +85,71 @@ public class SettingsFragment extends PreferenceFragmentCompat {
                 return true;
             }
         });
+
+        findPreference(getString(R.string.setting_preference_split_tunnel))
+                .setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+                    @Override
+                    public boolean onPreferenceClick(Preference preference) {
+                        startActivity(new Intent(getContext(), SplitTunnelActivity.class));
+                        return true;
+                    }
+                });
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == Activity.RESULT_OK) {
-            CypherpunkVpnStatus vpnStatus = new CypherpunkVpnStatus();
+            final CypherpunkSetting cypherpunkSetting = new CypherpunkSetting();
+            switch (requestCode) {
+                case REQUEST_CODE_INTERNET_KILL_SWITCH:
+                    internetKillSwitch.setSummary(getStringFor(cypherpunkSetting.internetKillSwitch()));
+                    break;
+                case REQUEST_CODE_TUNNEL_MODE:
+                    tunnelMode.setSummary(getStringFor(cypherpunkSetting.tunnelMode()));
+                    break;
+                case REQUEST_CODE_REMOTE_PORT:
+                    remotePort.setSummary(getStringFor(cypherpunkSetting.remotePort()));
+                    break;
+            }
+            final CypherpunkVpnStatus vpnStatus = new CypherpunkVpnStatus();
             if (vpnStatus.isConnected()) {
-                SettingConnectDialogFragment dialogFragment = SettingConnectDialogFragment.newInstance();
-                dialogFragment.show(getFragmentManager());
+                SettingConnectDialogFragment.newInstance().show(getFragmentManager());
             }
         }
-        final CypherpunkSetting cypherpunkSetting = new CypherpunkSetting();
-        switch (requestCode) {
-            case REQUEST_CODE_INTERNET_KILL_SWITCH:
-                internetKillSwitch.setSummary(ResourceUtil.getStringFor(cypherpunkSetting.internetKillSwitch()));
-                break;
-            case REQUEST_CODE_TUNNEL_MODE:
-                tunnelMode.setSummary(ResourceUtil.getStringFor(cypherpunkSetting.tunnelMode()));
-                break;
-            case REQUEST_CODE_REMOTE_PORT:
-                remotePort.setSummary(ResourceUtil.getStringFor(cypherpunkSetting.remotePort()));
-                break;
+    }
+
+    @StringRes
+    public static int getStringFor(@NonNull CypherpunkSetting.InternetKillSwitch internetKillSwitch) {
+        switch (internetKillSwitch) {
+            case AUTOMATIC:
+                return R.string.internet_kill_switch_automatic_title;
+            case ALWAYS_ON:
+                return R.string.internet_kill_switch_always_on_title;
+            case OFF:
+                return R.string.internet_kill_switch_off_title;
+            default:
+                throw new IllegalArgumentException();
+        }
+    }
+
+    public static String getStringFor(@NonNull CypherpunkSetting.RemotePort remotePort) {
+        return remotePort.category.name() + " " + remotePort.port.value();
+    }
+
+    @StringRes
+    public static int getStringFor(@NonNull CypherpunkSetting.TunnelMode mode) {
+        switch (mode) {
+            case RECOMMENDED:
+                return R.string.tunnel_mode_recommended_title;
+            case MAX_SPEED:
+                return R.string.tunnel_mode_max_speed_title;
+            case MAX_PRIVACY:
+                return R.string.tunnel_mode_max_privacy_title;
+            case MAX_STEALTH:
+                return R.string.tunnel_mode_max_stealth_title;
+            default:
+                throw new IllegalArgumentException();
         }
     }
 }

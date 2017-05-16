@@ -53,7 +53,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_marginBottom="8dp"
-        android:text="@string/connect_dialog_positive"/>
+        android:text="@string/connect_dialog_connect"/>
 
     <com.cypherpunk.privacy.widget.TypefaceTextView
         android:id="@+id/later_button"
@@ -64,7 +64,7 @@
         android:clickable="true"
         android:gravity="center"
         android:padding="8dp"
-        android:text="@string/connect_dialog_negative"
+        android:text="@string/connect_dialog_later"
         android:textColor="@color/dialog_text"
         android:textSize="14sp"
         app:fontName="DosisMedium"/>

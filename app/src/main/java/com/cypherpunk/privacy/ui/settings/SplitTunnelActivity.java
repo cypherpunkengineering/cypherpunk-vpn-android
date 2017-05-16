@@ -27,6 +27,7 @@ import android.widget.TextView;
 
 import com.cypherpunk.privacy.R;
 import com.cypherpunk.privacy.model.CypherpunkSetting;
+import com.cypherpunk.privacy.ui.common.DividerDecoration;
 import com.cypherpunk.privacy.utils.FontUtil;
 
 import java.util.ArrayList;

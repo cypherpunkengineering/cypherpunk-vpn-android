@@ -83,13 +83,13 @@ public class InternetKillSwitchActivity extends AppCompatActivity {
 
                         switch (resId) {
                             case R.id.internet_kill_switch_automatic:
-                                cypherpunkSetting.updateInternetKillSwitch(InternetKillSwitch.AUTOMATIC);
+                                update(InternetKillSwitch.AUTOMATIC);
                                 break;
                             case R.id.internet_kill_switch_off:
-                                cypherpunkSetting.updateInternetKillSwitch(InternetKillSwitch.OFF);
+                                update(InternetKillSwitch.OFF);
                                 break;
                             case R.id.internet_kill_switch_always_on:
-                                cypherpunkSetting.updateInternetKillSwitch(InternetKillSwitch.ALWAYS_ON);
+                                update(InternetKillSwitch.ALWAYS_ON);
                         }
                     }
                 }
@@ -99,6 +99,11 @@ public class InternetKillSwitchActivity extends AppCompatActivity {
                 checkable.setChecked(true);
             }
         }
+    }
+
+    private void update(@NonNull InternetKillSwitch internetKillSwitch) {
+        cypherpunkSetting.updateInternetKillSwitch(internetKillSwitch);
+        setResult(RESULT_OK);
     }
 
     @Override
