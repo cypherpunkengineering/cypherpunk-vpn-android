@@ -1,4 +1,4 @@
-package com.cypherpunk.privacy.ui.signin;
+package com.cypherpunk.privacy.ui.startup;
 
 import android.content.Context;
 import android.content.Intent;
@@ -20,7 +20,6 @@ import com.cypherpunk.privacy.R;
 import com.cypherpunk.privacy.data.api.CypherpunkService;
 import com.cypherpunk.privacy.data.api.json.AccountStatusResult;
 import com.cypherpunk.privacy.data.api.json.EmailRequest;
-import com.cypherpunk.privacy.ui.setup.TutorialActivity;
 
 import java.util.concurrent.TimeUnit;
 

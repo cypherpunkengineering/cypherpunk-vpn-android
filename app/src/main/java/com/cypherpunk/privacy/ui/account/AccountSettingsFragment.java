@@ -19,7 +19,7 @@ import com.cypherpunk.privacy.data.api.UserManager;
 import com.cypherpunk.privacy.data.api.json.AccountStatusResult;
 import com.cypherpunk.privacy.model.UserSettingPref;
 import com.cypherpunk.privacy.ui.common.Urls;
-import com.cypherpunk.privacy.ui.signin.IdentifyEmailActivity;
+import com.cypherpunk.privacy.ui.startup.IdentifyEmailActivity;
 import com.cypherpunk.privacy.vpn.CypherpunkVPN;
 
 import javax.inject.Inject;

@@ -1,4 +1,4 @@
-package com.cypherpunk.privacy.ui.signin;
+package com.cypherpunk.privacy.ui.startup;
 
 import android.content.Context;
 import android.content.Intent;

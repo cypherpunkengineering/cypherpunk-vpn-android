@@ -100,15 +100,6 @@
     <string name="password_hint">New Password</string>
     <string name="current_password_hint">Current Password</string>
 
-    <!-- status -->
-    <string name="title_activity_status">Connection Status</string>
-    <string name="status_change_ip_address">Change IP Address</string>
-    <string name="ip_original">ORIGINAL</string>
-    <string name="ip_new">NEW</string>
-    <string name="status_ip_loading">Loading…</string>
-    <string name="status_connected">Connected</string>
-    <string name="status_disconnected">Disconnected</string>
-
     <!-- upgrade account -->
     <string name="title_activity_upgrade_plan">Upgrade Account</string>
     <string name="plan_best_value">BEST VALUE!</string>
@@ -122,12 +113,6 @@
     <string name="share">Share</string>
     <string name="share_subject">Checkout cypherpunk</string>
     <string name="share_text">Checkout cypherpunk https://play.google.com/store/apps/details?id=com.cypherpunk.privacy</string>
-
-    <!-- get a premium -->
-    <string name="title_activity_get_premium">Get a Cypherpunk Premium Account</string>
-    <string name="premium_email_hint">Email</string>
-    <string name="premium_enter_your_email">Enter your email address</string>
-    <string name="premium_select_your_plan">Select your plan</string>
 
     <!-- rate dialog -->
     <string name="rate_dialog_rate_now">Rate Now!</string>
