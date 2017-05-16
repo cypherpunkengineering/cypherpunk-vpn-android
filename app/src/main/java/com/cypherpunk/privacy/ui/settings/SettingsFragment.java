@@ -52,7 +52,7 @@ public class SettingsFragment extends PreferenceFragmentCompat {
         findPreference("split_tunnel").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
-                startActivity(new Intent(getActivity(), ApplicationSettingsActivity.class));
+                startActivity(new Intent(getActivity(), SplitTunnelActivity.class));
                 return true;
             }
         });
@@ -124,48 +124,5 @@ public class SettingsFragment extends PreferenceFragmentCompat {
                 remotePort.setSummary(ResourceUtil.getStringFor(cypherpunkSetting.remotePort()));
                 break;
         }
-    }
-
-    private ArrayList<SettingItem> getEncryptingSettingItemList(@ArrayRes int keyListRes, @ArrayRes int descriptionListRes) {
-        String[] keyList = getResources().getStringArray(keyListRes);
-        String[] descriptionList = new String[0];
-        if (descriptionListRes != 0) {
-            descriptionList = getResources().getStringArray(descriptionListRes);
-        }
-
-        ArrayList<SettingItem> list = new ArrayList<>();
-        String cipher = null;
-        String auth = null;
-        String keylen = null;
-        for (int i = 0; i < keyList.length; i++) {
-            switch (keyList[i]) {
-                case "setting_vpn_crypto_profile_none":
-                    cipher = "setting_vpn_crypto_cipher_none";
-                    auth = "setting_vpn_crypto_auth_sha256";
-                    keylen = "setting_vpn_crypto_keylen_rsa4096";
-                    break;
-                case "setting_vpn_crypto_profile_default":
-                    cipher = "setting_vpn_crypto_cipher_aes128cbc";
-                    auth = "setting_vpn_crypto_auth_sha256";
-                    keylen = "setting_vpn_crypto_keylen_rsa4096";
-                    break;
-                case "setting_vpn_crypto_profile_strong":
-                    cipher = "setting_vpn_crypto_cipher_aes256cbc";
-                    auth = "setting_vpn_crypto_auth_sha256";
-                    keylen = "setting_vpn_crypto_keylen_rsa4096";
-                    break;
-                case "setting_vpn_crypto_profile_stealth":
-                    cipher = "setting_vpn_crypto_cipher_aes128cbc";
-                    auth = "setting_vpn_crypto_auth_sha256";
-                    keylen = "setting_vpn_crypto_keylen_rsa4096";
-            }
-            list.add(new SettingItem(
-                    keyList[i], ResourceUtil.getStringByKey(getContext(), keyList[i]),
-                    descriptionListRes != 0 ? ResourceUtil.getStringByKey(getContext(), descriptionList[i]) : "",
-                    ResourceUtil.getStringByKey(getContext(), cipher),
-                    ResourceUtil.getStringByKey(getContext(), auth),
-                    ResourceUtil.getStringByKey(getContext(), keylen)));
-        }
-        return list;
     }
 }

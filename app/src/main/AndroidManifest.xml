@@ -101,6 +101,8 @@
         <activity
             android:name=".ui.setup.TutorialActivity"
             android:theme="@style/CypherPunk.NoActionBar"/>
+
+        <!-- cypherpunk settings -->
         <activity
             android:name=".ui.settings.NetworkActivity"
             android:label=""
@@ -118,8 +120,10 @@
             android:label=""
             android:theme="@style/CypherPunk.DialogWhenLarge.NoActionBar"/>
         <activity
-            android:name=".ui.settings.ApplicationSettingsActivity"
-            android:theme="@style/AppTheme.DialogWhenLarge"/>
+            android:name=".ui.settings.SplitTunnelActivity"
+            android:label=""
+            android:theme="@style/CypherPunk.DialogWhenLarge.NoActionBar"/>
+
         <activity
             android:name=".ui.account.ShareActivity"
             android:label=""

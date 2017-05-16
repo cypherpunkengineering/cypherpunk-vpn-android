@@ -1,12 +1,16 @@
 package com.cypherpunk.privacy.model;
 
 import android.support.annotation.NonNull;
+import android.text.TextUtils;
 
 import com.os.operando.garum.annotations.DefaultBoolean;
 import com.os.operando.garum.annotations.DefaultString;
 import com.os.operando.garum.annotations.Pref;
 import com.os.operando.garum.annotations.PrefKey;
 import com.os.operando.garum.models.PrefModel;
+
+import java.util.Arrays;
+import java.util.List;
 
 
 @Pref(name = "cypherpunk_setting")
@@ -289,5 +293,19 @@ public class CypherpunkSetting extends PrefModel {
         public int value() {
             return value;
         }
+    }
+
+    //
+    // Split tunnel
+    //
+
+    @NonNull
+    public List<String> exceptAppList() {
+        return Arrays.asList(disableAppPackageName.split(","));
+    }
+
+    public void updateRemotePort(@NonNull List<String> exceptAppList) {
+        disableAppPackageName = TextUtils.join(",", exceptAppList);
+        save();
     }
 }
