@@ -14,15 +14,13 @@ import android.view.ViewGroup;
 
 import com.cypherpunk.privacy.CypherpunkApplication;
 import com.cypherpunk.privacy.R;
-import com.cypherpunk.privacy.domain.repository.NetworkRepository;
-import com.cypherpunk.privacy.domain.repository.retrofit.CypherpunkService;
-import com.cypherpunk.privacy.domain.repository.retrofit.result.StatusResult;
-import com.cypherpunk.privacy.domain.repository.retrofit.result.RegionResult;
 import com.cypherpunk.privacy.databinding.FragmentRegionBinding;
+import com.cypherpunk.privacy.domain.model.AccountSetting;
 import com.cypherpunk.privacy.domain.model.VpnSetting;
-import com.cypherpunk.privacy.model.CypherpunkSetting;
+import com.cypherpunk.privacy.domain.repository.NetworkRepository;
+import com.cypherpunk.privacy.domain.repository.retrofit.result.RegionResult;
+import com.cypherpunk.privacy.domain.repository.retrofit.result.StatusResult;
 import com.cypherpunk.privacy.model.Region;
-import com.cypherpunk.privacy.model.UserSetting;
 import com.cypherpunk.privacy.utils.ResourceUtil;
 import com.cypherpunk.privacy.vpn.ServerPingerThinger;
 
@@ -59,6 +57,13 @@ public class RegionFragment extends Fragment {
 
     @Inject
     NetworkRepository networkRepository;
+
+    @Inject
+    VpnSetting vpnSetting;
+
+    @Inject
+    AccountSetting accountSetting;
+
     private RegionFragmentListener listener;
 
     public interface RegionFragmentListener {
@@ -89,7 +94,6 @@ public class RegionFragment extends Fragment {
         binding = DataBindingUtil.bind(getView());
 
         getServerList();
-        final VpnSetting vpnSetting = CypherpunkSetting.vpnSetting();
 
         realm = CypherpunkApplication.instance.getAppComponent().getDefaultRealm();
 
@@ -117,7 +121,7 @@ public class RegionFragment extends Fragment {
             binding.regionContainer.setVisibility(View.GONE);
         }
 
-        adapter = new RegionAdapter(getContext()) {
+        adapter = new RegionAdapter(getContext(), vpnSetting) {
             @Override
             protected void onFavorite(@NonNull final String regionId, final boolean favorite) {
                 Region region = realm.where(Region.class).equalTo("id", regionId).findFirst();
@@ -131,7 +135,6 @@ public class RegionFragment extends Fragment {
             @Override
             protected void onItemClick(@NonNull final String regionId) {
                 // disable cypherplay mode for ordinary locations
-                final VpnSetting vpnSetting = CypherpunkSetting.vpnSetting();
                 vpnSetting.updateCypherplayEnabled(false);
 
                 // select region matching the selected id
@@ -142,7 +145,6 @@ public class RegionFragment extends Fragment {
             protected void onCypherplayClick() {
                 Region region = ServerPingerThinger.getFastestLocation();
                 if (region != null) {
-                    final VpnSetting vpnSetting = CypherpunkSetting.vpnSetting();
                     vpnSetting.updateCypherplayEnabled(true);
                     selectRegion(region);
                 }
@@ -152,7 +154,6 @@ public class RegionFragment extends Fragment {
             protected void onFastestLocationClick() {
                 Region region = ServerPingerThinger.getFastestLocation();
                 if (region != null) {
-                    final VpnSetting vpnSetting = CypherpunkSetting.vpnSetting();
                     vpnSetting.updateCypherplayEnabled(false);
                     selectRegion(region);
                 }
@@ -253,7 +254,6 @@ public class RegionFragment extends Fragment {
     }
 
     private void selectRegion(Region region) {
-        final VpnSetting vpnSetting = CypherpunkSetting.vpnSetting();
         vpnSetting.updateRegionId(region.getId());
 
         int nationalFlagResId = ResourceUtil.getFlagDrawableByKey(getContext(), region.getCountry().toLowerCase());
@@ -275,8 +275,8 @@ public class RegionFragment extends Fragment {
                 .flatMap(new Function<StatusResult, SingleSource<Map<String, RegionResult>>>() {
                     @Override
                     public SingleSource<Map<String, RegionResult>> apply(StatusResult result) throws Exception {
-                        UserSetting.instance().updateAccountType(result.account.type);
-                        return networkRepository.serverList(result.account.type);
+                        accountSetting.updateAccount(result.account);
+                        return networkRepository.serverList(result.account.type());
                     }
                 })
                 .subscribeOn(Schedulers.newThread())
@@ -338,7 +338,6 @@ public class RegionFragment extends Fragment {
                         }
 
                         // check if previously selected region is still available
-                        final VpnSetting vpnSetting = CypherpunkSetting.vpnSetting();
                         Region region = realm.where(Region.class)
                                 .equalTo("id", vpnSetting.regionId())
                                 .equalTo("authorized", true)

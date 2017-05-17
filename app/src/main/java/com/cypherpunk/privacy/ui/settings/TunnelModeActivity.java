@@ -16,13 +16,15 @@ import android.widget.Checkable;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.cypherpunk.privacy.CypherpunkApplication;
 import com.cypherpunk.privacy.R;
-import com.cypherpunk.privacy.domain.model.TunnelMode;
+import com.cypherpunk.privacy.domain.model.vpn.TunnelMode;
 import com.cypherpunk.privacy.domain.model.VpnSetting;
-import com.cypherpunk.privacy.model.CypherpunkSetting;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.inject.Inject;
 
 import butterknife.ButterKnife;
 
@@ -34,13 +36,17 @@ public class TunnelModeActivity extends AppCompatActivity {
     }
 
     private final List<Checkable> checkableList = new ArrayList<>();
-    private VpnSetting vpnSetting;
+
+    @Inject
+    VpnSetting vpnSetting;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tunnel_mode);
         ButterKnife.bind(this);
+
+        CypherpunkApplication.instance.getAppComponent().inject(this);
 
         if (!getResources().getBoolean(R.bool.is_tablet)) {
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
@@ -54,8 +60,6 @@ public class TunnelModeActivity extends AppCompatActivity {
             actionBar.setDisplayHomeAsUpEnabled(true);
             actionBar.setHomeAsUpIndicator(R.drawable.close_vector);
         }
-
-        vpnSetting = CypherpunkSetting.vpnSetting();
 
         final LinearLayout container = ButterKnife.findById(this, R.id.container);
         final LayoutInflater inflater = LayoutInflater.from(this);

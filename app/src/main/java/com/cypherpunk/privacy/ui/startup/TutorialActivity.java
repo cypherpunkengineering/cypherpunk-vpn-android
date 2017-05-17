@@ -20,15 +20,13 @@ import android.widget.TextView;
 
 import com.cypherpunk.privacy.CypherpunkApplication;
 import com.cypherpunk.privacy.R;
-import com.cypherpunk.privacy.domain.repository.NetworkRepository;
-import com.cypherpunk.privacy.domain.repository.retrofit.CypherpunkService;
-import com.cypherpunk.privacy.domain.repository.retrofit.result.StatusResult;
-import com.cypherpunk.privacy.domain.repository.retrofit.result.RegionResult;
+import com.cypherpunk.privacy.domain.model.AccountSetting;
 import com.cypherpunk.privacy.domain.model.VpnSetting;
+import com.cypherpunk.privacy.domain.repository.NetworkRepository;
+import com.cypherpunk.privacy.domain.repository.retrofit.result.RegionResult;
+import com.cypherpunk.privacy.domain.repository.retrofit.result.StatusResult;
 import com.cypherpunk.privacy.domain.service.ServerService;
-import com.cypherpunk.privacy.model.CypherpunkSetting;
 import com.cypherpunk.privacy.model.Region;
-import com.cypherpunk.privacy.model.UserSetting;
 import com.cypherpunk.privacy.ui.main.MainActivity;
 import com.cypherpunk.privacy.widget.PageIndicator;
 import com.google.firebase.analytics.FirebaseAnalytics;
@@ -66,6 +64,12 @@ public class TutorialActivity extends AppCompatActivity {
 
     @Inject
     NetworkRepository networkRepository;
+
+    @Inject
+    VpnSetting vpnSetting;
+
+    @Inject
+    AccountSetting accountSetting;
 
     @BindView(R.id.pager)
     ViewPager pager;
@@ -151,7 +155,6 @@ public class TutorialActivity extends AppCompatActivity {
     }
 
     private void setAnalytics(boolean enabled) {
-        final VpnSetting vpnSetting = CypherpunkSetting.vpnSetting();
         vpnSetting.updateAnalyticsEnabled(enabled);
 
         FirebaseAnalytics.getInstance(getApplicationContext())
@@ -183,8 +186,8 @@ public class TutorialActivity extends AppCompatActivity {
                 .flatMap(new Function<StatusResult, SingleSource<Map<String, RegionResult>>>() {
                     @Override
                     public SingleSource<Map<String, RegionResult>> apply(StatusResult result) throws Exception {
-                        UserSetting.instance().updateAccountType(result.account.type);
-                        return networkRepository.serverList(result.account.type);
+                        accountSetting.updateAccount(result.account);
+                        return networkRepository.serverList(result.account.type());
                     }
                 })
                 .subscribeOn(Schedulers.newThread())

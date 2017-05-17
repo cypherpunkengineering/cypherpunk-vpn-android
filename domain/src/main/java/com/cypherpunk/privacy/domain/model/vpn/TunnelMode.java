@@ -1,4 +1,4 @@
-package com.cypherpunk.privacy.domain.model;
+package com.cypherpunk.privacy.domain.model.vpn;
 
 import android.support.annotation.NonNull;
 

@@ -16,7 +16,6 @@ import com.cypherpunk.privacy.R;
 import com.cypherpunk.privacy.databinding.ListItemRegionBinding;
 import com.cypherpunk.privacy.databinding.ListItemRegionDividerBinding;
 import com.cypherpunk.privacy.domain.model.VpnSetting;
-import com.cypherpunk.privacy.model.CypherpunkSetting;
 import com.cypherpunk.privacy.model.Region;
 import com.cypherpunk.privacy.utils.FontUtil;
 import com.cypherpunk.privacy.utils.ResourceUtil;
@@ -40,9 +39,12 @@ public class RegionAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     private final int textColor;
     @ColorInt
     private final int selectedTextColor;
+    @NonNull
+    private final VpnSetting vpnSetting;
 
-    public RegionAdapter(@NonNull Context context) {
+    public RegionAdapter(@NonNull Context context, @NonNull VpnSetting vpnSetting) {
         this.context = context;
+        this.vpnSetting = vpnSetting;
         textColor = ContextCompat.getColor(context, android.R.color.white);
         selectedTextColor = ContextCompat.getColor(context, R.color.region_selected_text);
     }
@@ -105,7 +107,6 @@ public class RegionAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
                 binding.nationalFlag.setImageResource(ResourceUtil.getFlagDrawableByKey(context, item.getCountry().toLowerCase()));
 
-                final VpnSetting vpnSetting = CypherpunkSetting.vpnSetting();
                 final String currentRegionId = vpnSetting.regionId();
                 if (!TextUtils.isEmpty(currentRegionId) && regionId.equals(currentRegionId)) {
                     binding.regionName.setTextColor(selectedTextColor);

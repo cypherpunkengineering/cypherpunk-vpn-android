@@ -12,10 +12,6 @@ import io.realm.RealmConfiguration;
 
 @Module
 public class RealmModule {
-    @Provides
-    CypherpunkApplication provideApplication() {
-        return CypherpunkApplication.instance;
-    }
 
     @Provides
     @Singleton

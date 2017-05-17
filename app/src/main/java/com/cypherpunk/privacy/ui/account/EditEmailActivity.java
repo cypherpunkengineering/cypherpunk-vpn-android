@@ -20,8 +20,8 @@ import android.widget.Toast;
 
 import com.cypherpunk.privacy.CypherpunkApplication;
 import com.cypherpunk.privacy.R;
+import com.cypherpunk.privacy.domain.model.AccountSetting;
 import com.cypherpunk.privacy.domain.repository.NetworkRepository;
-import com.cypherpunk.privacy.model.UserSetting;
 import com.cypherpunk.privacy.ui.common.FullScreenProgressDialog;
 
 import java.net.UnknownHostException;
@@ -52,6 +52,9 @@ public class EditEmailActivity extends AppCompatActivity {
 
     @Inject
     NetworkRepository networkRepository;
+
+    @Inject
+    AccountSetting accountSetting;
 
     @BindView(R.id.text_input_layout_email)
     TextInputLayout emailTextInputLayout;
@@ -195,7 +198,7 @@ public class EditEmailActivity extends AppCompatActivity {
                             dialog = null;
                         }
 
-                        UserSetting.instance().updateMail(newEmail);
+                        accountSetting.updateEmail(newEmail);
 
                         setResult(RESULT_OK);
                         finish();

@@ -1,4 +1,4 @@
-package com.cypherpunk.privacy.domain.model;
+package com.cypherpunk.privacy.domain.model.account;
 
 import android.support.annotation.NonNull;
 
@@ -8,12 +8,12 @@ import android.support.annotation.NonNull;
 public class Account {
 
     @NonNull
-    public final String id;
+    private final String id;
     @NonNull
-    public final String email;
+    private final String email;
     @NonNull
-    public final Type type;
-    public final boolean confirmed;
+    private final Type type;
+    private final boolean confirmed;
 
     public Account(@NonNull String id, @NonNull String email, @NonNull Type type,
                    boolean confirmed) {

@@ -20,9 +20,9 @@ import android.widget.Toast;
 
 import com.cypherpunk.privacy.CypherpunkApplication;
 import com.cypherpunk.privacy.R;
+import com.cypherpunk.privacy.domain.model.AccountSetting;
 import com.cypherpunk.privacy.domain.repository.NetworkRepository;
 import com.cypherpunk.privacy.domain.repository.retrofit.result.StatusResult;
-import com.cypherpunk.privacy.model.UserSetting;
 import com.cypherpunk.privacy.ui.common.FullScreenProgressDialog;
 
 import java.net.UnknownHostException;
@@ -59,6 +59,9 @@ public class LoginActivity extends AppCompatActivity {
 
     @Inject
     NetworkRepository networkRepository;
+
+    @Inject
+    AccountSetting accountSetting;
 
     @BindView(R.id.text_input_layout)
     TextInputLayout textInputLayout;
@@ -148,12 +151,9 @@ public class LoginActivity extends AppCompatActivity {
                             dialog = null;
                         }
 
-                        final UserSetting instance = UserSetting.instance();
-                        instance.updateMail(email);
-                        instance.updateSecret(result.secret);
-                        instance.updateVpnUserNameAndPassword(
-                                result.privacy.username(),
-                                result.privacy.password());
+                        accountSetting.updateSecret(result.secret);
+                        accountSetting.updateEmail(email);
+                        accountSetting.updatePrivacy(result.privacy);
 
                         TaskStackBuilder.create(context)
                                 .addNextIntent(new Intent(context, TutorialActivity.class))

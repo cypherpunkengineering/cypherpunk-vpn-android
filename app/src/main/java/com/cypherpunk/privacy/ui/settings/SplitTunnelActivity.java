@@ -25,15 +25,17 @@ import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.cypherpunk.privacy.CypherpunkApplication;
 import com.cypherpunk.privacy.R;
 import com.cypherpunk.privacy.domain.model.VpnSetting;
-import com.cypherpunk.privacy.model.CypherpunkSetting;
 import com.cypherpunk.privacy.ui.common.DividerDecoration;
 import com.cypherpunk.privacy.utils.FontUtil;
 
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+
+import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -58,7 +60,6 @@ public class SplitTunnelActivity extends AppCompatActivity {
     private Disposable disposable = Disposables.empty();
 
     private AppAdapter adapter;
-    private VpnSetting vpnSetting;
 
     @BindView(R.id.title)
     TextView titleView;
@@ -66,11 +67,16 @@ public class SplitTunnelActivity extends AppCompatActivity {
     @BindView(R.id.recycler_view)
     RecyclerView recyclerView;
 
+    @Inject
+    VpnSetting vpnSetting;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_split_tunnel);
         ButterKnife.bind(this);
+
+        CypherpunkApplication.instance.getAppComponent().inject(this);
 
         if (!getResources().getBoolean(R.bool.is_tablet)) {
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
@@ -90,7 +96,6 @@ public class SplitTunnelActivity extends AppCompatActivity {
         recyclerView.setHasFixedSize(true);
         recyclerView.addItemDecoration(new DividerDecoration(this));
 
-        vpnSetting = CypherpunkSetting.vpnSetting();
         final List<String> exceptAppList = vpnSetting.exceptAppList();
 
         progress.setVisibility(View.VISIBLE);

@@ -9,13 +9,12 @@ import android.text.TextUtils;
 
 import com.android.annotations.NonNull;
 import com.cypherpunk.privacy.CypherpunkApplication;
-import com.cypherpunk.privacy.domain.model.InternetKillSwitch;
-import com.cypherpunk.privacy.domain.model.RemotePort;
-import com.cypherpunk.privacy.domain.model.TunnelMode;
+import com.cypherpunk.privacy.domain.model.AccountSetting;
 import com.cypherpunk.privacy.domain.model.VpnSetting;
-import com.cypherpunk.privacy.model.CypherpunkSetting;
+import com.cypherpunk.privacy.domain.model.vpn.InternetKillSwitch;
+import com.cypherpunk.privacy.domain.model.vpn.RemotePort;
+import com.cypherpunk.privacy.domain.model.vpn.TunnelMode;
 import com.cypherpunk.privacy.model.Region;
-import com.cypherpunk.privacy.model.UserSetting;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
@@ -84,31 +83,32 @@ public class CypherpunkVPN {
         }
     };
 
-    public void toggle(final Context context, final Context baseContext) {
+    public void toggle(final Context context, final Context baseContext,
+                       VpnSetting vpnSetting, AccountSetting accountSetting) {
         CypherpunkVpnStatus status = CypherpunkVpnStatus.getInstance();
 
         if (status.isDisconnected()) {
-            start(context, baseContext);
+            start(context, baseContext, vpnSetting, accountSetting);
         }
         if (status.isConnected()) {
-            stop();
+            stop(vpnSetting);
         }
         if (!status.isConnected() && !status.isDisconnected()) {
             // connecting
-            stop();
+            stop(vpnSetting);
         }
     }
 
-    public void start(final Context context, final Context baseContext) {
+    public void start(final Context context, final Context baseContext,
+                      VpnSetting vpnSetting, AccountSetting accountSetting) {
         Timber.d("start()");
 
-        final VpnSetting vpnSetting = CypherpunkSetting.vpnSetting();
         Intent serviceIntent = new Intent(baseContext, OpenVPNService.class);
         serviceIntent.setAction(OpenVPNService.START_SERVICE);
         context.bindService(serviceIntent, connection, Context.BIND_AUTO_CREATE);
 
         try {
-            conf = generateConfig(context);
+            conf = generateConfig(context, vpnSetting, accountSetting);
             if (conf == null) {
                 Timber.d("Unable to generate OpenVPN profile!");
                 return;
@@ -137,7 +137,7 @@ public class CypherpunkVPN {
         }.start();
     }
 
-    public void stop() {
+    public void stop(VpnSetting vpnSetting) {
         Timber.d("stop()");
         if (service != null) {
             OpenVPNManagement manager = service.getManagement();
@@ -146,7 +146,6 @@ public class CypherpunkVPN {
 
             manager.stopVPN(false);
             // privacy firewall killswitch
-            final VpnSetting vpnSetting = CypherpunkSetting.vpnSetting();
             switch (vpnSetting.internetKillSwitch()) {
                 case AUTOMATIC:
                     service.stopKillSwitch();
@@ -160,14 +159,10 @@ public class CypherpunkVPN {
         }
     }
 
-    private String generateConfig(Context context) {
+    private String generateConfig(Context context, VpnSetting vpnSetting, AccountSetting accountSetting) {
         Timber.d("generateConfig()");
 
         List<String> list = new ArrayList<String>();
-
-        // get user prefs
-        final VpnSetting vpnSetting = CypherpunkSetting.vpnSetting();
-        final UserSetting userSetting = UserSetting.instance();
 
         // get currently selected location
         Realm realm = null;
@@ -288,8 +283,8 @@ public class CypherpunkVPN {
 
         // append username/password
         list.add("<auth-user-pass>");
-        list.add(userSetting.vpnUsername());
-        list.add(userSetting.vpnPassword());
+        list.add(accountSetting.username());
+        list.add(accountSetting.password());
         list.add("</auth-user-pass>");
 
         // append contents of openvpn.conf

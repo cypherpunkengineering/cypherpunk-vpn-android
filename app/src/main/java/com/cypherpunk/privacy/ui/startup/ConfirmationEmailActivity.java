@@ -153,7 +153,7 @@ public class ConfirmationEmailActivity extends AppCompatActivity {
                 .map(new Function<StatusResult, Boolean>() {
                     @Override
                     public Boolean apply(StatusResult result) throws Exception {
-                        return result.account.confirmed;
+                        return result.account.confirmed();
                     }
                 })
                 .onErrorReturn(new Function<Throwable, Boolean>() {
