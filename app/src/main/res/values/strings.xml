@@ -183,6 +183,17 @@
     <string name="setting_preference_remote_port">preference_remote_port</string>
     <string name="setting_preference_split_tunnel">preference_split_tunnel</string>
 
+    <!-- preference key for preference account -->
+    <string name="account_preference_account">preference_account</string>
+    <string name="account_preference_upgrade">preference_upgrade</string>
+    <string name="account_preference_edit_email">preference_edit_email</string>
+    <string name="account_preference_edit_password">preference_edit_password</string>
+    <string name="account_preference_share">preference_share</string>
+    <string name="account_preference_rate">preference_rate</string>
+    <string name="account_preference_support">preference_support</string>
+    <string name="account_preference_help">preference_help</string>
+    <string name="account_preference_sign_out">preference_sign_out</string>
+
     <!-- trusted network -->
     <string name="title_activity_network">Manage trusted networks</string>
     <string name="network_auto_secure">Auto-secure</string>

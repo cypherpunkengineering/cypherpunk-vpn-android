@@ -260,7 +260,7 @@ public class MainActivity extends AppCompatActivity
         if (status.isDisconnected()) {
             return;
         }
-        CypherpunkVPN.getInstance().stop(getApplicationContext(), getBaseContext());
+        CypherpunkVPN.getInstance().stop();
     }
 
     private void toggleVpn() {

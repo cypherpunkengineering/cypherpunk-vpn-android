@@ -77,7 +77,7 @@ public class CypherpunkLaunchVPN extends Activity {
 
             // either connecting or already connected, stop vpn and finish activity
             if (!status.isDisconnected()) {
-                CypherpunkVPN.getInstance().stop(getApplicationContext(), getBaseContext());
+                CypherpunkVPN.getInstance().stop();
                 finish();
                 return;
             }
@@ -85,7 +85,7 @@ public class CypherpunkLaunchVPN extends Activity {
             // prepare vpn service, wait for callback, then connect
             prepareVpnService();
         } else if (intent.getBooleanExtra(NETWORK_TRUSTED, false)) {
-            CypherpunkVPN.getInstance().stop(getApplicationContext(), getBaseContext());
+            CypherpunkVPN.getInstance().stop();
             finish();
         } else if (intent.getBooleanExtra(NETWORK_UNTRUSTED, false)) {
             prepareVpnService();
