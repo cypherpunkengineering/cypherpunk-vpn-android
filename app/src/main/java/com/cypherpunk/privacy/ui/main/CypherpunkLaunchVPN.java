@@ -6,8 +6,9 @@ import android.content.Intent;
 import android.net.VpnService;
 import android.os.Bundle;
 
-import com.cypherpunk.privacy.data.api.UserManager;
+import com.cypherpunk.privacy.domain.model.VpnSetting;
 import com.cypherpunk.privacy.model.CypherpunkSetting;
+import com.cypherpunk.privacy.model.UserSetting;
 import com.cypherpunk.privacy.vpn.CypherpunkVPN;
 import com.cypherpunk.privacy.vpn.CypherpunkVpnStatus;
 
@@ -50,7 +51,7 @@ public class CypherpunkLaunchVPN extends Activity {
         Timber.d("handleIntent()");
 
         // check if user is signed in
-        if (!UserManager.isSignedIn() || intent == null) {
+        if (!UserSetting.instance().isSignedIn() || intent == null) {
             Timber.d("user not logged in, ignoring intent");
             setIntent(null);
             finish();
@@ -60,10 +61,10 @@ public class CypherpunkLaunchVPN extends Activity {
         // called from CypherpunkBootReceiver
         if (intent.getBooleanExtra(AUTO_START, false)) {
             // get user settings
-            CypherpunkSetting cypherpunkSetting = new CypherpunkSetting();
+            final VpnSetting vpnSetting = CypherpunkSetting.vpnSetting();
 
             // immediately exit unless user setting for auto start is enabled
-            if (!cypherpunkSetting.vpnAutoStartConnect) {
+            if (!vpnSetting.isAutoConnect()) {
                 finish();
                 return;
             }

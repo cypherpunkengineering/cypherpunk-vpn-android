@@ -6,11 +6,9 @@ import android.support.annotation.VisibleForTesting;
 import com.cypherpunk.privacy.dagger.AppComponent;
 import com.cypherpunk.privacy.dagger.DaggerAppComponent;
 import com.cypherpunk.privacy.model.CypherpunkSetting;
-import com.cypherpunk.privacy.model.UserSettingPref;
+import com.cypherpunk.privacy.model.UserSetting;
 import com.orhanobut.hawk.Hawk;
 import com.orhanobut.hawk.HawkBuilder;
-import com.os.operando.garum.Configuration;
-import com.os.operando.garum.Garum;
 
 import de.blinkt.openvpn.core.PRNGFixes;
 import io.realm.Realm;
@@ -31,10 +29,8 @@ public class CypherpunkApplication extends Application {
         Realm.init(this);
         appComponent = DaggerAppComponent.create();
 
-        Configuration.Builder builder = new Configuration.Builder(getApplicationContext());
-        //noinspection unchecked
-        builder.setModelClasses(CypherpunkSetting.class, UserSettingPref.class);
-        Garum.initialize(builder.create());
+        CypherpunkSetting.init(this);
+        UserSetting.init(this);
 
         //DeployGate.install(this);
 

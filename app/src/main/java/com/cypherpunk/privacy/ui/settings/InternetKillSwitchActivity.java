@@ -13,8 +13,9 @@ import android.view.View;
 import android.widget.Checkable;
 
 import com.cypherpunk.privacy.R;
+import com.cypherpunk.privacy.domain.model.InternetKillSwitch;
+import com.cypherpunk.privacy.domain.model.VpnSetting;
 import com.cypherpunk.privacy.model.CypherpunkSetting;
-import com.cypherpunk.privacy.model.CypherpunkSetting.InternetKillSwitch;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,7 +30,7 @@ public class InternetKillSwitchActivity extends AppCompatActivity {
     }
 
     private final List<Checkable> checkableList = new ArrayList<>();
-    private CypherpunkSetting cypherpunkSetting;
+    private VpnSetting vpnSetting;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,8 +51,8 @@ public class InternetKillSwitchActivity extends AppCompatActivity {
             actionBar.setHomeAsUpIndicator(R.drawable.close_vector);
         }
 
-        cypherpunkSetting = new CypherpunkSetting();
-        final InternetKillSwitch internetKillSwitch = cypherpunkSetting.internetKillSwitch();
+        vpnSetting = CypherpunkSetting.vpnSetting();
+        final InternetKillSwitch internetKillSwitch = vpnSetting.internetKillSwitch();
 
         for (InternetKillSwitch killSwitch : InternetKillSwitch.values()) {
             final int resId;
@@ -102,7 +103,7 @@ public class InternetKillSwitchActivity extends AppCompatActivity {
     }
 
     private void update(@NonNull InternetKillSwitch internetKillSwitch) {
-        cypherpunkSetting.updateInternetKillSwitch(internetKillSwitch);
+        vpnSetting.updateInternetKillSwitch(internetKillSwitch);
         setResult(RESULT_OK);
     }
 

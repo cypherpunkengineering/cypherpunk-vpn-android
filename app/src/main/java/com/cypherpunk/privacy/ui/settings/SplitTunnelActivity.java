@@ -26,6 +26,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.cypherpunk.privacy.R;
+import com.cypherpunk.privacy.domain.model.VpnSetting;
 import com.cypherpunk.privacy.model.CypherpunkSetting;
 import com.cypherpunk.privacy.ui.common.DividerDecoration;
 import com.cypherpunk.privacy.utils.FontUtil;
@@ -53,7 +54,7 @@ public class SplitTunnelActivity extends AppCompatActivity {
     private Subscription subscription = Subscriptions.empty();
 
     private AppAdapter adapter;
-    private CypherpunkSetting cypherpunkSetting;
+    private VpnSetting vpnSetting;
 
     @BindView(R.id.title)
     TextView titleView;
@@ -85,8 +86,8 @@ public class SplitTunnelActivity extends AppCompatActivity {
         recyclerView.setHasFixedSize(true);
         recyclerView.addItemDecoration(new DividerDecoration(this));
 
-        cypherpunkSetting = new CypherpunkSetting();
-        final List<String> exceptAppList = cypherpunkSetting.exceptAppList();
+        vpnSetting = CypherpunkSetting.vpnSetting();
+        final List<String> exceptAppList = vpnSetting.exceptAppList();
 
         progress.setVisibility(View.VISIBLE);
         recyclerView.setVisibility(View.GONE);
@@ -190,7 +191,7 @@ public class SplitTunnelActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         subscription.unsubscribe();
-        cypherpunkSetting.updateRemotePort(adapter.getCheckedList());
+        vpnSetting.updateExceptAppList(adapter.getCheckedList());
         super.onDestroy();
     }
 

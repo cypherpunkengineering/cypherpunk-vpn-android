@@ -1,5 +1,6 @@
 package com.cypherpunk.privacy.ui.region;
 
+import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.support.annotation.ColorInt;
 import android.support.annotation.NonNull;
@@ -14,6 +15,7 @@ import android.view.ViewGroup;
 import com.cypherpunk.privacy.R;
 import com.cypherpunk.privacy.databinding.ListItemRegionBinding;
 import com.cypherpunk.privacy.databinding.ListItemRegionDividerBinding;
+import com.cypherpunk.privacy.domain.model.VpnSetting;
 import com.cypherpunk.privacy.model.CypherpunkSetting;
 import com.cypherpunk.privacy.model.Region;
 import com.cypherpunk.privacy.utils.FontUtil;
@@ -22,9 +24,6 @@ import com.cypherpunk.privacy.widget.StarView;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static com.os.operando.garum.utils.Cache.getContext;
-
 
 public class RegionAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
@@ -35,14 +34,17 @@ public class RegionAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
     private final List<Object> items = new ArrayList<>();
 
+    @NonNull
+    private final Context context;
     @ColorInt
     private final int textColor;
     @ColorInt
     private final int selectedTextColor;
 
-    public RegionAdapter() {
-        textColor = ContextCompat.getColor(getContext(), android.R.color.white);
-        selectedTextColor = ContextCompat.getColor(getContext(), R.color.region_selected_text);
+    public RegionAdapter(@NonNull Context context) {
+        this.context = context;
+        textColor = ContextCompat.getColor(context, android.R.color.white);
+        selectedTextColor = ContextCompat.getColor(context, R.color.region_selected_text);
     }
 
     protected void onFavorite(@NonNull String regionId, boolean favorite) {
@@ -101,15 +103,16 @@ public class RegionAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                     }
                 });
 
-                binding.nationalFlag.setImageResource(ResourceUtil.getFlagDrawableByKey(getContext(), item.getCountry().toLowerCase()));
+                binding.nationalFlag.setImageResource(ResourceUtil.getFlagDrawableByKey(context, item.getCountry().toLowerCase()));
 
-                CypherpunkSetting setting = new CypherpunkSetting();
-                if (!TextUtils.isEmpty(setting.regionId) && regionId.equals(setting.regionId)) {
+                final VpnSetting vpnSetting = CypherpunkSetting.vpnSetting();
+                final String currentRegionId = vpnSetting.regionId();
+                if (!TextUtils.isEmpty(currentRegionId) && regionId.equals(currentRegionId)) {
                     binding.regionName.setTextColor(selectedTextColor);
-                    binding.regionName.setTypeface(FontUtil.getDosisBold(getContext()));
+                    binding.regionName.setTypeface(FontUtil.getDosisBold(context));
                 } else {
                     binding.regionName.setTextColor(textColor);
-                    binding.regionName.setTypeface(FontUtil.getDosisRegular(getContext()));
+                    binding.regionName.setTypeface(FontUtil.getDosisRegular(context));
                 }
 
                 holder.itemView.setClickable(item.isAuthorized() && !TextUtils.isEmpty(item.getOvDefault()));
@@ -207,21 +210,21 @@ public class RegionAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
     private void addFavoriteItems(@NonNull List<Region> data) {
         if (!data.isEmpty()) {
-            items.add(new Divider(getContext().getString(R.string.region_list_favorite)));
+            items.add(new Divider(context.getString(R.string.region_list_favorite)));
         }
         items.addAll(data);
     }
 
     private void addRecentlyConnectedItems(List<Region> data) {
         if (!data.isEmpty()) {
-            items.add(new Divider(getContext().getString(R.string.region_list_recent)));
+            items.add(new Divider(context.getString(R.string.region_list_recent)));
         }
         items.addAll(data);
     }
 
     private void addItems(@NonNull List<Region> data, @StringRes int dividerName) {
         if (!data.isEmpty()) {
-            items.add(new Divider(getContext().getString(dividerName)));
+            items.add(new Divider(context.getString(dividerName)));
             items.addAll(data);
         }
     }

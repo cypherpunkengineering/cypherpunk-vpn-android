@@ -3,6 +3,7 @@ package com.cypherpunk.privacy.vpn;
 import android.support.annotation.NonNull;
 
 import com.cypherpunk.privacy.CypherpunkApplication;
+import com.cypherpunk.privacy.domain.model.VpnSetting;
 import com.cypherpunk.privacy.model.CypherpunkSetting;
 import com.cypherpunk.privacy.model.Region;
 
@@ -37,8 +38,11 @@ public class CypherpunkVpnStatus implements VpnStatus.StateListener {
         CypherpunkVpnStatus.level = level;
         if (level == VpnStatus.ConnectionStatus.LEVEL_CONNECTED) {
             connectedTime = System.currentTimeMillis();
+            final VpnSetting vpnSetting = CypherpunkSetting.vpnSetting();
             Realm realm = CypherpunkApplication.instance.getAppComponent().getDefaultRealm();
-            Region region = realm.where(Region.class).equalTo("id", new CypherpunkSetting().regionId).findFirst();
+            Region region = realm.where(Region.class)
+                    .equalTo("id", vpnSetting.regionId())
+                    .findFirst();
             realm.beginTransaction();
             region.setLastConnectedDate(new Date());
             realm.commitTransaction();

@@ -16,9 +16,9 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.cypherpunk.privacy.R;
+import com.cypherpunk.privacy.domain.model.RemotePort;
+import com.cypherpunk.privacy.domain.model.VpnSetting;
 import com.cypherpunk.privacy.model.CypherpunkSetting;
-import com.cypherpunk.privacy.model.CypherpunkSetting.RemotePortCategory;
-import com.cypherpunk.privacy.model.CypherpunkSetting.RemotePortPort;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,7 +33,7 @@ public class RemotePortActivity extends AppCompatActivity {
     }
 
     private final List<Checkable> checkableList = new ArrayList<>();
-    private CypherpunkSetting cypherpunkSetting;
+    private VpnSetting vpnSetting;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,22 +54,22 @@ public class RemotePortActivity extends AppCompatActivity {
             actionBar.setHomeAsUpIndicator(R.drawable.close_vector);
         }
 
-        cypherpunkSetting = new CypherpunkSetting();
+        vpnSetting = CypherpunkSetting.vpnSetting();
 
         final LinearLayout container = ButterKnife.findById(this, R.id.container);
         final LayoutInflater inflater = LayoutInflater.from(this);
 
-        final CypherpunkSetting.RemotePort remotePort = cypherpunkSetting.remotePort();
+        final RemotePort remotePort = vpnSetting.remotePort();
 
-        for (final RemotePortCategory category : RemotePortCategory.values()) {
+        for (final RemotePort.Type type : RemotePort.Type.values()) {
             final LinearLayout ll = (LinearLayout) inflater.inflate(R.layout.remote_port_category,
                     container, false);
             container.addView(ll);
 
             final TextView textView = ButterKnife.findById(ll, R.id.category_name);
-            textView.setText(category.name());
+            textView.setText(type.name());
 
-            for (final RemotePortPort port : RemotePortPort.values()) {
+            for (final RemotePort.Port port : RemotePort.Port.values()) {
                 final View view = inflater.inflate(R.layout.remote_port_item, ll, false);
                 ll.addView(view);
 
@@ -88,23 +88,23 @@ public class RemotePortActivity extends AppCompatActivity {
                             }
                             checkable.setChecked(true);
 
-                            update(new CypherpunkSetting.RemotePort(category, port));
+                            update(RemotePort.create(type, port));
                         }
                     }
                 });
 
                 ll.addView(inflater.inflate(R.layout.divider, ll, false));
 
-                if (remotePort.category == category && remotePort.port == port) {
+                if (remotePort.type() == type && remotePort.port() == port) {
                     checkable.setChecked(true);
                 }
             }
         }
     }
 
-    private void update(@NonNull CypherpunkSetting.RemotePort remotePort) {
+    private void update(@NonNull RemotePort remotePort) {
         setResult(RESULT_OK);
-        cypherpunkSetting.updateRemotePort(remotePort);
+        vpnSetting.updateRemotePort(remotePort);
     }
 
     @Override

@@ -21,10 +21,10 @@ import android.widget.Toast;
 import com.cypherpunk.privacy.CypherpunkApplication;
 import com.cypherpunk.privacy.R;
 import com.cypherpunk.privacy.data.api.CypherpunkService;
-import com.cypherpunk.privacy.data.api.UserManager;
 import com.cypherpunk.privacy.data.api.json.AccountStatusResult;
 import com.cypherpunk.privacy.data.api.json.EmailRequest;
 import com.cypherpunk.privacy.data.api.json.LoginRequest;
+import com.cypherpunk.privacy.model.UserSetting;
 import com.cypherpunk.privacy.ui.common.FullScreenProgressDialog;
 
 import java.net.UnknownHostException;
@@ -150,10 +150,12 @@ public class LoginActivity extends AppCompatActivity {
                             dialog = null;
                         }
 
-                        UserManager.saveMailAddress(email);
-                        UserManager.saveSecret(result.getSecret());
-                        UserManager.saveVpnUsername(result.getPrivacy().username);
-                        UserManager.saveVpnPassword(result.getPrivacy().password);
+                        final UserSetting instance = UserSetting.instance();
+                        instance.updateMail(email);
+                        instance.updateSecret(result.getSecret());
+                        instance.updateVpnUserNameAndPassword(
+                                result.getPrivacy().username,
+                                result.getPrivacy().password);
 
                         TaskStackBuilder.create(context)
                                 .addNextIntent(new Intent(context, TutorialActivity.class))

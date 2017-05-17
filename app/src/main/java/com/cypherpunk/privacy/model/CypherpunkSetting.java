@@ -1,311 +1,200 @@
 package com.cypherpunk.privacy.model;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
-import com.os.operando.garum.annotations.DefaultBoolean;
-import com.os.operando.garum.annotations.DefaultString;
-import com.os.operando.garum.annotations.Pref;
-import com.os.operando.garum.annotations.PrefKey;
-import com.os.operando.garum.models.PrefModel;
+import com.cypherpunk.privacy.R;
+import com.cypherpunk.privacy.domain.model.InternetKillSwitch;
+import com.cypherpunk.privacy.domain.model.RemotePort;
+import com.cypherpunk.privacy.domain.model.TunnelMode;
+import com.cypherpunk.privacy.domain.model.VpnSetting;
 
 import java.util.Arrays;
 import java.util.List;
 
+public class CypherpunkSetting implements VpnSetting {
 
-@Pref(name = "cypherpunk_setting")
-public class CypherpunkSetting extends PrefModel {
+    private static final String PREF_NAME = "cypherpunk_setting";
 
-    @PrefKey("vpn_auto_start_connect")
-    @DefaultBoolean(false)
-    public boolean vpnAutoStartConnect;
+    private final SharedPreferences pref;
+    private final String KEY_AUTO_SECURE_UNTRUSTED;
+    private final String KEY_AUTO_SECURE_OTHER;
+    private final String KEY_AUTO_CONNECT;
+    private final String KEY_BLOCK_MALWARE;
+    private final String KEY_BLOCK_ADS;
+    private final String KEY_INTERNET_KILL_SWITCH;
+    private final String KEY_TUNNEL_MODE;
+    private final String KEY_REMOTE_PORT_TYPE;
+    private final String KEY_REMOTE_PORT_PORT;
+    private final String KEY_EXCEPT_APP_LIST;
+    private final String KEY_ALLOW_LAN_TRAFFIC;
+    private final String KEY_REGION_ID;
+    private final String KEY_CYPHERPLAY;
+    private final String KEY_ANALYTICS;
 
-    @PrefKey("vpn_dns_block_ads")
-    @DefaultBoolean(false)
-    public boolean vpnDnsBlockAds;
-
-    @PrefKey("vpn_dns_block_malware")
-    @DefaultBoolean(false)
-    public boolean vpnDnsBlockMalware;
-
-    @PrefKey("vpn_dns_cypherplay")
-    @DefaultBoolean(false)
-    public boolean vpnDnsCypherplay;
-
-    @PrefKey("privacy_firewall_mode")
-    @DefaultString("setting_privacy_firewall_mode_never")
-    public String internetKillSwitchValue;
-
-    @PrefKey("privacy_firewall_exempt_lan")
-    @DefaultBoolean(true)
-    public boolean privacyFirewallExemptLAN;
-
-    @PrefKey("vpn_crypto_profile")
-    @DefaultString("setting_vpn_crypto_profile_default")
-    public String vpnCryptoProfile;
-
-    @PrefKey("vpn_backend")
-    @DefaultString("setting_vpn_backend_openvpn23")
-    public String vpnBackend;
-
-    @PrefKey("vpn_remote_port_category")
-    @DefaultString("")
-    public String vpnRemotePortCategory;
-
-    @PrefKey("vpn_remote_port_port")
-    public int vpnRemotePortPort;
-
-    @PrefKey("vpn_port_local")
-    @DefaultString("")
-    public String vpnPortLocal;
-
-    @PrefKey("vpn_port_forwarding")
-    @DefaultBoolean(false)
-    public boolean portForwarding;
-
-    @PrefKey("vpn_network_auto_secure_untrusted")
-    @DefaultBoolean(false)
-    public boolean autoSecureUntrusted;
-
-    @PrefKey("vpn_network_auto_secure_other")
-    @DefaultBoolean(false)
-    public boolean autoSecureOther;
-
-    @PrefKey("vpn_disable_package_name")
-    @DefaultString("")
-    public String disableAppPackageName;
-
-    @PrefKey("cpn_region_id")
-    @DefaultString("")
-    public String regionId;
-
-    @PrefKey("analytics")
-    @DefaultBoolean(false)
-    public boolean analytics;
+    private CypherpunkSetting(@NonNull Context c) {
+        pref = c.getApplicationContext().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
+        KEY_AUTO_SECURE_UNTRUSTED = c.getString(R.string.setting_preference_key_auto_secure_untrusted);
+        KEY_AUTO_SECURE_OTHER = c.getString(R.string.setting_preference_key_auto_secure_other);
+        KEY_AUTO_CONNECT = c.getString(R.string.setting_preference_key_auto_connect);
+        KEY_BLOCK_MALWARE = c.getString(R.string.setting_preference_key_block_malware);
+        KEY_BLOCK_ADS = c.getString(R.string.setting_preference_key_block_ads);
+        KEY_INTERNET_KILL_SWITCH = c.getString(R.string.setting_preference_key_internet_kill_switch);
+        KEY_TUNNEL_MODE = c.getString(R.string.setting_preference_key_tunnel_mode);
+        KEY_REMOTE_PORT_TYPE = c.getString(R.string.setting_preference_key_remote_port_type);
+        KEY_REMOTE_PORT_PORT = c.getString(R.string.setting_preference_key_remote_port_port);
+        KEY_EXCEPT_APP_LIST = c.getString(R.string.setting_preference_key_except_app_list);
+        KEY_ALLOW_LAN_TRAFFIC = c.getString(R.string.setting_preference_key_allow_lan_traffic);
+        KEY_REGION_ID = c.getString(R.string.setting_preference_key_region_id);
+        KEY_CYPHERPLAY = c.getString(R.string.setting_preference_key_cypherplay);
+        KEY_ANALYTICS = c.getString(R.string.setting_preference_key_analytics);
+    }
 
     //
-    // InternetKillSwitch
+
+    @Override
+    public boolean isAutoSecureUntrusted() {
+        return pref.getBoolean(KEY_AUTO_SECURE_UNTRUSTED, false);
+    }
+
+    @Override
+    public void updateAutoSecureUntrusted(boolean b) {
+        pref.edit().putBoolean(KEY_AUTO_SECURE_UNTRUSTED, b).apply();
+    }
+
+    //
+
+    @Override
+    public boolean isAutoSecureOther() {
+        return pref.getBoolean(KEY_AUTO_SECURE_OTHER, false);
+    }
+
+    @Override
+    public void updateAutoSecureOther(boolean b) {
+        pref.edit().putBoolean(KEY_AUTO_SECURE_OTHER, b).apply();
+    }
+
+    //
+
+    @Override
+    public boolean isAutoConnect() {
+        return pref.getBoolean(KEY_AUTO_CONNECT, false);
+    }
+
+    @Override
+    public boolean isBlockMalware() {
+        return pref.getBoolean(KEY_BLOCK_MALWARE, false);
+    }
+
+    @Override
+    public boolean isBlockAds() {
+        return pref.getBoolean(KEY_BLOCK_ADS, false);
+    }
+
     //
 
     @NonNull
+    @Override
     public InternetKillSwitch internetKillSwitch() {
-        return InternetKillSwitch.find(internetKillSwitchValue);
+        return InternetKillSwitch.find(pref.getString(KEY_INTERNET_KILL_SWITCH, null));
     }
 
+    @Override
     public void updateInternetKillSwitch(@NonNull InternetKillSwitch internetKillSwitch) {
-        internetKillSwitchValue = internetKillSwitch.value;
-        save();
+        pref.edit().putString(KEY_INTERNET_KILL_SWITCH, internetKillSwitch.value()).apply();
     }
-
-    public enum InternetKillSwitch {
-        AUTOMATIC("setting_privacy_firewall_mode_auto"),
-        OFF("setting_privacy_firewall_mode_never"),
-        ALWAYS_ON("setting_privacy_firewall_mode_always");
-
-        @NonNull
-        private final String value;
-
-        InternetKillSwitch(@NonNull String value) {
-            this.value = value;
-        }
-
-        @NonNull
-        public static InternetKillSwitch find(String value) {
-            for (InternetKillSwitch internetKillSwitch : values()) {
-                if (internetKillSwitch.value.equals(value)) {
-                    return internetKillSwitch;
-                }
-            }
-            return OFF;
-        }
-    }
-
-    //
-    // TunnelMode
-    //
 
     @NonNull
+    @Override
     public TunnelMode tunnelMode() {
-        return TunnelMode.find(vpnCryptoProfile);
+        return TunnelMode.find(pref.getString(KEY_TUNNEL_MODE, null));
     }
 
+    @Override
     public void updateTunnelMode(@NonNull TunnelMode tunnelMode) {
-        vpnCryptoProfile = tunnelMode.name();
-        save();
+        pref.edit().putString(KEY_TUNNEL_MODE, tunnelMode.name()).apply();
     }
-
-    public enum TunnelMode {
-        RECOMMENDED(TunnelModeCipher.AES_128_GCM, TunnelModeAuth.SHA_256, TunnelModeKey.RSA_4096),
-        MAX_SPEED(TunnelModeCipher.NONE, TunnelModeAuth.SHA_256, TunnelModeKey.RSA_4096),
-        MAX_PRIVACY(TunnelModeCipher.AES_256_GCM, TunnelModeAuth.SHA_256, TunnelModeKey.RSA_4096),
-        MAX_STEALTH(TunnelModeCipher.AES_128_GCM, TunnelModeAuth.SHA_256, TunnelModeKey.RSA_4096);
-
-        @NonNull
-        private final TunnelModeCipher cipher;
-        @NonNull
-        private final TunnelModeAuth auth;
-        @NonNull
-        private final TunnelModeKey key;
-
-        TunnelMode(@NonNull TunnelModeCipher cipher, @NonNull TunnelModeAuth auth, @NonNull TunnelModeKey key) {
-            this.cipher = cipher;
-            this.auth = auth;
-            this.key = key;
-        }
-
-        @NonNull
-        public TunnelModeCipher cipher() {
-            return cipher;
-        }
-
-        @NonNull
-        public TunnelModeAuth auth() {
-            return auth;
-        }
-
-        @NonNull
-        public TunnelModeKey key() {
-            return key;
-        }
-
-        @NonNull
-        public static TunnelMode find(String name) {
-            for (TunnelMode tunnelMode : values()) {
-                if (tunnelMode.name().equals(name)) {
-                    return tunnelMode;
-                }
-            }
-            return RECOMMENDED;
-        }
-    }
-
-    public enum TunnelModeCipher {
-        NONE("NONE"),
-        AES_128_GCM("AES-128-GCM"),
-        AES_256_GCM("AES-256-GCM");
-
-        @NonNull
-        private final String value;
-
-        TunnelModeCipher(@NonNull String value) {
-            this.value = value;
-        }
-
-        public String value() {
-            return value;
-        }
-    }
-
-    public enum TunnelModeAuth {
-        SHA_256("SHA-256");
-
-        @NonNull
-        private final String value;
-
-        TunnelModeAuth(@NonNull String value) {
-            this.value = value;
-        }
-
-        public String value() {
-            return value;
-        }
-    }
-
-    public enum TunnelModeKey {
-        RSA_4096("RSA-4096");
-
-        @NonNull
-        private final String value;
-
-        TunnelModeKey(@NonNull String value) {
-            this.value = value;
-        }
-
-        public String value() {
-            return value;
-        }
-
-    }
-
-    //
-    // RemotePort
-    //
 
     @NonNull
+    @Override
     public RemotePort remotePort() {
-        final RemotePortCategory category = RemotePortCategory.find(vpnRemotePortCategory);
-        final RemotePortPort port = RemotePortPort.find(vpnRemotePortPort);
-        return new RemotePort(category, port);
+        final RemotePort.Type type = RemotePort.Type.find(pref.getString(KEY_REMOTE_PORT_TYPE, null));
+        final RemotePort.Port port = RemotePort.Port.find(pref.getInt(KEY_REMOTE_PORT_PORT, 0));
+        return RemotePort.create(type, port);
     }
 
+    @Override
     public void updateRemotePort(@NonNull RemotePort remotePort) {
-        vpnRemotePortCategory = remotePort.category.name();
-        vpnRemotePortPort = remotePort.port.value;
-        save();
+        pref.edit()
+                .putString(KEY_REMOTE_PORT_TYPE, remotePort.type().name())
+                .putInt(KEY_REMOTE_PORT_PORT, remotePort.port().value())
+                .apply();
     }
-
-    public static class RemotePort {
-        public final RemotePortCategory category;
-        public final RemotePortPort port;
-
-        public RemotePort(RemotePortCategory category, RemotePortPort port) {
-            this.category = category;
-            this.port = port;
-        }
-    }
-
-    public enum RemotePortCategory {
-        UDP,
-        TCP;
-
-        @NonNull
-        public static RemotePortCategory find(String value) {
-            for (RemotePortCategory category : values()) {
-                if (category.name().equals(value)) {
-                    return category;
-                }
-            }
-            return UDP;
-        }
-    }
-
-    public enum RemotePortPort {
-        PORT_7133(7133),
-        PORT_5060(5060),
-        PORT_53(53);
-
-        private final int value;
-
-        RemotePortPort(int value) {
-            this.value = value;
-        }
-
-        @NonNull
-        public static RemotePortPort find(int value) {
-            for (RemotePortPort port : values()) {
-                if (port.value == value) {
-                    return port;
-                }
-            }
-            return PORT_7133;
-        }
-
-        public int value() {
-            return value;
-        }
-    }
-
-    //
-    // Split tunnel
-    //
 
     @NonNull
+    @Override
     public List<String> exceptAppList() {
-        return Arrays.asList(disableAppPackageName.split(","));
+        return Arrays.asList(pref.getString(KEY_EXCEPT_APP_LIST, "").split(","));
     }
 
-    public void updateRemotePort(@NonNull List<String> exceptAppList) {
-        disableAppPackageName = TextUtils.join(",", exceptAppList);
-        save();
+    @Override
+    public void updateExceptAppList(@NonNull List<String> exceptAppList) {
+        pref.edit().putString(KEY_EXCEPT_APP_LIST, TextUtils.join(",", exceptAppList)).apply();
+    }
+
+    @Override
+    public boolean allowLanTraffic() {
+        return pref.getBoolean(KEY_ALLOW_LAN_TRAFFIC, true);
+    }
+
+    @NonNull
+    @Override
+    public String regionId() {
+        return pref.getString(KEY_REGION_ID, "");
+    }
+
+    @Override
+    public void updateRegionId(@NonNull String regionId) {
+        pref.edit().putString(KEY_REGION_ID, regionId).apply();
+    }
+
+    @Override
+    public boolean isCypherplayEnabled() {
+        return pref.getBoolean(KEY_CYPHERPLAY, false);
+    }
+
+    @Override
+    public void updateCypherplayEnabled(boolean b) {
+        pref.edit().putBoolean(KEY_CYPHERPLAY, b).apply();
+    }
+
+    @Override
+    public boolean isAnalyticsEnabled() {
+        return pref.getBoolean(KEY_ANALYTICS, false);
+    }
+
+    @Override
+    public void updateAnalyticsEnabled(boolean b) {
+        pref.edit().putBoolean(KEY_ANALYTICS, b).apply();
+    }
+
+    //
+    //
+    //
+
+    private static CypherpunkSetting instance;
+
+    public static void init(@NonNull Context context) {
+        instance = new CypherpunkSetting(context);
+    }
+
+    @NonNull
+    public static VpnSetting vpnSetting() {
+        if (instance == null) {
+            throw new IllegalStateException("call init() first");
+        }
+        return instance;
     }
 }

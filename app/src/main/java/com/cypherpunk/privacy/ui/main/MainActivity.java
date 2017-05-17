@@ -31,7 +31,7 @@ import android.view.animation.Animation;
 import android.widget.CompoundButton;
 
 import com.cypherpunk.privacy.R;
-import com.cypherpunk.privacy.data.api.UserManager;
+import com.cypherpunk.privacy.model.UserSetting;
 import com.cypherpunk.privacy.ui.account.AccountSettingsFragment;
 import com.cypherpunk.privacy.ui.region.RegionFragment;
 import com.cypherpunk.privacy.ui.settings.SettingConnectDialogFragment;
@@ -71,7 +71,7 @@ public class MainActivity extends AppCompatActivity
                     View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
         }
 
-        if (!UserManager.isSignedIn()) {
+        if (!UserSetting.instance().isSignedIn()) {
             TaskStackBuilder.create(this)
                     .addNextIntent(IdentifyEmailActivity.createIntent(this))
                     .startActivities();

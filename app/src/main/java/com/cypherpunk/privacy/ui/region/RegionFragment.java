@@ -18,9 +18,11 @@ import com.cypherpunk.privacy.data.api.CypherpunkService;
 import com.cypherpunk.privacy.data.api.json.AccountStatusResult;
 import com.cypherpunk.privacy.data.api.json.RegionResult;
 import com.cypherpunk.privacy.databinding.FragmentRegionBinding;
+import com.cypherpunk.privacy.domain.model.AccountType;
+import com.cypherpunk.privacy.domain.model.VpnSetting;
 import com.cypherpunk.privacy.model.CypherpunkSetting;
 import com.cypherpunk.privacy.model.Region;
-import com.cypherpunk.privacy.model.UserSettingPref;
+import com.cypherpunk.privacy.model.UserSetting;
 import com.cypherpunk.privacy.utils.ResourceUtil;
 import com.cypherpunk.privacy.vpn.ServerPingerThinger;
 
@@ -87,19 +89,22 @@ public class RegionFragment extends Fragment {
         binding = DataBindingUtil.bind(getView());
 
         getServerList();
-        CypherpunkSetting setting = new CypherpunkSetting();
+        final VpnSetting vpnSetting = CypherpunkSetting.vpnSetting();
+
+        realm = CypherpunkApplication.instance.getAppComponent().getDefaultRealm();
 
         // if no location set, select fastest region using available data
-        if (TextUtils.isEmpty(setting.regionId)) {
+        if (TextUtils.isEmpty(vpnSetting.regionId())) {
             Region first = ServerPingerThinger.getFastestLocation();
             if (first != null) {
-                setting.regionId = first.getId();
-                setting.save();
+                vpnSetting.updateRegionId(first.getId());
             }
         }
 
-        if (!TextUtils.isEmpty(setting.regionId)) {
-            Region region = realm.where(Region.class).equalTo("id", setting.regionId).findFirst();
+        if (!TextUtils.isEmpty(vpnSetting.regionId())) {
+            Region region = realm.where(Region.class)
+                    .equalTo("id", vpnSetting.regionId())
+                    .findFirst();
             if (region != null) {
                 int nationalFlagResId = ResourceUtil.getFlagDrawableByKey(getContext(), region.getCountry().toLowerCase());
                 updateRegion(region);
@@ -112,7 +117,7 @@ public class RegionFragment extends Fragment {
             binding.regionContainer.setVisibility(View.GONE);
         }
 
-        adapter = new RegionAdapter() {
+        adapter = new RegionAdapter(getContext()) {
             @Override
             protected void onFavorite(@NonNull final String regionId, final boolean favorite) {
                 Region region = realm.where(Region.class).equalTo("id", regionId).findFirst();
@@ -125,11 +130,9 @@ public class RegionFragment extends Fragment {
 
             @Override
             protected void onItemClick(@NonNull final String regionId) {
-                CypherpunkSetting setting = new CypherpunkSetting();
-
                 // disable cypherplay mode for ordinary locations
-                setting.vpnDnsCypherplay = false;
-                setting.save();
+                final VpnSetting vpnSetting = CypherpunkSetting.vpnSetting();
+                vpnSetting.updateCypherplayEnabled(false);
 
                 // select region matching the selected id
                 selectRegion(realm.where(Region.class).equalTo("id", regionId).findFirst());
@@ -139,9 +142,8 @@ public class RegionFragment extends Fragment {
             protected void onCypherplayClick() {
                 Region region = ServerPingerThinger.getFastestLocation();
                 if (region != null) {
-                    CypherpunkSetting setting = new CypherpunkSetting();
-                    setting.vpnDnsCypherplay = true;
-                    setting.save();
+                    final VpnSetting vpnSetting = CypherpunkSetting.vpnSetting();
+                    vpnSetting.updateCypherplayEnabled(true);
                     selectRegion(region);
                 }
             }
@@ -150,9 +152,8 @@ public class RegionFragment extends Fragment {
             protected void onFastestLocationClick() {
                 Region region = ServerPingerThinger.getFastestLocation();
                 if (region != null) {
-                    CypherpunkSetting setting = new CypherpunkSetting();
-                    setting.vpnDnsCypherplay = false;
-                    setting.save();
+                    final VpnSetting vpnSetting = CypherpunkSetting.vpnSetting();
+                    vpnSetting.updateCypherplayEnabled(false);
                     selectRegion(region);
                 }
             }
@@ -164,7 +165,6 @@ public class RegionFragment extends Fragment {
                 refreshRegionList();
             }
         };
-        realm = CypherpunkApplication.instance.getAppComponent().getDefaultRealm();
         realm.addChangeListener(realmChangeListener);
         refreshRegionList();
 
@@ -253,9 +253,8 @@ public class RegionFragment extends Fragment {
     }
 
     private void selectRegion(Region region) {
-        CypherpunkSetting setting = new CypherpunkSetting();
-        setting.regionId = region.getId();
-        setting.save();
+        final VpnSetting vpnSetting = CypherpunkSetting.vpnSetting();
+        vpnSetting.updateRegionId(region.getId());
 
         int nationalFlagResId = ResourceUtil.getFlagDrawableByKey(getContext(), region.getCountry().toLowerCase());
         updateRegion(region);
@@ -277,10 +276,9 @@ public class RegionFragment extends Fragment {
                 .flatMap(new Func1<AccountStatusResult, Single<Map<String, RegionResult>>>() {
                     @Override
                     public Single<Map<String, RegionResult>> call(AccountStatusResult result) {
-                        UserSettingPref userPref = new UserSettingPref();
-                        userPref.userStatusType = result.getAccount().type;
-                        userPref.save();
-                        return webService.serverList(new UserSettingPref().userStatusType);
+                        final String type = result.getAccount().type;
+                        UserSetting.instance().updateAccountType(AccountType.find(type));
+                        return webService.serverList(type);
                     }
                 })
                 .subscribeOn(Schedulers.newThread())
@@ -342,9 +340,9 @@ public class RegionFragment extends Fragment {
                                    }
 
                                    // check if previously selected region is still available
-                                   CypherpunkSetting setting = new CypherpunkSetting();
+                                   final VpnSetting vpnSetting = CypherpunkSetting.vpnSetting();
                                    Region region = realm.where(Region.class)
-                                           .equalTo("id", setting.regionId)
+                                           .equalTo("id", vpnSetting.regionId())
                                            .equalTo("authorized", true)
                                            .contains("ovDefault", ".")
                                            .findFirst();
@@ -353,8 +351,7 @@ public class RegionFragment extends Fragment {
                                    if (region == null) {
                                        region = ServerPingerThinger.getFastestLocation();
                                        if (region != null) {
-                                           setting.regionId = region.getId();
-                                           setting.save();
+                                           vpnSetting.updateRegionId(region.getId());
                                        }
                                    }
                                    int nationalFlagResId = ResourceUtil.getFlagDrawableByKey(getContext(), region.getCountry().toLowerCase());

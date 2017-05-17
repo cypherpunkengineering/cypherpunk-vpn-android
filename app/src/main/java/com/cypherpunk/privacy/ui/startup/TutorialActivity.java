@@ -23,10 +23,12 @@ import com.cypherpunk.privacy.R;
 import com.cypherpunk.privacy.data.api.CypherpunkService;
 import com.cypherpunk.privacy.data.api.json.AccountStatusResult;
 import com.cypherpunk.privacy.data.api.json.RegionResult;
+import com.cypherpunk.privacy.domain.model.AccountType;
+import com.cypherpunk.privacy.domain.model.VpnSetting;
 import com.cypherpunk.privacy.domain.service.ServerService;
 import com.cypherpunk.privacy.model.CypherpunkSetting;
 import com.cypherpunk.privacy.model.Region;
-import com.cypherpunk.privacy.model.UserSettingPref;
+import com.cypherpunk.privacy.model.UserSetting;
 import com.cypherpunk.privacy.ui.main.MainActivity;
 import com.cypherpunk.privacy.widget.PageIndicator;
 import com.google.firebase.analytics.FirebaseAnalytics;
@@ -149,9 +151,8 @@ public class TutorialActivity extends AppCompatActivity {
     }
 
     private void setAnalytics(boolean enabled) {
-        final CypherpunkSetting setting = new CypherpunkSetting();
-        setting.analytics = enabled;
-        setting.save();
+        final VpnSetting vpnSetting = CypherpunkSetting.vpnSetting();
+        vpnSetting.updateAnalyticsEnabled(enabled);
 
         FirebaseAnalytics.getInstance(getApplicationContext())
                 .setAnalyticsCollectionEnabled(enabled);
@@ -183,7 +184,7 @@ public class TutorialActivity extends AppCompatActivity {
                     @Override
                     public Single<Map<String, RegionResult>> call(AccountStatusResult result) {
                         final String type = result.getAccount().type;
-                        UserSettingPref.updateUserStatusType(type);
+                        UserSetting.instance().updateAccountType(AccountType.find(type));
                         return webService.serverList(type);
                     }
                 })
