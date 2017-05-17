@@ -1,6 +1,7 @@
 package com.cypherpunk.privacy.ui.account;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -37,6 +38,11 @@ import rx.schedulers.Schedulers;
 import rx.subscriptions.Subscriptions;
 
 public class EditPasswordActivity extends AppCompatActivity {
+
+    @NonNull
+    public static Intent createIntent(@NonNull Context context) {
+        return new Intent(context, EditPasswordActivity.class);
+    }
 
     @NonNull
     private Subscription subscription = Subscriptions.empty();

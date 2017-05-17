@@ -87,11 +87,11 @@ public class CypherpunkVPN {
             start(context, baseContext);
         }
         if (status.isConnected()) {
-            stop(context, baseContext);
+            stop();
         }
         if (!status.isConnected() && !status.isDisconnected()) {
             // connecting
-            stop(context, baseContext);
+            stop();
         }
     }
 
@@ -133,7 +133,7 @@ public class CypherpunkVPN {
         }.start();
     }
 
-    public void stop(final Context context, final Context baseContext) {
+    public void stop() {
         Timber.d("stop()");
         if (service != null) {
             OpenVPNManagement manager = service.getManagement();
