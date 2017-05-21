@@ -14,11 +14,11 @@ import android.view.ViewGroup;
 
 import com.cypherpunk.privacy.CypherpunkApplication;
 import com.cypherpunk.privacy.R;
-import com.cypherpunk.privacy.data.api.CypherpunkService;
-import com.cypherpunk.privacy.data.api.json.AccountStatusResult;
-import com.cypherpunk.privacy.data.api.json.RegionResult;
+import com.cypherpunk.privacy.domain.repository.NetworkRepository;
+import com.cypherpunk.privacy.domain.repository.retrofit.CypherpunkService;
+import com.cypherpunk.privacy.domain.repository.retrofit.result.StatusResult;
+import com.cypherpunk.privacy.domain.repository.retrofit.result.RegionResult;
 import com.cypherpunk.privacy.databinding.FragmentRegionBinding;
-import com.cypherpunk.privacy.domain.model.AccountType;
 import com.cypherpunk.privacy.domain.model.VpnSetting;
 import com.cypherpunk.privacy.model.CypherpunkSetting;
 import com.cypherpunk.privacy.model.Region;
@@ -36,29 +36,29 @@ import java.util.Map;
 
 import javax.inject.Inject;
 
+import io.reactivex.SingleSource;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.disposables.Disposables;
+import io.reactivex.functions.Function;
+import io.reactivex.observers.DisposableSingleObserver;
+import io.reactivex.schedulers.Schedulers;
 import io.realm.Realm;
 import io.realm.RealmChangeListener;
 import io.realm.RealmResults;
 import io.realm.Sort;
-import rx.Single;
-import rx.SingleSubscriber;
-import rx.Subscription;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Func1;
-import rx.schedulers.Schedulers;
-import rx.subscriptions.Subscriptions;
-
 
 public class RegionFragment extends Fragment {
 
     private Realm realm;
     private FragmentRegionBinding binding;
-    private Subscription subscription = Subscriptions.empty();
+    @NonNull
+    private Disposable disposable = Disposables.empty();
     private RegionAdapter adapter;
     private RealmChangeListener realmChangeListener;
 
     @Inject
-    CypherpunkService webService;
+    NetworkRepository networkRepository;
     private RegionFragmentListener listener;
 
     public interface RegionFragmentListener {
@@ -186,7 +186,7 @@ public class RegionFragment extends Fragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        subscription.unsubscribe();
+        disposable.dispose();
     }
 
     public void toggleAllowIcon(boolean more) {
@@ -271,104 +271,99 @@ public class RegionFragment extends Fragment {
     }
 
     private void getServerList() {
-        subscription = webService
-                .getAccountStatus()
-                .flatMap(new Func1<AccountStatusResult, Single<Map<String, RegionResult>>>() {
+        disposable = networkRepository.getAccountStatus()
+                .flatMap(new Function<StatusResult, SingleSource<Map<String, RegionResult>>>() {
                     @Override
-                    public Single<Map<String, RegionResult>> call(AccountStatusResult result) {
-                        final String type = result.getAccount().type;
-                        UserSetting.instance().updateAccountType(AccountType.find(type));
-                        return webService.serverList(type);
+                    public SingleSource<Map<String, RegionResult>> apply(StatusResult result) throws Exception {
+                        UserSetting.instance().updateAccountType(result.account.type);
+                        return networkRepository.serverList(result.account.type);
                     }
                 })
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new SingleSubscriber<Map<String, RegionResult>>() {
-                               @Override
-                               public void onSuccess(Map<String, RegionResult> result) {
-                                   realm.beginTransaction();
-                                   List<String> updateRegionIdList = new ArrayList<>();
-                                   for (Map.Entry<String, RegionResult> resultEntry : result.entrySet()) {
-                                       RegionResult regionResult = resultEntry.getValue();
-                                       Region region = realm.where(Region.class)
-                                               .equalTo("id", regionResult.getId()).findFirst();
-                                       if (region != null) {
-                                           region.setRegion(regionResult.getRegion());
-                                           region.setCountry(regionResult.getCountry());
-                                           region.setLevel(regionResult.getLevel());
-                                           region.setRegionName(regionResult.getName());
-                                           region.setAuthorized(regionResult.isAuthorized());
-                                           region.setOvHostname(regionResult.getOvHostname());
-                                           region.setOvDefault(regionResult.getOvDefault());
-                                           region.setOvNone(regionResult.getOvNone());
-                                           region.setOvStrong(regionResult.getOvStrong());
-                                           region.setOvStealth(regionResult.getOvStealth());
-                                       } else {
-                                           region = new Region(
-                                                   regionResult.getId(),
-                                                   regionResult.getRegion(),
-                                                   regionResult.getCountry(),
-                                                   regionResult.getName(),
-                                                   regionResult.getLevel(),
-                                                   regionResult.isAuthorized(),
-                                                   regionResult.getOvHostname(),
-                                                   regionResult.getOvDefault(),
-                                                   regionResult.getOvNone(),
-                                                   regionResult.getOvStrong(),
-                                                   regionResult.getOvStealth());
-                                           realm.copyToRealm(region);
-                                       }
-                                       updateRegionIdList.add(region.getId());
-                                   }
-                                   RealmResults<Region> oldRegion = realm.where(Region.class)
-                                           .not()
-                                           .beginGroup()
-                                           .in("id", updateRegionIdList.toArray(new String[updateRegionIdList.size()]))
-                                           .endGroup()
-                                           .findAll();
-                                   oldRegion.deleteAllFromRealm();
-                                   realm.commitTransaction();
+                .subscribeWith(new DisposableSingleObserver<Map<String, RegionResult>>() {
+                    @Override
+                    public void onSuccess(Map<String, RegionResult> result) {
+                        realm.beginTransaction();
+                        List<String> updateRegionIdList = new ArrayList<>();
+                        for (Map.Entry<String, RegionResult> resultEntry : result.entrySet()) {
+                            RegionResult regionResult = resultEntry.getValue();
+                            Region region = realm.where(Region.class)
+                                    .equalTo("id", regionResult.id).findFirst();
+                            if (region != null) {
+                                region.setRegion(regionResult.region);
+                                region.setCountry(regionResult.country);
+                                region.setLevel(regionResult.level);
+                                region.setRegionName(regionResult.name);
+                                region.setAuthorized(regionResult.authorized);
+                                region.setOvHostname(regionResult.ovHostname);
+                                region.setOvDefault(regionResult.ovDefault);
+                                region.setOvNone(regionResult.ovNone);
+                                region.setOvStrong(regionResult.ovStrong);
+                                region.setOvStealth(regionResult.ovStealth);
+                            } else {
+                                region = new Region(
+                                        regionResult.id,
+                                        regionResult.region,
+                                        regionResult.country,
+                                        regionResult.name,
+                                        regionResult.level,
+                                        regionResult.authorized,
+                                        regionResult.ovHostname,
+                                        regionResult.ovDefault,
+                                        regionResult.ovNone,
+                                        regionResult.ovStrong,
+                                        regionResult.ovStealth);
+                                realm.copyToRealm(region);
+                            }
+                            updateRegionIdList.add(region.getId());
+                        }
+                        RealmResults<Region> oldRegion = realm.where(Region.class)
+                                .not()
+                                .beginGroup()
+                                .in("id", updateRegionIdList.toArray(new String[updateRegionIdList.size()]))
+                                .endGroup()
+                                .findAll();
+                        oldRegion.deleteAllFromRealm();
+                        realm.commitTransaction();
 
-                                   refreshRegionList();
+                        refreshRegionList();
 
-                                   // after realm db is updated above, start pinging new location data
-                                   for (Map.Entry<String, RegionResult> resultEntry : result.entrySet()) {
-                                       RegionResult regionResult = resultEntry.getValue();
-                                       Region region = realm.where(Region.class)
-                                               .equalTo("id", regionResult.getId()).findFirst();
-                                       ServerPingerThinger.pingLocation(region);
-                                   }
+                        // after realm db is updated above, start pinging new location data
+                        for (Map.Entry<String, RegionResult> resultEntry : result.entrySet()) {
+                            RegionResult regionResult = resultEntry.getValue();
+                            Region region = realm.where(Region.class)
+                                    .equalTo("id", regionResult.id).findFirst();
+                            ServerPingerThinger.pingLocation(region);
+                        }
 
-                                   // check if previously selected region is still available
-                                   final VpnSetting vpnSetting = CypherpunkSetting.vpnSetting();
-                                   Region region = realm.where(Region.class)
-                                           .equalTo("id", vpnSetting.regionId())
-                                           .equalTo("authorized", true)
-                                           .contains("ovDefault", ".")
-                                           .findFirst();
+                        // check if previously selected region is still available
+                        final VpnSetting vpnSetting = CypherpunkSetting.vpnSetting();
+                        Region region = realm.where(Region.class)
+                                .equalTo("id", vpnSetting.regionId())
+                                .equalTo("authorized", true)
+                                .contains("ovDefault", ".")
+                                .findFirst();
 
-                                   // if not, find a new one
-                                   if (region == null) {
-                                       region = ServerPingerThinger.getFastestLocation();
-                                       if (region != null) {
-                                           vpnSetting.updateRegionId(region.getId());
-                                       }
-                                   }
-                                   int nationalFlagResId = ResourceUtil.getFlagDrawableByKey(getContext(), region.getCountry().toLowerCase());
-                                   updateRegion(region);
-                                   listener.onSelectedRegionChanged(region.getRegionName(), nationalFlagResId, false);
+                        // if not, find a new one
+                        if (region == null) {
+                            region = ServerPingerThinger.getFastestLocation();
+                            if (region != null) {
+                                vpnSetting.updateRegionId(region.getId());
+                            }
+                        }
+                        int nationalFlagResId = ResourceUtil.getFlagDrawableByKey(getContext(), region.getCountry().toLowerCase());
+                        updateRegion(region);
+                        listener.onSelectedRegionChanged(region.getRegionName(), nationalFlagResId, false);
 
-                                   binding.progress.setVisibility(View.GONE);
-                               }
+                        binding.progress.setVisibility(View.GONE);
+                    }
 
-                               @Override
-                               public void onError(Throwable error) {
-                                   error.printStackTrace();
-                                   binding.progress.setVisibility(View.GONE);
-                               }
-                           }
-                );
-
-
+                    @Override
+                    public void onError(Throwable e) {
+                        e.printStackTrace();
+                        binding.progress.setVisibility(View.GONE);
+                    }
+                });
     }
 }

@@ -71,12 +71,7 @@ dependencies {
     // @style/PreferenceThemeOverlay.v14.Material https://code.google.com/p/android/issues/detail?id=183258
     compile "com.android.support:preference-v14:${supportLibraryVersion}"
     compile "com.android.support:percent:${supportLibraryVersion}"
-    compile 'com.squareup.retrofit2:retrofit:2.1.0'
-    compile 'com.squareup.retrofit2:converter-moshi:2.1.0'
-    compile 'com.squareup.retrofit2:adapter-rxjava:2.1.0'
-    compile 'io.reactivex:rxandroid:1.1.0'
     compile 'com.squareup.okhttp3:logging-interceptor:3.4.1'
-    compile 'com.github.orhanobut:hawk:1.21'
     compile "com.google.dagger:dagger:${daggerVersion}"
     apt "com.google.dagger:dagger-compiler:${daggerVersion}"
     apt 'com.google.guava:guava:19.0' // dagger compiler requires Guava
@@ -87,10 +82,6 @@ dependencies {
     compile 'com.google.firebase:firebase-core:10.0.1'
 
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
-
-    // needed to compile ics-openvpn gui fragments/activities
-    //compile "com.android.support:cardview-v7:${supportLibraryVersion}"
-    //compile "com.android.support:recyclerview-v7:${supportLibraryVersion}"
 
     // http://jakewharton.github.io/butterknife/
     compile 'com.jakewharton:butterknife:8.5.1'

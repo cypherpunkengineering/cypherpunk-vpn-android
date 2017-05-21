@@ -13,9 +13,9 @@ import android.support.v7.preference.PreferenceFragmentCompat;
 
 import com.cypherpunk.privacy.CypherpunkApplication;
 import com.cypherpunk.privacy.R;
-import com.cypherpunk.privacy.data.api.CypherpunkService;
-import com.cypherpunk.privacy.data.api.json.AccountStatusResult;
-import com.cypherpunk.privacy.domain.model.Plan;
+import com.cypherpunk.privacy.domain.model.Subscription;
+import com.cypherpunk.privacy.domain.repository.NetworkRepository;
+import com.cypherpunk.privacy.domain.repository.retrofit.result.StatusResult;
 import com.cypherpunk.privacy.model.UserSetting;
 import com.cypherpunk.privacy.ui.common.Urls;
 import com.cypherpunk.privacy.ui.startup.IdentifyEmailActivity;
@@ -23,12 +23,12 @@ import com.cypherpunk.privacy.vpn.CypherpunkVPN;
 
 import javax.inject.Inject;
 
-import retrofit2.adapter.rxjava.HttpException;
-import rx.SingleSubscriber;
-import rx.Subscription;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
-import rx.subscriptions.Subscriptions;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.disposables.Disposables;
+import io.reactivex.observers.DisposableSingleObserver;
+import io.reactivex.schedulers.Schedulers;
+import retrofit2.HttpException;
 
 public class AccountSettingsFragment extends PreferenceFragmentCompat {
 
@@ -38,10 +38,10 @@ public class AccountSettingsFragment extends PreferenceFragmentCompat {
     private AccountPreference accountPreference;
 
     @NonNull
-    private Subscription subscription = Subscriptions.empty();
+    private Disposable disposable = Disposables.empty();
 
     @Inject
-    CypherpunkService webService;
+    NetworkRepository networkRepository;
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -59,18 +59,18 @@ public class AccountSettingsFragment extends PreferenceFragmentCompat {
         //  set plan
         final UserSetting userSetting = UserSetting.instance();
 
-        final Plan plan = userSetting.subscriptionPlan();
+        final Subscription plan = userSetting.subscriptionPlan();
 
         accountPreference = (AccountPreference) findPreference(getString(R.string.account_preference_account));
         accountPreference.setInfo(userSetting.mail(), userSetting.accountType(), plan);
 
         getStatus();
 
-        final Plan.Renewal renewal = plan.renewal();
+        final Subscription.Renewal renewal = plan.renewal();
 
-        final boolean upgradeVisible = renewal != Plan.Renewal.ANNUALLY
-                && renewal != Plan.Renewal.FOREVER
-                && renewal != Plan.Renewal.LIFETIME;
+        final boolean upgradeVisible = renewal != Subscription.Renewal.ANNUALLY
+                && renewal != Subscription.Renewal.FOREVER
+                && renewal != Subscription.Renewal.LIFETIME;
         final Preference upgrade = findPreference(getString(R.string.account_preference_upgrade));
         upgrade.setVisible(upgradeVisible);
         upgrade.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
@@ -156,8 +156,8 @@ public class AccountSettingsFragment extends PreferenceFragmentCompat {
 
     @Override
     public void onDestroy() {
+        disposable.dispose();
         super.onDestroy();
-        subscription.unsubscribe();
     }
 
     @Override
@@ -167,16 +167,16 @@ public class AccountSettingsFragment extends PreferenceFragmentCompat {
             final UserSetting userSetting = UserSetting.instance();
             switch (requestCode) {
                 case REQUEST_CODE_UPGRADE_PLAN: {
-                    final Plan plan = userSetting.subscriptionPlan();
+                    final Subscription plan = userSetting.subscriptionPlan();
 
                     accountPreference.setInfo(userSetting.mail(), userSetting.accountType(),
                             userSetting.subscriptionPlan());
 
-                    final Plan.Renewal renewal = plan.renewal();
+                    final Subscription.Renewal renewal = plan.renewal();
 
-                    final boolean upgradeVisible = renewal != Plan.Renewal.ANNUALLY
-                            && renewal != Plan.Renewal.FOREVER
-                            && renewal != Plan.Renewal.LIFETIME;
+                    final boolean upgradeVisible = renewal != Subscription.Renewal.ANNUALLY
+                            && renewal != Subscription.Renewal.FOREVER
+                            && renewal != Subscription.Renewal.LIFETIME;
                     findPreference("upgrade").setVisible(upgradeVisible);
                     break;
                 }
@@ -189,20 +189,18 @@ public class AccountSettingsFragment extends PreferenceFragmentCompat {
     }
 
     private void getStatus() {
-        subscription = webService.getAccountStatus()
+        disposable = networkRepository.getAccountStatus()
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new SingleSubscriber<AccountStatusResult>() {
+                .subscribeWith(new DisposableSingleObserver<StatusResult>() {
                     @Override
-                    public void onSuccess(AccountStatusResult accountStatus) {
-                        final String type = accountStatus.getAccount().type;
-                        final String renewal = accountStatus.getSubscription().renewal;
-                        final String expiration = accountStatus.getSubscription().expiration;
-
+                    public void onSuccess(StatusResult accountStatus) {
                         final UserSetting userSetting = UserSetting.instance();
-                        userSetting.updateStatus(type, renewal, expiration);
+                        userSetting.updateStatus(accountStatus.account.type,
+                                accountStatus.subscription.renewal,
+                                accountStatus.subscription.expiration);
 
-                        accountPreference.setInfo(userSetting.mail(), userSetting.accountType(),
+                        accountPreference.setInfo(userSetting.mail(), accountStatus.account.type,
                                 userSetting.subscriptionPlan());
                     }
 

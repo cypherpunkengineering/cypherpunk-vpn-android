@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <lint>
     <issue id="InvalidPackage">
-        <ignore regexp="auto-value-1.2.jar" />
+        <ignore regexp="auto-value-1.4.1.jar" />
+        <ignore regexp="retrofit-2.3.0.jar" />
     </issue>
 </lint>

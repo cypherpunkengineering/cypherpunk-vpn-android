@@ -20,8 +20,7 @@ import android.widget.Toast;
 
 import com.cypherpunk.privacy.CypherpunkApplication;
 import com.cypherpunk.privacy.R;
-import com.cypherpunk.privacy.data.api.CypherpunkService;
-import com.cypherpunk.privacy.data.api.json.ChangeEmailRequest;
+import com.cypherpunk.privacy.domain.repository.NetworkRepository;
 import com.cypherpunk.privacy.model.UserSetting;
 import com.cypherpunk.privacy.ui.common.FullScreenProgressDialog;
 
@@ -32,12 +31,11 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnTextChanged;
-import okhttp3.ResponseBody;
-import rx.SingleSubscriber;
-import rx.Subscription;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
-import rx.subscriptions.Subscriptions;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.disposables.Disposables;
+import io.reactivex.observers.DisposableCompletableObserver;
+import io.reactivex.schedulers.Schedulers;
 
 public class EditEmailActivity extends AppCompatActivity {
 
@@ -47,13 +45,13 @@ public class EditEmailActivity extends AppCompatActivity {
     }
 
     @NonNull
-    private Subscription subscription = Subscriptions.empty();
+    private Disposable disposable = Disposables.empty();
 
     @Nullable
     private FullScreenProgressDialog dialog;
 
     @Inject
-    CypherpunkService webService;
+    NetworkRepository networkRepository;
 
     @BindView(R.id.text_input_layout_email)
     TextInputLayout emailTextInputLayout;
@@ -126,7 +124,7 @@ public class EditEmailActivity extends AppCompatActivity {
 
     @Override
     protected void onDestroy() {
-        subscription.unsubscribe();
+        disposable.dispose();
         if (dialog != null) {
             dialog.dismiss();
             dialog = null;
@@ -137,7 +135,7 @@ public class EditEmailActivity extends AppCompatActivity {
     private void updateEmail() {
         final EditText emailEditText = emailTextInputLayout.getEditText();
         assert emailEditText != null;
-        final String email = emailEditText.getText().toString();
+        final String newEmail = emailEditText.getText().toString();
 
         final EditText confirmEmailEditText = confirmEmailTextInputLayout.getEditText();
         assert confirmEmailEditText != null;
@@ -149,10 +147,10 @@ public class EditEmailActivity extends AppCompatActivity {
 
         View focusView = null;
 
-        if (TextUtils.isEmpty(email)) {
+        if (TextUtils.isEmpty(newEmail)) {
             emailTextInputLayout.setError(getString(R.string.error_field_required));
             focusView = emailEditText;
-        } else if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+        } else if (!Patterns.EMAIL_ADDRESS.matcher(newEmail).matches()) {
             emailTextInputLayout.setError(getString(R.string.error_invalid_email));
             focusView = emailEditText;
         }
@@ -162,7 +160,7 @@ public class EditEmailActivity extends AppCompatActivity {
             if (focusView == null) {
                 focusView = confirmEmailEditText;
             }
-        } else if (!TextUtils.equals(email, confirmEmail)) {
+        } else if (!TextUtils.equals(newEmail, confirmEmail)) {
             confirmEmailTextInputLayout.setError(getString(R.string.edit_email_account_error_do_not_match));
             if (focusView == null) {
                 focusView = confirmEmailEditText;
@@ -186,18 +184,18 @@ public class EditEmailActivity extends AppCompatActivity {
 
         final Context context = this;
 
-        subscription = webService.changeEmail(new ChangeEmailRequest(email, currentPassword))
+        disposable = networkRepository.changeEmail(newEmail, currentPassword)
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new SingleSubscriber<ResponseBody>() {
+                .subscribeWith(new DisposableCompletableObserver() {
                     @Override
-                    public void onSuccess(ResponseBody result) {
+                    public void onComplete() {
                         if (dialog != null) {
                             dialog.dismiss();
                             dialog = null;
                         }
 
-                        UserSetting.instance().updateMail(email);
+                        UserSetting.instance().updateMail(newEmail);
 
                         setResult(RESULT_OK);
                         finish();

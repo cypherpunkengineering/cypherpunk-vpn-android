@@ -19,8 +19,7 @@ import android.widget.Toast;
 
 import com.cypherpunk.privacy.CypherpunkApplication;
 import com.cypherpunk.privacy.R;
-import com.cypherpunk.privacy.data.api.CypherpunkService;
-import com.cypherpunk.privacy.data.api.json.ChangePasswordRequest;
+import com.cypherpunk.privacy.domain.repository.NetworkRepository;
 import com.cypherpunk.privacy.ui.common.FullScreenProgressDialog;
 
 import java.net.UnknownHostException;
@@ -30,12 +29,11 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnTextChanged;
-import okhttp3.ResponseBody;
-import rx.SingleSubscriber;
-import rx.Subscription;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
-import rx.subscriptions.Subscriptions;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.disposables.Disposables;
+import io.reactivex.observers.DisposableCompletableObserver;
+import io.reactivex.schedulers.Schedulers;
 
 public class EditPasswordActivity extends AppCompatActivity {
 
@@ -45,13 +43,13 @@ public class EditPasswordActivity extends AppCompatActivity {
     }
 
     @NonNull
-    private Subscription subscription = Subscriptions.empty();
+    private Disposable disposable = Disposables.empty();
 
     @Nullable
     private FullScreenProgressDialog dialog;
 
     @Inject
-    CypherpunkService webService;
+    NetworkRepository networkRepository;
 
     @BindView(R.id.text_input_layout_password)
     TextInputLayout passwordTextInputLayout;
@@ -125,7 +123,7 @@ public class EditPasswordActivity extends AppCompatActivity {
 
     @Override
     protected void onDestroy() {
-        subscription.unsubscribe();
+        disposable.dispose();
         if (dialog != null) {
             dialog.dismiss();
             dialog = null;
@@ -136,7 +134,7 @@ public class EditPasswordActivity extends AppCompatActivity {
     private void updatePassword() {
         final EditText passwordEditText = passwordTextInputLayout.getEditText();
         assert passwordEditText != null;
-        final String password = passwordEditText.getText().toString();
+        final String newPassword = passwordEditText.getText().toString();
 
         final EditText confirmPasswordEditText = confirmPasswordTextInputLayout.getEditText();
         assert confirmPasswordEditText != null;
@@ -144,11 +142,11 @@ public class EditPasswordActivity extends AppCompatActivity {
 
         final EditText currentPasswordEditText = currentPasswordTextInputLayout.getEditText();
         assert currentPasswordEditText != null;
-        final String currentPassword = currentPasswordEditText.getText().toString();
+        final String oldPassword = currentPasswordEditText.getText().toString();
 
         View focusView = null;
 
-        if (TextUtils.isEmpty(password)) {
+        if (TextUtils.isEmpty(newPassword)) {
             passwordTextInputLayout.setError(getString(R.string.error_field_required));
             focusView = passwordEditText;
         }
@@ -158,14 +156,14 @@ public class EditPasswordActivity extends AppCompatActivity {
             if (focusView == null) {
                 focusView = confirmPasswordEditText;
             }
-        } else if (!TextUtils.equals(password, confirmPassword)) {
+        } else if (!TextUtils.equals(newPassword, confirmPassword)) {
             confirmPasswordTextInputLayout.setError(getString(R.string.edit_password_account_error_do_not_match));
             if (focusView == null) {
                 focusView = confirmPasswordEditText;
             }
         }
 
-        if (TextUtils.isEmpty(currentPassword)) {
+        if (TextUtils.isEmpty(oldPassword)) {
             currentPasswordTextInputLayout.setError(getString(R.string.error_field_required));
             if (focusView == null) {
                 focusView = currentPasswordEditText;
@@ -182,13 +180,13 @@ public class EditPasswordActivity extends AppCompatActivity {
 
         final Context context = this;
 
-        subscription = webService
-                .changePassword(new ChangePasswordRequest(currentPassword, password))
+        disposable = networkRepository
+                .changePassword(oldPassword, newPassword)
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new SingleSubscriber<ResponseBody>() {
+                .subscribeWith(new DisposableCompletableObserver() {
                     @Override
-                    public void onSuccess(ResponseBody result) {
+                    public void onComplete() {
                         if (dialog != null) {
                             dialog.dismiss();
                             dialog = null;

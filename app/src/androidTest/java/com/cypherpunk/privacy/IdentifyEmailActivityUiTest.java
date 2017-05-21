@@ -9,8 +9,7 @@ import android.support.test.runner.AndroidJUnit4;
 import com.cypherpunk.privacy.dagger.AppComponent;
 import com.cypherpunk.privacy.dagger.DaggerAppComponent;
 import com.cypherpunk.privacy.dagger.RealmModule;
-import com.cypherpunk.privacy.data.api.CypherpunkService;
-import com.cypherpunk.privacy.data.api.json.EmailRequest;
+import com.cypherpunk.privacy.domain.repository.NetworkRepository;
 import com.cypherpunk.privacy.ui.startup.IdentifyEmailActivity;
 import com.cypherpunk.privacy.ui.startup.LoginActivity;
 import com.cypherpunk.privacy.ui.startup.SignUpActivity;
@@ -22,10 +21,10 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import io.reactivex.Completable;
 import okhttp3.ResponseBody;
+import retrofit2.HttpException;
 import retrofit2.Response;
-import retrofit2.adapter.rxjava.HttpException;
-import rx.Single;
 
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
@@ -56,7 +55,7 @@ public class IdentifyEmailActivityUiTest {
     public IntentsTestRule<IdentifyEmailActivity> activityRule = new IntentsTestRule<>(IdentifyEmailActivity.class, false, false);
 
     @Mock
-    CypherpunkService cypherpunkService;
+    NetworkRepository networkRepository;
 
     @Before
     public void setp() throws Exception {
@@ -68,7 +67,7 @@ public class IdentifyEmailActivityUiTest {
                 .getApplicationContext();
 
         final AppComponent component = DaggerAppComponent.builder()
-                .clientModule(new MockClientModule(cypherpunkService))
+                .clientModule(new MockClientModule(networkRepository))
                 .realmModule(new RealmModule())
                 .build();
 
@@ -103,8 +102,7 @@ public class IdentifyEmailActivityUiTest {
     @Test
     public void success_test() {
         // setup
-        final ResponseBody responseBody = mock(ResponseBody.class);
-        doReturn(Single.just(responseBody)).when(cypherpunkService).identifyEmail(any(EmailRequest.class));
+        doReturn(Completable.complete()).when(networkRepository).identifyEmail(any(String.class));
 
 //        Instrumentation.ActivityMonitor monitor = new Instrumentation.ActivityMonitor(SignInActivity.class.getCanonicalName(), null, false);
 //        InstrumentationRegistry.getInstrumentation().addMonitor(monitor);
@@ -126,7 +124,7 @@ public class IdentifyEmailActivityUiTest {
     public void error_test() {
         // setup
         final Response response = Response.error(401, mock(ResponseBody.class));
-        doReturn(Single.error(new HttpException(response))).when(cypherpunkService).identifyEmail(any(EmailRequest.class));
+        doReturn(Completable.error(new HttpException(response))).when(networkRepository).identifyEmail(any(String.class));
 
         // test
         final Intent intent = IdentifyEmailActivity.createIntent(InstrumentationRegistry.getContext());

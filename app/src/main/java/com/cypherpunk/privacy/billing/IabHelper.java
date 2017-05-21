@@ -253,10 +253,10 @@ public class IabHelper {
                     // getBuyIntentToReplaceSku which allows for subscription update
                     response = mService.isBillingSupported(5, packageName, ITEM_TYPE_SUBS);
                     if (response == BILLING_RESPONSE_RESULT_OK) {
-                        logDebug("Subscription re-signup AVAILABLE.");
+                        logDebug("Subscription re-signUp AVAILABLE.");
                         mSubscriptionUpdateSupported = true;
                     } else {
-                        logDebug("Subscription re-signup not available.");
+                        logDebug("Subscription re-signUp not available.");
                         mSubscriptionUpdateSupported = false;
                     }
 
@@ -449,7 +449,7 @@ public class IabHelper {
             logDebug("Constructing buy intent for " + sku + ", item type: " + itemType);
             Bundle buyIntentBundle;
             if (oldSkus == null || oldSkus.isEmpty()) {
-                // Purchasing a new item or subscription re-signup
+                // Purchasing a new item or subscription re-signUp
                 buyIntentBundle = mService.getBuyIntent(3, mContext.getPackageName(), sku, itemType,
                         extraData);
             } else {

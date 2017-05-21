@@ -17,9 +17,10 @@ import android.widget.Toast;
 
 import com.cypherpunk.privacy.CypherpunkApplication;
 import com.cypherpunk.privacy.R;
-import com.cypherpunk.privacy.data.api.CypherpunkService;
-import com.cypherpunk.privacy.data.api.json.AccountStatusResult;
-import com.cypherpunk.privacy.data.api.json.EmailRequest;
+import com.cypherpunk.privacy.domain.repository.NetworkRepository;
+import com.cypherpunk.privacy.domain.repository.retrofit.result.StatusResult;
+
+import org.reactivestreams.Publisher;
 
 import java.util.concurrent.TimeUnit;
 
@@ -28,14 +29,13 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import okhttp3.ResponseBody;
-import rx.Observable;
-import rx.SingleSubscriber;
-import rx.Subscriber;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Func1;
-import rx.schedulers.Schedulers;
-import rx.subscriptions.CompositeSubscription;
+import io.reactivex.Flowable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.functions.Function;
+import io.reactivex.observers.DisposableCompletableObserver;
+import io.reactivex.schedulers.Schedulers;
+import io.reactivex.subscribers.DisposableSubscriber;
 import timber.log.Timber;
 
 public class ConfirmationEmailActivity extends AppCompatActivity {
@@ -49,10 +49,10 @@ public class ConfirmationEmailActivity extends AppCompatActivity {
         return intent;
     }
 
-    private final CompositeSubscription subscriptions = new CompositeSubscription();
+    private final CompositeDisposable disposables = new CompositeDisposable();
 
     @Inject
-    CypherpunkService webService;
+    NetworkRepository networkRepository;
 
     @BindView(R.id.status)
     TextView statusView;
@@ -120,12 +120,12 @@ public class ConfirmationEmailActivity extends AppCompatActivity {
 
         final Context context = this;
 
-        subscriptions.add(webService.resendEmail(new EmailRequest(email))
+        disposables.add(networkRepository.resendEmail(email)
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new SingleSubscriber<ResponseBody>() {
+                .subscribeWith(new DisposableCompletableObserver() {
                     @Override
-                    public void onSuccess(ResponseBody result) {
+                    public void onComplete() {
                         resendButton.setEnabled(true);
                         Toast.makeText(context, R.string.confirmation_email_resend, Toast.LENGTH_SHORT).show();
                     }
@@ -149,34 +149,39 @@ public class ConfirmationEmailActivity extends AppCompatActivity {
 
         final Context context = this;
 
-        subscriptions.add(webService.getAccountStatusObservable()
-                .map(new Func1<AccountStatusResult, Boolean>() {
+        disposables.add(networkRepository.getAccountStatus()
+                .map(new Function<StatusResult, Boolean>() {
                     @Override
-                    public Boolean call(AccountStatusResult result) {
-                        return result.getAccount().confirmed;
+                    public Boolean apply(StatusResult result) throws Exception {
+                        return result.account.confirmed;
                     }
                 })
-                .onErrorReturn(new Func1<Throwable, Boolean>() {
+                .onErrorReturn(new Function<Throwable, Boolean>() {
                     @Override
-                    public Boolean call(Throwable throwable) {
+                    public Boolean apply(Throwable throwable) throws Exception {
                         return false;
                     }
                 })
-                .repeatWhen(new Func1<Observable<? extends Void>, Observable<?>>() {
+                .repeatWhen(new Function<Flowable<Object>, Publisher<Object>>() {
                     @Override
-                    public Observable<?> call(Observable<? extends Void> observable) {
-                        return observable.delay(10, TimeUnit.SECONDS).take(4);
+                    public Publisher<Object> apply(Flowable<Object> objectFlowable) throws Exception {
+                        return objectFlowable.delay(10, TimeUnit.SECONDS).take(4);
                     }
                 })
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<Boolean>() {
+                .subscribeWith(new DisposableSubscriber<Boolean>() {
                     @Override
-                    public void onCompleted() {
-                        statusView.setText(R.string.confirmation_email_status2);
-                        progressView.setVisibility(View.GONE);
-                        checkAgainButton.setVisibility(View.VISIBLE);
-                        resendButton.setVisibility(View.VISIBLE);
+                    public void onNext(Boolean confirmed) {
+                        Timber.d("confirmed = " + confirmed);
+                        if (confirmed) {
+                            dispose();
+
+                            TaskStackBuilder.create(context)
+                                    .addNextIntent(new Intent(context, TutorialActivity.class))
+                                    .startActivities();
+                            finish();
+                        }
                     }
 
                     @Override
@@ -185,23 +190,18 @@ public class ConfirmationEmailActivity extends AppCompatActivity {
                     }
 
                     @Override
-                    public void onNext(Boolean confirmed) {
-                        Timber.d("confirmed = " + confirmed);
-                        if (confirmed) {
-                            unsubscribe();
-
-                            TaskStackBuilder.create(context)
-                                    .addNextIntent(new Intent(context, TutorialActivity.class))
-                                    .startActivities();
-                            finish();
-                        }
+                    public void onComplete() {
+                        statusView.setText(R.string.confirmation_email_status2);
+                        progressView.setVisibility(View.GONE);
+                        checkAgainButton.setVisibility(View.VISIBLE);
+                        resendButton.setVisibility(View.VISIBLE);
                     }
                 }));
     }
 
     @Override
     protected void onDestroy() {
-        subscriptions.unsubscribe();
+        disposables.clear();
         super.onDestroy();
     }
 }

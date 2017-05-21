@@ -5,11 +5,11 @@ import com.cypherpunk.privacy.ui.account.EditEmailActivity;
 import com.cypherpunk.privacy.ui.account.EditPasswordActivity;
 import com.cypherpunk.privacy.ui.account.UpgradePlanActivity;
 import com.cypherpunk.privacy.ui.region.RegionFragment;
-import com.cypherpunk.privacy.ui.startup.TutorialActivity;
 import com.cypherpunk.privacy.ui.startup.ConfirmationEmailActivity;
 import com.cypherpunk.privacy.ui.startup.IdentifyEmailActivity;
 import com.cypherpunk.privacy.ui.startup.LoginActivity;
 import com.cypherpunk.privacy.ui.startup.SignUpActivity;
+import com.cypherpunk.privacy.ui.startup.TutorialActivity;
 
 import javax.inject.Singleton;
 

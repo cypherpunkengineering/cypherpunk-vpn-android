@@ -1,8 +1,7 @@
-package com.cypherpunk.privacy.data.api;
+package com.cypherpunk.privacy.domain.repository.retrofit.interceptor;
 
+import android.support.annotation.NonNull;
 import android.text.TextUtils;
-
-import com.cypherpunk.privacy.model.UserSetting;
 
 import java.io.IOException;
 
@@ -13,13 +12,13 @@ import okhttp3.Response;
 public class CookieInterceptor implements Interceptor {
 
     private static final String COOKIE_HEADER_KEY = "Cookie";
+    private static final String SET_COOKIE_HEADER_KEY = "set-cookie";
 
     @Override
-    public Response intercept(Chain chain) throws IOException {
-        final UserSetting userSetting = UserSetting.instance();
+    public Response intercept(@NonNull Chain chain) throws IOException {
+        final String cookie = CookieStore.cookie();
 
         final Request request;
-        final String cookie = UserSetting.instance().cookie();
         if (!TextUtils.isEmpty(cookie)) {
             request = chain.request()
                     .newBuilder()
@@ -31,8 +30,8 @@ public class CookieInterceptor implements Interceptor {
 
         final Response response = chain.proceed(request);
 
-        for (String header : response.headers("set-cookie")) {
-            userSetting.updateCookie(header.split(";")[0]);
+        for (String header : response.headers(SET_COOKIE_HEADER_KEY)) {
+            CookieStore.updateCookie(header.split(";")[0]);
         }
         return response;
     }
