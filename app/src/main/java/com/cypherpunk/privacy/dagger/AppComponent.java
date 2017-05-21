@@ -24,9 +24,8 @@ import com.cypherpunk.privacy.vpn.CypherpunkVpnStatus;
 import javax.inject.Singleton;
 
 import dagger.Component;
-import io.realm.Realm;
 
-@Component(modules = {RealmModule.class, ClientModule.class, SettingModule.class})
+@Component(modules = {VpnServerModule.class, ClientModule.class, SettingModule.class})
 @Singleton
 public interface AppComponent {
 
@@ -49,8 +48,6 @@ public interface AppComponent {
     void inject(EditPasswordActivity target);
 
     void inject(UpgradePlanActivity target);
-
-    Realm getDefaultRealm();
 
     void inject(SplitTunnelActivity target);
 

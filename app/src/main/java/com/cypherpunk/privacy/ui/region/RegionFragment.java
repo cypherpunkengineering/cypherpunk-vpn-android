@@ -17,17 +17,15 @@ import com.cypherpunk.privacy.R;
 import com.cypherpunk.privacy.databinding.FragmentRegionBinding;
 import com.cypherpunk.privacy.domain.model.AccountSetting;
 import com.cypherpunk.privacy.domain.model.VpnSetting;
+import com.cypherpunk.privacy.domain.model.vpn.VpnServer;
 import com.cypherpunk.privacy.domain.repository.NetworkRepository;
+import com.cypherpunk.privacy.domain.repository.VpnServerRepository;
 import com.cypherpunk.privacy.domain.repository.retrofit.result.RegionResult;
 import com.cypherpunk.privacy.domain.repository.retrofit.result.StatusResult;
-import com.cypherpunk.privacy.model.Region;
 import com.cypherpunk.privacy.utils.ResourceUtil;
-import com.cypherpunk.privacy.vpn.ServerPingerThinger;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -41,19 +39,17 @@ import io.reactivex.disposables.Disposables;
 import io.reactivex.functions.Function;
 import io.reactivex.observers.DisposableSingleObserver;
 import io.reactivex.schedulers.Schedulers;
-import io.realm.Realm;
-import io.realm.RealmChangeListener;
-import io.realm.RealmResults;
-import io.realm.Sort;
 
 public class RegionFragment extends Fragment {
 
-    private Realm realm;
     private FragmentRegionBinding binding;
     @NonNull
     private Disposable disposable = Disposables.empty();
     private RegionAdapter adapter;
-    private RealmChangeListener realmChangeListener;
+    private VpnServerRepository.ChangeListener realmChangeListener;
+
+    @Inject
+    VpnServerRepository vpnServerRepository;
 
     @Inject
     NetworkRepository networkRepository;
@@ -95,24 +91,20 @@ public class RegionFragment extends Fragment {
 
         getServerList();
 
-        realm = CypherpunkApplication.instance.getAppComponent().getDefaultRealm();
-
         // if no location set, select fastest region using available data
         if (TextUtils.isEmpty(vpnSetting.regionId())) {
-            Region first = ServerPingerThinger.getFastestLocation();
-            if (first != null) {
-                vpnSetting.updateRegionId(first.getId());
+            final VpnServer fastest = vpnServerRepository.fastest();
+            if (fastest != null) {
+                vpnSetting.updateRegionId(fastest.getId());
             }
         }
 
         if (!TextUtils.isEmpty(vpnSetting.regionId())) {
-            Region region = realm.where(Region.class)
-                    .equalTo("id", vpnSetting.regionId())
-                    .findFirst();
-            if (region != null) {
-                int nationalFlagResId = ResourceUtil.getFlagDrawableByKey(getContext(), region.getCountry().toLowerCase());
-                updateRegion(region);
-                listener.onSelectedRegionChanged(region.getRegionName(), nationalFlagResId, false);
+            final VpnServer vpnServer = vpnServerRepository.find(vpnSetting.regionId());
+            if (vpnServer != null) {
+                final int nationalFlagResId = ResourceUtil.getFlagDrawableByKey(getContext(), vpnServer.getCountry().toLowerCase());
+                updateRegion(vpnServer);
+                listener.onSelectedRegionChanged(vpnServer.getRegionName(), nationalFlagResId, false);
 
                 binding.progress.setVisibility(View.GONE);
             }
@@ -124,12 +116,7 @@ public class RegionFragment extends Fragment {
         adapter = new RegionAdapter(getContext(), vpnSetting) {
             @Override
             protected void onFavorite(@NonNull final String regionId, final boolean favorite) {
-                Region region = realm.where(Region.class).equalTo("id", regionId).findFirst();
-                if (favorite != region.isFavorited()) {
-                    realm.beginTransaction();
-                    region.setFavorited(favorite);
-                    realm.commitTransaction();
-                }
+                vpnServerRepository.updateFavorite(regionId, favorite);
             }
 
             @Override
@@ -138,35 +125,35 @@ public class RegionFragment extends Fragment {
                 vpnSetting.updateCypherplayEnabled(false);
 
                 // select region matching the selected id
-                selectRegion(realm.where(Region.class).equalTo("id", regionId).findFirst());
+                selectRegion(vpnServerRepository.find(regionId));
             }
 
             @Override
             protected void onCypherplayClick() {
-                Region region = ServerPingerThinger.getFastestLocation();
-                if (region != null) {
+                final VpnServer fastest = vpnServerRepository.fastest();
+                if (fastest != null) {
                     vpnSetting.updateCypherplayEnabled(true);
-                    selectRegion(region);
+                    selectRegion(fastest);
                 }
             }
 
             @Override
             protected void onFastestLocationClick() {
-                Region region = ServerPingerThinger.getFastestLocation();
-                if (region != null) {
+                final VpnServer fastest = vpnServerRepository.fastest();
+                if (fastest != null) {
                     vpnSetting.updateCypherplayEnabled(false);
-                    selectRegion(region);
+                    selectRegion(fastest);
                 }
             }
         };
         binding.list.setAdapter(adapter);
-        realmChangeListener = new RealmChangeListener() {
+        realmChangeListener = new VpnServerRepository.ChangeListener() {
             @Override
-            public void onChange(Object element) {
+            public void onChanged() {
                 refreshRegionList();
             }
         };
-        realm.addChangeListener(realmChangeListener);
+        vpnServerRepository.addChangeListener(realmChangeListener);
         refreshRegionList();
 
         binding.regionContainer.setOnClickListener(new View.OnClickListener() {
@@ -179,8 +166,7 @@ public class RegionFragment extends Fragment {
 
     @Override
     public void onDestroyView() {
-        realm.removeChangeListener(realmChangeListener);
-        realm.close();
+        vpnServerRepository.removeChangeListener(realmChangeListener);
         super.onDestroyView();
     }
 
@@ -200,8 +186,8 @@ public class RegionFragment extends Fragment {
 
     private void refreshRegionList() {
         adapter.addRegionList(
-                getFavoriteRegionList(),
-                getRecentlyConnectedList(),
+                vpnServerRepository.findFavorites(),
+                vpnServerRepository.findRecent(),
                 getOtherList("DEV"),
                 getOtherList("NA"),
                 getOtherList("SA"),
@@ -214,60 +200,43 @@ public class RegionFragment extends Fragment {
         );
     }
 
-    private ArrayList<Region> getFavoriteRegionList() {
-        RealmResults<Region> regionList = realm.where(Region.class)
-                .equalTo("favorited", true).findAllSorted("regionName", Sort.ASCENDING);
-        return new ArrayList<>(regionList);
-    }
-
-    private ArrayList<Region> getRecentlyConnectedList() {
-        RealmResults<Region> regionList = realm.where(Region.class)
-                .equalTo("favorited", false)
-                .notEqualTo("lastConnectedDate", new Date(0)).findAllSorted("lastConnectedDate", Sort.DESCENDING);
-        ArrayList<Region> regions = new ArrayList<>(regionList);
-        if (regionList.size() > 3) {
-            regions = new ArrayList<>(regionList.subList(0, 3));
-        }
-        return regions;
-    }
-
-    private ArrayList<Region> getOtherList(String region) {
-        ArrayList<Region> regionList = new ArrayList<>(
-                realm.where(Region.class).equalTo("region", region).findAll());
+    @NonNull
+    private List<VpnServer> getOtherList(String region) {
+        final List<VpnServer> serverList = vpnServerRepository.findAllByRegion(region);
         final Locale locale = Locale.getDefault();
-        Collections.sort(regionList, new Comparator<Region>() {
+        Collections.sort(serverList, new Comparator<VpnServer>() {
             @Override
-            public int compare(Region region1, Region region2) {
-                Locale countryLocale1 = new Locale(locale.getLanguage(), region1.getCountry());
+            public int compare(VpnServer vpnServer1, VpnServer vpnServer2) {
+                Locale countryLocale1 = new Locale(locale.getLanguage(), vpnServer1.getCountry());
                 String regionCountryName1 = countryLocale1.getDisplayCountry(locale);
 
-                Locale countryLocale2 = new Locale(locale.getLanguage(), region2.getCountry());
+                Locale countryLocale2 = new Locale(locale.getLanguage(), vpnServer2.getCountry());
                 String region1CountryName2 = countryLocale2.getDisplayCountry(locale);
                 int result = regionCountryName1.compareTo(region1CountryName2);
                 if (result == 0) {
-                    return region1.getRegionName().compareTo(region2.getRegionName());
+                    return vpnServer1.getRegionName().compareTo(vpnServer2.getRegionName());
                 }
                 return result;
             }
         });
-        return regionList;
+        return serverList;
     }
 
-    private void selectRegion(Region region) {
-        vpnSetting.updateRegionId(region.getId());
+    private void selectRegion(VpnServer vpnServer) {
+        vpnSetting.updateRegionId(vpnServer.getId());
 
-        int nationalFlagResId = ResourceUtil.getFlagDrawableByKey(getContext(), region.getCountry().toLowerCase());
-        updateRegion(region);
+        int nationalFlagResId = ResourceUtil.getFlagDrawableByKey(getContext(), vpnServer.getCountry().toLowerCase());
+        updateRegion(vpnServer);
         refreshRegionList();
 
-        listener.onSelectedRegionChanged(region.getRegionName(), nationalFlagResId, true);
+        listener.onSelectedRegionChanged(vpnServer.getRegionName(), nationalFlagResId, true);
     }
 
-    private void updateRegion(Region region) {
-        binding.regionName.setText(region.getRegionName());
-        int nationalFlagResId = ResourceUtil.getFlagDrawableByKey(getContext(), region.getCountry().toLowerCase());
+    private void updateRegion(@NonNull VpnServer vpnServer) {
+        binding.regionName.setText(vpnServer.getRegionName());
+        int nationalFlagResId = ResourceUtil.getFlagDrawableByKey(getContext(), vpnServer.getCountry().toLowerCase());
         binding.nationalFlag.setImageResource(nationalFlagResId);
-        binding.regionTag.setRegionLevel(region.getLevel());
+        binding.regionTag.setRegionLevel(vpnServer.getLevel());
     }
 
     private void getServerList() {
@@ -284,76 +253,26 @@ public class RegionFragment extends Fragment {
                 .subscribeWith(new DisposableSingleObserver<Map<String, RegionResult>>() {
                     @Override
                     public void onSuccess(Map<String, RegionResult> result) {
-                        realm.beginTransaction();
-                        List<String> updateRegionIdList = new ArrayList<>();
-                        for (Map.Entry<String, RegionResult> resultEntry : result.entrySet()) {
-                            RegionResult regionResult = resultEntry.getValue();
-                            Region region = realm.where(Region.class)
-                                    .equalTo("id", regionResult.id).findFirst();
-                            if (region != null) {
-                                region.setRegion(regionResult.region);
-                                region.setCountry(regionResult.country);
-                                region.setLevel(regionResult.level);
-                                region.setRegionName(regionResult.name);
-                                region.setAuthorized(regionResult.authorized);
-                                region.setOvHostname(regionResult.ovHostname);
-                                region.setOvDefault(regionResult.ovDefault);
-                                region.setOvNone(regionResult.ovNone);
-                                region.setOvStrong(regionResult.ovStrong);
-                                region.setOvStealth(regionResult.ovStealth);
-                            } else {
-                                region = new Region(
-                                        regionResult.id,
-                                        regionResult.region,
-                                        regionResult.country,
-                                        regionResult.name,
-                                        regionResult.level,
-                                        regionResult.authorized,
-                                        regionResult.ovHostname,
-                                        regionResult.ovDefault,
-                                        regionResult.ovNone,
-                                        regionResult.ovStrong,
-                                        regionResult.ovStealth);
-                                realm.copyToRealm(region);
-                            }
-                            updateRegionIdList.add(region.getId());
-                        }
-                        RealmResults<Region> oldRegion = realm.where(Region.class)
-                                .not()
-                                .beginGroup()
-                                .in("id", updateRegionIdList.toArray(new String[updateRegionIdList.size()]))
-                                .endGroup()
-                                .findAll();
-                        oldRegion.deleteAllFromRealm();
-                        realm.commitTransaction();
+                        vpnServerRepository.updateServerList(result);
 
                         refreshRegionList();
 
-                        // after realm db is updated above, start pinging new location data
-                        for (Map.Entry<String, RegionResult> resultEntry : result.entrySet()) {
-                            RegionResult regionResult = resultEntry.getValue();
-                            Region region = realm.where(Region.class)
-                                    .equalTo("id", regionResult.id).findFirst();
-                            ServerPingerThinger.pingLocation(region);
-                        }
-
                         // check if previously selected region is still available
-                        Region region = realm.where(Region.class)
-                                .equalTo("id", vpnSetting.regionId())
-                                .equalTo("authorized", true)
-                                .contains("ovDefault", ".")
-                                .findFirst();
+                        VpnServer vpnServer = vpnServerRepository.findAuthorizedDefault(vpnSetting.regionId());
 
                         // if not, find a new one
-                        if (region == null) {
-                            region = ServerPingerThinger.getFastestLocation();
-                            if (region != null) {
-                                vpnSetting.updateRegionId(region.getId());
+                        if (vpnServer == null) {
+                            vpnServer = vpnServerRepository.fastest();
+                            if (vpnServer != null) {
+                                vpnSetting.updateRegionId(vpnServer.getId());
                             }
                         }
-                        int nationalFlagResId = ResourceUtil.getFlagDrawableByKey(getContext(), region.getCountry().toLowerCase());
-                        updateRegion(region);
-                        listener.onSelectedRegionChanged(region.getRegionName(), nationalFlagResId, false);
+
+                        if (vpnServer != null) {
+                            int nationalFlagResId = ResourceUtil.getFlagDrawableByKey(getContext(), vpnServer.getCountry().toLowerCase());
+                            updateRegion(vpnServer);
+                            listener.onSelectedRegionChanged(vpnServer.getRegionName(), nationalFlagResId, false);
+                        }
 
                         binding.progress.setVisibility(View.GONE);
                     }

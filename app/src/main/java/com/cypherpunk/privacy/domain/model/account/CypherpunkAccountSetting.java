@@ -1,4 +1,4 @@
-package com.cypherpunk.privacy.model;
+package com.cypherpunk.privacy.domain.model.account;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -7,9 +7,6 @@ import android.support.annotation.Nullable;
 import android.text.TextUtils;
 
 import com.cypherpunk.privacy.domain.model.AccountSetting;
-import com.cypherpunk.privacy.domain.model.account.Account;
-import com.cypherpunk.privacy.domain.model.account.Privacy;
-import com.cypherpunk.privacy.domain.model.account.Subscription;
 import com.cypherpunk.privacy.domain.repository.retrofit.adapter.ExpirationAdapter;
 import com.cypherpunk.privacy.domain.repository.retrofit.interceptor.CookieStore;
 import com.orhanobut.hawk.Hawk;

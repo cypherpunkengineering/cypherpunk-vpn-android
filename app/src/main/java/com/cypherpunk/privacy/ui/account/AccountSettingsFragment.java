@@ -59,9 +59,9 @@ public class AccountSettingsFragment extends PreferenceFragmentCompat {
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
-        addPreferencesFromResource(R.xml.preference_account);
-
         CypherpunkApplication.instance.getAppComponent().inject(this);
+
+        addPreferencesFromResource(R.xml.preference_account);
 
         //  set plan
         final Subscription subscription = accountSetting.subscription();

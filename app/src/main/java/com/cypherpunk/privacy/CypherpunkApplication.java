@@ -6,8 +6,8 @@ import android.support.annotation.VisibleForTesting;
 import com.cypherpunk.privacy.dagger.AppComponent;
 import com.cypherpunk.privacy.dagger.ClientModule;
 import com.cypherpunk.privacy.dagger.DaggerAppComponent;
-import com.cypherpunk.privacy.dagger.RealmModule;
 import com.cypherpunk.privacy.dagger.SettingModule;
+import com.cypherpunk.privacy.dagger.VpnServerModule;
 import com.orhanobut.hawk.Hawk;
 import com.orhanobut.hawk.HawkBuilder;
 
@@ -29,8 +29,8 @@ public class CypherpunkApplication extends Application {
 
         Realm.init(this);
         appComponent = DaggerAppComponent.builder()
+                .vpnServerModule(new VpnServerModule())
                 .clientModule(new ClientModule())
-                .realmModule(new RealmModule())
                 .settingModule(new SettingModule(this))
                 .build();
 

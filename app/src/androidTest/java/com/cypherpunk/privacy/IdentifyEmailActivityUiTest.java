@@ -8,7 +8,6 @@ import android.support.test.runner.AndroidJUnit4;
 
 import com.cypherpunk.privacy.dagger.AppComponent;
 import com.cypherpunk.privacy.dagger.DaggerAppComponent;
-import com.cypherpunk.privacy.dagger.RealmModule;
 import com.cypherpunk.privacy.domain.repository.NetworkRepository;
 import com.cypherpunk.privacy.ui.startup.IdentifyEmailActivity;
 import com.cypherpunk.privacy.ui.startup.LoginActivity;
@@ -68,7 +67,6 @@ public class IdentifyEmailActivityUiTest {
 
         final AppComponent component = DaggerAppComponent.builder()
                 .clientModule(new MockClientModule(networkRepository))
-                .realmModule(new RealmModule())
                 .build();
 
         app.setAppComponent(component);

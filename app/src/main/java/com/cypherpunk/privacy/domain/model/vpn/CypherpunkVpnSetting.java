@@ -1,18 +1,22 @@
-package com.cypherpunk.privacy.model;
+package com.cypherpunk.privacy.domain.model.vpn;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.net.wifi.WifiConfiguration;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
+import com.cypherpunk.privacy.BuildConfig;
 import com.cypherpunk.privacy.R;
 import com.cypherpunk.privacy.domain.model.VpnSetting;
-import com.cypherpunk.privacy.domain.model.vpn.InternetKillSwitch;
-import com.cypherpunk.privacy.domain.model.vpn.RemotePort;
-import com.cypherpunk.privacy.domain.model.vpn.TunnelMode;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
+import io.realm.Realm;
+import io.realm.RealmConfiguration;
+import io.realm.RealmResults;
 
 /**
  * implementation of VpnSetting using SharedPreferences
@@ -36,6 +40,9 @@ public class CypherpunkVpnSetting implements VpnSetting {
     private final String KEY_CYPHERPLAY;
     private final String KEY_ANALYTICS;
 
+    @NonNull
+    private final RealmConfiguration conf;
+
     private final SharedPreferences pref;
 
     public CypherpunkVpnSetting(@NonNull Context c) {
@@ -54,6 +61,12 @@ public class CypherpunkVpnSetting implements VpnSetting {
         KEY_REGION_ID = c.getString(R.string.setting_preference_key_region_id);
         KEY_CYPHERPLAY = c.getString(R.string.setting_preference_key_cypherplay);
         KEY_ANALYTICS = c.getString(R.string.setting_preference_key_analytics);
+
+        final RealmConfiguration.Builder builder = new RealmConfiguration.Builder();
+        if (BuildConfig.DEBUG) {
+            builder.deleteRealmIfMigrationNeeded();
+        }
+        conf = builder.build();
     }
 
     // auto secure
@@ -78,6 +91,64 @@ public class CypherpunkVpnSetting implements VpnSetting {
     @Override
     public void updateAutoSecureOther(boolean b) {
         pref.edit().putBoolean(KEY_AUTO_SECURE_OTHER, b).apply();
+    }
+
+    // trusted wifi
+
+    @Override
+    public boolean isTrusted(@NonNull String ssid) {
+        ssid = ssid.replaceAll("\"", "");
+        final Realm realm = Realm.getInstance(conf);
+        try {
+            final RealmNetwork network = realm.where(RealmNetwork.class)
+                    .equalTo("ssid", ssid)
+                    .findFirst();
+            return network != null && network.trusted();
+        } finally {
+            realm.close();
+        }
+    }
+
+    @Override
+    public void updateTrusted(@NonNull String ssid, boolean trusted) {
+        ssid = ssid.replaceAll("\"", "");
+        final Realm realm = Realm.getInstance(conf);
+        final RealmNetwork network = realm.where(RealmNetwork.class)
+                .equalTo("ssid", ssid)
+                .findFirst();
+        if (network != null) {
+            realm.beginTransaction();
+            network.setTrusted(trusted);
+            realm.commitTransaction();
+        }
+        realm.close();
+    }
+
+    @Override
+    public void addNetworks(@NonNull List<WifiConfiguration> networks) {
+        final Realm realm = Realm.getInstance(conf);
+        realm.beginTransaction();
+        for (WifiConfiguration configuration : networks) {
+            final String ssid = configuration.SSID.replaceAll("\"", "");
+            final RealmNetwork network = realm.where(RealmNetwork.class)
+                    .equalTo("ssid", ssid)
+                    .findFirst();
+            if (network == null) {
+                realm.copyToRealm(new RealmNetwork(ssid));
+            }
+        }
+        realm.commitTransaction();
+        realm.close();
+    }
+
+    @NonNull
+    @Override
+    public List<Network> findAllNetwork() {
+        final Realm realm = Realm.getInstance(conf);
+        final RealmResults<RealmNetwork> networks = realm.where(RealmNetwork.class)
+                .findAll();
+        realm.close();
+        return new ArrayList<Network>(networks);
     }
 
     // auto connect, block malware, block ads

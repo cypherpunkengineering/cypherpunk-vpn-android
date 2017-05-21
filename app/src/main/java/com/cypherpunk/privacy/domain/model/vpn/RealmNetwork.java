@@ -1,4 +1,4 @@
-package com.cypherpunk.privacy.model;
+package com.cypherpunk.privacy.domain.model.vpn;
 
 import android.support.annotation.NonNull;
 
@@ -7,7 +7,7 @@ import io.realm.annotations.PrimaryKey;
 import io.realm.annotations.RealmClass;
 
 @RealmClass
-public class Network implements RealmModel {
+public class RealmNetwork implements RealmModel, Network {
 
     @PrimaryKey
     public String ssid;
@@ -15,22 +15,20 @@ public class Network implements RealmModel {
     public boolean trusted;
 
     @SuppressWarnings("unused")
-    public Network() {
+    public RealmNetwork() {
     }
 
-    public Network(@NonNull String ssid) {
+    public RealmNetwork(@NonNull String ssid) {
         this.ssid = ssid;
     }
 
-    public String getSsid() {
+    @Override
+    public String ssid() {
         return ssid;
     }
 
-    public void setSsid(String ssid) {
-        this.ssid = ssid;
-    }
-
-    public boolean isTrusted() {
+    @Override
+    public boolean trusted() {
         return trusted;
     }
 

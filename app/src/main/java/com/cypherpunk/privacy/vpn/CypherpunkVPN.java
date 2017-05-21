@@ -5,16 +5,17 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.IBinder;
+import android.support.annotation.Nullable;
 import android.text.TextUtils;
 
 import com.android.annotations.NonNull;
-import com.cypherpunk.privacy.CypherpunkApplication;
 import com.cypherpunk.privacy.domain.model.AccountSetting;
 import com.cypherpunk.privacy.domain.model.VpnSetting;
 import com.cypherpunk.privacy.domain.model.vpn.InternetKillSwitch;
 import com.cypherpunk.privacy.domain.model.vpn.RemotePort;
 import com.cypherpunk.privacy.domain.model.vpn.TunnelMode;
-import com.cypherpunk.privacy.model.Region;
+import com.cypherpunk.privacy.domain.model.vpn.VpnServer;
+import com.cypherpunk.privacy.domain.repository.VpnServerRepository;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
@@ -30,7 +31,6 @@ import de.blinkt.openvpn.core.OpenVPNManagement;
 import de.blinkt.openvpn.core.OpenVPNService;
 import de.blinkt.openvpn.core.ProfileManager;
 import de.blinkt.openvpn.core.VPNLaunchHelper;
-import io.realm.Realm;
 import timber.log.Timber;
 
 /**
@@ -39,12 +39,10 @@ import timber.log.Timber;
 public class CypherpunkVPN {
     private static CypherpunkVPN singleton;
 
-    private String username;
-    private String password;
     private ConfigParser cp;
     private VpnProfile vpnProfile;
     private String conf;
-    private Region region = null;
+    private VpnServer vpnServer;
 
     private OpenVPNService service = null;
 
@@ -62,12 +60,12 @@ public class CypherpunkVPN {
         return getInstance().service.protect(s);
     }
 
-    public Region getRegion() {
-        return region;
+    public VpnServer getVpnServer() {
+        return vpnServer;
     }
 
-    public void setRegion(Region region) {
-        this.region = region;
+    public void setVpnServer(VpnServer vpnServer) {
+        this.vpnServer = vpnServer;
     }
 
     private ServiceConnection connection = new ServiceConnection() {
@@ -84,11 +82,12 @@ public class CypherpunkVPN {
     };
 
     public void toggle(final Context context, final Context baseContext,
-                       VpnSetting vpnSetting, AccountSetting accountSetting) {
+                       VpnSetting vpnSetting, AccountSetting accountSetting,
+                       VpnServerRepository vpnServerRepository) {
         CypherpunkVpnStatus status = CypherpunkVpnStatus.getInstance();
 
         if (status.isDisconnected()) {
-            start(context, baseContext, vpnSetting, accountSetting);
+            start(context, baseContext, vpnSetting, accountSetting, vpnServerRepository);
         }
         if (status.isConnected()) {
             stop(vpnSetting);
@@ -100,7 +99,8 @@ public class CypherpunkVPN {
     }
 
     public void start(final Context context, final Context baseContext,
-                      VpnSetting vpnSetting, AccountSetting accountSetting) {
+                      VpnSetting vpnSetting, AccountSetting accountSetting,
+                      VpnServerRepository vpnServerRepository) {
         Timber.d("start()");
 
         Intent serviceIntent = new Intent(baseContext, OpenVPNService.class);
@@ -108,7 +108,7 @@ public class CypherpunkVPN {
         context.bindService(serviceIntent, connection, Context.BIND_AUTO_CREATE);
 
         try {
-            conf = generateConfig(context, vpnSetting, accountSetting);
+            conf = generateConfig(context, vpnSetting, accountSetting, vpnServerRepository);
             if (conf == null) {
                 Timber.d("Unable to generate OpenVPN profile!");
                 return;
@@ -117,7 +117,7 @@ public class CypherpunkVPN {
             cp.parseConfig(new StringReader(conf));
             vpnProfile = cp.convertProfile();
             ProfileManager.setTemporaryProfile(vpnProfile);
-            vpnProfile.mName = region.getRegionName() + ", " + region.getCountry();
+            vpnProfile.mName = vpnServer.getRegionName() + ", " + vpnServer.getCountry();
             for (String pkg : vpnSetting.exceptAppList()) {
                 vpnProfile.mAllowedAppsVpn.add(pkg);
             }
@@ -159,23 +159,16 @@ public class CypherpunkVPN {
         }
     }
 
-    private String generateConfig(Context context, VpnSetting vpnSetting, AccountSetting accountSetting) {
+    @Nullable
+    private String generateConfig(Context context, VpnSetting vpnSetting,
+                                  AccountSetting accountSetting, VpnServerRepository vpnServerRepository) {
         Timber.d("generateConfig()");
 
         List<String> list = new ArrayList<String>();
 
         // get currently selected location
-        Realm realm = null;
-        try {
-            realm = CypherpunkApplication.instance.getAppComponent().getDefaultRealm();
-            region = realm.where(Region.class)
-                    .equalTo("id", vpnSetting.regionId())
-                    .findFirst();
-        } catch (Exception e) {
-            Timber.e("Exception while getting Location");
-            Timber.e(e);
-            if (realm != null)
-                realm.close();
+        final VpnServer vpnServer = vpnServerRepository.find(vpnSetting.regionId());
+        if (vpnServer == null) {
             return null;
         }
 
@@ -195,7 +188,7 @@ public class CypherpunkVPN {
         // security/privacy options
         list.add("tls-version-min 1.2");
         list.add("remote-cert-eku \"TLS Web Server Authentication\"");
-        list.add("verify-x509-name " + region.getOvHostname() + " name");
+        list.add("verify-x509-name " + vpnServer.getOvHostname() + " name");
         list.add("tls-cipher TLS-DHE-RSA-WITH-AES-256-GCM-SHA384:TLS-DHE-RSA-WITH-AES-256-CBC-SHA256:TLS-DHE-RSA-WITH-AES-128-GCM-SHA256:TLS-DHE-RSA-WITH-AES-128-CBC-SHA256");
         list.add("auth SHA256");
 
@@ -215,19 +208,19 @@ public class CypherpunkVPN {
         final TunnelMode tunnelMode = vpnSetting.tunnelMode();
         switch (tunnelMode) {
             case MAX_SPEED:
-                list.add("remote " + region.getOvNone() + " " + rport);
+                list.add("remote " + vpnServer.getOvNone() + " " + rport);
                 list.add("cipher " + tunnelMode.cipher().value());
                 break;
             case RECOMMENDED:
-                list.add("remote " + region.getOvDefault() + " " + rport);
+                list.add("remote " + vpnServer.getOvDefault() + " " + rport);
                 list.add("cipher " + tunnelMode.cipher().value());
                 break;
             case MAX_PRIVACY:
-                list.add("remote " + region.getOvStrong() + " " + rport);
+                list.add("remote " + vpnServer.getOvStrong() + " " + rport);
                 list.add("cipher " + tunnelMode.cipher().value());
                 break;
             case MAX_STEALTH:
-                list.add("remote " + region.getOvStealth() + " " + rport);
+                list.add("remote " + vpnServer.getOvStealth() + " " + rport);
                 list.add("cipher " + tunnelMode.cipher().value());
                 list.add("scramble obfuscate cypherpunk-xor-key"); // requires xorpatch'd openvpn
                 break;

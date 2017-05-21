@@ -9,6 +9,7 @@ import android.os.Bundle;
 import com.cypherpunk.privacy.CypherpunkApplication;
 import com.cypherpunk.privacy.domain.model.AccountSetting;
 import com.cypherpunk.privacy.domain.model.VpnSetting;
+import com.cypherpunk.privacy.domain.repository.VpnServerRepository;
 import com.cypherpunk.privacy.vpn.CypherpunkVPN;
 import com.cypherpunk.privacy.vpn.CypherpunkVpnStatus;
 
@@ -32,6 +33,9 @@ public class CypherpunkLaunchVPN extends Activity {
 
     @Inject
     AccountSetting accountSetting;
+
+    @Inject
+    VpnServerRepository vpnServerRepository;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -132,7 +136,8 @@ public class CypherpunkLaunchVPN extends Activity {
         switch (requestCode) {
             case START_VPN_PROFILE:
                 if (resultCode == RESULT_OK)
-                    CypherpunkVPN.getInstance().start(getApplicationContext(), getBaseContext(), vpnSetting, accountSetting);
+                    CypherpunkVPN.getInstance().start(getApplicationContext(), getBaseContext(),
+                            vpnSetting, accountSetting, vpnServerRepository);
                 finish();
                 break;
         }

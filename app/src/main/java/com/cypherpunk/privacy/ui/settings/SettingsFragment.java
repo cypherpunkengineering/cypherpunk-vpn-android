@@ -13,10 +13,10 @@ import android.support.v7.preference.PreferenceManager;
 
 import com.cypherpunk.privacy.CypherpunkApplication;
 import com.cypherpunk.privacy.R;
+import com.cypherpunk.privacy.domain.model.VpnSetting;
 import com.cypherpunk.privacy.domain.model.vpn.InternetKillSwitch;
 import com.cypherpunk.privacy.domain.model.vpn.RemotePort;
 import com.cypherpunk.privacy.domain.model.vpn.TunnelMode;
-import com.cypherpunk.privacy.domain.model.VpnSetting;
 import com.cypherpunk.privacy.vpn.CypherpunkVpnStatus;
 
 import javax.inject.Inject;
@@ -37,15 +37,14 @@ public class SettingsFragment extends PreferenceFragmentCompat {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-
-        CypherpunkApplication.instance.getAppComponent().inject(this);
-
         setDivider(new ColorDrawable(ContextCompat.getColor(getContext(), R.color.divider)));
         setDividerHeight(getContext().getResources().getDimensionPixelSize(R.dimen.divider));
     }
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
+        CypherpunkApplication.instance.getAppComponent().inject(this);
+
         final PreferenceManager preferenceManager = getPreferenceManager();
         preferenceManager.setSharedPreferencesName("cypherpunk_setting");
 
