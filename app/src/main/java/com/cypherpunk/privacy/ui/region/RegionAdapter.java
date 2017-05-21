@@ -17,7 +17,7 @@ import com.cypherpunk.privacy.databinding.ListItemRegionBinding;
 import com.cypherpunk.privacy.databinding.ListItemRegionDividerBinding;
 import com.cypherpunk.privacy.domain.model.VpnSetting;
 import com.cypherpunk.privacy.domain.model.vpn.VpnServer;
-import com.cypherpunk.privacy.utils.FontUtil;
+import com.cypherpunk.privacy.ui.common.FontCache;
 import com.cypherpunk.privacy.utils.ResourceUtil;
 import com.cypherpunk.privacy.widget.StarView;
 
@@ -110,10 +110,10 @@ public class RegionAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                 final String currentRegionId = vpnSetting.regionId();
                 if (!TextUtils.isEmpty(currentRegionId) && regionId.equals(currentRegionId)) {
                     binding.regionName.setTextColor(selectedTextColor);
-                    binding.regionName.setTypeface(FontUtil.getDosisBold(context));
+                    binding.regionName.setTypeface(FontCache.getDosisBold(context));
                 } else {
                     binding.regionName.setTextColor(textColor);
-                    binding.regionName.setTypeface(FontUtil.getDosisRegular(context));
+                    binding.regionName.setTypeface(FontCache.getDosisRegular(context));
                 }
 
                 holder.itemView.setClickable(item.authorized() && !TextUtils.isEmpty(item.getOvDefault()));

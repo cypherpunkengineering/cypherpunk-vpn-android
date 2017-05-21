@@ -10,7 +10,7 @@ import android.util.AttributeSet;
 import android.widget.TextView;
 
 import com.cypherpunk.privacy.R;
-import com.cypherpunk.privacy.utils.FontUtil;
+import com.cypherpunk.privacy.ui.common.FontCache;
 
 
 public class RegionTagView extends TextView {
@@ -51,14 +51,14 @@ public class RegionTagView extends TextView {
             setText(text);
             setBackgroundResource(background);
             setTextColor(color);
-            setTypeface(FontUtil.getDosisSemiBold(getContext()));
+            setTypeface(FontCache.getDosisSemiBold(getContext()));
         }
     }
 
     public void setUnavailable() {
         setVisibility(VISIBLE);
         setText(R.string.region_level_badge_unavailable);
-        setTypeface(FontUtil.getDosisRegular(getContext()));
+        setTypeface(FontCache.getDosisRegular(getContext()));
         setTextColor(ContextCompat.getColor(getContext(), R.color.region_disabled_text));
         setBackgroundDrawable(null);
     }

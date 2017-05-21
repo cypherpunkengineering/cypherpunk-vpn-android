@@ -22,7 +22,7 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
 import com.cypherpunk.privacy.R;
-import com.cypherpunk.privacy.utils.FontUtil;
+import com.cypherpunk.privacy.ui.common.FontCache;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -81,7 +81,7 @@ public class BinarySurfaceView extends SurfaceView implements SurfaceHolder.Call
 
             final KeyItemDrawer keyItemDrawer = new KeyItemDrawer(
                     res.getDimension(R.dimen.binary_text),
-                    FontUtil.getInconsolataRegular(context));
+                    FontCache.getInconsolataRegular(context));
 
             tileDrawable = new TileDrawable(tileWidth, tileHeight, rowCount, columnCount,
                     keyItemGenerator, keyItemDrawer);
