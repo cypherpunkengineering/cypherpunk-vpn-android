@@ -122,7 +122,7 @@ public class SettingsFragment extends PreferenceFragmentCompat {
             }
             final CypherpunkVpnStatus vpnStatus = new CypherpunkVpnStatus();
             if (vpnStatus.isConnected()) {
-                SettingConnectDialogFragment.newInstance().show(getFragmentManager());
+                AskReconnectDialogFragment.newInstance().show(getFragmentManager());
             }
         }
     }

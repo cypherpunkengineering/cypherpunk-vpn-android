@@ -14,14 +14,14 @@ import android.view.View;
 
 import com.cypherpunk.privacy.R;
 
-public class SettingConnectDialogFragment extends DialogFragment {
+public class AskReconnectDialogFragment extends DialogFragment {
 
     public interface ConnectDialogListener {
         void onConnectDialogButtonClick();
     }
 
-    public static SettingConnectDialogFragment newInstance() {
-        return new SettingConnectDialogFragment();
+    public static AskReconnectDialogFragment newInstance() {
+        return new AskReconnectDialogFragment();
     }
 
     @Nullable
