@@ -2,14 +2,14 @@ package com.cypherpunk.privacy.widget;
 
 
 import android.content.Context;
+import android.support.v7.widget.AppCompatImageView;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.Checkable;
-import android.widget.ImageView;
 
 import com.cypherpunk.privacy.R;
 
-public class StarView extends ImageView implements Checkable, View.OnClickListener {
+public class StarView extends AppCompatImageView implements Checkable, View.OnClickListener {
 
     private static final int[] CHECKED_STATE_SET = {android.R.attr.state_checked};
 

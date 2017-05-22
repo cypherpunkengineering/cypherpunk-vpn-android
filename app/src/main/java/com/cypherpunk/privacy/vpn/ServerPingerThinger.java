@@ -27,21 +27,21 @@ public class ServerPingerThinger extends Thread {
     }
 
     public static boolean isPingable(VpnServer vpnServer) {
-        return vpnServer.getOvDefault().length() >= 7 && vpnServer.authorized();
+        return vpnServer.ovDefault().length() >= 7 && vpnServer.authorized();
     }
 
     public static void pingLocation(VpnServer vpnServer, @NonNull VpnServerRepository vpnServerRepository) {
         if (!isPingable(vpnServer)) {
-            Timber.d("Skipping ping for location " + vpnServer.getId());
+            Timber.d("Skipping ping for location " + vpnServer.id());
 
             // update latency to -1 when locations become unavailable
-            vpnServerRepository.updateLatency(vpnServer.getId(), -1);
+            vpnServerRepository.updateLatency(vpnServer.id(), -1);
             return;
         }
 
         ServerPingerThinger pinger = new ServerPingerThinger(vpnServerRepository);
-        pinger.locationId = vpnServer.getId();
-        pinger.address = new InetSocketAddress(vpnServer.getOvDefault(), 443);
+        pinger.locationId = vpnServer.id();
+        pinger.address = new InetSocketAddress(vpnServer.ovDefault(), 443);
         pinger.start();
     }
 

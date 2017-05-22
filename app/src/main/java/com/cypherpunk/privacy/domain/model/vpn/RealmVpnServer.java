@@ -13,29 +13,30 @@ import io.realm.annotations.Required;
 @RealmClass
 public class RealmVpnServer implements RealmModel, VpnServer {
 
+    static final String KEY_ID = "id";
+    static final String KEY_NAME = "name";
+    static final String KEY_REGION = "region";
+    static final String KEY_LEVEL = "level";
+    static final String KEY_AUTHORIZED = "authorized";
+    static final String KEY_OV_DEFAULT = "ovDefault";
+    static final String KEY_LATENCY = "latency";
+    static final String KEY_FAVORITE = "favorite";
+    static final String KEY_DATE = "lastConnectedDate";
+
     @PrimaryKey
     @Required
     private String id;
-
     @Required
-    private String regionName;
-
-    private boolean authorized;
-
-    @Required
-    private String region;
-
-    @Required
-    private String level;
-
-    private long latency;
-
+    private String name;
     @Required
     private String country;
-
+    @Required
+    private String region; // "NA", "SA", "AS" etc
+    @Required
+    private String level;
+    private boolean authorized;
     @Required
     private String ovHostname;
-
     @Required
     private String ovDefault;
     @Required
@@ -45,89 +46,62 @@ public class RealmVpnServer implements RealmModel, VpnServer {
     @Required
     private String ovStealth;
 
-    private boolean favorited;
-
-    private Date lastConnectedDate;
+    private long latency = -1;
+    private boolean favorite = false;
+    @NonNull
+    private Date lastConnectedDate = new Date(0);
 
     @SuppressWarnings("unused")
     public RealmVpnServer() {
     }
 
-    public RealmVpnServer
-            (
-                    @NonNull String id,
-                    @NonNull String region,
-                    @NonNull String country,
-                    @NonNull String regionName,
-                    @NonNull String level,
-                    boolean authorized,
-
-                    @NonNull String ovHostname,
-
-                    @NonNull String[] ovDefault,
-                    @NonNull String[] ovNone,
-                    @NonNull String[] ovStrong,
-                    @NonNull String[] ovStealth
-            ) {
+    RealmVpnServer(@NonNull String id,
+                   @NonNull String name, @NonNull String country, @NonNull String region,
+                   @NonNull String level, boolean authorized, @NonNull String ovHostname,
+                   @NonNull String[] ovDefault, @NonNull String[] ovNone,
+                   @NonNull String[] ovStrong, @NonNull String[] ovStealth) {
         this.id = id;
-        this.region = region;
+        this.name = name;
         this.country = country;
-        this.regionName = regionName;
+        this.region = region;
         this.level = level;
-        this.latency = -1;
         this.authorized = authorized;
-
         this.ovHostname = ovHostname;
-
         this.ovDefault = TextUtils.join(",", ovDefault);
         this.ovNone = TextUtils.join(",", ovNone);
         this.ovStrong = TextUtils.join(",", ovStrong);
         this.ovStealth = TextUtils.join(",", ovStealth);
+
+        this.latency = -1;
+        this.favorite = false;
         this.lastConnectedDate = new Date(0);
     }
 
-    public String getId() {
+    @NonNull
+    @Override
+    public String id() {
         return id;
     }
 
-    public String getRegion() {
-        return region;
+    @NonNull
+    @Override
+    public String name() {
+        return name;
     }
 
-    public void setRegion(String region) {
-        this.region = region;
-    }
-
-    public String getCountry() {
+    @NonNull
+    @Override
+    public String country() {
         return country;
     }
 
-    public void setCountry(String country) {
-        this.country = country;
-    }
-
-    public String getRegionName() {
-        return regionName;
-    }
-
-    public void setRegionName(String regionName) {
-        this.regionName = regionName;
-    }
-
-    public String getLevel() {
-        return level;
-    }
-
-    public void setLevel(String level) {
-        this.level = level;
-    }
-
-    public long getLatency() {
-        return latency;
-    }
-
-    public void setLatency(long latency) {
-        this.latency = latency;
+    @NonNull
+    @Override
+    public Level level() {
+        if (TextUtils.isEmpty(ovDefault)) {
+            return Level.UNAVAILABLE;
+        }
+        return Level.find(level);
     }
 
     @Override
@@ -135,110 +109,102 @@ public class RealmVpnServer implements RealmModel, VpnServer {
         return authorized;
     }
 
-    public void setAuthorized(boolean authorized) {
-        this.authorized = authorized;
-    }
-
-    public String getOvHostname() {
+    @NonNull
+    @Override
+    public String ovHostname() {
         return ovHostname;
     }
 
-    public void setOvHostname(String ovHostname) {
-        this.ovHostname = ovHostname;
-    }
-
-    public String getOvDefault() {
+    @NonNull
+    @Override
+    public String ovDefault() {
         return ovDefault;
     }
 
-    public void setOvDefault(String ovDefault) {
-        this.ovDefault = ovDefault;
-    }
-
-    public void setOvDefault(String[] ovDefault) {
-        this.ovDefault = TextUtils.join(",", ovDefault);
-    }
-
-    public String getOvNone() {
+    @NonNull
+    @Override
+    public String ovNone() {
         return ovNone;
     }
 
-    public void setOvNone(String ovNone) {
-        this.ovNone = ovNone;
-    }
-
-    public void setOvNone(String[] ovNone) {
-        this.ovNone = TextUtils.join(",", ovNone);
-
-    }
-
-    public String getOvStrong() {
+    @NonNull
+    @Override
+    public String ovStrong() {
         return ovStrong;
     }
 
-    public void setOvStrong(String ovStrong) {
-        this.ovStrong = ovStrong;
-    }
-
-    public void setOvStrong(String[] ovStrong) {
-        this.ovStrong = TextUtils.join(",", ovStrong);
-    }
-
-    public String getOvStealth() {
+    @NonNull
+    @Override
+    public String ovStealth() {
         return ovStealth;
     }
 
-    public void setOvStealth(String ovStealth) {
-        this.ovStealth = ovStealth;
-    }
-
-    public void setOvStealth(String[] ovStealth) {
-        this.ovStealth = TextUtils.join(",", ovStealth);
-
+    @Override
+    public boolean isSelectable() {
+        return authorized() && !TextUtils.isEmpty(ovDefault());
     }
 
     @Override
     public boolean favorite() {
-        return favorited;
+        return favorite;
     }
 
-    public void setFavorited(boolean favorited) {
-        this.favorited = favorited;
+    void update(@NonNull String name, @NonNull String country, @NonNull String region,
+                @NonNull String level, boolean authorized, @NonNull String ovHostname,
+                @NonNull String[] ovDefault, @NonNull String[] ovNone,
+                @NonNull String[] ovStrong, @NonNull String[] ovStealth) {
+        this.name = name;
+        this.country = country;
+        this.region = region;
+        this.level = level;
+        this.authorized = authorized;
+        this.ovHostname = ovHostname;
+        this.ovDefault = TextUtils.join(",", ovDefault);
+        this.ovNone = TextUtils.join(",", ovNone);
+        this.ovStrong = TextUtils.join(",", ovStrong);
+        this.ovStealth = TextUtils.join(",", ovStealth);
     }
 
-    public Date getLastConnectedDate() {
-        return lastConnectedDate;
+    void setLatency(long latency) {
+        this.latency = latency;
     }
 
-    public void setLastConnectedDate(Date lastConnectedDate) {
+    void setFavorite(boolean favorite) {
+        this.favorite = favorite;
+    }
+
+    void setLastConnectedDate(@NonNull Date lastConnectedDate) {
         this.lastConnectedDate = lastConnectedDate;
     }
 
     @Override
     public String toString() {
-        return "Region{" +
+        return "RealmVpnServer{" +
                 "id='" + id + '\'' +
-                ", region='" + region + '\'' +
+                ", name='" + name + '\'' +
                 ", country='" + country + '\'' +
-                ", regionName='" + regionName + '\'' +
-                ", authorized='" + authorized + '\'' +
+                ", region='" + region + '\'' +
+                ", level='" + level + '\'' +
+                ", authorized=" + authorized +
+                ", latency=" + latency +
                 ", ovHostname='" + ovHostname + '\'' +
                 ", ovDefault='" + ovDefault + '\'' +
                 ", ovNone='" + ovNone + '\'' +
                 ", ovStrong='" + ovStrong + '\'' +
                 ", ovStealth='" + ovStealth + '\'' +
-                ", favorited=" + favorited +
-                ", lastConnectedDate=" + lastConnectedDate.toString() +
+                ", favorite=" + favorite +
+                ", lastConnectedDate=" + lastConnectedDate +
                 '}';
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof RealmVpnServer)) return false;
+        if (o == null || getClass() != o.getClass()) return false;
 
-        final RealmVpnServer realmVpnServer = (RealmVpnServer) o;
-        return id != null ? id.equals(realmVpnServer.id) : realmVpnServer.id == null;
+        RealmVpnServer that = (RealmVpnServer) o;
+
+        return id != null ? id.equals(that.id) : that.id == null;
     }
 
     @Override

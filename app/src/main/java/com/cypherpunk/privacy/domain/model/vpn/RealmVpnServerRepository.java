@@ -20,6 +20,15 @@ import io.realm.RealmConfiguration;
 import io.realm.RealmResults;
 import io.realm.Sort;
 
+import static com.cypherpunk.privacy.domain.model.vpn.RealmVpnServer.KEY_AUTHORIZED;
+import static com.cypherpunk.privacy.domain.model.vpn.RealmVpnServer.KEY_DATE;
+import static com.cypherpunk.privacy.domain.model.vpn.RealmVpnServer.KEY_FAVORITE;
+import static com.cypherpunk.privacy.domain.model.vpn.RealmVpnServer.KEY_ID;
+import static com.cypherpunk.privacy.domain.model.vpn.RealmVpnServer.KEY_LATENCY;
+import static com.cypherpunk.privacy.domain.model.vpn.RealmVpnServer.KEY_LEVEL;
+import static com.cypherpunk.privacy.domain.model.vpn.RealmVpnServer.KEY_NAME;
+import static com.cypherpunk.privacy.domain.model.vpn.RealmVpnServer.KEY_OV_DEFAULT;
+
 /**
  * implementation of RegionRepository with Realm
  */
@@ -56,11 +65,11 @@ public class RealmVpnServerRepository implements VpnServerRepository {
         try {
             // first get locations which have valid latency data
             RealmResults<RealmVpnServer> results = realm.where(RealmVpnServer.class)
-                    .equalTo("authorized", true)
-                    .contains("ovDefault", ".")
-                    .notEqualTo("level", "developer")
-                    .notEqualTo("latency", -1)
-                    .findAllSorted("latency", Sort.ASCENDING);
+                    .equalTo(KEY_AUTHORIZED, true)
+                    .contains(KEY_OV_DEFAULT, ".")
+                    .notEqualTo(KEY_LEVEL, Level.DEVELOPER.value())
+                    .notEqualTo(KEY_LATENCY, -1)
+                    .findAllSorted(KEY_LATENCY, Sort.ASCENDING);
 
             if (results.size() > 0) {
                 return results.get(0);
@@ -68,13 +77,13 @@ public class RealmVpnServerRepository implements VpnServerRepository {
 
             // if no latency data, just return any location
             results = realm.where(RealmVpnServer.class)
-                    .equalTo("authorized", true)
-                    .contains("ovDefault", ".")
-                    .notEqualTo("level", "developer")
-                    .findAllSorted("latency", Sort.ASCENDING);
+                    .equalTo(KEY_AUTHORIZED, true)
+                    .contains(KEY_OV_DEFAULT, ".")
+                    .notEqualTo(KEY_LEVEL, Level.DEVELOPER.value())
+                    .findAllSorted(KEY_LATENCY, Sort.ASCENDING);
 
             if (results.size() > 0) {
-                return results.get(0);
+                return realm.copyFromRealm(results.get(0));
             }
 
             return null;
@@ -89,9 +98,10 @@ public class RealmVpnServerRepository implements VpnServerRepository {
     public VpnServer find(@NonNull String regionId) {
         final Realm realm = realmInstance();
         try {
-            return realm.where(RealmVpnServer.class)
-                    .equalTo("id", regionId)
+            final RealmVpnServer vpnServer = realm.where(RealmVpnServer.class)
+                    .equalTo(KEY_ID, regionId)
                     .findFirst();
+            return vpnServer != null ? realm.copyFromRealm(vpnServer) : null;
         } finally {
             realm.close();
         }
@@ -102,11 +112,12 @@ public class RealmVpnServerRepository implements VpnServerRepository {
     public VpnServer findAuthorizedDefault(@NonNull String regionId) {
         final Realm realm = realmInstance();
         try {
-            return realm.where(RealmVpnServer.class)
-                    .equalTo("id", regionId)
-                    .equalTo("authorized", true)
-                    .contains("ovDefault", ".")
+            final RealmVpnServer vpnServer = realm.where(RealmVpnServer.class)
+                    .equalTo(KEY_ID, regionId)
+                    .equalTo(KEY_AUTHORIZED, true)
+                    .contains(KEY_OV_DEFAULT, ".")
                     .findFirst();
+            return vpnServer != null ? realm.copyFromRealm(vpnServer) : null;
         } finally {
             realm.close();
         }
@@ -114,51 +125,60 @@ public class RealmVpnServerRepository implements VpnServerRepository {
 
     @NonNull
     @Override
-    public List<VpnServer> findAllByRegion(@NonNull String region) {
+    public List<VpnServer> findAllByRegion(@NonNull Region region) {
         final Realm realm = realmInstance();
-        final RealmResults<RealmVpnServer> results = realm.where(RealmVpnServer.class)
-                .equalTo("region", region)
-                .findAll();
-        realm.close();
-        return new ArrayList<VpnServer>(results);
+        try {
+            final RealmResults<RealmVpnServer> results = realm.where(RealmVpnServer.class)
+                    .equalTo(RealmVpnServer.KEY_REGION, region.value())
+                    .findAll();
+            return new ArrayList<VpnServer>(realm.copyFromRealm(results));
+        } finally {
+            realm.close();
+        }
     }
 
     @NonNull
     @Override
     public List<VpnServer> findFavorites() {
         final Realm realm = realmInstance();
-        final RealmResults<RealmVpnServer> results = realm.where(RealmVpnServer.class)
-                .equalTo("favorited", true)
-                .findAllSorted("regionName", Sort.ASCENDING);
-        realm.close();
-        return new ArrayList<VpnServer>(results);
+        try {
+            final RealmResults<RealmVpnServer> results = realm.where(RealmVpnServer.class)
+                    .equalTo(KEY_FAVORITE, true)
+                    .findAllSorted(KEY_NAME, Sort.ASCENDING);
+            return new ArrayList<VpnServer>(realm.copyFromRealm(results));
+        } finally {
+            realm.close();
+        }
     }
 
     @NonNull
     @Override
     public List<VpnServer> findRecent() {
         final Realm realm = realmInstance();
-        final RealmResults<RealmVpnServer> results = realm.where(RealmVpnServer.class)
-                .equalTo("favorited", false)
-                .notEqualTo("lastConnectedDate", new Date(0))
-                .findAllSorted("lastConnectedDate", Sort.DESCENDING);
-        realm.close();
-        final List<VpnServer> vpnServers = new ArrayList<>();
-        for (int i = 0, max = Math.min(3, results.size()); i < max; i++) {
-            vpnServers.add(results.get(i));
+        try {
+            final RealmResults<RealmVpnServer> results = realm.where(RealmVpnServer.class)
+                    .equalTo(KEY_FAVORITE, false)
+                    .notEqualTo(KEY_DATE, new Date(0))
+                    .findAllSorted(KEY_DATE, Sort.DESCENDING);
+            final List<VpnServer> vpnServers = new ArrayList<>();
+            for (int i = 0, max = Math.min(3, results.size()); i < max; i++) {
+                vpnServers.add(realm.copyFromRealm(results.get(i)));
+            }
+            return vpnServers;
+        } finally {
+            realm.close();
         }
-        return vpnServers;
     }
 
     @Override
     public void updateFavorite(@NonNull String regionId, boolean favorite) {
         final Realm realm = realmInstance();
         final RealmVpnServer region = realm.where(RealmVpnServer.class)
-                .equalTo("id", regionId)
+                .equalTo(KEY_ID, regionId)
                 .findFirst();
         if (region != null && region.favorite() != favorite) {
             realm.beginTransaction();
-            region.setFavorited(favorite);
+            region.setFavorite(favorite);
             realm.commitTransaction();
         }
         realm.close();
@@ -168,7 +188,7 @@ public class RealmVpnServerRepository implements VpnServerRepository {
     public void updateLastConnectedDate(@NonNull String regionId, @NonNull Date date) {
         final Realm realm = realmInstance();
         final RealmVpnServer region = realm.where(RealmVpnServer.class)
-                .equalTo("id", regionId)
+                .equalTo(KEY_ID, regionId)
                 .findFirst();
         if (region != null) {
             realm.beginTransaction();
@@ -183,7 +203,7 @@ public class RealmVpnServerRepository implements VpnServerRepository {
         final Realm realm = realmInstance();
         realm.beginTransaction();
         final RealmVpnServer location = realm.where(RealmVpnServer.class)
-                .equalTo("id", regionId)
+                .equalTo(KEY_ID, regionId)
                 .findFirst();
         location.setLatency(latency);
         realm.commitTransaction();
@@ -207,27 +227,26 @@ public class RealmVpnServerRepository implements VpnServerRepository {
             regionIdList.add(id);
 
             final RealmVpnServer region = realm.where(RealmVpnServer.class)
-                    .equalTo("id", id)
+                    .equalTo(KEY_ID, id)
                     .findFirst();
 
-            // FIXME
             if (region != null) {
-                region.setRegion(regionResult.region);
-                region.setCountry(regionResult.country);
-                region.setRegionName(regionResult.name);
-                region.setLevel(regionResult.level);
-                region.setAuthorized(regionResult.authorized);
-                region.setOvHostname(regionResult.ovHostname);
-                region.setOvDefault(regionResult.ovDefault);
-                region.setOvNone(regionResult.ovNone);
-                region.setOvStrong(regionResult.ovStrong);
-                region.setOvStealth(regionResult.ovStealth);
+                region.update(regionResult.name,
+                        regionResult.country,
+                        regionResult.region,
+                        regionResult.level,
+                        regionResult.authorized,
+                        regionResult.ovHostname,
+                        regionResult.ovDefault,
+                        regionResult.ovNone,
+                        regionResult.ovStrong,
+                        regionResult.ovStealth);
             } else {
                 realm.copyToRealm(new RealmVpnServer(
                         regionResult.id,
-                        regionResult.region,
-                        regionResult.country,
                         regionResult.name,
+                        regionResult.country,
+                        regionResult.region,
                         regionResult.level,
                         regionResult.authorized,
                         regionResult.ovHostname,
@@ -242,7 +261,7 @@ public class RealmVpnServerRepository implements VpnServerRepository {
         realm.where(RealmVpnServer.class)
                 .not()
                 .beginGroup()
-                .in("id", regionIdList.toArray(new String[regionIdList.size()]))
+                .in(KEY_ID, regionIdList.toArray(new String[regionIdList.size()]))
                 .endGroup()
                 .findAll()
                 .deleteAllFromRealm();
@@ -253,7 +272,7 @@ public class RealmVpnServerRepository implements VpnServerRepository {
         // after realm db is updated above, start pinging new location data
         for (String regionId : regionIdList) {
             final RealmVpnServer region = realm.where(RealmVpnServer.class)
-                    .equalTo("id", regionId)
+                    .equalTo(KEY_ID, regionId)
                     .findFirst();
             ServerPingerThinger.pingLocation(region, this);
         }

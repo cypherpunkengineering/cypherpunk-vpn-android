@@ -7,27 +7,35 @@ import android.support.annotation.NonNull;
  */
 public interface VpnServer {
     @NonNull
-    String getId();
+    String id();
 
     @NonNull
-    String getCountry();
+    String name();
 
     @NonNull
-    String getRegionName();
+    String country();
 
-    String getLevel();
-
-    String getOvHostname();
-
-    String getOvNone();
-
-    String getOvDefault();
-
-    String getOvStrong();
-
-    String getOvStealth();
-
-    boolean favorite();
+    @NonNull
+    Level level();
 
     boolean authorized();
+
+    @NonNull
+    String ovHostname();
+
+    @NonNull
+    String ovDefault();
+
+    @NonNull
+    String ovNone();
+
+    @NonNull
+    String ovStrong();
+
+    @NonNull
+    String ovStealth();
+
+    boolean isSelectable();
+
+    boolean favorite();
 }
