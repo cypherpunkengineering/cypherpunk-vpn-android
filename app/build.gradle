@@ -56,6 +56,7 @@ configurations.all {
 }
 
 dependencies {
+    compile project(':domain')
     compile project(':vpn')
     compile fileTree(dir: 'libs', include: ['*.jar'])
     testCompile 'junit:junit:4.12'
@@ -76,7 +77,6 @@ dependencies {
     compile 'io.reactivex:rxandroid:1.1.0'
     compile 'com.squareup.okhttp3:logging-interceptor:3.4.1'
     compile 'com.github.orhanobut:hawk:1.21'
-    compile 'com.os.operando.garum:garum:0.9.0'
     compile "com.google.dagger:dagger:${daggerVersion}"
     apt "com.google.dagger:dagger-compiler:${daggerVersion}"
     apt 'com.google.guava:guava:19.0' // dagger compiler requires Guava

@@ -17,8 +17,9 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.cypherpunk.privacy.R;
+import com.cypherpunk.privacy.domain.model.TunnelMode;
+import com.cypherpunk.privacy.domain.model.VpnSetting;
 import com.cypherpunk.privacy.model.CypherpunkSetting;
-import com.cypherpunk.privacy.model.CypherpunkSetting.TunnelMode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,7 +34,7 @@ public class TunnelModeActivity extends AppCompatActivity {
     }
 
     private final List<Checkable> checkableList = new ArrayList<>();
-    private CypherpunkSetting cypherpunkSetting;
+    private VpnSetting vpnSetting;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,12 +55,12 @@ public class TunnelModeActivity extends AppCompatActivity {
             actionBar.setHomeAsUpIndicator(R.drawable.close_vector);
         }
 
-        cypherpunkSetting = new CypherpunkSetting();
+        vpnSetting = CypherpunkSetting.vpnSetting();
 
         final LinearLayout container = ButterKnife.findById(this, R.id.container);
         final LayoutInflater inflater = LayoutInflater.from(this);
 
-        final TunnelMode tunnelMode = cypherpunkSetting.tunnelMode();
+        final TunnelMode tunnelMode = vpnSetting.tunnelMode();
 
         for (final TunnelMode mode : TunnelMode.values()) {
             final View view = inflater.inflate(R.layout.tunnel_mode_item, container, false);
@@ -106,7 +107,7 @@ public class TunnelModeActivity extends AppCompatActivity {
     }
 
     private void update(@NonNull TunnelMode tunnelMode) {
-        cypherpunkSetting.updateTunnelMode(tunnelMode);
+        vpnSetting.updateTunnelMode(tunnelMode);
         setResult(RESULT_OK);
     }
 
@@ -121,7 +122,7 @@ public class TunnelModeActivity extends AppCompatActivity {
     }
 
     @StringRes
-    public static int getTitleFor(@NonNull CypherpunkSetting.TunnelMode mode) {
+    public static int getTitleFor(@NonNull TunnelMode mode) {
         switch (mode) {
             case RECOMMENDED:
                 return R.string.tunnel_mode_recommended_title;
@@ -137,7 +138,7 @@ public class TunnelModeActivity extends AppCompatActivity {
     }
 
     @StringRes
-    public static int getSummaryFor(@NonNull CypherpunkSetting.TunnelMode mode) {
+    public static int getSummaryFor(@NonNull TunnelMode mode) {
         switch (mode) {
             case RECOMMENDED:
                 return R.string.tunnel_mode_recommended_summary;

@@ -12,6 +12,10 @@ import android.support.v7.preference.PreferenceFragmentCompat;
 import android.support.v7.preference.PreferenceManager;
 
 import com.cypherpunk.privacy.R;
+import com.cypherpunk.privacy.domain.model.InternetKillSwitch;
+import com.cypherpunk.privacy.domain.model.RemotePort;
+import com.cypherpunk.privacy.domain.model.TunnelMode;
+import com.cypherpunk.privacy.domain.model.VpnSetting;
 import com.cypherpunk.privacy.model.CypherpunkSetting;
 import com.cypherpunk.privacy.vpn.CypherpunkVpnStatus;
 
@@ -24,6 +28,7 @@ public class SettingsFragment extends PreferenceFragmentCompat {
     private Preference remotePort;
     private Preference internetKillSwitch;
     private Preference tunnelMode;
+    private VpnSetting vpnSetting;
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -37,9 +42,9 @@ public class SettingsFragment extends PreferenceFragmentCompat {
         final PreferenceManager preferenceManager = getPreferenceManager();
         preferenceManager.setSharedPreferencesName("cypherpunk_setting");
 
-        addPreferencesFromResource(R.xml.preference_settings);
+        vpnSetting = CypherpunkSetting.vpnSetting();
 
-        final CypherpunkSetting cypherpunkSetting = new CypherpunkSetting();
+        addPreferencesFromResource(R.xml.preference_settings);
 
         findPreference(getString(R.string.setting_preference_network))
                 .setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
@@ -52,7 +57,7 @@ public class SettingsFragment extends PreferenceFragmentCompat {
 
         // Internet Kill Switch
         internetKillSwitch = findPreference(getString(R.string.setting_preference_internet_kill_switch));
-        internetKillSwitch.setSummary(getStringFor(cypherpunkSetting.internetKillSwitch()));
+        internetKillSwitch.setSummary(getStringFor(vpnSetting.internetKillSwitch()));
         internetKillSwitch.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
@@ -64,7 +69,7 @@ public class SettingsFragment extends PreferenceFragmentCompat {
 
         // Tunnel Mode
         tunnelMode = findPreference(getString(R.string.setting_preference_tunnel_mode));
-        tunnelMode.setSummary(getStringFor(cypherpunkSetting.tunnelMode()));
+        tunnelMode.setSummary(getStringFor(vpnSetting.tunnelMode()));
         tunnelMode.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
@@ -76,7 +81,7 @@ public class SettingsFragment extends PreferenceFragmentCompat {
 
         // Remote Port
         remotePort = findPreference(getString(R.string.setting_preference_remote_port));
-        remotePort.setSummary(getStringFor(cypherpunkSetting.remotePort()));
+        remotePort.setSummary(getStringFor(vpnSetting.remotePort()));
         remotePort.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
@@ -100,16 +105,15 @@ public class SettingsFragment extends PreferenceFragmentCompat {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == Activity.RESULT_OK) {
-            final CypherpunkSetting cypherpunkSetting = new CypherpunkSetting();
             switch (requestCode) {
                 case REQUEST_CODE_INTERNET_KILL_SWITCH:
-                    internetKillSwitch.setSummary(getStringFor(cypherpunkSetting.internetKillSwitch()));
+                    internetKillSwitch.setSummary(getStringFor(vpnSetting.internetKillSwitch()));
                     break;
                 case REQUEST_CODE_TUNNEL_MODE:
-                    tunnelMode.setSummary(getStringFor(cypherpunkSetting.tunnelMode()));
+                    tunnelMode.setSummary(getStringFor(vpnSetting.tunnelMode()));
                     break;
                 case REQUEST_CODE_REMOTE_PORT:
-                    remotePort.setSummary(getStringFor(cypherpunkSetting.remotePort()));
+                    remotePort.setSummary(getStringFor(vpnSetting.remotePort()));
                     break;
             }
             final CypherpunkVpnStatus vpnStatus = new CypherpunkVpnStatus();
@@ -120,7 +124,7 @@ public class SettingsFragment extends PreferenceFragmentCompat {
     }
 
     @StringRes
-    public static int getStringFor(@NonNull CypherpunkSetting.InternetKillSwitch internetKillSwitch) {
+    public static int getStringFor(@NonNull InternetKillSwitch internetKillSwitch) {
         switch (internetKillSwitch) {
             case AUTOMATIC:
                 return R.string.internet_kill_switch_automatic_title;
@@ -133,12 +137,12 @@ public class SettingsFragment extends PreferenceFragmentCompat {
         }
     }
 
-    public static String getStringFor(@NonNull CypherpunkSetting.RemotePort remotePort) {
-        return remotePort.category.name() + " " + remotePort.port.value();
+    public static String getStringFor(@NonNull RemotePort remotePort) {
+        return remotePort.type().name() + " " + remotePort.port().value();
     }
 
     @StringRes
-    public static int getStringFor(@NonNull CypherpunkSetting.TunnelMode mode) {
+    public static int getStringFor(@NonNull TunnelMode mode) {
         switch (mode) {
             case RECOMMENDED:
                 return R.string.tunnel_mode_recommended_title;

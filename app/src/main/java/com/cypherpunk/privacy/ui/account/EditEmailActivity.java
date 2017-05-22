@@ -21,8 +21,8 @@ import android.widget.Toast;
 import com.cypherpunk.privacy.CypherpunkApplication;
 import com.cypherpunk.privacy.R;
 import com.cypherpunk.privacy.data.api.CypherpunkService;
-import com.cypherpunk.privacy.data.api.UserManager;
 import com.cypherpunk.privacy.data.api.json.ChangeEmailRequest;
+import com.cypherpunk.privacy.model.UserSetting;
 import com.cypherpunk.privacy.ui.common.FullScreenProgressDialog;
 
 import java.net.UnknownHostException;
@@ -197,7 +197,7 @@ public class EditEmailActivity extends AppCompatActivity {
                             dialog = null;
                         }
 
-                        UserManager.saveMailAddress(email);
+                        UserSetting.instance().updateMail(email);
 
                         setResult(RESULT_OK);
                         finish();

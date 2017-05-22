@@ -21,7 +21,7 @@
 
         <!--suppress AndroidElementNotAllowed -->
         <SwitchPreferenceCompat
-            android:key="@string/setting_preference_auto_connect"
+            android:key="@string/setting_preference_key_auto_connect"
             android:title="@string/setting_vpn_auto_start_connect"/>
 
     </PreferenceCategory>
@@ -30,12 +30,12 @@
 
         <!--suppress AndroidElementNotAllowed -->
         <SwitchPreferenceCompat
-            android:key="@string/setting_preference_block_malware"
+            android:key="@string/setting_preference_key_block_malware"
             android:title="@string/setting_vpn_dns_block_malware"/>
 
         <!--suppress AndroidElementNotAllowed -->
         <SwitchPreferenceCompat
-            android:key="@string/setting_preference_block_ads"
+            android:key="@string/setting_preference_key_block_ads"
             android:title="@string/setting_vpn_dns_block_ads"/>
 
         <Preference
@@ -64,5 +64,10 @@
         android:key="@string/setting_preference_split_tunnel"
         android:summary="@string/setting_split_tunnel_summary"
         android:title="@string/setting_split_tunnel"/>
+
+    <SwitchPreferenceCompat
+        android:defaultValue="true"
+        android:key="@string/setting_preference_key_allow_lan_traffic"
+        android:title="@string/setting_allow_lan_traffic"/>
 
 </PreferenceScreen>

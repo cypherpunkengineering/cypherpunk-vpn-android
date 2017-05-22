@@ -9,9 +9,13 @@ import android.text.TextUtils;
 
 import com.android.annotations.NonNull;
 import com.cypherpunk.privacy.CypherpunkApplication;
-import com.cypherpunk.privacy.data.api.UserManager;
+import com.cypherpunk.privacy.domain.model.InternetKillSwitch;
+import com.cypherpunk.privacy.domain.model.RemotePort;
+import com.cypherpunk.privacy.domain.model.TunnelMode;
+import com.cypherpunk.privacy.domain.model.VpnSetting;
 import com.cypherpunk.privacy.model.CypherpunkSetting;
 import com.cypherpunk.privacy.model.Region;
+import com.cypherpunk.privacy.model.UserSetting;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
@@ -98,7 +102,7 @@ public class CypherpunkVPN {
     public void start(final Context context, final Context baseContext) {
         Timber.d("start()");
 
-        CypherpunkSetting cypherpunkSetting = new CypherpunkSetting();
+        final VpnSetting vpnSetting = CypherpunkSetting.vpnSetting();
         Intent serviceIntent = new Intent(baseContext, OpenVPNService.class);
         serviceIntent.setAction(OpenVPNService.START_SERVICE);
         context.bindService(serviceIntent, connection, Context.BIND_AUTO_CREATE);
@@ -114,7 +118,7 @@ public class CypherpunkVPN {
             vpnProfile = cp.convertProfile();
             ProfileManager.setTemporaryProfile(vpnProfile);
             vpnProfile.mName = region.getRegionName() + ", " + region.getCountry();
-            for (String pkg : cypherpunkSetting.disableAppPackageName.split(",")) {
+            for (String pkg : vpnSetting.exceptAppList()) {
                 vpnProfile.mAllowedAppsVpn.add(pkg);
             }
         } catch (Exception e) {
@@ -142,9 +146,8 @@ public class CypherpunkVPN {
 
             manager.stopVPN(false);
             // privacy firewall killswitch
-            CypherpunkSetting cypherpunkSetting = new CypherpunkSetting();
-            final CypherpunkSetting.InternetKillSwitch internetKillSwitch = cypherpunkSetting.internetKillSwitch();
-            switch (internetKillSwitch) {
+            final VpnSetting vpnSetting = CypherpunkSetting.vpnSetting();
+            switch (vpnSetting.internetKillSwitch()) {
                 case AUTOMATIC:
                     service.stopKillSwitch();
                     break;
@@ -163,13 +166,16 @@ public class CypherpunkVPN {
         List<String> list = new ArrayList<String>();
 
         // get user prefs
-        CypherpunkSetting cypherpunkSetting = new CypherpunkSetting();
+        final VpnSetting vpnSetting = CypherpunkSetting.vpnSetting();
+        final UserSetting userSetting = UserSetting.instance();
 
         // get currently selected location
         Realm realm = null;
         try {
             realm = CypherpunkApplication.instance.getAppComponent().getDefaultRealm();
-            region = realm.where(Region.class).equalTo("id", cypherpunkSetting.regionId).findFirst();
+            region = realm.where(Region.class)
+                    .equalTo("id", vpnSetting.regionId())
+                    .findFirst();
         } catch (Exception e) {
             Timber.e("Exception while getting Location");
             Timber.e(e);
@@ -177,17 +183,6 @@ public class CypherpunkVPN {
                 realm.close();
             return null;
         }
-
-        // debug print
-        /*
-        log("vpnCryptoProfile: "+ cypherpunkSetting.vpnCryptoProfile);
-        log("privacyFirewallMode: "+ cypherpunkSetting.privacyFirewallMode);
-        log("privacyFirewallExemptLAN: "+ cypherpunkSetting.privacyFirewallExemptLAN);
-        log("vpnBackend: "+ cypherpunkSetting.vpnBackend);
-        log("vpnPortLocal: "+ cypherpunkSetting.vpnPortLocal);
-        log("vpnPortRemote: "+ cypherpunkSetting.vpnPortRemote);
-        log("disableAppPackageName: "+ cypherpunkSetting.disableAppPackageName);
-        */
 
         // standard options
         list.add("client");
@@ -217,31 +212,30 @@ public class CypherpunkVPN {
         list.add("ncp-disable");
 
         // vpn protocol + remote port
-        final CypherpunkSetting.RemotePort remotePort = cypherpunkSetting.remotePort();
-        list.add("proto " + remotePort.category.name().toLowerCase());
-        int rport = remotePort.port.value();
+        final RemotePort remotePort = vpnSetting.remotePort();
+        list.add("proto " + remotePort.type().name().toLowerCase());
+        int rport = remotePort.port().value();
 
         // vpn crypto profile
-        if (cypherpunkSetting.vpnCryptoProfile != null && cypherpunkSetting.vpnCryptoProfile.length() > 0) {
-            switch (cypherpunkSetting.vpnCryptoProfile) {
-                case "setting_vpn_crypto_profile_none":
-                    list.add("remote " + region.getOvNone() + " " + rport);
-                    list.add("cipher none");
-                    break;
-                case "setting_vpn_crypto_profile_default":
-                    list.add("remote " + region.getOvDefault() + " " + rport);
-                    list.add("cipher AES-128-GCM");
-                    break;
-                case "setting_vpn_crypto_profile_strong":
-                    list.add("remote " + region.getOvStrong() + " " + rport);
-                    list.add("cipher AES-256-GCM");
-                    break;
-                case "setting_vpn_crypto_profile_stealth":
-                    list.add("remote " + region.getOvStealth() + " " + rport);
-                    list.add("cipher AES-128-GCM");
-                    list.add("scramble obfuscate cypherpunk-xor-key"); // requires xorpatch'd openvpn
-                    break;
-            }
+        final TunnelMode tunnelMode = vpnSetting.tunnelMode();
+        switch (tunnelMode) {
+            case MAX_SPEED:
+                list.add("remote " + region.getOvNone() + " " + rport);
+                list.add("cipher " + tunnelMode.cipher().value());
+                break;
+            case RECOMMENDED:
+                list.add("remote " + region.getOvDefault() + " " + rport);
+                list.add("cipher " + tunnelMode.cipher().value());
+                break;
+            case MAX_PRIVACY:
+                list.add("remote " + region.getOvStrong() + " " + rport);
+                list.add("cipher " + tunnelMode.cipher().value());
+                break;
+            case MAX_STEALTH:
+                list.add("remote " + region.getOvStealth() + " " + rport);
+                list.add("cipher " + tunnelMode.cipher().value());
+                list.add("scramble obfuscate cypherpunk-xor-key"); // requires xorpatch'd openvpn
+                break;
         }
 
         // local port
@@ -259,7 +253,7 @@ public class CypherpunkVPN {
         }
 
         // privacy firewall killswitch
-        final CypherpunkSetting.InternetKillSwitch internetKillSwitch = cypherpunkSetting.internetKillSwitch();
+        final InternetKillSwitch internetKillSwitch = vpnSetting.internetKillSwitch();
         switch (internetKillSwitch) {
             case AUTOMATIC:
             case ALWAYS_ON:
@@ -270,29 +264,32 @@ public class CypherpunkVPN {
         }
 
         // privacy firewall exempt LAN from killswitch
-        if (cypherpunkSetting.privacyFirewallExemptLAN)
+        if (vpnSetting.allowLanTraffic()) {
             list.add("redirect-gateway autolocal unblock-local");
-        else
+        } else {
             list.add("redirect-gateway autolocal block-local");
+        }
 
         // build DNS settings according to cypherplay/blocker settings
         int dns = 10;
-        if (cypherpunkSetting.vpnDnsBlockAds) dns += 1;
-        if (cypherpunkSetting.vpnDnsBlockMalware) dns += 2;
-        if (cypherpunkSetting.vpnDnsCypherplay) dns += 4;
+        if (vpnSetting.isBlockAds()) {
+            dns += 1;
+        }
+        if (vpnSetting.isBlockMalware()) {
+            dns += 2;
+        }
+        if (vpnSetting.isCypherplayEnabled()) {
+            dns += 4;
+        }
         list.add("pull-filter ignore \"dhcp-option DNS 10.10.10.10\"");
         list.add("pull-filter ignore \"route 10.10.10.10 255.255.255.255\"");
         list.add("dhcp-option DNS 10.10.10." + dns);
         list.add("route 10.10.10." + dns);
 
         // append username/password
-        /*
-        log("password is "+ UserManager.getPassword());
-        log("username is "+ UserManager.getMailAddress());
-        */
         list.add("<auth-user-pass>");
-        list.add(UserManager.getVpnUsername());
-        list.add(UserManager.getVpnPassword());
+        list.add(userSetting.vpnUsername());
+        list.add(userSetting.vpnPassword());
         list.add("</auth-user-pass>");
 
         // append contents of openvpn.conf

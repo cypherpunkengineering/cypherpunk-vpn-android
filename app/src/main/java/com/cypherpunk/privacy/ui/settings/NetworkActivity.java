@@ -22,6 +22,7 @@ import android.widget.TextView;
 
 import com.cypherpunk.privacy.CypherpunkApplication;
 import com.cypherpunk.privacy.R;
+import com.cypherpunk.privacy.domain.model.VpnSetting;
 import com.cypherpunk.privacy.model.CypherpunkSetting;
 import com.cypherpunk.privacy.model.Network;
 import com.cypherpunk.privacy.ui.common.DividerDecoration;
@@ -87,20 +88,20 @@ public class NetworkActivity extends AppCompatActivity {
         final RealmResults<Network> networks = realm.where(Network.class)
                 .findAll();
 
-        final CypherpunkSetting cypherpunkSetting = new CypherpunkSetting();
+        final VpnSetting vpnSetting = CypherpunkSetting.vpnSetting();
+
         final View header = LayoutInflater.from(this).inflate(R.layout.header_item_network, recyclerView, false);
         {
             final View container = ButterKnife.findById(header, R.id.auto_secure_container);
             final TextView textView = ButterKnife.findById(container, R.id.name);
             textView.setText(R.string.newt_work_auto_secure_connections);
             final SwitchCompat switchView = ButterKnife.findById(container, R.id.switch_compat);
-            switchView.setChecked(cypherpunkSetting.autoSecureUntrusted);
+            switchView.setChecked(vpnSetting.isAutoSecureUntrusted());
             container.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     switchView.toggle();
-                    cypherpunkSetting.autoSecureUntrusted = switchView.isChecked();
-                    cypherpunkSetting.save();
+                    vpnSetting.updateAutoSecureUntrusted(switchView.isChecked());
                 }
             });
         }
@@ -109,13 +110,12 @@ public class NetworkActivity extends AppCompatActivity {
             final TextView textView = ButterKnife.findById(container, R.id.name);
             textView.setText(R.string.network_other_auto_secure_connections);
             final SwitchCompat switchView = ButterKnife.findById(container, R.id.switch_compat);
-            switchView.setChecked(cypherpunkSetting.autoSecureOther);
+            switchView.setChecked(vpnSetting.isAutoSecureOther());
             container.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     switchView.toggle();
-                    cypherpunkSetting.autoSecureOther = switchView.isChecked();
-                    cypherpunkSetting.save();
+                    vpnSetting.updateAutoSecureOther(switchView.isChecked());
                 }
             });
         }

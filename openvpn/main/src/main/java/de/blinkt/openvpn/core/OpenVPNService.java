@@ -463,15 +463,16 @@ public class OpenVPNService extends VpnService implements StateListener, Callbac
         mStarting = false;
 
         // see CypherpunkSetting#vpnBackend
-        final SharedPreferences pref = getSharedPreferences("cypherpunk_setting", MODE_PRIVATE);
-        final String vpnBackend = pref.getString("vpn_backend", "setting_vpn_backend_openvpn23");
-        switch (vpnBackend) {
-            case "setting_vpn_protocol_openvpn31":
-                mOvpn3 = true;
-                break;
-            default:
+        // vpnBackend 設定は無くなった
+//        final SharedPreferences pref = getSharedPreferences("cypherpunk_setting", MODE_PRIVATE);
+//        final String vpnBackend = pref.getString("vpn_backend", "setting_vpn_backend_openvpn23");
+//        switch (vpnBackend) {
+//            case "setting_vpn_protocol_openvpn31":
+//                mOvpn3 = true;
+//                break;
+//            default:
                 mOvpn3 = false;
-        }
+//        }
 
         // Open the Management Interface
         if (!mOvpn3) {

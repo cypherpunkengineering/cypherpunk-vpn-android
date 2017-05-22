@@ -1,1 +1,1 @@
-include ':app', ':vpn'
+include ':app', ':vpn', ':domain'

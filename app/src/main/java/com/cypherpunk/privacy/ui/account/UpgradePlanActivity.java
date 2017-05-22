@@ -22,10 +22,11 @@ import com.cypherpunk.privacy.data.api.CypherpunkService;
 import com.cypherpunk.privacy.data.api.json.AccountStatusResult;
 import com.cypherpunk.privacy.data.api.json.UpgradeAccountRequest;
 import com.cypherpunk.privacy.databinding.ActivityUpgradePlanBinding;
-import com.cypherpunk.privacy.model.UserSettingPref;
+import com.cypherpunk.privacy.domain.model.Plan;
+import com.cypherpunk.privacy.model.UserSetting;
 import com.cypherpunk.privacy.widget.ProgressFullScreenDialog;
 
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -112,19 +113,14 @@ public class UpgradePlanActivity extends AppCompatActivity {
             }
         });
 
-        final UserSettingPref userSettingPref = new UserSettingPref();
-        final String renewal = userSettingPref.userStatusRenewal;
-        switch (renewal) {
-            case "none":
+        final Plan plan = UserSetting.instance().subscriptionPlan();
+        switch (plan.renewal()) {
+            case NONE:
                 break;
-            case "monthly":
+            case MONTHLY:
                 binding.monthlyPlan.setCurrentPlan();
                 break;
-            case "semiannually":
-                binding.monthlyPlan.setVisibility(View.GONE);
-                binding.semiannuallyPlan.setCurrentPlan();
-                break;
-            case "annually":
+            case ANNUALLY:
                 binding.monthlyPlan.setVisibility(View.GONE);
                 binding.semiannuallyPlan.setVisibility(View.GONE);
                 binding.annuallyPlan.setCurrentPlan();
@@ -234,11 +230,7 @@ public class UpgradePlanActivity extends AppCompatActivity {
                         final String renewal = accountStatus.getSubscription().renewal;
                         final String expiration = accountStatus.getSubscription().expiration;
 
-                        UserSettingPref statusPref = new UserSettingPref();
-                        statusPref.userStatusType = type;
-                        statusPref.userStatusRenewal = renewal;
-                        statusPref.userStatusExpiration = expiration;
-                        statusPref.save();
+                        UserSetting.instance().updateStatus(type, renewal, expiration);
 
                         if (dialog != null) {
                             dialog.dismiss();
@@ -262,19 +254,14 @@ public class UpgradePlanActivity extends AppCompatActivity {
 
     @Nullable
     public List<String> getOldSkus() {
-        final UserSettingPref user = new UserSettingPref();
-        final String renewal = user.userStatusRenewal;
-        List<String> oldSkus = null;
-        if ("monthly".equals(renewal)) {
-            oldSkus = new ArrayList<>();
-            oldSkus.add(SKU_MONTHLY);
-        } else if ("semiannually".equals(renewal)) {
-            oldSkus = new ArrayList<>();
-            oldSkus.add(SKU_SEMIANNUALLY);
-        } else if ("annually".equals(renewal)) {
-            oldSkus = new ArrayList<>();
-            oldSkus.add(SKU_ANNUALLY);
+        final Plan plan = UserSetting.instance().subscriptionPlan();
+        switch (plan.renewal()) {
+            case MONTHLY:
+                return Collections.singletonList(SKU_MONTHLY);
+            case ANNUALLY:
+                return Collections.singletonList(SKU_ANNUALLY);
+            default:
+                return null;
         }
-        return oldSkus;
     }
 }

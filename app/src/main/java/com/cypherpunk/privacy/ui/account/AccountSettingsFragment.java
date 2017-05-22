@@ -10,14 +10,13 @@ import android.support.v4.app.TaskStackBuilder;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.preference.Preference;
 import android.support.v7.preference.PreferenceFragmentCompat;
-import android.text.TextUtils;
 
 import com.cypherpunk.privacy.CypherpunkApplication;
 import com.cypherpunk.privacy.R;
 import com.cypherpunk.privacy.data.api.CypherpunkService;
-import com.cypherpunk.privacy.data.api.UserManager;
 import com.cypherpunk.privacy.data.api.json.AccountStatusResult;
-import com.cypherpunk.privacy.model.UserSettingPref;
+import com.cypherpunk.privacy.domain.model.Plan;
+import com.cypherpunk.privacy.model.UserSetting;
 import com.cypherpunk.privacy.ui.common.Urls;
 import com.cypherpunk.privacy.ui.startup.IdentifyEmailActivity;
 import com.cypherpunk.privacy.vpn.CypherpunkVPN;
@@ -58,20 +57,20 @@ public class AccountSettingsFragment extends PreferenceFragmentCompat {
         CypherpunkApplication.instance.getAppComponent().inject(this);
 
         //  set plan
-        final UserSettingPref userSettingPref = new UserSettingPref();
+        final UserSetting userSetting = UserSetting.instance();
+
+        final Plan plan = userSetting.subscriptionPlan();
 
         accountPreference = (AccountPreference) findPreference(getString(R.string.account_preference_account));
-        if (!TextUtils.isEmpty(userSettingPref.userStatusRenewal)) {
-            accountPreference.setUsernameText(userSettingPref.mail);
-            accountPreference.setType(userSettingPref.userStatusType);
-            accountPreference.setRenewalAndExpiration(userSettingPref.userStatusRenewal, userSettingPref.userStatusExpiration);
-        }
+        accountPreference.setInfo(userSetting.mail(), userSetting.accountType(), plan);
 
         getStatus();
 
-        boolean upgradeVisible = !"annually".equals(userSettingPref.userStatusRenewal) &&
-                !"forever".equals(userSettingPref.userStatusRenewal) &&
-                !"lifetime".equals(userSettingPref.userStatusRenewal);
+        final Plan.Renewal renewal = plan.renewal();
+
+        final boolean upgradeVisible = renewal != Plan.Renewal.ANNUALLY
+                && renewal != Plan.Renewal.FOREVER
+                && renewal != Plan.Renewal.LIFETIME;
         final Preference upgrade = findPreference(getString(R.string.account_preference_upgrade));
         upgrade.setVisible(upgradeVisible);
         upgrade.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
@@ -84,7 +83,7 @@ public class AccountSettingsFragment extends PreferenceFragmentCompat {
 
         // email
         final Preference email = findPreference(getString(R.string.account_preference_edit_email));
-        email.setSummary(UserManager.getMailAddress());
+        email.setSummary(userSetting.mail());
         email.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
@@ -145,7 +144,7 @@ public class AccountSettingsFragment extends PreferenceFragmentCompat {
                     @Override
                     public boolean onPreferenceClick(Preference preference) {
                         CypherpunkVPN.getInstance().stop();
-                        UserManager.clearUser();
+                        UserSetting.instance().clear();
                         TaskStackBuilder.create(getContext())
                                 .addNextIntent(IdentifyEmailActivity.createIntent(getContext()))
                                 .startActivities();
@@ -165,23 +164,24 @@ public class AccountSettingsFragment extends PreferenceFragmentCompat {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == Activity.RESULT_OK) {
-            final UserSettingPref userSettingPref = new UserSettingPref();
+            final UserSetting userSetting = UserSetting.instance();
             switch (requestCode) {
                 case REQUEST_CODE_UPGRADE_PLAN: {
-                    final String renewal = userSettingPref.userStatusRenewal;
+                    final Plan plan = userSetting.subscriptionPlan();
 
-                    accountPreference.setUsernameText(userSettingPref.mail);
-                    accountPreference.setType(userSettingPref.userStatusType);
-                    accountPreference.setRenewalAndExpiration(renewal, userSettingPref.userStatusExpiration);
+                    accountPreference.setInfo(userSetting.mail(), userSetting.accountType(),
+                            userSetting.subscriptionPlan());
 
-                    boolean upgradeVisible = !"annually".equals(renewal) &&
-                            !"forever".equals(renewal) &&
-                            !"lifetime".equals(renewal);
+                    final Plan.Renewal renewal = plan.renewal();
+
+                    final boolean upgradeVisible = renewal != Plan.Renewal.ANNUALLY
+                            && renewal != Plan.Renewal.FOREVER
+                            && renewal != Plan.Renewal.LIFETIME;
                     findPreference("upgrade").setVisible(upgradeVisible);
                     break;
                 }
                 case REQUEST_CODE_EDIT_EMAIL: {
-                    accountPreference.setUsernameText(userSettingPref.mail);
+                    accountPreference.setUsernameText(userSetting.mail());
                     break;
                 }
             }
@@ -199,15 +199,11 @@ public class AccountSettingsFragment extends PreferenceFragmentCompat {
                         final String renewal = accountStatus.getSubscription().renewal;
                         final String expiration = accountStatus.getSubscription().expiration;
 
-                        final UserSettingPref userSettingPref = new UserSettingPref();
-                        userSettingPref.userStatusType = type;
-                        userSettingPref.userStatusRenewal = renewal;
-                        userSettingPref.userStatusExpiration = expiration;
-                        userSettingPref.save();
+                        final UserSetting userSetting = UserSetting.instance();
+                        userSetting.updateStatus(type, renewal, expiration);
 
-                        accountPreference.setUsernameText(userSettingPref.mail);
-                        accountPreference.setType(type);
-                        accountPreference.setRenewalAndExpiration(renewal, expiration);
+                        accountPreference.setInfo(userSetting.mail(), userSetting.accountType(),
+                                userSetting.subscriptionPlan());
                     }
 
                     @Override
