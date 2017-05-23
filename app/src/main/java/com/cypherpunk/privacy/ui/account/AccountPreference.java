@@ -11,8 +11,8 @@ import android.util.AttributeSet;
 import android.widget.TextView;
 
 import com.cypherpunk.privacy.R;
-import com.cypherpunk.privacy.domain.model.AccountType;
-import com.cypherpunk.privacy.domain.model.Plan;
+import com.cypherpunk.privacy.domain.model.Account;
+import com.cypherpunk.privacy.domain.model.Subscription;
 
 import java.util.Date;
 
@@ -22,9 +22,9 @@ public class AccountPreference extends Preference {
 
     private String username;
     @Nullable
-    private AccountType type;
+    private Account.Type type;
     @Nullable
-    private Plan plan;
+    private Subscription subscription;
 
     public AccountPreference(Context context) {
         this(context, null);
@@ -65,9 +65,9 @@ public class AccountPreference extends Preference {
             }
         }
 
-        if (plan != null) {
-            final Plan.Renewal renewal = plan.renewal();
-            final Date expiration = plan.expiration();
+        if (subscription != null) {
+            final Subscription.Renewal renewal = subscription.renewal();
+            final Date expiration = subscription.expiration();
 
             final Context ctx = getContext();
 
@@ -103,10 +103,10 @@ public class AccountPreference extends Preference {
         notifyChanged();
     }
 
-    void setInfo(@Nullable String username, @NonNull AccountType type, @NonNull Plan plan) {
+    void setInfo(@Nullable String username, @NonNull Account.Type type, @NonNull Subscription plan) {
         this.username = username;
         this.type = type;
-        this.plan = plan;
+        this.subscription = plan;
         notifyChanged();
     }
 }

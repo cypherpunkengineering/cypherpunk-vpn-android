@@ -32,18 +32,22 @@ import com.cypherpunk.privacy.ui.common.DividerDecoration;
 import com.cypherpunk.privacy.utils.FontUtil;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import rx.Observable;
-import rx.Subscriber;
-import rx.Subscription;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Func1;
-import rx.functions.Func2;
-import rx.schedulers.Schedulers;
-import rx.subscriptions.Subscriptions;
+import io.reactivex.Flowable;
+import io.reactivex.Single;
+import io.reactivex.SingleEmitter;
+import io.reactivex.SingleOnSubscribe;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.disposables.Disposables;
+import io.reactivex.functions.Consumer;
+import io.reactivex.functions.Function;
+import io.reactivex.functions.Predicate;
+import io.reactivex.schedulers.Schedulers;
 
 import static android.Manifest.permission.INTERNET;
 import static android.content.pm.PackageManager.PERMISSION_GRANTED;
@@ -51,7 +55,7 @@ import static android.content.pm.PackageManager.PERMISSION_GRANTED;
 public class SplitTunnelActivity extends AppCompatActivity {
 
     @NonNull
-    private Subscription subscription = Subscriptions.empty();
+    private Disposable disposable = Disposables.empty();
 
     private AppAdapter adapter;
     private VpnSetting vpnSetting;
@@ -94,10 +98,10 @@ public class SplitTunnelActivity extends AppCompatActivity {
 
         final PackageManager pm = getPackageManager();
 
-        subscription = getTargetAppList(this)
-                .map(new Func1<ApplicationInfo, AppInfo>() {
+        disposable = getTargetAppList(this)
+                .map(new Function<ApplicationInfo, AppInfo>() {
                     @Override
-                    public AppInfo call(ApplicationInfo info) {
+                    public AppInfo apply(ApplicationInfo info) throws Exception {
                         final String name = info.loadLabel(pm).toString();
                         final Drawable icon = info.loadIcon(pm);
                         final AppInfo appData = new AppInfo(name, icon, info.packageName);
@@ -107,25 +111,17 @@ public class SplitTunnelActivity extends AppCompatActivity {
                         return appData;
                     }
                 })
-                .toSortedList(new Func2<AppInfo, AppInfo, Integer>() {
+                .toSortedList(new Comparator<AppInfo>() {
                     @Override
-                    public Integer call(AppInfo appData, AppInfo appData2) {
-                        return appData.name.compareTo(appData2.name);
+                    public int compare(AppInfo appInfo, AppInfo appInfo2) {
+                        return appInfo.name.compareTo(appInfo2.name);
                     }
                 })
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<List<AppInfo>>() {
+                .subscribe(new Consumer<List<AppInfo>>() {
                     @Override
-                    public void onCompleted() {
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                    }
-
-                    @Override
-                    public void onNext(List<AppInfo> list) {
+                    public void accept(List<AppInfo> list) throws Exception {
                         adapter = new AppAdapter(list);
                         recyclerView.setAdapter(adapter);
 
@@ -190,41 +186,41 @@ public class SplitTunnelActivity extends AppCompatActivity {
 
     @Override
     protected void onDestroy() {
-        subscription.unsubscribe();
+        disposable.dispose();
         vpnSetting.updateExceptAppList(adapter.getCheckedList());
         super.onDestroy();
     }
 
-    private static Observable<ApplicationInfo> getTargetAppList(@NonNull Context context) {
+    private static Flowable<ApplicationInfo> getTargetAppList(@NonNull Context context) {
         final PackageManager pm = context.getPackageManager();
 
-        return Observable
-                .create(new Observable.OnSubscribe<Integer>() {
+        return Single
+                .create(new SingleOnSubscribe<Integer>() {
                     @Override
-                    public void call(Subscriber<? super Integer> subscriber) {
+                    public void subscribe(SingleEmitter<Integer> emitter) throws Exception {
                         try {
                             final ApplicationInfo system = pm.getApplicationInfo("android", PackageManager.GET_META_DATA);
-                            subscriber.onNext(system.uid);
-                            subscriber.onCompleted();
+                            emitter.onSuccess(system.uid);
                         } catch (PackageManager.NameNotFoundException e) {
-                            subscriber.onError(e);
+                            emitter.onError(e);
                         }
                     }
                 })
-                .flatMap(new Func1<Integer, Observable<ApplicationInfo>>() {
+                .toFlowable()
+                .flatMap(new Function<Integer, Flowable<ApplicationInfo>>() {
                     @Override
-                    public Observable<ApplicationInfo> call(final Integer androidSystemId) {
-                        return Observable
-                                .from(pm.getInstalledApplications(PackageManager.GET_META_DATA))
-                                .filter(new Func1<ApplicationInfo, Boolean>() {
+                    public Flowable<ApplicationInfo> apply(final Integer androidSystemId) throws Exception {
+                        return Flowable
+                                .fromIterable(pm.getInstalledApplications(PackageManager.GET_META_DATA))
+                                .filter(new Predicate<ApplicationInfo>() {
                                     @Override
-                                    public Boolean call(ApplicationInfo info) {
+                                    public boolean test(ApplicationInfo info) throws Exception {
                                         return info.uid != androidSystemId;
                                     }
                                 })
-                                .filter(new Func1<ApplicationInfo, Boolean>() {
+                                .filter(new Predicate<ApplicationInfo>() {
                                     @Override
-                                    public Boolean call(ApplicationInfo info) {
+                                    public boolean test(ApplicationInfo info) throws Exception {
                                         return pm.checkPermission(INTERNET, info.packageName) == PERMISSION_GRANTED;
                                     }
                                 });

@@ -16,8 +16,7 @@ import android.widget.Toast;
 
 import com.cypherpunk.privacy.CypherpunkApplication;
 import com.cypherpunk.privacy.R;
-import com.cypherpunk.privacy.data.api.CypherpunkService;
-import com.cypherpunk.privacy.data.api.json.EmailRequest;
+import com.cypherpunk.privacy.domain.repository.NetworkRepository;
 import com.cypherpunk.privacy.ui.common.FullScreenProgressDialog;
 
 import java.net.UnknownHostException;
@@ -29,13 +28,12 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.OnEditorAction;
 import butterknife.OnTextChanged;
-import okhttp3.ResponseBody;
-import retrofit2.adapter.rxjava.HttpException;
-import rx.SingleSubscriber;
-import rx.Subscription;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
-import rx.subscriptions.Subscriptions;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.disposables.Disposables;
+import io.reactivex.observers.DisposableCompletableObserver;
+import io.reactivex.schedulers.Schedulers;
+import retrofit2.HttpException;
 
 public class IdentifyEmailActivity extends AppCompatActivity {
 
@@ -45,13 +43,13 @@ public class IdentifyEmailActivity extends AppCompatActivity {
     }
 
     @NonNull
-    private Subscription subscription = Subscriptions.empty();
+    private Disposable disposable = Disposables.empty();
 
     @Nullable
     private FullScreenProgressDialog dialog;
 
     @Inject
-    CypherpunkService webService;
+    NetworkRepository networkRepository;
 
     @BindView(R.id.text_input_layout)
     TextInputLayout textInputLayout;
@@ -91,7 +89,7 @@ public class IdentifyEmailActivity extends AppCompatActivity {
 
     @Override
     protected void onDestroy() {
-        subscription.unsubscribe();
+        disposable.dispose();
         if (dialog != null) {
             dialog.dismiss();
             dialog = null;
@@ -121,12 +119,12 @@ public class IdentifyEmailActivity extends AppCompatActivity {
 
         final Context context = this;
 
-        subscription = webService.identifyEmail(new EmailRequest(email))
+        disposable = networkRepository.identifyEmail(email)
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new SingleSubscriber<ResponseBody>() {
+                .subscribeWith(new DisposableCompletableObserver() {
                     @Override
-                    public void onSuccess(ResponseBody result) {
+                    public void onComplete() {
                         if (dialog != null) {
                             dialog.dismiss();
                             dialog = null;

@@ -26,9 +26,8 @@ import android.widget.Toast;
 
 import com.cypherpunk.privacy.CypherpunkApplication;
 import com.cypherpunk.privacy.R;
-import com.cypherpunk.privacy.data.api.CypherpunkService;
-import com.cypherpunk.privacy.data.api.json.AccountStatusResult;
-import com.cypherpunk.privacy.data.api.json.SignUpRequest;
+import com.cypherpunk.privacy.domain.repository.NetworkRepository;
+import com.cypherpunk.privacy.domain.repository.retrofit.result.StatusResult;
 import com.cypherpunk.privacy.model.UserSetting;
 import com.cypherpunk.privacy.ui.common.FullScreenProgressDialog;
 import com.cypherpunk.privacy.ui.common.Urls;
@@ -42,12 +41,12 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.OnEditorAction;
 import butterknife.OnTextChanged;
-import retrofit2.adapter.rxjava.HttpException;
-import rx.SingleSubscriber;
-import rx.Subscription;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
-import rx.subscriptions.Subscriptions;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.disposables.Disposables;
+import io.reactivex.observers.DisposableSingleObserver;
+import io.reactivex.schedulers.Schedulers;
+import retrofit2.HttpException;
 import timber.log.Timber;
 
 public class SignUpActivity extends AppCompatActivity {
@@ -62,13 +61,13 @@ public class SignUpActivity extends AppCompatActivity {
     }
 
     @NonNull
-    private Subscription subscription = Subscriptions.empty();
+    private Disposable disposable = Disposables.empty();
 
     @Nullable
     private FullScreenProgressDialog dialog;
 
     @Inject
-    CypherpunkService webService;
+    NetworkRepository networkRepository;
 
     @BindView(R.id.text_input_layout)
     TextInputLayout textInputLayout;
@@ -149,13 +148,13 @@ public class SignUpActivity extends AppCompatActivity {
 
         final Context context = this;
 
-        subscription = webService
-                .signup(new SignUpRequest(email, password))
+        disposable = networkRepository
+                .signUp(email, password)
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new SingleSubscriber<AccountStatusResult>() {
+                .subscribeWith(new DisposableSingleObserver<StatusResult>() {
                     @Override
-                    public void onSuccess(AccountStatusResult result) {
+                    public void onSuccess(StatusResult result) {
                         if (dialog != null) {
                             dialog.dismiss();
                             dialog = null;
@@ -163,10 +162,10 @@ public class SignUpActivity extends AppCompatActivity {
 
                         final UserSetting instance = UserSetting.instance();
                         instance.updateMail(email);
-                        instance.updateSecret(result.getSecret());
+                        instance.updateSecret(result.secret);
                         instance.updateVpnUserNameAndPassword(
-                                result.getPrivacy().username,
-                                result.getPrivacy().password);
+                                result.privacy.username(),
+                                result.privacy.password());
 
                         startActivity(ConfirmationEmailActivity.createIntent(context, email));
                     }
@@ -193,7 +192,7 @@ public class SignUpActivity extends AppCompatActivity {
 
     @Override
     protected void onDestroy() {
-        subscription.unsubscribe();
+        disposable.dispose();
         if (dialog != null) {
             dialog.dismiss();
             dialog = null;

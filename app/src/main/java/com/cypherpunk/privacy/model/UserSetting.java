@@ -6,9 +6,13 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 
-import com.cypherpunk.privacy.domain.model.AccountType;
-import com.cypherpunk.privacy.domain.model.Plan;
+import com.cypherpunk.privacy.domain.model.Account;
+import com.cypherpunk.privacy.domain.model.Subscription;
+import com.cypherpunk.privacy.domain.repository.retrofit.interceptor.CookieStore;
+import com.cypherpunk.privacy.domain.repository.retrofit.adapter.ExpirationAdapter;
 import com.orhanobut.hawk.Hawk;
+
+import java.util.Date;
 
 public class UserSetting {
 
@@ -24,7 +28,6 @@ public class UserSetting {
     private static final String PREF_KEY_VPN_PASSWORD = "vpn_password";
 
     private static final String PREF_KEY_SECRET = "secret";
-    private static final String PREF_KEY_COOKIE = "cookie";
 
     private final SharedPreferences pref;
 
@@ -47,26 +50,26 @@ public class UserSetting {
 
     //
 
-    public AccountType accountType() {
-        return AccountType.find(pref.getString(KEY_STATUS_TYPE, null));
+    public Account.Type accountType() {
+        return Account.Type.find(pref.getString(KEY_STATUS_TYPE, null));
     }
 
-    public void updateAccountType(@NonNull AccountType type) {
+    public void updateAccountType(@NonNull Account.Type type) {
         pref.edit().putString(KEY_STATUS_TYPE, type.value()).apply();
     }
 
     @NonNull
-    public Plan subscriptionPlan() {
-        return Plan.create(
-                Plan.Renewal.find(pref.getString(KEY_STATUS_RENEWAL, "")),
-                Plan.toDate(pref.getString(KEY_STATUS_EXPIRATION, "")));
+    public Subscription subscriptionPlan() {
+        return new Subscription(
+                Subscription.Renewal.find(pref.getString(KEY_STATUS_RENEWAL, "")),
+                new ExpirationAdapter().fromJson(pref.getString(KEY_STATUS_EXPIRATION, "")));
     }
 
-    public void updateStatus(@NonNull String type, @NonNull String renewal, @NonNull String expiration) {
+    public void updateStatus(@NonNull Account.Type type, @NonNull Subscription.Renewal renewal, @Nullable Date expiration) {
         pref.edit()
-                .putString(KEY_STATUS_TYPE, type)
-                .putString(KEY_STATUS_RENEWAL, renewal)
-                .putString(KEY_STATUS_EXPIRATION, expiration)
+                .putString(KEY_STATUS_TYPE, type.value())
+                .putString(KEY_STATUS_RENEWAL, renewal.value())
+                .putString(KEY_STATUS_EXPIRATION, new ExpirationAdapter().toJson(expiration))
                 .apply();
     }
 
@@ -90,15 +93,6 @@ public class UserSetting {
     //
 
     @Nullable
-    public String cookie() {
-        return Hawk.get(PREF_KEY_COOKIE);
-    }
-
-    public void updateCookie(@Nullable String cookie) {
-        Hawk.put(PREF_KEY_COOKIE, cookie);
-    }
-
-    @Nullable
     public String secret() {
         return Hawk.get(PREF_KEY_SECRET);
     }
@@ -114,8 +108,8 @@ public class UserSetting {
 
         Hawk.remove(PREF_KEY_VPN_USERNAME);
         Hawk.remove(PREF_KEY_VPN_PASSWORD);
-        Hawk.remove(PREF_KEY_COOKIE);
         Hawk.remove(PREF_KEY_SECRET);
+        CookieStore.clear();
     }
 
     //

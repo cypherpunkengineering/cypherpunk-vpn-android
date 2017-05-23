@@ -20,10 +20,10 @@ import android.widget.TextView;
 
 import com.cypherpunk.privacy.CypherpunkApplication;
 import com.cypherpunk.privacy.R;
-import com.cypherpunk.privacy.data.api.CypherpunkService;
-import com.cypherpunk.privacy.data.api.json.AccountStatusResult;
-import com.cypherpunk.privacy.data.api.json.RegionResult;
-import com.cypherpunk.privacy.domain.model.AccountType;
+import com.cypherpunk.privacy.domain.repository.NetworkRepository;
+import com.cypherpunk.privacy.domain.repository.retrofit.CypherpunkService;
+import com.cypherpunk.privacy.domain.repository.retrofit.result.StatusResult;
+import com.cypherpunk.privacy.domain.repository.retrofit.result.RegionResult;
 import com.cypherpunk.privacy.domain.model.VpnSetting;
 import com.cypherpunk.privacy.domain.service.ServerService;
 import com.cypherpunk.privacy.model.CypherpunkSetting;
@@ -41,14 +41,14 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.OnPageChange;
+import io.reactivex.SingleSource;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.disposables.Disposables;
+import io.reactivex.functions.Function;
+import io.reactivex.observers.DisposableSingleObserver;
+import io.reactivex.schedulers.Schedulers;
 import io.realm.Realm;
-import rx.Single;
-import rx.SingleSubscriber;
-import rx.Subscription;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Func1;
-import rx.schedulers.Schedulers;
-import rx.subscriptions.Subscriptions;
 import timber.log.Timber;
 
 /**
@@ -59,13 +59,13 @@ public class TutorialActivity extends AppCompatActivity {
     private static final int GRANT_VPN_PERMISSION = 1;
 
     @NonNull
-    private Subscription subscription = Subscriptions.empty();
+    private Disposable disposable = Disposables.empty();
 
     @Inject
     Realm realm;
 
     @Inject
-    CypherpunkService webService;
+    NetworkRepository networkRepository;
 
     @BindView(R.id.pager)
     ViewPager pager;
@@ -179,18 +179,17 @@ public class TutorialActivity extends AppCompatActivity {
     }
 
     private void getServerList() {
-        subscription = webService.getAccountStatus()
-                .flatMap(new Func1<AccountStatusResult, Single<Map<String, RegionResult>>>() {
+        disposable = networkRepository.getAccountStatus()
+                .flatMap(new Function<StatusResult, SingleSource<Map<String, RegionResult>>>() {
                     @Override
-                    public Single<Map<String, RegionResult>> call(AccountStatusResult result) {
-                        final String type = result.getAccount().type;
-                        UserSetting.instance().updateAccountType(AccountType.find(type));
-                        return webService.serverList(type);
+                    public SingleSource<Map<String, RegionResult>> apply(StatusResult result) throws Exception {
+                        UserSetting.instance().updateAccountType(result.account.type);
+                        return networkRepository.serverList(result.account.type);
                     }
                 })
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new SingleSubscriber<Map<String, RegionResult>>() {
+                .subscribeWith(new DisposableSingleObserver<Map<String, RegionResult>>() {
                     @Override
                     public void onSuccess(Map<String, RegionResult> result) {
                         final ServerService serverService = new ServerService(realm);
@@ -206,9 +205,9 @@ public class TutorialActivity extends AppCompatActivity {
 
     @Override
     public void onDestroy() {
-        super.onDestroy();
+        disposable.dispose();
         realm.close();
-        subscription.unsubscribe();
+        super.onDestroy();
     }
 
     private enum TutorialType {

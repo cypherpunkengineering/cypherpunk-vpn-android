@@ -20,10 +20,8 @@ import android.widget.Toast;
 
 import com.cypherpunk.privacy.CypherpunkApplication;
 import com.cypherpunk.privacy.R;
-import com.cypherpunk.privacy.data.api.CypherpunkService;
-import com.cypherpunk.privacy.data.api.json.AccountStatusResult;
-import com.cypherpunk.privacy.data.api.json.EmailRequest;
-import com.cypherpunk.privacy.data.api.json.LoginRequest;
+import com.cypherpunk.privacy.domain.repository.NetworkRepository;
+import com.cypherpunk.privacy.domain.repository.retrofit.result.StatusResult;
 import com.cypherpunk.privacy.model.UserSetting;
 import com.cypherpunk.privacy.ui.common.FullScreenProgressDialog;
 
@@ -36,12 +34,12 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.OnEditorAction;
 import butterknife.OnTextChanged;
-import okhttp3.ResponseBody;
-import retrofit2.adapter.rxjava.HttpException;
-import rx.SingleSubscriber;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
-import rx.subscriptions.CompositeSubscription;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.observers.DisposableCompletableObserver;
+import io.reactivex.observers.DisposableSingleObserver;
+import io.reactivex.schedulers.Schedulers;
+import retrofit2.HttpException;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -54,13 +52,13 @@ public class LoginActivity extends AppCompatActivity {
         return intent;
     }
 
-    private final CompositeSubscription subscriptions = new CompositeSubscription();
+    private final CompositeDisposable disposables = new CompositeDisposable();
 
     @Nullable
     private FullScreenProgressDialog dialog;
 
     @Inject
-    CypherpunkService webService;
+    NetworkRepository networkRepository;
 
     @BindView(R.id.text_input_layout)
     TextInputLayout textInputLayout;
@@ -138,13 +136,13 @@ public class LoginActivity extends AppCompatActivity {
 
         final Context context = this;
 
-        subscriptions.add(webService
-                .login(new LoginRequest(email, password))
+        disposables.add(networkRepository
+                .login(email, password)
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new SingleSubscriber<AccountStatusResult>() {
+                .subscribeWith(new DisposableSingleObserver<StatusResult>() {
                     @Override
-                    public void onSuccess(AccountStatusResult result) {
+                    public void onSuccess(StatusResult result) {
                         if (dialog != null) {
                             dialog.dismiss();
                             dialog = null;
@@ -152,10 +150,10 @@ public class LoginActivity extends AppCompatActivity {
 
                         final UserSetting instance = UserSetting.instance();
                         instance.updateMail(email);
-                        instance.updateSecret(result.getSecret());
+                        instance.updateSecret(result.secret);
                         instance.updateVpnUserNameAndPassword(
-                                result.getPrivacy().username,
-                                result.getPrivacy().password);
+                                result.privacy.username(),
+                                result.privacy.password());
 
                         TaskStackBuilder.create(context)
                                 .addNextIntent(new Intent(context, TutorialActivity.class))
@@ -188,13 +186,13 @@ public class LoginActivity extends AppCompatActivity {
 
         final Context context = this;
 
-        subscriptions.add(webService
-                .recoverPassword(new EmailRequest(email))
+        disposables.add(networkRepository
+                .recoverPassword(email)
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new SingleSubscriber<ResponseBody>() {
+                .subscribeWith(new DisposableCompletableObserver() {
                     @Override
-                    public void onSuccess(ResponseBody result) {
+                    public void onComplete() {
                         if (dialog != null) {
                             dialog.dismiss();
                             dialog = null;
@@ -219,7 +217,7 @@ public class LoginActivity extends AppCompatActivity {
 
     @Override
     protected void onDestroy() {
-        subscriptions.unsubscribe();
+        disposables.clear();
         if (dialog != null) {
             dialog.dismiss();
             dialog = null;

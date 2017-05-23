@@ -2,7 +2,7 @@ package com.cypherpunk.privacy.domain.service;
 
 import android.support.annotation.NonNull;
 
-import com.cypherpunk.privacy.data.api.json.RegionResult;
+import com.cypherpunk.privacy.domain.repository.retrofit.result.RegionResult;
 import com.cypherpunk.privacy.model.Region;
 import com.cypherpunk.privacy.vpn.ServerPingerThinger;
 
@@ -30,7 +30,7 @@ public class ServerService {
 
         final List<String> updateRegionIdList = new ArrayList<>();
         for (RegionResult regionResult : result.values()) {
-            final String id = regionResult.getId();
+            final String id = regionResult.id;
 
             updateRegionIdList.add(id);
 
@@ -39,29 +39,29 @@ public class ServerService {
                     .findFirst();
 
             if (region != null) {
-                region.setRegion(regionResult.getRegion());
-                region.setCountry(regionResult.getCountry());
-                region.setRegionName(regionResult.getName());
-                region.setLevel(regionResult.getLevel());
-                region.setAuthorized(regionResult.isAuthorized());
-                region.setOvHostname(regionResult.getOvHostname());
-                region.setOvDefault(regionResult.getOvDefault());
-                region.setOvNone(regionResult.getOvNone());
-                region.setOvStrong(regionResult.getOvStrong());
-                region.setOvStealth(regionResult.getOvStealth());
+                region.setRegion(regionResult.region);
+                region.setCountry(regionResult.country);
+                region.setRegionName(regionResult.name);
+                region.setLevel(regionResult.level);
+                region.setAuthorized(regionResult.authorized);
+                region.setOvHostname(regionResult.ovHostname);
+                region.setOvDefault(regionResult.ovDefault);
+                region.setOvNone(regionResult.ovNone);
+                region.setOvStrong(regionResult.ovStrong);
+                region.setOvStealth(regionResult.ovStealth);
             } else {
                 realm.copyToRealm(new Region(
-                        regionResult.getId(),
-                        regionResult.getRegion(),
-                        regionResult.getCountry(),
-                        regionResult.getName(),
-                        regionResult.getLevel(),
-                        regionResult.isAuthorized(),
-                        regionResult.getOvHostname(),
-                        regionResult.getOvDefault(),
-                        regionResult.getOvNone(),
-                        regionResult.getOvStrong(),
-                        regionResult.getOvStealth()));
+                        regionResult.id,
+                        regionResult.region,
+                        regionResult.country,
+                        regionResult.name,
+                        regionResult.level,
+                        regionResult.authorized,
+                        regionResult.ovHostname,
+                        regionResult.ovDefault,
+                        regionResult.ovNone,
+                        regionResult.ovStrong,
+                        regionResult.ovStealth));
             }
         }
 
@@ -78,7 +78,7 @@ public class ServerService {
         // after realm db is updated above, start pinging new location data
         for (RegionResult regionResult : result.values()) {
             final Region region = realm.where(Region.class)
-                    .equalTo("id", regionResult.getId())
+                    .equalTo("id", regionResult.id)
                     .findFirst();
             ServerPingerThinger.pingLocation(region);
         }

@@ -18,11 +18,12 @@ import com.cypherpunk.privacy.billing.IabHelper;
 import com.cypherpunk.privacy.billing.IabResult;
 import com.cypherpunk.privacy.billing.Inventory;
 import com.cypherpunk.privacy.billing.Purchase;
-import com.cypherpunk.privacy.data.api.CypherpunkService;
-import com.cypherpunk.privacy.data.api.json.AccountStatusResult;
-import com.cypherpunk.privacy.data.api.json.UpgradeAccountRequest;
+import com.cypherpunk.privacy.domain.repository.NetworkRepository;
+import com.cypherpunk.privacy.domain.repository.retrofit.CypherpunkService;
+import com.cypherpunk.privacy.domain.model.Subscription;
+import com.cypherpunk.privacy.domain.repository.retrofit.requst.UpgradeAccountRequest;
+import com.cypherpunk.privacy.domain.repository.retrofit.result.StatusResult;
 import com.cypherpunk.privacy.databinding.ActivityUpgradePlanBinding;
-import com.cypherpunk.privacy.domain.model.Plan;
 import com.cypherpunk.privacy.model.UserSetting;
 import com.cypherpunk.privacy.widget.ProgressFullScreenDialog;
 
@@ -31,19 +32,19 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import rx.SingleSubscriber;
-import rx.Subscription;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
-import rx.subscriptions.Subscriptions;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.disposables.Disposables;
+import io.reactivex.observers.DisposableSingleObserver;
+import io.reactivex.schedulers.Schedulers;
 
 public class UpgradePlanActivity extends AppCompatActivity {
 
     private ProgressFullScreenDialog dialog;
-    private Subscription subscription = Subscriptions.empty();
+    private Disposable disposable = Disposables.empty();
 
     @Inject
-    CypherpunkService webService;
+    NetworkRepository networkRepository;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -113,7 +114,7 @@ public class UpgradePlanActivity extends AppCompatActivity {
             }
         });
 
-        final Plan plan = UserSetting.instance().subscriptionPlan();
+        final Subscription plan = UserSetting.instance().subscriptionPlan();
         switch (plan.renewal()) {
             case NONE:
                 break;
@@ -145,7 +146,7 @@ public class UpgradePlanActivity extends AppCompatActivity {
             dialog.dismiss();
             dialog = null;
         }
-        subscription.unsubscribe();
+        disposable.dispose();
         super.onDestroy();
     }
 
@@ -219,18 +220,16 @@ public class UpgradePlanActivity extends AppCompatActivity {
         dialog = new ProgressFullScreenDialog(this);
         dialog.setCancelable(false);
 
-        subscription = webService
-                .upgradeAccount(new UpgradeAccountRequest(accountId, planId, purchaseData))
+        disposable = networkRepository
+                .upgradeAccount(accountId, planId, purchaseData)
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new SingleSubscriber<AccountStatusResult>() {
+                .subscribeWith(new DisposableSingleObserver<StatusResult>() {
                     @Override
-                    public void onSuccess(AccountStatusResult accountStatus) {
-                        final String type = accountStatus.getAccount().type;
-                        final String renewal = accountStatus.getSubscription().renewal;
-                        final String expiration = accountStatus.getSubscription().expiration;
-
-                        UserSetting.instance().updateStatus(type, renewal, expiration);
+                    public void onSuccess(StatusResult accountStatus) {
+                        UserSetting.instance().updateStatus(accountStatus.account.type,
+                                accountStatus.subscription.renewal,
+                                accountStatus.subscription.expiration);
 
                         if (dialog != null) {
                             dialog.dismiss();
@@ -254,7 +253,7 @@ public class UpgradePlanActivity extends AppCompatActivity {
 
     @Nullable
     public List<String> getOldSkus() {
-        final Plan plan = UserSetting.instance().subscriptionPlan();
+        final Subscription plan = UserSetting.instance().subscriptionPlan();
         switch (plan.renewal()) {
             case MONTHLY:
                 return Collections.singletonList(SKU_MONTHLY);

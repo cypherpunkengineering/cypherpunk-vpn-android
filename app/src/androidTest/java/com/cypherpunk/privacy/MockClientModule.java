@@ -1,23 +1,28 @@
 package com.cypherpunk.privacy;
 
 import com.cypherpunk.privacy.dagger.ClientModule;
-import com.cypherpunk.privacy.data.api.CypherpunkService;
+import com.cypherpunk.privacy.domain.repository.NetworkRepository;
 
-import retrofit2.Retrofit;
+import okhttp3.OkHttpClient;
 
 /**
  * mock for test
  */
 class MockClientModule extends ClientModule {
 
-    private final CypherpunkService cypherpunkService;
+    private final NetworkRepository networkRepository;
 
-    MockClientModule(CypherpunkService cypherpunkService) {
-        this.cypherpunkService = cypherpunkService;
+    MockClientModule(NetworkRepository networkRepository) {
+        this.networkRepository = networkRepository;
     }
 
     @Override
-    public CypherpunkService provideCypherpunkService(Retrofit retrofit) {
-        return cypherpunkService;
+    public NetworkRepository provideCypherpunkService(OkHttpClient httpClient) {
+        return networkRepository;
+    }
+
+    @Override
+    public OkHttpClient provideHttpClient() {
+        return null;
     }
 }
