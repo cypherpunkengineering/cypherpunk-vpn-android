@@ -48,7 +48,8 @@
     <color name="text_color_light">@color/light_green</color>
 
     <!-- new -->
-    <color name="black">#302f2f</color>
+    <color name="dark_black">#0b1518</color>
+    <color name="dark_gray">#302f2f</color>
     <color name="dark_navy_blue">#010011</color>
     <color name="dark_blue_grey_two">#0d1e26</color>
     <color name="dark_blue_grey">#163238</color> <!-- aka cpTeal -->
