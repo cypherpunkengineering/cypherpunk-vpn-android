@@ -37,7 +37,7 @@ import com.cypherpunk.privacy.domain.model.VpnSetting;
 import com.cypherpunk.privacy.domain.repository.VpnServerRepository;
 import com.cypherpunk.privacy.ui.account.AccountSettingsFragment;
 import com.cypherpunk.privacy.ui.region.RegionFragment;
-import com.cypherpunk.privacy.ui.settings.SettingConnectDialogFragment;
+import com.cypherpunk.privacy.ui.settings.AskReconnectDialogFragment;
 import com.cypherpunk.privacy.ui.settings.SettingsFragment;
 import com.cypherpunk.privacy.ui.startup.IdentifyEmailActivity;
 import com.cypherpunk.privacy.vpn.CypherpunkVPN;
@@ -55,7 +55,7 @@ import timber.log.Timber;
 
 public class MainActivity extends AppCompatActivity
         implements VpnStatus.StateListener,
-        SettingConnectDialogFragment.ConnectDialogListener,
+        AskReconnectDialogFragment.ConnectDialogListener,
         RegionFragment.RegionFragmentListener {
 
     private static final int REQUEST_VPN_START = 0;

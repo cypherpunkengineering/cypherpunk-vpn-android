@@ -21,7 +21,7 @@ import android.util.SparseArray;
 import android.view.TextureView;
 
 import com.cypherpunk.privacy.R;
-import com.cypherpunk.privacy.utils.FontUtil;
+import com.cypherpunk.privacy.ui.common.FontCache;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -86,7 +86,7 @@ public class BinaryTextureView extends TextureView implements TextureView.Surfac
 
             final KeyItemDrawer keyItemDrawer = new KeyItemDrawer(
                     res.getDimension(R.dimen.binary_text),
-                    FontUtil.getInconsolataRegular(context));
+                    FontCache.getInconsolataRegular(context));
 
             tileDrawable = new TileDrawable(tileWidth, tileHeight, rowCount, columnCount,
                     keyItemGenerator, keyItemDrawer);

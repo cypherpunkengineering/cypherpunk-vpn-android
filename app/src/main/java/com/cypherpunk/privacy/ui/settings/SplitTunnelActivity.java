@@ -29,7 +29,7 @@ import com.cypherpunk.privacy.CypherpunkApplication;
 import com.cypherpunk.privacy.R;
 import com.cypherpunk.privacy.domain.model.VpnSetting;
 import com.cypherpunk.privacy.ui.common.DividerDecoration;
-import com.cypherpunk.privacy.utils.FontUtil;
+import com.cypherpunk.privacy.ui.common.FontCache;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -144,7 +144,7 @@ public class SplitTunnelActivity extends AppCompatActivity {
         searchView.setQueryHint(getString(R.string.split_tunnel_search_hint));
 
         final TextView textView = (TextView) searchView.findViewById(android.support.v7.appcompat.R.id.search_src_text);
-        textView.setTypeface(FontUtil.getDosisMedium(this));
+        textView.setTypeface(FontCache.getDosisMedium(this));
         textView.setHintTextColor(ContextCompat.getColor(this, R.color.search_view_hint_text));
 
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {

@@ -5,10 +5,9 @@ import android.content.res.TypedArray;
 import android.graphics.Typeface;
 import android.support.v7.widget.AppCompatTextView;
 import android.util.AttributeSet;
-import android.widget.TextView;
 
 import com.cypherpunk.privacy.R;
-import com.cypherpunk.privacy.utils.FontUtil;
+import com.cypherpunk.privacy.ui.common.FontCache;
 
 /**
  * Dosis font TextView
@@ -55,19 +54,19 @@ public class TypefaceTextView extends AppCompatTextView {
         Typeface tf = null;
         switch (typeIndex) {
             case DOSIS_REGULAR:
-                tf = FontUtil.getDosisRegular(getContext());
+                tf = FontCache.getDosisRegular(getContext());
                 break;
             case DOSIS_MEDIUM:
-                tf = FontUtil.getDosisMedium(getContext());
+                tf = FontCache.getDosisMedium(getContext());
                 break;
             case DOSIS_SEMI_BOLD:
-                tf = FontUtil.getDosisSemiBold(getContext());
+                tf = FontCache.getDosisSemiBold(getContext());
                 break;
             case DOSIS_BOLD:
-                tf = FontUtil.getDosisBold(getContext());
+                tf = FontCache.getDosisBold(getContext());
                 break;
             case INCONSOLATE_REGULAR:
-                tf = FontUtil.getInconsolataRegular(getContext());
+                tf = FontCache.getInconsolataRegular(getContext());
                 break;
         }
         if (tf != null) {

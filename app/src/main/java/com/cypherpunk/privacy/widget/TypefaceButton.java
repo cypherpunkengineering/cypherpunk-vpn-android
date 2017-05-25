@@ -5,7 +5,7 @@ import android.graphics.Typeface;
 import android.support.v7.widget.AppCompatButton;
 import android.util.AttributeSet;
 
-import com.cypherpunk.privacy.utils.FontUtil;
+import com.cypherpunk.privacy.ui.common.FontCache;
 
 /**
  * Dosis font Button
@@ -23,7 +23,7 @@ public class TypefaceButton extends AppCompatButton {
     public TypefaceButton(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         if (!isInEditMode()) {
-            Typeface tf = FontUtil.getDosisBold(context);
+            Typeface tf = FontCache.getDosisBold(context);
             setTypeface(tf);
         }
     }
