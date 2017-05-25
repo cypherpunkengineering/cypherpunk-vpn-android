@@ -117,7 +117,7 @@ public class CypherpunkVPN {
             cp.parseConfig(new StringReader(conf));
             vpnProfile = cp.convertProfile();
             ProfileManager.setTemporaryProfile(vpnProfile);
-            vpnProfile.mName = vpnServer.getRegionName() + ", " + vpnServer.getCountry();
+            vpnProfile.mName = vpnServer.name() + ", " + vpnServer.country();
             for (String pkg : vpnSetting.exceptAppList()) {
                 vpnProfile.mAllowedAppsVpn.add(pkg);
             }
@@ -188,7 +188,7 @@ public class CypherpunkVPN {
         // security/privacy options
         list.add("tls-version-min 1.2");
         list.add("remote-cert-eku \"TLS Web Server Authentication\"");
-        list.add("verify-x509-name " + vpnServer.getOvHostname() + " name");
+        list.add("verify-x509-name " + vpnServer.ovHostname() + " name");
         list.add("tls-cipher TLS-DHE-RSA-WITH-AES-256-GCM-SHA384:TLS-DHE-RSA-WITH-AES-256-CBC-SHA256:TLS-DHE-RSA-WITH-AES-128-GCM-SHA256:TLS-DHE-RSA-WITH-AES-128-CBC-SHA256");
         list.add("auth SHA256");
 
@@ -208,19 +208,19 @@ public class CypherpunkVPN {
         final TunnelMode tunnelMode = vpnSetting.tunnelMode();
         switch (tunnelMode) {
             case MAX_SPEED:
-                list.add("remote " + vpnServer.getOvNone() + " " + rport);
+                list.add("remote " + vpnServer.ovNone() + " " + rport);
                 list.add("cipher " + tunnelMode.cipher().value());
                 break;
             case RECOMMENDED:
-                list.add("remote " + vpnServer.getOvDefault() + " " + rport);
+                list.add("remote " + vpnServer.ovDefault() + " " + rport);
                 list.add("cipher " + tunnelMode.cipher().value());
                 break;
             case MAX_PRIVACY:
-                list.add("remote " + vpnServer.getOvStrong() + " " + rport);
+                list.add("remote " + vpnServer.ovStrong() + " " + rport);
                 list.add("cipher " + tunnelMode.cipher().value());
                 break;
             case MAX_STEALTH:
-                list.add("remote " + vpnServer.getOvStealth() + " " + rport);
+                list.add("remote " + vpnServer.ovStealth() + " " + rport);
                 list.add("cipher " + tunnelMode.cipher().value());
                 list.add("scramble obfuscate cypherpunk-xor-key"); // requires xorpatch'd openvpn
                 break;

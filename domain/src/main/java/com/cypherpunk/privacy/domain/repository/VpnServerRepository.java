@@ -3,6 +3,7 @@ package com.cypherpunk.privacy.domain.repository;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
+import com.cypherpunk.privacy.domain.model.vpn.Region;
 import com.cypherpunk.privacy.domain.model.vpn.VpnServer;
 import com.cypherpunk.privacy.domain.repository.retrofit.result.RegionResult;
 
@@ -27,7 +28,7 @@ public interface VpnServerRepository {
     VpnServer findAuthorizedDefault(@NonNull String regionId);
 
     @NonNull
-    List<VpnServer> findAllByRegion(@NonNull String region);
+    List<VpnServer> findAllByRegion(@NonNull Region region);
 
     @NonNull
     List<VpnServer> findFavorites();

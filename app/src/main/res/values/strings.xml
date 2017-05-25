@@ -149,6 +149,7 @@
     <string name="region_list_af">AFRICA</string>
     <string name="region_list_as">ASIA</string>
 
+    <!-- vpn server tag -->
     <string name="region_level_badge_dev">DEV</string>
     <string name="region_level_badge_premium">PREMIUM</string>
     <string name="region_level_badge_unavailable">UNAVAILABLE</string>

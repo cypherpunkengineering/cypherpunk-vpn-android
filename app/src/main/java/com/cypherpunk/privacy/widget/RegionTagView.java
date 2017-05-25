@@ -2,64 +2,51 @@ package com.cypherpunk.privacy.widget;
 
 import android.content.Context;
 import android.graphics.Color;
-import android.support.annotation.ColorInt;
-import android.support.annotation.DrawableRes;
-import android.support.annotation.StringRes;
+import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.AppCompatTextView;
 import android.util.AttributeSet;
-import android.widget.TextView;
 
 import com.cypherpunk.privacy.R;
+import com.cypherpunk.privacy.domain.model.vpn.Level;
 import com.cypherpunk.privacy.ui.common.FontCache;
 
-
-public class RegionTagView extends TextView {
-
-    private static final String PREMIUM = "premium";
-    private static final String DEVELOPER = "developer";
+public class RegionTagView extends AppCompatTextView {
 
     public RegionTagView(Context context) {
-        this(context, null);
+        super(context);
     }
 
     public RegionTagView(Context context, AttributeSet attrs) {
-        this(context, attrs, 0);
+        super(context, attrs);
     }
 
     public RegionTagView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
     }
 
-    public void setRegionLevel(String level) {
-        setVisibility(level.equals(PREMIUM) || level.equals(DEVELOPER) ? VISIBLE : INVISIBLE);
-        if (level.equals(PREMIUM) || level.equals(DEVELOPER)) {
-            @StringRes int text = 0;
-            @DrawableRes int background = 0;
-            @ColorInt int color = 0;
-            switch (level) {
-                case PREMIUM:
-                    background = R.drawable.region_badge_premium;
-                    text = R.string.region_level_badge_premium;
-                    color = ContextCompat.getColor(getContext(), R.color.region_badge_premium_text);
-                    break;
-                case DEVELOPER:
-                    background = R.drawable.region_badge_dev;
-                    text = R.string.region_level_badge_dev;
-                    color = Color.WHITE;
-                    break;
-            }
-            setText(text);
-            setBackgroundResource(background);
-            setTextColor(color);
-            setTypeface(FontCache.getDosisSemiBold(getContext()));
-        }
-    }
+    public void setLevel(@NonNull Level level) {
+        switch (level) {
+            case PREMIUM:
+                setText(R.string.region_level_badge_premium);
+                setBackgroundResource(R.drawable.region_badge_premium);
+                setTextColor(ContextCompat.getColor(getContext(), R.color.region_badge_premium_text));
+                setTypeface(FontCache.getDosisSemiBold(getContext()));
+                break;
 
-    public void setUnavailable() {
-        setVisibility(VISIBLE);
-        setText(R.string.region_level_badge_unavailable);
-        setTypeface(FontCache.getDosisRegular(getContext()));
-        setTextColor(ContextCompat.getColor(getContext(), R.color.region_disabled_text));
-        setBackgroundDrawable(null);
+            case DEVELOPER:
+                setText(R.string.region_level_badge_dev);
+                setBackgroundResource(R.drawable.region_badge_dev);
+                setTextColor(Color.WHITE);
+                setTypeface(FontCache.getDosisSemiBold(getContext()));
+                break;
+
+            case UNAVAILABLE:
+                setText(R.string.region_level_badge_unavailable);
+                setBackgroundResource(0);
+                setTextColor(ContextCompat.getColor(getContext(), R.color.region_disabled_text));
+                setTypeface(FontCache.getDosisRegular(getContext()));
+                break;
+        }
     }
 }

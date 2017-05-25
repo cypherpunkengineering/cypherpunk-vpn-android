@@ -156,7 +156,7 @@ public class MainActivity extends AppCompatActivity
         VpnStatus.addStateListener(this);
 
         FragmentTransaction fm = getSupportFragmentManager().beginTransaction();
-        regionFragment = new RegionFragment();
+        regionFragment = RegionFragment.newInstance();
         fm.add(R.id.region_container, regionFragment);
         fm.commit();
 
