@@ -11,8 +11,8 @@ import android.util.AttributeSet;
 import android.widget.TextView;
 
 import com.cypherpunk.privacy.R;
-import com.cypherpunk.privacy.domain.model.Account;
-import com.cypherpunk.privacy.domain.model.Subscription;
+import com.cypherpunk.privacy.domain.model.account.Account;
+import com.cypherpunk.privacy.domain.model.account.Subscription;
 
 import java.util.Date;
 
@@ -103,10 +103,10 @@ public class AccountPreference extends Preference {
         notifyChanged();
     }
 
-    void setInfo(@Nullable String username, @NonNull Account.Type type, @NonNull Subscription plan) {
+    void setInfo(@Nullable String username, @NonNull Account.Type type, @NonNull Subscription subscription) {
         this.username = username;
         this.type = type;
-        this.subscription = plan;
+        this.subscription = subscription;
         notifyChanged();
     }
 }

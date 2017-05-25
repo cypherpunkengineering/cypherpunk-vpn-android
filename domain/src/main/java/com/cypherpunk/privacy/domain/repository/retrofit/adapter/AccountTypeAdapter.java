@@ -1,6 +1,6 @@
 package com.cypherpunk.privacy.domain.repository.retrofit.adapter;
 
-import com.cypherpunk.privacy.domain.model.Account;
+import com.cypherpunk.privacy.domain.model.account.Account;
 import com.squareup.moshi.FromJson;
 import com.squareup.moshi.ToJson;
 

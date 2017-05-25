@@ -18,13 +18,11 @@ import com.cypherpunk.privacy.billing.IabHelper;
 import com.cypherpunk.privacy.billing.IabResult;
 import com.cypherpunk.privacy.billing.Inventory;
 import com.cypherpunk.privacy.billing.Purchase;
-import com.cypherpunk.privacy.domain.repository.NetworkRepository;
-import com.cypherpunk.privacy.domain.repository.retrofit.CypherpunkService;
-import com.cypherpunk.privacy.domain.model.Subscription;
-import com.cypherpunk.privacy.domain.repository.retrofit.requst.UpgradeAccountRequest;
-import com.cypherpunk.privacy.domain.repository.retrofit.result.StatusResult;
 import com.cypherpunk.privacy.databinding.ActivityUpgradePlanBinding;
-import com.cypherpunk.privacy.model.UserSetting;
+import com.cypherpunk.privacy.domain.model.AccountSetting;
+import com.cypherpunk.privacy.domain.model.account.Subscription;
+import com.cypherpunk.privacy.domain.repository.NetworkRepository;
+import com.cypherpunk.privacy.domain.repository.retrofit.result.StatusResult;
 import com.cypherpunk.privacy.widget.ProgressFullScreenDialog;
 
 import java.util.Collections;
@@ -45,6 +43,9 @@ public class UpgradePlanActivity extends AppCompatActivity {
 
     @Inject
     NetworkRepository networkRepository;
+
+    @Inject
+    AccountSetting accountSetting;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -114,8 +115,8 @@ public class UpgradePlanActivity extends AppCompatActivity {
             }
         });
 
-        final Subscription plan = UserSetting.instance().subscriptionPlan();
-        switch (plan.renewal()) {
+        final Subscription subscription = accountSetting.subscription();
+        switch (subscription.renewal()) {
             case NONE:
                 break;
             case MONTHLY:
@@ -227,9 +228,8 @@ public class UpgradePlanActivity extends AppCompatActivity {
                 .subscribeWith(new DisposableSingleObserver<StatusResult>() {
                     @Override
                     public void onSuccess(StatusResult accountStatus) {
-                        UserSetting.instance().updateStatus(accountStatus.account.type,
-                                accountStatus.subscription.renewal,
-                                accountStatus.subscription.expiration);
+                        accountSetting.updateAccount(accountStatus.account);
+                        accountSetting.updateSubscription(accountStatus.subscription);
 
                         if (dialog != null) {
                             dialog.dismiss();
@@ -253,8 +253,8 @@ public class UpgradePlanActivity extends AppCompatActivity {
 
     @Nullable
     public List<String> getOldSkus() {
-        final Subscription plan = UserSetting.instance().subscriptionPlan();
-        switch (plan.renewal()) {
+        final Subscription subscription = accountSetting.subscription();
+        switch (subscription.renewal()) {
             case MONTHLY:
                 return Collections.singletonList(SKU_MONTHLY);
             case ANNUALLY:

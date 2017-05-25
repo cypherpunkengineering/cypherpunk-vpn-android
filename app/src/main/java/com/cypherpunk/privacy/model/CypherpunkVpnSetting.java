@@ -6,19 +6,21 @@ import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
 import com.cypherpunk.privacy.R;
-import com.cypherpunk.privacy.domain.model.InternetKillSwitch;
-import com.cypherpunk.privacy.domain.model.RemotePort;
-import com.cypherpunk.privacy.domain.model.TunnelMode;
 import com.cypherpunk.privacy.domain.model.VpnSetting;
+import com.cypherpunk.privacy.domain.model.vpn.InternetKillSwitch;
+import com.cypherpunk.privacy.domain.model.vpn.RemotePort;
+import com.cypherpunk.privacy.domain.model.vpn.TunnelMode;
 
 import java.util.Arrays;
 import java.util.List;
 
-public class CypherpunkSetting implements VpnSetting {
+/**
+ * implementation of VpnSetting using SharedPreferences
+ */
+public class CypherpunkVpnSetting implements VpnSetting {
 
     private static final String PREF_NAME = "cypherpunk_setting";
 
-    private final SharedPreferences pref;
     private final String KEY_AUTO_SECURE_UNTRUSTED;
     private final String KEY_AUTO_SECURE_OTHER;
     private final String KEY_AUTO_CONNECT;
@@ -34,7 +36,9 @@ public class CypherpunkSetting implements VpnSetting {
     private final String KEY_CYPHERPLAY;
     private final String KEY_ANALYTICS;
 
-    private CypherpunkSetting(@NonNull Context c) {
+    private final SharedPreferences pref;
+
+    public CypherpunkVpnSetting(@NonNull Context c) {
         pref = c.getApplicationContext().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
         KEY_AUTO_SECURE_UNTRUSTED = c.getString(R.string.setting_preference_key_auto_secure_untrusted);
         KEY_AUTO_SECURE_OTHER = c.getString(R.string.setting_preference_key_auto_secure_other);
@@ -52,7 +56,7 @@ public class CypherpunkSetting implements VpnSetting {
         KEY_ANALYTICS = c.getString(R.string.setting_preference_key_analytics);
     }
 
-    //
+    // auto secure
 
     @Override
     public boolean isAutoSecureUntrusted() {
@@ -64,7 +68,7 @@ public class CypherpunkSetting implements VpnSetting {
         pref.edit().putBoolean(KEY_AUTO_SECURE_UNTRUSTED, b).apply();
     }
 
-    //
+    // other auto secure
 
     @Override
     public boolean isAutoSecureOther() {
@@ -76,7 +80,7 @@ public class CypherpunkSetting implements VpnSetting {
         pref.edit().putBoolean(KEY_AUTO_SECURE_OTHER, b).apply();
     }
 
-    //
+    // auto connect, block malware, block ads
 
     @Override
     public boolean isAutoConnect() {
@@ -93,7 +97,7 @@ public class CypherpunkSetting implements VpnSetting {
         return pref.getBoolean(KEY_BLOCK_ADS, false);
     }
 
-    //
+    // internet kill switch
 
     @NonNull
     @Override
@@ -106,6 +110,8 @@ public class CypherpunkSetting implements VpnSetting {
         pref.edit().putString(KEY_INTERNET_KILL_SWITCH, internetKillSwitch.value()).apply();
     }
 
+    // tunnel mode
+
     @NonNull
     @Override
     public TunnelMode tunnelMode() {
@@ -116,6 +122,8 @@ public class CypherpunkSetting implements VpnSetting {
     public void updateTunnelMode(@NonNull TunnelMode tunnelMode) {
         pref.edit().putString(KEY_TUNNEL_MODE, tunnelMode.name()).apply();
     }
+
+    // remote port
 
     @NonNull
     @Override
@@ -133,6 +141,8 @@ public class CypherpunkSetting implements VpnSetting {
                 .apply();
     }
 
+    // except app list, allow lan traffic
+
     @NonNull
     @Override
     public List<String> exceptAppList() {
@@ -149,6 +159,8 @@ public class CypherpunkSetting implements VpnSetting {
         return pref.getBoolean(KEY_ALLOW_LAN_TRAFFIC, true);
     }
 
+    // region id
+
     @NonNull
     @Override
     public String regionId() {
@@ -160,6 +172,8 @@ public class CypherpunkSetting implements VpnSetting {
         pref.edit().putString(KEY_REGION_ID, regionId).apply();
     }
 
+    // cycpherplay
+
     @Override
     public boolean isCypherplayEnabled() {
         return pref.getBoolean(KEY_CYPHERPLAY, false);
@@ -170,6 +184,8 @@ public class CypherpunkSetting implements VpnSetting {
         pref.edit().putBoolean(KEY_CYPHERPLAY, b).apply();
     }
 
+    // analytics
+
     @Override
     public boolean isAnalyticsEnabled() {
         return pref.getBoolean(KEY_ANALYTICS, false);
@@ -178,23 +194,5 @@ public class CypherpunkSetting implements VpnSetting {
     @Override
     public void updateAnalyticsEnabled(boolean b) {
         pref.edit().putBoolean(KEY_ANALYTICS, b).apply();
-    }
-
-    //
-    //
-    //
-
-    private static CypherpunkSetting instance;
-
-    public static void init(@NonNull Context context) {
-        instance = new CypherpunkSetting(context);
-    }
-
-    @NonNull
-    public static VpnSetting vpnSetting() {
-        if (instance == null) {
-            throw new IllegalStateException("call init() first");
-        }
-        return instance;
     }
 }

@@ -4,9 +4,10 @@ import android.app.Application;
 import android.support.annotation.VisibleForTesting;
 
 import com.cypherpunk.privacy.dagger.AppComponent;
+import com.cypherpunk.privacy.dagger.ClientModule;
 import com.cypherpunk.privacy.dagger.DaggerAppComponent;
-import com.cypherpunk.privacy.model.CypherpunkSetting;
-import com.cypherpunk.privacy.model.UserSetting;
+import com.cypherpunk.privacy.dagger.RealmModule;
+import com.cypherpunk.privacy.dagger.SettingModule;
 import com.orhanobut.hawk.Hawk;
 import com.orhanobut.hawk.HawkBuilder;
 
@@ -27,10 +28,11 @@ public class CypherpunkApplication extends Application {
         //VpnStatus.initLogCache(getApplicationContext().getCacheDir());
 
         Realm.init(this);
-        appComponent = DaggerAppComponent.create();
-
-        CypherpunkSetting.init(this);
-        UserSetting.init(this);
+        appComponent = DaggerAppComponent.builder()
+                .clientModule(new ClientModule())
+                .realmModule(new RealmModule())
+                .settingModule(new SettingModule(this))
+                .build();
 
         //DeployGate.install(this);
 

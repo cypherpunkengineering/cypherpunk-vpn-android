@@ -1,4 +1,4 @@
-package com.cypherpunk.privacy.domain.model;
+package com.cypherpunk.privacy.domain.model.account;
 
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -11,9 +11,9 @@ import java.util.Date;
 public class Subscription {
 
     @NonNull
-    public final Renewal renewal;
+    private final Renewal renewal;
     @Nullable
-    public final Date expiration;
+    private final Date expiration;
 
     public Subscription(@NonNull Renewal renewal, @Nullable Date expiration) {
         this.renewal = renewal;

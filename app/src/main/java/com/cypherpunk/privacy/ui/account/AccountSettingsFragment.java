@@ -13,10 +13,11 @@ import android.support.v7.preference.PreferenceFragmentCompat;
 
 import com.cypherpunk.privacy.CypherpunkApplication;
 import com.cypherpunk.privacy.R;
-import com.cypherpunk.privacy.domain.model.Subscription;
+import com.cypherpunk.privacy.domain.model.AccountSetting;
+import com.cypherpunk.privacy.domain.model.VpnSetting;
+import com.cypherpunk.privacy.domain.model.account.Subscription;
 import com.cypherpunk.privacy.domain.repository.NetworkRepository;
 import com.cypherpunk.privacy.domain.repository.retrofit.result.StatusResult;
-import com.cypherpunk.privacy.model.UserSetting;
 import com.cypherpunk.privacy.ui.common.Urls;
 import com.cypherpunk.privacy.ui.startup.IdentifyEmailActivity;
 import com.cypherpunk.privacy.vpn.CypherpunkVPN;
@@ -43,6 +44,12 @@ public class AccountSettingsFragment extends PreferenceFragmentCompat {
     @Inject
     NetworkRepository networkRepository;
 
+    @Inject
+    VpnSetting vpnSetting;
+
+    @Inject
+    AccountSetting accountSetting;
+
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
@@ -57,16 +64,14 @@ public class AccountSettingsFragment extends PreferenceFragmentCompat {
         CypherpunkApplication.instance.getAppComponent().inject(this);
 
         //  set plan
-        final UserSetting userSetting = UserSetting.instance();
-
-        final Subscription plan = userSetting.subscriptionPlan();
+        final Subscription subscription = accountSetting.subscription();
 
         accountPreference = (AccountPreference) findPreference(getString(R.string.account_preference_account));
-        accountPreference.setInfo(userSetting.mail(), userSetting.accountType(), plan);
+        accountPreference.setInfo(accountSetting.email(), accountSetting.accountType(), subscription);
 
         getStatus();
 
-        final Subscription.Renewal renewal = plan.renewal();
+        final Subscription.Renewal renewal = subscription.renewal();
 
         final boolean upgradeVisible = renewal != Subscription.Renewal.ANNUALLY
                 && renewal != Subscription.Renewal.FOREVER
@@ -83,7 +88,7 @@ public class AccountSettingsFragment extends PreferenceFragmentCompat {
 
         // email
         final Preference email = findPreference(getString(R.string.account_preference_edit_email));
-        email.setSummary(userSetting.mail());
+        email.setSummary(accountSetting.email());
         email.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
@@ -143,8 +148,8 @@ public class AccountSettingsFragment extends PreferenceFragmentCompat {
                 .setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
                     @Override
                     public boolean onPreferenceClick(Preference preference) {
-                        CypherpunkVPN.getInstance().stop();
-                        UserSetting.instance().clear();
+                        CypherpunkVPN.getInstance().stop(vpnSetting);
+                        accountSetting.clear();
                         TaskStackBuilder.create(getContext())
                                 .addNextIntent(IdentifyEmailActivity.createIntent(getContext()))
                                 .startActivities();
@@ -164,15 +169,14 @@ public class AccountSettingsFragment extends PreferenceFragmentCompat {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == Activity.RESULT_OK) {
-            final UserSetting userSetting = UserSetting.instance();
             switch (requestCode) {
                 case REQUEST_CODE_UPGRADE_PLAN: {
-                    final Subscription plan = userSetting.subscriptionPlan();
+                    final Subscription subscription = accountSetting.subscription();
 
-                    accountPreference.setInfo(userSetting.mail(), userSetting.accountType(),
-                            userSetting.subscriptionPlan());
+                    accountPreference.setInfo(accountSetting.email(), accountSetting.accountType(),
+                            subscription);
 
-                    final Subscription.Renewal renewal = plan.renewal();
+                    final Subscription.Renewal renewal = subscription.renewal();
 
                     final boolean upgradeVisible = renewal != Subscription.Renewal.ANNUALLY
                             && renewal != Subscription.Renewal.FOREVER
@@ -181,7 +185,7 @@ public class AccountSettingsFragment extends PreferenceFragmentCompat {
                     break;
                 }
                 case REQUEST_CODE_EDIT_EMAIL: {
-                    accountPreference.setUsernameText(userSetting.mail());
+                    accountPreference.setUsernameText(accountSetting.email());
                     break;
                 }
             }
@@ -195,13 +199,11 @@ public class AccountSettingsFragment extends PreferenceFragmentCompat {
                 .subscribeWith(new DisposableSingleObserver<StatusResult>() {
                     @Override
                     public void onSuccess(StatusResult accountStatus) {
-                        final UserSetting userSetting = UserSetting.instance();
-                        userSetting.updateStatus(accountStatus.account.type,
-                                accountStatus.subscription.renewal,
-                                accountStatus.subscription.expiration);
+                        accountSetting.updateAccount(accountStatus.account);
+                        accountSetting.updateSubscription(accountStatus.subscription);
 
-                        accountPreference.setInfo(userSetting.mail(), accountStatus.account.type,
-                                userSetting.subscriptionPlan());
+                        accountPreference.setInfo(accountSetting.email(), accountStatus.account.type(),
+                                accountStatus.subscription);
                     }
 
                     @Override

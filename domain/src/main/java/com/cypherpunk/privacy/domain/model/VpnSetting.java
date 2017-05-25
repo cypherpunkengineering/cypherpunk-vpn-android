@@ -2,6 +2,10 @@ package com.cypherpunk.privacy.domain.model;
 
 import android.support.annotation.NonNull;
 
+import com.cypherpunk.privacy.domain.model.vpn.InternetKillSwitch;
+import com.cypherpunk.privacy.domain.model.vpn.RemotePort;
+import com.cypherpunk.privacy.domain.model.vpn.TunnelMode;
+
 import java.util.List;
 
 /**

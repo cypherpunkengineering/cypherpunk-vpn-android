@@ -30,8 +30,10 @@ import android.view.Window;
 import android.view.animation.Animation;
 import android.widget.CompoundButton;
 
+import com.cypherpunk.privacy.CypherpunkApplication;
 import com.cypherpunk.privacy.R;
-import com.cypherpunk.privacy.model.UserSetting;
+import com.cypherpunk.privacy.domain.model.AccountSetting;
+import com.cypherpunk.privacy.domain.model.VpnSetting;
 import com.cypherpunk.privacy.ui.account.AccountSettingsFragment;
 import com.cypherpunk.privacy.ui.region.RegionFragment;
 import com.cypherpunk.privacy.ui.settings.SettingConnectDialogFragment;
@@ -44,6 +46,8 @@ import com.cypherpunk.privacy.widget.ConnectionStatusView;
 import com.cypherpunk.privacy.widget.VpnFlatButton;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
+
+import javax.inject.Inject;
 
 import de.blinkt.openvpn.core.VpnStatus;
 import timber.log.Timber;
@@ -62,16 +66,23 @@ public class MainActivity extends AppCompatActivity
 
     private FirebaseAnalytics mFirebaseAnalytics;
 
+    @Inject
+    VpnSetting vpnSetting;
+
+    @Inject
+    AccountSetting accountSetting;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        CypherpunkApplication.instance.getAppComponent().inject(this);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             findViewById(android.R.id.content).setSystemUiVisibility(
                     View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
         }
 
-        if (!UserSetting.instance().isSignedIn()) {
+        if (!accountSetting.isSignedIn()) {
             TaskStackBuilder.create(this)
                     .addNextIntent(IdentifyEmailActivity.createIntent(this))
                     .startActivities();
@@ -251,7 +262,7 @@ public class MainActivity extends AppCompatActivity
             binding.connectionStatus.setStatus(ConnectionStatusView.CONNECTING);
             binding.connectionButton.setStatus(VpnFlatButton.CONNECTING);
             binding.connectingCancelButton.setVisibility(View.VISIBLE);
-            CypherpunkVPN.getInstance().start(getApplicationContext(), getBaseContext());
+            CypherpunkVPN.getInstance().start(getApplicationContext(), getBaseContext(), vpnSetting, accountSetting);
         }
     }
 
@@ -260,7 +271,7 @@ public class MainActivity extends AppCompatActivity
         if (status.isDisconnected()) {
             return;
         }
-        CypherpunkVPN.getInstance().stop();
+        CypherpunkVPN.getInstance().stop(vpnSetting);
     }
 
     private void toggleVpn() {

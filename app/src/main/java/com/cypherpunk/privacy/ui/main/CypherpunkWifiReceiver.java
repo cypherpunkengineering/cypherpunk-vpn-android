@@ -6,11 +6,14 @@ import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.wifi.WifiManager;
+import android.support.annotation.NonNull;
+import android.text.TextUtils;
 
 import com.cypherpunk.privacy.CypherpunkApplication;
 import com.cypherpunk.privacy.domain.model.VpnSetting;
-import com.cypherpunk.privacy.model.CypherpunkSetting;
 import com.cypherpunk.privacy.model.Network;
+
+import javax.inject.Inject;
 
 import io.realm.Realm;
 import io.realm.RealmResults;
@@ -23,8 +26,15 @@ import timber.log.Timber;
 public class CypherpunkWifiReceiver extends BroadcastReceiver {
     private static String currentSSID = null;
 
+    @Inject
+    Realm realm;
+
+    @Inject
+    VpnSetting vpnSetting;
+
     @Override
     public void onReceive(Context context, Intent intent) {
+        CypherpunkApplication.instance.getAppComponent().inject(this);
 
         NetworkInfo networkInfo = intent.getParcelableExtra(WifiManager.EXTRA_NETWORK_INFO);
 
@@ -55,7 +65,6 @@ public class CypherpunkWifiReceiver extends BroadcastReceiver {
 
         boolean trustedNetwork = isWifiTrusted(ssid);
 
-        final VpnSetting vpnSetting = CypherpunkSetting.vpnSetting();
         if (vpnSetting.isAutoSecureUntrusted()) {
             if (trustedNetwork)
                 startIntent(context, CypherpunkLaunchVPN.NETWORK_TRUSTED);
@@ -67,7 +76,6 @@ public class CypherpunkWifiReceiver extends BroadcastReceiver {
     private void onWifiDisconnected(Context context) {
         Timber.d("onWiFiDisconnected()");
 
-        final VpnSetting vpnSetting = CypherpunkSetting.vpnSetting();
         if (vpnSetting.isAutoSecureOther()) {
             startIntent(context, CypherpunkLaunchVPN.NETWORK_UNTRUSTED);
         }

@@ -2,7 +2,7 @@ package com.cypherpunk.privacy.domain.repository;
 
 import android.support.annotation.NonNull;
 
-import com.cypherpunk.privacy.domain.model.Account;
+import com.cypherpunk.privacy.domain.model.account.Account;
 import com.cypherpunk.privacy.domain.repository.retrofit.result.RegionResult;
 import com.cypherpunk.privacy.domain.repository.retrofit.result.StatusResult;
 

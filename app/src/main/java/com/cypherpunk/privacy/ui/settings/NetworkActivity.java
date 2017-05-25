@@ -23,12 +23,13 @@ import android.widget.TextView;
 import com.cypherpunk.privacy.CypherpunkApplication;
 import com.cypherpunk.privacy.R;
 import com.cypherpunk.privacy.domain.model.VpnSetting;
-import com.cypherpunk.privacy.model.CypherpunkSetting;
 import com.cypherpunk.privacy.model.Network;
 import com.cypherpunk.privacy.ui.common.DividerDecoration;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -44,11 +45,16 @@ public class NetworkActivity extends AppCompatActivity {
 
     private Realm realm;
 
+    @Inject
+    VpnSetting vpnSetting;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_network);
         ButterKnife.bind(this);
+
+        CypherpunkApplication.instance.getAppComponent().inject(this);
 
         if (!getResources().getBoolean(R.bool.is_tablet)) {
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
@@ -87,8 +93,6 @@ public class NetworkActivity extends AppCompatActivity {
 
         final RealmResults<Network> networks = realm.where(Network.class)
                 .findAll();
-
-        final VpnSetting vpnSetting = CypherpunkSetting.vpnSetting();
 
         final View header = LayoutInflater.from(this).inflate(R.layout.header_item_network, recyclerView, false);
         {

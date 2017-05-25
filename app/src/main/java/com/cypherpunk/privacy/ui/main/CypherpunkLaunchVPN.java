@@ -6,11 +6,13 @@ import android.content.Intent;
 import android.net.VpnService;
 import android.os.Bundle;
 
+import com.cypherpunk.privacy.CypherpunkApplication;
+import com.cypherpunk.privacy.domain.model.AccountSetting;
 import com.cypherpunk.privacy.domain.model.VpnSetting;
-import com.cypherpunk.privacy.model.CypherpunkSetting;
-import com.cypherpunk.privacy.model.UserSetting;
 import com.cypherpunk.privacy.vpn.CypherpunkVPN;
 import com.cypherpunk.privacy.vpn.CypherpunkVpnStatus;
+
+import javax.inject.Inject;
 
 import timber.log.Timber;
 
@@ -25,10 +27,19 @@ public class CypherpunkLaunchVPN extends Activity {
 
     private static final int START_VPN_PROFILE = 70;
 
+    @Inject
+    VpnSetting vpnSetting;
+
+    @Inject
+    AccountSetting accountSetting;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Timber.d("onCreate()");
         super.onCreate(savedInstanceState);
+
+        CypherpunkApplication.instance.getAppComponent().inject(this);
+
         Intent intent = getIntent();
         handleIntent(intent);
     }
@@ -51,7 +62,7 @@ public class CypherpunkLaunchVPN extends Activity {
         Timber.d("handleIntent()");
 
         // check if user is signed in
-        if (!UserSetting.instance().isSignedIn() || intent == null) {
+        if (!accountSetting.isSignedIn() || intent == null) {
             Timber.d("user not logged in, ignoring intent");
             setIntent(null);
             finish();
@@ -60,9 +71,6 @@ public class CypherpunkLaunchVPN extends Activity {
 
         // called from CypherpunkBootReceiver
         if (intent.getBooleanExtra(AUTO_START, false)) {
-            // get user settings
-            final VpnSetting vpnSetting = CypherpunkSetting.vpnSetting();
-
             // immediately exit unless user setting for auto start is enabled
             if (!vpnSetting.isAutoConnect()) {
                 finish();
@@ -78,7 +86,7 @@ public class CypherpunkLaunchVPN extends Activity {
 
             // either connecting or already connected, stop vpn and finish activity
             if (!status.isDisconnected()) {
-                CypherpunkVPN.getInstance().stop();
+                CypherpunkVPN.getInstance().stop(vpnSetting);
                 finish();
                 return;
             }
@@ -86,7 +94,7 @@ public class CypherpunkLaunchVPN extends Activity {
             // prepare vpn service, wait for callback, then connect
             prepareVpnService();
         } else if (intent.getBooleanExtra(NETWORK_TRUSTED, false)) {
-            CypherpunkVPN.getInstance().stop();
+            CypherpunkVPN.getInstance().stop(vpnSetting);
             finish();
         } else if (intent.getBooleanExtra(NETWORK_UNTRUSTED, false)) {
             prepareVpnService();
@@ -124,7 +132,7 @@ public class CypherpunkLaunchVPN extends Activity {
         switch (requestCode) {
             case START_VPN_PROFILE:
                 if (resultCode == RESULT_OK)
-                    CypherpunkVPN.getInstance().start(getApplicationContext(), getBaseContext());
+                    CypherpunkVPN.getInstance().start(getApplicationContext(), getBaseContext(), vpnSetting, accountSetting);
                 finish();
                 break;
         }
