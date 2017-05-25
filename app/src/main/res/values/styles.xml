@@ -23,6 +23,10 @@
         <item name="windowNoTitle">true</item>
     </style>
 
+    <style name="CypherPunk.FullScreenProgressDialog">
+        <item name="android:windowBackground">@drawable/window_background_transparent</item>
+    </style>
+
     <style name="ButtonTheme">
         <item name="colorAccent">@color/nice_blue</item>
     </style>
@@ -84,10 +88,6 @@
 
     <style name="AppTheme.RadioButton">
         <item name="colorButtonNormal">@color/radio_button</item>
-    </style>
-
-    <style name="AppTheme.FullScreenProgressDialog">
-        <item name="android:windowBackground">@drawable/window_background_transparent</item>
     </style>
 
     <style name="AppTheme.Progress">

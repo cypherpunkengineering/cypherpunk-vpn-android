@@ -23,7 +23,7 @@ import com.cypherpunk.privacy.domain.model.AccountSetting;
 import com.cypherpunk.privacy.domain.model.account.Subscription;
 import com.cypherpunk.privacy.domain.repository.NetworkRepository;
 import com.cypherpunk.privacy.domain.repository.retrofit.result.StatusResult;
-import com.cypherpunk.privacy.widget.ProgressFullScreenDialog;
+import com.cypherpunk.privacy.ui.common.FullScreenProgressDialog;
 
 import java.util.Collections;
 import java.util.List;
@@ -38,7 +38,7 @@ import io.reactivex.schedulers.Schedulers;
 
 public class UpgradePlanActivity extends AppCompatActivity {
 
-    private ProgressFullScreenDialog dialog;
+    private FullScreenProgressDialog dialog;
     private Disposable disposable = Disposables.empty();
 
     @Inject
@@ -218,7 +218,7 @@ public class UpgradePlanActivity extends AppCompatActivity {
             dialog.dismiss();
         }
 
-        dialog = new ProgressFullScreenDialog(this);
+        dialog = new FullScreenProgressDialog(this);
         dialog.setCancelable(false);
 
         disposable = networkRepository

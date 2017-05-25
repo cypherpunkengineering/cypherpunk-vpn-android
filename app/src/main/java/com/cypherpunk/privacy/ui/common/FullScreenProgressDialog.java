@@ -11,7 +11,7 @@ import com.cypherpunk.privacy.R;
 public class FullScreenProgressDialog extends AppCompatDialog {
 
     public FullScreenProgressDialog(Context context) {
-        super(context, R.style.AppTheme_FullScreenProgressDialog);
+        super(context, R.style.CypherPunk_FullScreenProgressDialog);
         setContentView(R.layout.dialog_progress);
     }
 }
