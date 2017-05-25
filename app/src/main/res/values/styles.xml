@@ -3,8 +3,8 @@
 
     <style name="CypherPunk" parent="Theme.AppCompat">
         <item name="android:windowBackground">@drawable/window_background</item>
-        <item name="colorPrimary">@color/dark_background</item>
-        <item name="colorPrimaryDark">@color/title_bar_background</item>
+        <item name="colorPrimary">@color/dark_black</item>
+        <item name="colorPrimaryDark">@color/dark_black</item>
         <item name="colorAccent">@color/golden_yellow</item>
     </style>
 
@@ -15,6 +15,8 @@
 
     <style name="CypherPunk.DialogWhenLarge" parent="Theme.AppCompat.DialogWhenLarge">
         <item name="android:windowBackground">@drawable/window_background</item>
+        <item name="colorPrimary">@color/dark_black</item>
+        <item name="colorPrimaryDark">@color/dark_black</item>
         <item name="colorAccent">@color/golden_yellow</item>
     </style>
 

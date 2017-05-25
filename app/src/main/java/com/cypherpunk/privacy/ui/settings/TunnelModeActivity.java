@@ -18,8 +18,8 @@ import android.widget.TextView;
 
 import com.cypherpunk.privacy.CypherpunkApplication;
 import com.cypherpunk.privacy.R;
-import com.cypherpunk.privacy.domain.model.vpn.TunnelMode;
 import com.cypherpunk.privacy.domain.model.VpnSetting;
+import com.cypherpunk.privacy.domain.model.vpn.TunnelMode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -73,6 +73,10 @@ public class TunnelModeActivity extends AppCompatActivity {
             final Checkable checkable = ButterKnife.findById(view, R.id.checkable);
             checkableList.add(checkable);
 
+            if (mode == tunnelMode) {
+                checkable.setChecked(true);
+            }
+
             final TextView nameView = ButterKnife.findById(view, R.id.title);
             nameView.setText(getTitleFor(mode));
 
@@ -101,12 +105,6 @@ public class TunnelModeActivity extends AppCompatActivity {
                     }
                 }
             });
-
-            container.addView(inflater.inflate(R.layout.divider, container, false));
-
-            if (mode == tunnelMode) {
-                checkable.setChecked(true);
-            }
         }
     }
 

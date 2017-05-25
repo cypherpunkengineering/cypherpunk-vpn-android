@@ -17,8 +17,8 @@ import android.widget.TextView;
 
 import com.cypherpunk.privacy.CypherpunkApplication;
 import com.cypherpunk.privacy.R;
-import com.cypherpunk.privacy.domain.model.vpn.RemotePort;
 import com.cypherpunk.privacy.domain.model.VpnSetting;
+import com.cypherpunk.privacy.domain.model.vpn.RemotePort;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -66,12 +66,13 @@ public class RemotePortActivity extends AppCompatActivity {
         final RemotePort remotePort = vpnSetting.remotePort();
 
         for (final RemotePort.Type type : RemotePort.Type.values()) {
-            final LinearLayout ll = (LinearLayout) inflater.inflate(R.layout.remote_port_category,
-                    container, false);
-            container.addView(ll);
+            final View group = inflater.inflate(R.layout.remote_port_category, container, false);
+            container.addView(group);
 
-            final TextView textView = ButterKnife.findById(ll, R.id.category_name);
+            final TextView textView = ButterKnife.findById(group, R.id.category_name);
             textView.setText(type.name());
+
+            final LinearLayout ll = ButterKnife.findById(group, R.id.group);
 
             for (final RemotePort.Port port : RemotePort.Port.values()) {
                 final View view = inflater.inflate(R.layout.remote_port_item, ll, false);
@@ -79,6 +80,10 @@ public class RemotePortActivity extends AppCompatActivity {
 
                 final Checkable checkable = ButterKnife.findById(view, R.id.checkable);
                 checkableList.add(checkable);
+
+                if (remotePort.type() == type && remotePort.port() == port) {
+                    checkable.setChecked(true);
+                }
 
                 final TextView portView = ButterKnife.findById(view, R.id.text);
                 portView.setText(String.valueOf(port.value()));
@@ -96,12 +101,6 @@ public class RemotePortActivity extends AppCompatActivity {
                         }
                     }
                 });
-
-                ll.addView(inflater.inflate(R.layout.divider, ll, false));
-
-                if (remotePort.type() == type && remotePort.port() == port) {
-                    checkable.setChecked(true);
-                }
             }
         }
     }

@@ -20,4 +20,13 @@
         app:fontName="DosisMedium"
         tools:text="@string/remote_port_udp"/>
 
+    <LinearLayout
+        android:id="@+id/group"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:divider="@drawable/divider"
+        android:orientation="vertical"
+        android:showDividers="middle"
+        tools:ignore="UselessLeaf"/>
+
 </LinearLayout>

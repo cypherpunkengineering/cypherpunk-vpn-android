@@ -105,40 +105,40 @@
         <!-- cypherpunk settings -->
         <activity
             android:name=".ui.settings.NetworkActivity"
-            android:label=""
+            android:label="@string/title_activity_network"
             android:theme="@style/CypherPunk.DialogWhenLarge.NoActionBar"/>
         <activity
             android:name=".ui.settings.InternetKillSwitchActivity"
-            android:label=""
+            android:label="@string/title_activity_internet_kill_switch"
             android:theme="@style/CypherPunk.DialogWhenLarge.NoActionBar"/>
         <activity
             android:name=".ui.settings.TunnelModeActivity"
-            android:label=""
+            android:label="@string/title_activity_tunnel_mode"
             android:theme="@style/CypherPunk.DialogWhenLarge.NoActionBar"/>
         <activity
             android:name=".ui.settings.RemotePortActivity"
-            android:label=""
+            android:label="@string/title_activity_remote_port"
             android:theme="@style/CypherPunk.DialogWhenLarge.NoActionBar"/>
         <activity
             android:name=".ui.settings.SplitTunnelActivity"
-            android:label=""
+            android:label="@string/title_activity_split_tunnel"
             android:theme="@style/CypherPunk.DialogWhenLarge.NoActionBar"/>
 
         <activity
             android:name=".ui.account.ShareActivity"
-            android:label=""
+            android:label="@string/title_activity_share"
             android:theme="@style/CypherPunk.NoActionBar"/>
         <activity
             android:name=".ui.account.EditEmailActivity"
-            android:label=""
+            android:label="@string/title_activity_edit_email"
             android:theme="@style/CypherPunk.DialogWhenLarge.NoActionBar"/>
         <activity
             android:name=".ui.account.EditPasswordActivity"
-            android:label=""
+            android:label="@string/title_activity_edit_password"
             android:theme="@style/CypherPunk.DialogWhenLarge.NoActionBar"/>
         <activity
             android:name=".ui.account.UpgradePlanActivity"
-            android:label=""
+            android:label="@string/title_activity_upgrade_plan"
             android:theme="@style/CypherPunk.DialogWhenLarge.NoActionBar"/>
     </application>
 
