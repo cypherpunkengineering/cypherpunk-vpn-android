@@ -3,7 +3,6 @@ package com.cypherpunk.privacy.ui.main;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.res.Resources;
-import android.databinding.DataBindingUtil;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.net.VpnService;
@@ -11,11 +10,13 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.TaskStackBuilder;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.ActionMenuView;
+import android.support.v7.widget.Toolbar;
 import android.telephony.TelephonyManager;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
@@ -29,6 +30,8 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.animation.Animation;
 import android.widget.CompoundButton;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.cypherpunk.privacy.CypherpunkApplication;
 import com.cypherpunk.privacy.R;
@@ -45,27 +48,25 @@ import com.cypherpunk.privacy.vpn.CypherpunkVpnStatus;
 import com.cypherpunk.privacy.widget.BinaryTextureView;
 import com.cypherpunk.privacy.widget.ConnectionStatusView;
 import com.cypherpunk.privacy.widget.VpnFlatButton;
-import com.google.firebase.analytics.FirebaseAnalytics;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 
 import javax.inject.Inject;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import de.blinkt.openvpn.core.VpnStatus;
 import timber.log.Timber;
 
-public class MainActivity extends AppCompatActivity
-        implements VpnStatus.StateListener,
+public class MainActivity extends AppCompatActivity implements
+        VpnStatus.StateListener,
         AskReconnectDialogFragment.ConnectDialogListener,
         RegionFragment.RegionFragmentListener {
 
     private static final int REQUEST_VPN_START = 0;
 
-    private com.cypherpunk.privacy.databinding.ActivityMainBinding binding;
     private CypherpunkVpnStatus status;
     private RegionFragment regionFragment;
     private SlidingMenu slidingMenu;
-
-    private FirebaseAnalytics mFirebaseAnalytics;
 
     @Inject
     VpnSetting vpnSetting;
@@ -76,15 +77,45 @@ public class MainActivity extends AppCompatActivity
     @Inject
     VpnServerRepository vpnServerRepository;
 
+    @BindView(R.id.container)
+    View container;
+
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
+
+    @BindView(R.id.action_menu_left)
+    ActionMenuView leftActionMenuView;
+
+    @BindView(R.id.binary_view)
+    BinaryTextureView binaryView;
+
+    @BindView(R.id.connection_status)
+    ConnectionStatusView connectionStatusView;
+
+    @BindView(R.id.region_container)
+    View regionContainer;
+
+    @BindView(R.id.connection_button)
+    VpnFlatButton connectionButton;
+
+    @BindView(R.id.connecting_cancel_button)
+    TextView connectingCancelButton;
+
+    @Nullable
+    @BindView(R.id.national_flag)
+    ImageView flagView;
+
+    @Nullable
+    @BindView(R.id.region_name)
+    TextView nameView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        CypherpunkApplication.instance.getAppComponent().inject(this);
+        setContentView(R.layout.activity_main);
+        ButterKnife.bind(this);
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            findViewById(android.R.id.content).setSystemUiVisibility(
-                    View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
-        }
+        CypherpunkApplication.instance.getAppComponent().inject(this);
 
         if (!accountSetting.isSignedIn()) {
             TaskStackBuilder.create(this)
@@ -97,16 +128,14 @@ public class MainActivity extends AppCompatActivity
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         }
 
-        // Obtain the FirebaseAnalytics instance.
-        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
-
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            findViewById(android.R.id.content).setSystemUiVisibility(
+                    View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
+        }
 
         status = CypherpunkVpnStatus.getInstance();
-        setSupportActionBar(binding.toolbar);
-        ActionBar actionBar = getSupportActionBar();
-        assert actionBar != null;
-        actionBar.setDisplayShowTitleEnabled(false);
+
+        setSupportActionBar(toolbar);
 
         slidingMenu = new SlidingMenu(this);
         slidingMenu.setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);
@@ -124,30 +153,30 @@ public class MainActivity extends AppCompatActivity
         String operatorName = getSimOperatorName();
         if (TextUtils.isEmpty(operatorName)) {
             String[] text = {Build.BRAND.toUpperCase(), Build.MODEL.toUpperCase()};
-            binding.binaryView.setText(text);
+            binaryView.setText(text);
         } else {
             String[] text = {Build.BRAND.toUpperCase(), Build.MODEL.toUpperCase(), operatorName};
-            binding.binaryView.setText(text);
+            binaryView.setText(text);
         }
 
         // showSignUpButton();
 
-        binding.connectionButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        connectionButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
                 toggleVpn();
             }
         });
-        binding.connectingCancelButton.setPaintFlags(
-                binding.connectingCancelButton.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
-        binding.connectingCancelButton.setOnClickListener(new View.OnClickListener() {
+        connectingCancelButton.setPaintFlags(
+                connectingCancelButton.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
+        connectingCancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 // cancel
                 stopVpn();
             }
         });
-        binding.actionMenuLeft.setOnMenuItemClickListener(new ActionMenuView.OnMenuItemClickListener() {
+        leftActionMenuView.setOnMenuItemClickListener(new ActionMenuView.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
                 return onOptionsItemSelected(item);
@@ -164,8 +193,11 @@ public class MainActivity extends AppCompatActivity
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.right_drawer, new TabletDrawerFragment()).commit();
         } else {
-            actionBar.setHomeButtonEnabled(true);
-            binding.toolbar.setNavigationIcon(R.drawable.account_vector);
+            final ActionBar actionBar = getSupportActionBar();
+            if (actionBar != null) {
+                actionBar.setDisplayHomeAsUpEnabled(true);
+                actionBar.setHomeAsUpIndicator(R.drawable.account_vector);
+            }
 
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.left_drawer, new AccountSettingsFragment()).commit();
@@ -178,13 +210,13 @@ public class MainActivity extends AppCompatActivity
     public void onWindowFocusChanged(boolean hasFocus) {
         super.onWindowFocusChanged(hasFocus);
         if (!getResources().getBoolean(R.bool.is_tablet)) {
-            ViewGroup.LayoutParams layoutParams = binding.regionContainer.getLayoutParams();
+            ViewGroup.LayoutParams layoutParams = regionContainer.getLayoutParams();
             layoutParams.height = getBottomContainerMinimumHeight();
-            binding.regionContainer.requestLayout();
+            regionContainer.requestLayout();
         }
 
         int statusBarHeight = getStatusBarHeight();
-        binding.container.setPadding(0, statusBarHeight, 0, 0);
+        container.setPadding(0, statusBarHeight, 0, 0);
         slidingMenu.getMenu().setPadding(0, statusBarHeight, 0, 0);
         slidingMenu.getSecondaryMenu().setPadding(0, statusBarHeight, 0, 0);
     }
@@ -234,13 +266,13 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onResume() {
         super.onResume();
-        binding.binaryView.startAnimation();
+        binaryView.startAnimation();
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        binding.binaryView.stopAnimation();
+        binaryView.stopAnimation();
     }
 
     @Override
@@ -262,10 +294,10 @@ public class MainActivity extends AppCompatActivity
         if (intent != null) {
             startActivityForResult(intent, REQUEST_VPN_START);
         } else {
-            binding.binaryView.setState(BinaryTextureView.CONNECTING);
-            binding.connectionStatus.setStatus(ConnectionStatusView.CONNECTING);
-            binding.connectionButton.setStatus(VpnFlatButton.CONNECTING);
-            binding.connectingCancelButton.setVisibility(View.VISIBLE);
+            binaryView.setState(BinaryTextureView.CONNECTING);
+            connectionStatusView.setStatus(ConnectionStatusView.CONNECTING);
+            connectionButton.setStatus(VpnFlatButton.CONNECTING);
+            connectingCancelButton.setVisibility(View.VISIBLE);
             CypherpunkVPN.getInstance().start(getApplicationContext(), getBaseContext(),
                     vpnSetting, accountSetting, vpnServerRepository);
         }
@@ -292,10 +324,10 @@ public class MainActivity extends AppCompatActivity
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                binding.binaryView.setState(BinaryTextureView.CONNECTED);
-                binding.connectionStatus.setStatus(ConnectionStatusView.CONNECTED);
-                binding.connectionButton.setStatus(VpnFlatButton.CONNECTED);
-                binding.connectingCancelButton.setVisibility(View.GONE);
+                binaryView.setState(BinaryTextureView.CONNECTED);
+                connectionStatusView.setStatus(ConnectionStatusView.CONNECTED);
+                connectionButton.setStatus(VpnFlatButton.CONNECTED);
+                connectingCancelButton.setVisibility(View.GONE);
             }
         });
     }
@@ -304,10 +336,10 @@ public class MainActivity extends AppCompatActivity
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                binding.binaryView.setState(BinaryTextureView.DISCONNECTED);
-                binding.connectionStatus.setStatus(ConnectionStatusView.DISCONNECTED);
-                binding.connectionButton.setStatus(VpnFlatButton.DISCONNECTED);
-                binding.connectingCancelButton.setVisibility(View.GONE);
+                binaryView.setState(BinaryTextureView.DISCONNECTED);
+                connectionStatusView.setStatus(ConnectionStatusView.DISCONNECTED);
+                connectionButton.setStatus(VpnFlatButton.DISCONNECTED);
+                connectingCancelButton.setVisibility(View.GONE);
             }
         });
     }
@@ -320,8 +352,8 @@ public class MainActivity extends AppCompatActivity
     private void showSignUpButton() {
         SpannableStringBuilder sb = new SpannableStringBuilder(getString(R.string.main_sign_up));
         sb.setSpan(new TextAppearanceSpan(this, R.style.TextAppearance_Cypherpunk_Yellow), 0, 7, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-//        binding.signUpButton.setText(sb);
-//        binding.signUpButton.setVisibility(View.VISIBLE);
+//        signUpButton.setText(sb);
+//        signUpButton.setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -332,32 +364,32 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void toggleBottomSheetState() {
         if (!getResources().getBoolean(R.bool.is_tablet)) {
-            ViewGroup.LayoutParams layoutParams = binding.regionContainer.getLayoutParams();
+            ViewGroup.LayoutParams layoutParams = regionContainer.getLayoutParams();
             HeightAnimation animation;
             if (layoutParams.height == getBottomContainerMaximumHeight()) {
-                animation = new HeightAnimation(getBottomContainerMinimumHeight(), binding.regionContainer);
+                animation = new HeightAnimation(getBottomContainerMinimumHeight(), regionContainer);
                 regionFragment.toggleAllowIcon(false);
             } else {
-                animation = new HeightAnimation(getBottomContainerMaximumHeight(), binding.regionContainer);
+                animation = new HeightAnimation(getBottomContainerMaximumHeight(), regionContainer);
                 regionFragment.toggleAllowIcon(true);
             }
             animation.setDuration(300);
-            binding.regionContainer.startAnimation(animation);
+            regionContainer.startAnimation(animation);
         }
     }
 
     @Override
     public void onSelectedRegionChanged(@NonNull String regionName, @DrawableRes int nationalFlagResId, boolean connectNow) {
         if (getResources().getBoolean(R.bool.is_tablet)) {
-            binding.regionName.setText(regionName);
-            binding.nationalFlag.setImageResource(nationalFlagResId);
+            nameView.setText(regionName);
+            flagView.setImageResource(nationalFlagResId);
         }
-        ViewGroup.LayoutParams layoutParams = binding.regionContainer.getLayoutParams();
+        ViewGroup.LayoutParams layoutParams = regionContainer.getLayoutParams();
         if (layoutParams.height == getBottomContainerMaximumHeight()) {
-            Animation animation = new HeightAnimation(getBottomContainerMinimumHeight(), binding.regionContainer);
+            Animation animation = new HeightAnimation(getBottomContainerMinimumHeight(), regionContainer);
             regionFragment.toggleAllowIcon(false);
             animation.setDuration(300);
-            binding.regionContainer.startAnimation(animation);
+            regionContainer.startAnimation(animation);
         }
         if (connectNow) {
             startVpn();
@@ -373,14 +405,14 @@ public class MainActivity extends AppCompatActivity
 
     private int getBottomContainerMaximumHeight() {
         DisplayMetrics dm = Resources.getSystem().getDisplayMetrics();
-        int toolbarHeight = binding.toolbar.getHeight();
+        int toolbarHeight = toolbar.getHeight();
         return dm.heightPixels - toolbarHeight - getStatusBarHeight();
     }
 
     private int getBottomContainerMinimumHeight() {
         int[] position = new int[2];
-        binding.connectionStatus.getLocationOnScreen(position);
-        int connectionStatusPosition = position[1] + binding.connectionStatus.getHeight();
+        connectionStatusView.getLocationOnScreen(position);
+        int connectionStatusPosition = position[1] + connectionStatusView.getHeight();
         int marginTop = getResources().getDimensionPixelSize(R.dimen.bottom_sheet_margin_top);
         DisplayMetrics dm = Resources.getSystem().getDisplayMetrics();
         return dm.heightPixels - (connectionStatusPosition + marginTop);
