@@ -138,7 +138,8 @@
             android:theme="@style/CypherPunk.DialogWhenLarge.NoActionBar"/>
         <activity
             android:name=".ui.account.UpgradePlanActivity"
-            android:theme="@style/AppTheme.DialogWhenLarge"/>
+            android:label=""
+            android:theme="@style/CypherPunk.DialogWhenLarge.NoActionBar"/>
     </application>
 
 </manifest>
