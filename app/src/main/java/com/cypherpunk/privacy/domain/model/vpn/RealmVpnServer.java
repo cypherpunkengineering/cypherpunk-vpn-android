@@ -1,4 +1,4 @@
-package com.cypherpunk.privacy.model;
+package com.cypherpunk.privacy.domain.model.vpn;
 
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
@@ -11,7 +11,7 @@ import io.realm.annotations.RealmClass;
 import io.realm.annotations.Required;
 
 @RealmClass
-public class Region implements RealmModel {
+public class RealmVpnServer implements RealmModel, VpnServer {
 
     @PrimaryKey
     @Required
@@ -50,10 +50,10 @@ public class Region implements RealmModel {
     private Date lastConnectedDate;
 
     @SuppressWarnings("unused")
-    public Region() {
+    public RealmVpnServer() {
     }
 
-    public Region
+    public RealmVpnServer
             (
                     @NonNull String id,
                     @NonNull String region,
@@ -130,7 +130,8 @@ public class Region implements RealmModel {
         this.latency = latency;
     }
 
-    public boolean isAuthorized() {
+    @Override
+    public boolean authorized() {
         return authorized;
     }
 
@@ -196,7 +197,8 @@ public class Region implements RealmModel {
 
     }
 
-    public boolean isFavorited() {
+    @Override
+    public boolean favorite() {
         return favorited;
     }
 
@@ -233,10 +235,10 @@ public class Region implements RealmModel {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Region)) return false;
+        if (!(o instanceof RealmVpnServer)) return false;
 
-        final Region region = (Region) o;
-        return id != null ? id.equals(region.id) : region.id == null;
+        final RealmVpnServer realmVpnServer = (RealmVpnServer) o;
+        return id != null ? id.equals(realmVpnServer.id) : realmVpnServer.id == null;
     }
 
     @Override

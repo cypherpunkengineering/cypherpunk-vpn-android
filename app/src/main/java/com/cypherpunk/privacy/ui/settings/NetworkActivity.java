@@ -23,7 +23,7 @@ import android.widget.TextView;
 import com.cypherpunk.privacy.CypherpunkApplication;
 import com.cypherpunk.privacy.R;
 import com.cypherpunk.privacy.domain.model.VpnSetting;
-import com.cypherpunk.privacy.model.Network;
+import com.cypherpunk.privacy.domain.model.vpn.Network;
 import com.cypherpunk.privacy.ui.common.DividerDecoration;
 
 import java.util.ArrayList;
@@ -33,8 +33,6 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import io.realm.Realm;
-import io.realm.RealmResults;
 
 public class NetworkActivity extends AppCompatActivity {
 
@@ -42,8 +40,6 @@ public class NetworkActivity extends AppCompatActivity {
     public static Intent createIntent(@NonNull Context context) {
         return new Intent(context, NetworkActivity.class);
     }
-
-    private Realm realm;
 
     @Inject
     VpnSetting vpnSetting;
@@ -72,27 +68,12 @@ public class NetworkActivity extends AppCompatActivity {
             actionBar.setHomeAsUpIndicator(R.drawable.close_vector);
         }
 
-        realm = CypherpunkApplication.instance.getAppComponent().getDefaultRealm();
-
         // add wifi configuration to realm
         final WifiManager wifiManager = (WifiManager) getApplicationContext().getSystemService(WIFI_SERVICE);
         final List<WifiConfiguration> wifiNetworks = wifiManager.getConfiguredNetworks();
         if (wifiNetworks != null) {
-            for (WifiConfiguration wifiConfiguration : wifiNetworks) {
-                final String ssid = wifiConfiguration.SSID.replace("\"", "");
-                final Network network = realm.where(Network.class)
-                        .equalTo("ssid", ssid)
-                        .findFirst();
-                if (network == null) {
-                    realm.beginTransaction();
-                    realm.copyToRealm(new Network(ssid));
-                    realm.commitTransaction();
-                }
-            }
+            vpnSetting.addNetworks(wifiNetworks);
         }
-
-        final RealmResults<Network> networks = realm.where(Network.class)
-                .findAll();
 
         final View header = LayoutInflater.from(this).inflate(R.layout.header_item_network, recyclerView, false);
         {
@@ -124,12 +105,10 @@ public class NetworkActivity extends AppCompatActivity {
             });
         }
 
-        final NetworkAdapter adapter = new NetworkAdapter(new ArrayList<>(networks), header) {
+        final NetworkAdapter adapter = new NetworkAdapter(vpnSetting.findAllNetwork(), header) {
             @Override
             protected void onNetworkCheckedChanged(@NonNull Network network, boolean isChecked) {
-                realm.beginTransaction();
-                network.setTrusted(isChecked);
-                realm.commitTransaction();
+                vpnSetting.updateTrusted(network.ssid(), isChecked);
             }
         };
         recyclerView.setAdapter(adapter);
@@ -143,12 +122,6 @@ public class NetworkActivity extends AppCompatActivity {
                 return true;
         }
         return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    protected void onDestroy() {
-        realm.close();
-        super.onDestroy();
     }
 
     static class NetworkAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
@@ -241,8 +214,8 @@ public class NetworkActivity extends AppCompatActivity {
             }
 
             void bind(@NonNull Network network) {
-                nameView.setText(network.getSsid());
-                switchView.setChecked(network.isTrusted());
+                nameView.setText(network.ssid());
+                switchView.setChecked(network.trusted());
             }
 
             void setOnCheckedChangeListener(CompoundButton.OnCheckedChangeListener listener) {

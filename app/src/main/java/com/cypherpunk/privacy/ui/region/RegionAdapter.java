@@ -16,7 +16,7 @@ import com.cypherpunk.privacy.R;
 import com.cypherpunk.privacy.databinding.ListItemRegionBinding;
 import com.cypherpunk.privacy.databinding.ListItemRegionDividerBinding;
 import com.cypherpunk.privacy.domain.model.VpnSetting;
-import com.cypherpunk.privacy.model.Region;
+import com.cypherpunk.privacy.domain.model.vpn.VpnServer;
 import com.cypherpunk.privacy.utils.FontUtil;
 import com.cypherpunk.privacy.utils.ResourceUtil;
 import com.cypherpunk.privacy.widget.StarView;
@@ -86,7 +86,7 @@ public class RegionAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             case ITEM_VIEW_TYPE_ITEM:
                 RegionViewHolder itemHolder = (RegionViewHolder) holder;
                 ListItemRegionBinding binding = itemHolder.getBinding();
-                final Region item = (Region) items.get(position);
+                final VpnServer item = (VpnServer) items.get(position);
                 final String regionId = item.getId();
                 binding.regionName.setText(item.getRegionName());
                 binding.favorite.setOnCheckedChangeListener(new StarView.Listener() {
@@ -96,7 +96,7 @@ public class RegionAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
                     }
                 });
-                binding.favorite.setChecked(item.isFavorited());
+                binding.favorite.setChecked(item.favorite());
 
                 holder.itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -116,8 +116,8 @@ public class RegionAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                     binding.regionName.setTypeface(FontUtil.getDosisRegular(context));
                 }
 
-                holder.itemView.setClickable(item.isAuthorized() && !TextUtils.isEmpty(item.getOvDefault()));
-                if (item.isAuthorized() && !TextUtils.isEmpty(item.getOvDefault())) {
+                holder.itemView.setClickable(item.authorized() && !TextUtils.isEmpty(item.getOvDefault()));
+                if (item.authorized() && !TextUtils.isEmpty(item.getOvDefault())) {
                     binding.regionTag.setRegionLevel(item.getLevel());
                     binding.nationalFlag.setAlpha(1f);
                     binding.regionName.setAlpha(1f);
@@ -167,7 +167,7 @@ public class RegionAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
     @Override
     public int getItemViewType(int position) {
-        if (items.get(position) instanceof Region) {
+        if (items.get(position) instanceof VpnServer) {
             return ITEM_VIEW_TYPE_ITEM;
         }
         if (items.get(position) instanceof Cypherplay) {
@@ -180,17 +180,17 @@ public class RegionAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     }
 
     public void addRegionList(
-            @NonNull List<Region> favoriteItems,
-            @NonNull List<Region> recentlyConnectedItems,
-            @NonNull List<Region> devItems,
-            @NonNull List<Region> naItems,
-            @NonNull List<Region> saItems,
-            @NonNull List<Region> crItems,
-            @NonNull List<Region> euItems,
-            @NonNull List<Region> meItems,
-            @NonNull List<Region> afItems,
-            @NonNull List<Region> asItems,
-            @NonNull List<Region> opItems
+            @NonNull List<VpnServer> favoriteItems,
+            @NonNull List<VpnServer> recentlyConnectedItems,
+            @NonNull List<VpnServer> devItems,
+            @NonNull List<VpnServer> naItems,
+            @NonNull List<VpnServer> saItems,
+            @NonNull List<VpnServer> crItems,
+            @NonNull List<VpnServer> euItems,
+            @NonNull List<VpnServer> meItems,
+            @NonNull List<VpnServer> afItems,
+            @NonNull List<VpnServer> asItems,
+            @NonNull List<VpnServer> opItems
     ) {
         clear();
         items.add(new Cypherplay());
@@ -209,21 +209,21 @@ public class RegionAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         notifyItemRangeInserted(0, items.size());
     }
 
-    private void addFavoriteItems(@NonNull List<Region> data) {
+    private void addFavoriteItems(@NonNull List<VpnServer> data) {
         if (!data.isEmpty()) {
             items.add(new Divider(context.getString(R.string.region_list_favorite)));
         }
         items.addAll(data);
     }
 
-    private void addRecentlyConnectedItems(List<Region> data) {
+    private void addRecentlyConnectedItems(List<VpnServer> data) {
         if (!data.isEmpty()) {
             items.add(new Divider(context.getString(R.string.region_list_recent)));
         }
         items.addAll(data);
     }
 
-    private void addItems(@NonNull List<Region> data, @StringRes int dividerName) {
+    private void addItems(@NonNull List<VpnServer> data, @StringRes int dividerName) {
         if (!data.isEmpty()) {
             items.add(new Divider(context.getString(dividerName)));
             items.addAll(data);

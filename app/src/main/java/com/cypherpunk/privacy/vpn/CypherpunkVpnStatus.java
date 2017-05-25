@@ -4,14 +4,13 @@ import android.support.annotation.NonNull;
 
 import com.cypherpunk.privacy.CypherpunkApplication;
 import com.cypherpunk.privacy.domain.model.VpnSetting;
-import com.cypherpunk.privacy.model.Region;
+import com.cypherpunk.privacy.domain.repository.VpnServerRepository;
 
 import java.util.Date;
 
 import javax.inject.Inject;
 
 import de.blinkt.openvpn.core.VpnStatus;
-import io.realm.Realm;
 
 
 public class CypherpunkVpnStatus implements VpnStatus.StateListener {
@@ -26,6 +25,9 @@ public class CypherpunkVpnStatus implements VpnStatus.StateListener {
     @Inject
     VpnSetting vpnSetting;
 
+    @Inject
+    VpnServerRepository vpnServerRepository;
+
     @NonNull
     public static synchronized CypherpunkVpnStatus getInstance() {
         if (singleton == null) {
@@ -35,7 +37,7 @@ public class CypherpunkVpnStatus implements VpnStatus.StateListener {
         return singleton;
     }
 
-    public CypherpunkVpnStatus(){
+    public CypherpunkVpnStatus() {
         CypherpunkApplication.instance.getAppComponent().inject(this);
     }
 
@@ -45,14 +47,7 @@ public class CypherpunkVpnStatus implements VpnStatus.StateListener {
         CypherpunkVpnStatus.level = level;
         if (level == VpnStatus.ConnectionStatus.LEVEL_CONNECTED) {
             connectedTime = System.currentTimeMillis();
-            Realm realm = CypherpunkApplication.instance.getAppComponent().getDefaultRealm();
-            Region region = realm.where(Region.class)
-                    .equalTo("id", vpnSetting.regionId())
-                    .findFirst();
-            realm.beginTransaction();
-            region.setLastConnectedDate(new Date());
-            realm.commitTransaction();
-            realm.close();
+            vpnServerRepository.updateLastConnectedDate(vpnSetting.regionId(), new Date());
         }
     }
 

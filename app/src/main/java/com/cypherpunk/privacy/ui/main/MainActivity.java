@@ -34,6 +34,7 @@ import com.cypherpunk.privacy.CypherpunkApplication;
 import com.cypherpunk.privacy.R;
 import com.cypherpunk.privacy.domain.model.AccountSetting;
 import com.cypherpunk.privacy.domain.model.VpnSetting;
+import com.cypherpunk.privacy.domain.repository.VpnServerRepository;
 import com.cypherpunk.privacy.ui.account.AccountSettingsFragment;
 import com.cypherpunk.privacy.ui.region.RegionFragment;
 import com.cypherpunk.privacy.ui.settings.SettingConnectDialogFragment;
@@ -71,6 +72,9 @@ public class MainActivity extends AppCompatActivity
 
     @Inject
     AccountSetting accountSetting;
+
+    @Inject
+    VpnServerRepository vpnServerRepository;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -262,7 +266,8 @@ public class MainActivity extends AppCompatActivity
             binding.connectionStatus.setStatus(ConnectionStatusView.CONNECTING);
             binding.connectionButton.setStatus(VpnFlatButton.CONNECTING);
             binding.connectingCancelButton.setVisibility(View.VISIBLE);
-            CypherpunkVPN.getInstance().start(getApplicationContext(), getBaseContext(), vpnSetting, accountSetting);
+            CypherpunkVPN.getInstance().start(getApplicationContext(), getBaseContext(),
+                    vpnSetting, accountSetting, vpnServerRepository);
         }
     }
 

@@ -1,8 +1,10 @@
 package com.cypherpunk.privacy.domain.model;
 
+import android.net.wifi.WifiConfiguration;
 import android.support.annotation.NonNull;
 
 import com.cypherpunk.privacy.domain.model.vpn.InternetKillSwitch;
+import com.cypherpunk.privacy.domain.model.vpn.Network;
 import com.cypherpunk.privacy.domain.model.vpn.RemotePort;
 import com.cypherpunk.privacy.domain.model.vpn.TunnelMode;
 
@@ -17,6 +19,8 @@ public interface VpnSetting {
     // App Settings
     //
 
+    // manage trusted networks
+
     boolean isAutoSecureUntrusted();
 
     void updateAutoSecureUntrusted(boolean b);
@@ -24,6 +28,17 @@ public interface VpnSetting {
     boolean isAutoSecureOther();
 
     void updateAutoSecureOther(boolean b);
+
+    boolean isTrusted(@NonNull String ssid);
+
+    void updateTrusted(@NonNull String ssid, boolean trusted);
+
+    void addNetworks(@NonNull List<WifiConfiguration> networks);
+
+    @NonNull
+    List<Network> findAllNetwork();
+
+    //
 
     boolean isAutoConnect();
 

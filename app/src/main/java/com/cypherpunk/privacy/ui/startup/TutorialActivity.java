@@ -23,10 +23,9 @@ import com.cypherpunk.privacy.R;
 import com.cypherpunk.privacy.domain.model.AccountSetting;
 import com.cypherpunk.privacy.domain.model.VpnSetting;
 import com.cypherpunk.privacy.domain.repository.NetworkRepository;
+import com.cypherpunk.privacy.domain.repository.VpnServerRepository;
 import com.cypherpunk.privacy.domain.repository.retrofit.result.RegionResult;
 import com.cypherpunk.privacy.domain.repository.retrofit.result.StatusResult;
-import com.cypherpunk.privacy.domain.service.ServerService;
-import com.cypherpunk.privacy.model.Region;
 import com.cypherpunk.privacy.ui.main.MainActivity;
 import com.cypherpunk.privacy.widget.PageIndicator;
 import com.google.firebase.analytics.FirebaseAnalytics;
@@ -46,7 +45,6 @@ import io.reactivex.disposables.Disposables;
 import io.reactivex.functions.Function;
 import io.reactivex.observers.DisposableSingleObserver;
 import io.reactivex.schedulers.Schedulers;
-import io.realm.Realm;
 import timber.log.Timber;
 
 /**
@@ -60,7 +58,7 @@ public class TutorialActivity extends AppCompatActivity {
     private Disposable disposable = Disposables.empty();
 
     @Inject
-    Realm realm;
+    VpnServerRepository vpnServerRepository;
 
     @Inject
     NetworkRepository networkRepository;
@@ -94,7 +92,7 @@ public class TutorialActivity extends AppCompatActivity {
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         }
 
-        final long count = realm.where(Region.class).count();
+        final long count = vpnServerRepository.count();
         if (count == 0) {
             getServerList();
         }
@@ -195,8 +193,7 @@ public class TutorialActivity extends AppCompatActivity {
                 .subscribeWith(new DisposableSingleObserver<Map<String, RegionResult>>() {
                     @Override
                     public void onSuccess(Map<String, RegionResult> result) {
-                        final ServerService serverService = new ServerService(realm);
-                        serverService.updateServerList(result);
+                        vpnServerRepository.updateServerList(result);
                     }
 
                     @Override
@@ -209,7 +206,6 @@ public class TutorialActivity extends AppCompatActivity {
     @Override
     public void onDestroy() {
         disposable.dispose();
-        realm.close();
         super.onDestroy();
     }
 

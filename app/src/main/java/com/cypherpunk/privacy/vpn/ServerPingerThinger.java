@@ -1,7 +1,9 @@
 package com.cypherpunk.privacy.vpn;
 
-import com.cypherpunk.privacy.CypherpunkApplication;
-import com.cypherpunk.privacy.model.Region;
+import android.support.annotation.NonNull;
+
+import com.cypherpunk.privacy.domain.model.vpn.VpnServer;
+import com.cypherpunk.privacy.domain.repository.VpnServerRepository;
 
 import java.net.InetSocketAddress;
 import java.net.Socket;
@@ -9,8 +11,6 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-import io.realm.Realm;
-import io.realm.Sort;
 import timber.log.Timber;
 
 /**
@@ -18,84 +18,31 @@ import timber.log.Timber;
  */
 
 public class ServerPingerThinger extends Thread {
+    private final VpnServerRepository vpnServerRepository;
     public InetSocketAddress address;
     public String locationId;
 
-    public static boolean isPingable(Region location) {
-        if (location.getOvDefault().length() < 7)
-            return false;
-
-        if (location.isAuthorized() == false)
-            return false;
-
-        return true;
+    public ServerPingerThinger(VpnServerRepository vpnServerRepository) {
+        this.vpnServerRepository = vpnServerRepository;
     }
 
-    public static void pingLocation(Region location) {
-        if (isPingable(location) == false) {
-            Timber.d("Skipping ping for location " + location.getId());
+    public static boolean isPingable(VpnServer vpnServer) {
+        return vpnServer.getOvDefault().length() >= 7 && vpnServer.authorized();
+    }
+
+    public static void pingLocation(VpnServer vpnServer, @NonNull VpnServerRepository vpnServerRepository) {
+        if (!isPingable(vpnServer)) {
+            Timber.d("Skipping ping for location " + vpnServer.getId());
 
             // update latency to -1 when locations become unavailable
-            updateLocationLatency(location.getId(), -1);
-
+            vpnServerRepository.updateLatency(vpnServer.getId(), -1);
             return;
         }
-        ServerPingerThinger pinger = new ServerPingerThinger();
-        pinger.locationId = location.getId();
-        pinger.address = new InetSocketAddress(location.getOvDefault(), 443);
+
+        ServerPingerThinger pinger = new ServerPingerThinger(vpnServerRepository);
+        pinger.locationId = vpnServer.getId();
+        pinger.address = new InetSocketAddress(vpnServer.getOvDefault(), 443);
         pinger.start();
-    }
-
-    public static Region getFastestLocation() {
-        // select to fastest location
-        Realm realm = CypherpunkApplication.instance.getAppComponent().getDefaultRealm();
-        Region fastestLocation = null;
-
-        try // first get locations which have valid latency data
-        {
-            fastestLocation = realm.where(Region.class)
-                    .equalTo("authorized", true)
-                    .contains("ovDefault", ".")
-                    .notEqualTo("level", "developer")
-                    .notEqualTo("latency", -1)
-                    .findAllSorted("latency", Sort.ASCENDING)
-                    .first();
-        } catch (IndexOutOfBoundsException e) {
-        } catch (Exception e) {
-        }
-
-        // if no latency data, just return any location
-        if (fastestLocation == null) {
-            try {
-                fastestLocation = realm.where(Region.class)
-                        .equalTo("authorized", true)
-                        .contains("ovDefault", ".")
-                        .notEqualTo("level", "developer")
-                        .findAllSorted("latency", Sort.ASCENDING)
-                        .first();
-            } catch (IndexOutOfBoundsException e) {
-            } catch (Exception e) {
-            }
-        }
-
-        // dont forget to close realm
-        realm.close();
-
-        // however, might still be null if no locations available
-        return fastestLocation;
-    }
-
-    private static void updateLocationLatency(String locationId, long latency) {
-        Realm realm = CypherpunkApplication.instance.getAppComponent().getDefaultRealm();
-        realm.beginTransaction();
-
-        // save result in realm
-        Region location = realm.where(Region.class).equalTo("id", locationId).findFirst();
-        location.setLatency(latency);
-        realm.commitTransaction();
-
-        // dont forget to close realm
-        realm.close();
     }
 
     @Override
@@ -142,10 +89,11 @@ public class ServerPingerThinger extends Thread {
             return;
         }
 
-        if (latency < 0)
+        if (latency < 0) {
             return;
+        }
 
         Timber.d("Location " + locationId + " ping time: " + latency + "ms, socket protected: " + socketProtected);
-        updateLocationLatency(locationId, latency);
+        vpnServerRepository.updateLatency(locationId, latency);
     }
 }
