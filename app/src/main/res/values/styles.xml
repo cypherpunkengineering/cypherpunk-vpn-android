@@ -6,6 +6,8 @@
         <item name="colorPrimary">@color/dark_black</item>
         <item name="colorPrimaryDark">@color/dark_black</item>
         <item name="colorAccent">@color/golden_yellow</item>
+
+        <item name="preferenceTheme">@style/CypherpunkPreference</item>
     </style>
 
     <style name="CypherPunk.NoActionBar">
