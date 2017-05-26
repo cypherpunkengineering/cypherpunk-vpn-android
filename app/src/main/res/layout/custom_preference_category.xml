@@ -12,5 +12,5 @@
     android:paddingStart="?android:listPreferredItemPaddingStart"
     android:paddingTop="16dip"
     android:textAppearance="@style/TextAppearance.AppCompat.Body2"
-    android:textColor="@color/colorAccent"
+    android:textColor="?colorAccent"
     app:fontName="DosisMedium"/>

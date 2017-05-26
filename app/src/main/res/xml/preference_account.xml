@@ -3,11 +3,6 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <Preference
-        android:layout="@layout/preference_header"
-        android:selectable="false"
-        android:title="@string/settings_header_account"/>
-
     <com.cypherpunk.privacy.ui.account.AccountPreference
         android:key="@string/account_preference_account"/>
 

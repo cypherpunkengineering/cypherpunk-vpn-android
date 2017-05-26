@@ -10,6 +10,11 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.preference.Preference;
 import android.support.v7.preference.PreferenceFragmentCompat;
 import android.support.v7.preference.PreferenceManager;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.FrameLayout;
+import android.widget.TextView;
 
 import com.cypherpunk.privacy.CypherpunkApplication;
 import com.cypherpunk.privacy.R;
@@ -20,6 +25,8 @@ import com.cypherpunk.privacy.domain.model.vpn.TunnelMode;
 import com.cypherpunk.privacy.vpn.CypherpunkVpnStatus;
 
 import javax.inject.Inject;
+
+import butterknife.ButterKnife;
 
 public class SettingsFragment extends PreferenceFragmentCompat {
 
@@ -33,6 +40,18 @@ public class SettingsFragment extends PreferenceFragmentCompat {
 
     @Inject
     VpnSetting vpnSetting;
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        final View view = inflater.inflate(R.layout.fragment_settings, container, false);
+        final TextView headerView = ButterKnife.findById(view, R.id.header);
+        headerView.setText(R.string.settings_header_configuration);
+
+        final FrameLayout frameLayout = ButterKnife.findById(view, R.id.list_container);
+        final View list = super.onCreateView(inflater, frameLayout, savedInstanceState);
+        frameLayout.addView(list);
+        return view;
+    }
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
