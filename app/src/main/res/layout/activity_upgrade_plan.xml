@@ -18,7 +18,7 @@
         android:orientation="vertical"
         android:paddingTop="16dp">
 
-        <com.cypherpunk.privacy.widget.TypefaceTextView
+        <com.cypherpunk.privacy.ui.common.TypefaceTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
@@ -27,13 +27,13 @@
             android:textSize="20sp"
             app:fontName="DosisMedium"/>
 
-        <com.cypherpunk.privacy.widget.PlanView
+        <com.cypherpunk.privacy.ui.common.PlanView
             android:id="@+id/monthly_plan"
             android:layout_width="300dp"
             android:layout_height="76dp"
             android:layout_marginBottom="16dp"/>
 
-        <com.cypherpunk.privacy.widget.PlanView
+        <com.cypherpunk.privacy.ui.common.PlanView
             android:id="@+id/annually_plan"
             android:layout_width="300dp"
             android:layout_height="76dp"/>

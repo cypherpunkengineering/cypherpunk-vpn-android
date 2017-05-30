@@ -19,11 +19,11 @@ import com.cypherpunk.privacy.billing.IabResult;
 import com.cypherpunk.privacy.billing.Inventory;
 import com.cypherpunk.privacy.billing.Purchase;
 import com.cypherpunk.privacy.domain.model.AccountSetting;
-import com.cypherpunk.privacy.domain.model.account.Subscription;
+import com.cypherpunk.privacy.datasource.account.Subscription;
 import com.cypherpunk.privacy.domain.repository.NetworkRepository;
 import com.cypherpunk.privacy.domain.repository.retrofit.result.StatusResult;
 import com.cypherpunk.privacy.ui.common.FullScreenProgressDialog;
-import com.cypherpunk.privacy.widget.PlanView;
+import com.cypherpunk.privacy.ui.common.PlanView;
 
 import java.util.Collections;
 import java.util.List;

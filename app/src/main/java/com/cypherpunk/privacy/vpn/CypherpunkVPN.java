@@ -11,10 +11,10 @@ import android.text.TextUtils;
 
 import com.cypherpunk.privacy.domain.model.AccountSetting;
 import com.cypherpunk.privacy.domain.model.VpnSetting;
-import com.cypherpunk.privacy.domain.model.vpn.InternetKillSwitch;
-import com.cypherpunk.privacy.domain.model.vpn.RemotePort;
-import com.cypherpunk.privacy.domain.model.vpn.TunnelMode;
-import com.cypherpunk.privacy.domain.model.vpn.VpnServer;
+import com.cypherpunk.privacy.datasource.vpn.InternetKillSwitch;
+import com.cypherpunk.privacy.datasource.vpn.RemotePort;
+import com.cypherpunk.privacy.datasource.vpn.TunnelMode;
+import com.cypherpunk.privacy.datasource.vpn.VpnServer;
 import com.cypherpunk.privacy.domain.repository.VpnServerRepository;
 
 import java.io.BufferedReader;

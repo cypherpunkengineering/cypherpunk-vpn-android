@@ -27,7 +27,7 @@ import com.cypherpunk.privacy.domain.repository.VpnServerRepository;
 import com.cypherpunk.privacy.domain.repository.retrofit.result.RegionResult;
 import com.cypherpunk.privacy.domain.repository.retrofit.result.StatusResult;
 import com.cypherpunk.privacy.ui.main.MainActivity;
-import com.cypherpunk.privacy.widget.PageIndicator;
+import com.cypherpunk.privacy.ui.common.PageIndicator;
 import com.google.firebase.analytics.FirebaseAnalytics;
 
 import java.util.Map;

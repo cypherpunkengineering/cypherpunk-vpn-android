@@ -18,7 +18,7 @@ import android.widget.TextView;
 import com.cypherpunk.privacy.CypherpunkApplication;
 import com.cypherpunk.privacy.R;
 import com.cypherpunk.privacy.domain.model.VpnSetting;
-import com.cypherpunk.privacy.domain.model.vpn.RemotePort;
+import com.cypherpunk.privacy.datasource.vpn.RemotePort;
 
 import java.util.ArrayList;
 import java.util.List;

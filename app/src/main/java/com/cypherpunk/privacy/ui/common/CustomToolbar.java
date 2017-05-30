@@ -7,7 +7,6 @@ import android.util.AttributeSet;
 import android.view.LayoutInflater;
 
 import com.cypherpunk.privacy.R;
-import com.cypherpunk.privacy.widget.TypefaceTextView;
 
 /**
  * TODO: deprecate when use font resource

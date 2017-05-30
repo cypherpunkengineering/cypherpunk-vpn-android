@@ -45,7 +45,7 @@
         android:paddingBottom="16dp"
         android:paddingTop="16dp">
 
-        <com.cypherpunk.privacy.widget.TypefaceTextView
+        <com.cypherpunk.privacy.ui.common.TypefaceTextView
             android:id="@android:id/title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -54,7 +54,7 @@
             android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
             app:fontName="DosisMedium"/>
 
-        <com.cypherpunk.privacy.widget.TypefaceTextView
+        <com.cypherpunk.privacy.ui.common.TypefaceTextView
             android:id="@android:id/summary"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

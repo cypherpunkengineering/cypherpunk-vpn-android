@@ -10,7 +10,7 @@
 
     <include layout="@layout/toolbar"/>
 
-    <com.cypherpunk.privacy.widget.TypefaceTextView
+    <com.cypherpunk.privacy.ui.common.TypefaceTextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
@@ -31,7 +31,7 @@
         android:src="@drawable/share"
         tools:ignore="ContentDescription"/>
 
-    <com.cypherpunk.privacy.widget.TypefaceButton
+    <com.cypherpunk.privacy.ui.common.TypefaceButton
         android:id="@+id/share_button"
         style="@style/Widget.Cypherpunk.FrameButton"
         android:layout_width="300dp"

@@ -8,7 +8,7 @@
     android:background="@color/background"
     android:orientation="vertical">
 
-    <com.cypherpunk.privacy.widget.TypefaceTextView
+    <com.cypherpunk.privacy.ui.common.TypefaceTextView
         android:id="@+id/category_name"
         style="@style/SubHeader"
         android:layout_width="match_parent"

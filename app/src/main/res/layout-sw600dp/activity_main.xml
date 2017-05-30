@@ -57,7 +57,7 @@
         android:layout_toRightOf="@id/vertical_divider"
         tools:ignore="RtlHardcoded">
 
-        <com.cypherpunk.privacy.widget.BinaryTextureView
+        <com.cypherpunk.privacy.ui.common.BinaryTextureView
             android:id="@+id/binary_view"
             android:layout_width="0dp"
             android:layout_height="0dp"
@@ -66,7 +66,7 @@
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent"/>
 
-        <com.cypherpunk.privacy.widget.VpnFlatButton
+        <com.cypherpunk.privacy.ui.common.VpnFlatButton
             android:id="@+id/connection_button"
             android:layout_width="140dp"
             android:layout_height="190dp"
@@ -86,13 +86,13 @@
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@id/connection_button">
 
-            <com.cypherpunk.privacy.widget.ConnectionStatusView
+            <com.cypherpunk.privacy.ui.common.ConnectionStatusView
                 android:id="@+id/connection_status"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:textSize="@dimen/connection_status_text_size"/>
 
-            <com.cypherpunk.privacy.widget.TypefaceTextView
+            <com.cypherpunk.privacy.ui.common.TypefaceTextView
                 android:id="@+id/connecting_cancel_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -126,7 +126,7 @@
                 tools:ignore="ContentDescription"
                 tools:src="@drawable/flag_us"/>
 
-            <com.cypherpunk.privacy.widget.TypefaceTextView
+            <com.cypherpunk.privacy.ui.common.TypefaceTextView
                 android:id="@+id/region_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

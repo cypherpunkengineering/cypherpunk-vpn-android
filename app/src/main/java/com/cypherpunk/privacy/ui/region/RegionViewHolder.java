@@ -9,8 +9,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.cypherpunk.privacy.R;
-import com.cypherpunk.privacy.widget.RegionBadgeView;
-import com.cypherpunk.privacy.widget.StarView;
+import com.cypherpunk.privacy.ui.common.RegionBadgeView;
+import com.cypherpunk.privacy.ui.common.StarView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

@@ -3,10 +3,10 @@ package com.cypherpunk.privacy.domain.model;
 import android.net.wifi.WifiConfiguration;
 import android.support.annotation.NonNull;
 
-import com.cypherpunk.privacy.domain.model.vpn.InternetKillSwitch;
-import com.cypherpunk.privacy.domain.model.vpn.Network;
-import com.cypherpunk.privacy.domain.model.vpn.RemotePort;
-import com.cypherpunk.privacy.domain.model.vpn.TunnelMode;
+import com.cypherpunk.privacy.datasource.vpn.InternetKillSwitch;
+import com.cypherpunk.privacy.datasource.vpn.Network;
+import com.cypherpunk.privacy.datasource.vpn.RemotePort;
+import com.cypherpunk.privacy.datasource.vpn.TunnelMode;
 
 import java.util.List;
 

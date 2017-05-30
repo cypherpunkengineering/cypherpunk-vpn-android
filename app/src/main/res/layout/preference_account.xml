@@ -10,7 +10,7 @@
     android:orientation="vertical"
     android:padding="16dp">
 
-    <com.cypherpunk.privacy.widget.TypefaceTextView
+    <com.cypherpunk.privacy.ui.common.TypefaceTextView
         android:id="@+id/username"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -23,7 +23,7 @@
         app:fontName="DosisMedium"
         tools:text="wiz"/>
 
-    <com.cypherpunk.privacy.widget.TypefaceTextView
+    <com.cypherpunk.privacy.ui.common.TypefaceTextView
         android:id="@+id/type"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -32,7 +32,7 @@
         app:fontName="DosisMedium"
         tools:text="Monthly Premium"/>
 
-    <com.cypherpunk.privacy.widget.TypefaceTextView
+    <com.cypherpunk.privacy.ui.common.TypefaceTextView
         android:id="@+id/expiration"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
