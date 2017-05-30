@@ -17,6 +17,11 @@
         <item name="windowNoTitle">true</item>
     </style>
 
+    <style name="CypherPunk.FullScreenProgressDialog">
+        <item name="android:windowBackground">@drawable/window_background_transparent</item>
+        <item name="colorAccent">@color/gray</item>
+    </style>
+
     <style name="CypherPunk.DialogWhenLarge" parent="Theme.AppCompat.DialogWhenLarge">
         <item name="android:windowBackground">@drawable/window_background</item>
         <item name="colorPrimary">@color/dark_black</item>
@@ -29,11 +34,6 @@
     <style name="CypherPunk.DialogWhenLarge.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
-    </style>
-
-    <style name="CypherPunk.FullScreenProgressDialog">
-        <item name="android:windowBackground">@drawable/window_background_transparent</item>
-        <item name="colorAccent">@color/gray</item>
     </style>
 
     <style name="ButtonTheme">
@@ -69,6 +69,9 @@
         <item name="android:textColor">?attr/colorAccent</item>
         <item name="android:textSize">16sp</item>
     </style>
+
+
+    <!-- Animation -->
 
     <style name="Animation.Activity.Slide" parent="android:Animation.Activity">
         <item name="android:activityOpenEnterAnimation">@anim/pop_up_anim_in</item>

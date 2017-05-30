@@ -109,7 +109,7 @@ public class IdentifyEmailActivity extends AppCompatActivity {
         }
 
         if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-            textInputLayout.setError(getString(R.string.error_invalid_email));
+            textInputLayout.setError(getString(R.string.error_email_invalid));
             editText.requestFocus();
             return;
         }
@@ -139,7 +139,7 @@ public class IdentifyEmailActivity extends AppCompatActivity {
                             dialog = null;
                         }
                         if (error instanceof UnknownHostException) {
-                            Toast.makeText(context, R.string.no_internet, Toast.LENGTH_SHORT).show();
+                            Toast.makeText(context, R.string.error_no_internet, Toast.LENGTH_SHORT).show();
                         } else if (error instanceof HttpException) {
                             HttpException httpException = (HttpException) error;
                             if (httpException.code() == 401 || httpException.code() == 400) {

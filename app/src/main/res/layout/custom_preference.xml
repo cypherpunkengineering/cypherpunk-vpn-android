@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/list_item_background_dark"
+    android:baselineAligned="false"
     android:clipToPadding="false"
     android:focusable="true"
     android:gravity="center_vertical"
@@ -12,8 +13,7 @@
     android:paddingEnd="?android:listPreferredItemPaddingEnd"
     android:paddingLeft="?android:listPreferredItemPaddingLeft"
     android:paddingRight="?android:listPreferredItemPaddingRight"
-    android:paddingStart="?android:listPreferredItemPaddingStart"
-    android:baselineAligned="false">
+    android:paddingStart="?android:listPreferredItemPaddingStart">
 
     <LinearLayout
         android:id="@+id/icon_frame"

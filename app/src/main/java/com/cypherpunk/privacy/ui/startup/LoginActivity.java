@@ -168,11 +168,11 @@ public class LoginActivity extends AppCompatActivity {
                             dialog = null;
                         }
                         if (e instanceof UnknownHostException) {
-                            Toast.makeText(context, R.string.no_internet, Toast.LENGTH_SHORT).show();
+                            Toast.makeText(context, R.string.error_no_internet, Toast.LENGTH_SHORT).show();
                         } else if (e instanceof HttpException) {
                             final HttpException he = (HttpException) e;
                             if (he.code() == 400) {
-                                Toast.makeText(context, R.string.invalid_mail_password, Toast.LENGTH_SHORT).show();
+                                Toast.makeText(context, R.string.error_password_invalid, Toast.LENGTH_SHORT).show();
                             }
                         }
                     }
@@ -197,7 +197,7 @@ public class LoginActivity extends AppCompatActivity {
                             dialog.dismiss();
                             dialog = null;
                         }
-                        Toast.makeText(context, R.string.login_sent_password_recovery, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context, R.string.sign_in_sent_password_recovery, Toast.LENGTH_SHORT).show();
                     }
 
                     @Override
@@ -207,9 +207,9 @@ public class LoginActivity extends AppCompatActivity {
                             dialog = null;
                         }
                         if (error instanceof UnknownHostException) {
-                            Toast.makeText(context, R.string.no_internet, Toast.LENGTH_SHORT).show();
+                            Toast.makeText(context, R.string.error_no_internet, Toast.LENGTH_SHORT).show();
                         } else {
-                            Toast.makeText(context, R.string.api_error, Toast.LENGTH_SHORT).show();
+                            Toast.makeText(context, R.string.error_api, Toast.LENGTH_SHORT).show();
                         }
                     }
                 }));

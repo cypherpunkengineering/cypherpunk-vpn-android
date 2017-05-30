@@ -44,7 +44,7 @@
     </PreferenceCategory>
 
     <PreferenceCategory
-        android:title="@string/settings_header_configuration_advanced">
+        android:title="@string/setting_category_advanced_settings">
 
         <Preference
             android:key="@string/setting_preference_remote_port"

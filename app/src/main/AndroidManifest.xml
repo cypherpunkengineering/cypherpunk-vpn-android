@@ -126,9 +126,9 @@
             android:theme="@style/CypherPunk.DialogWhenLarge.NoActionBar"/>
 
         <activity
-            android:name=".ui.account.ShareActivity"
-            android:label="@string/title_activity_share"
-            android:theme="@style/CypherPunk.NoActionBar"/>
+            android:name=".ui.account.UpgradePlanActivity"
+            android:label="@string/title_activity_upgrade_plan"
+            android:theme="@style/CypherPunk.DialogWhenLarge.NoActionBar"/>
         <activity
             android:name=".ui.account.EditEmailActivity"
             android:label="@string/title_activity_edit_email"
@@ -138,9 +138,9 @@
             android:label="@string/title_activity_edit_password"
             android:theme="@style/CypherPunk.DialogWhenLarge.NoActionBar"/>
         <activity
-            android:name=".ui.account.UpgradePlanActivity"
-            android:label="@string/title_activity_upgrade_plan"
-            android:theme="@style/CypherPunk.DialogWhenLarge.NoActionBar"/>
+            android:name=".ui.account.ShareActivity"
+            android:label="@string/title_activity_share"
+            android:theme="@style/CypherPunk.NoActionBar"/>
     </application>
 
 </manifest>

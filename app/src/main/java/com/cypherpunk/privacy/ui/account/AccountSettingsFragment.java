@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.cypherpunk.privacy.CypherpunkApplication;
 import com.cypherpunk.privacy.R;
@@ -60,7 +61,7 @@ public class AccountSettingsFragment extends PreferenceFragmentCompat {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_settings, container, false);
         final TextView headerView = ButterKnife.findById(view, R.id.header);
-        headerView.setText(R.string.settings_header_account);
+        headerView.setText(R.string.account_setting_header_account);
 
         final FrameLayout frameLayout = ButterKnife.findById(view, R.id.list_container);
         final View list = super.onCreateView(inflater, frameLayout, savedInstanceState);
@@ -172,6 +173,36 @@ public class AccountSettingsFragment extends PreferenceFragmentCompat {
                                 .addNextIntent(IdentifyEmailActivity.createIntent(getContext()))
                                 .startActivities();
                         getActivity().finish();
+                        return true;
+                    }
+                });
+
+        // Terms of Service
+        findPreference(getString(R.string.account_preference_terms_of_service))
+                .setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+                    @Override
+                    public boolean onPreferenceClick(Preference preference) {
+                        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(Urls.TERMS_OF_SERVICE)));
+                        return true;
+                    }
+                });
+
+        // Privacy Policy
+        findPreference(getString(R.string.account_preference_privacy_policy))
+                .setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+                    @Override
+                    public boolean onPreferenceClick(Preference preference) {
+                        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(Urls.PRIVACY_POLICY)));
+                        return true;
+                    }
+                });
+
+        // License Information
+        findPreference(getString(R.string.account_preference_license_information))
+                .setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+                    @Override
+                    public boolean onPreferenceClick(Preference preference) {
+                        Toast.makeText(getContext(), "not yet implemented", Toast.LENGTH_SHORT).show();
                         return true;
                     }
                 });
