@@ -9,7 +9,6 @@
     <ProgressBar
         style="?android:progressBarStyleLarge"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:theme="@style/AppTheme.Progress"/>
+        android:layout_height="wrap_content"/>
 
 </LinearLayout>

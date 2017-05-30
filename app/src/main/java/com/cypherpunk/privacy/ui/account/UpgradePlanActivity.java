@@ -74,7 +74,7 @@ public class UpgradePlanActivity extends AppCompatActivity {
         final ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
-            actionBar.setHomeAsUpIndicator(R.drawable.close_vector);
+            actionBar.setHomeAsUpIndicator(R.drawable.ic_close_vector);
         }
 
         monthlyPlan.setPlan("1 MONTH", "$12.95", false);

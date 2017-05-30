@@ -1,20 +1,36 @@
 package com.cypherpunk.privacy.widget;
 
 import android.content.Context;
-import android.databinding.DataBindingUtil;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
+import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.cypherpunk.privacy.R;
-import com.cypherpunk.privacy.databinding.ViewPlanBinding;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
-public class PlanView extends RelativeLayout {
+// TODO: refactor
+public class PlanView extends FrameLayout {
 
-    private ViewPlanBinding binding;
+    @BindView(R.id.card)
+    RelativeLayout cardView;
+
+    @BindView(R.id.plan)
+    TextView planView;
+
+    @BindView(R.id.price)
+    TextView priceView;
+
+    @BindView(R.id.badge)
+    TextView badgeView;
+
+    @BindView(R.id.current_plan)
+    TextView currentPlanView;
 
     public PlanView(Context context) {
         this(context, null);
@@ -26,9 +42,8 @@ public class PlanView extends RelativeLayout {
 
     public PlanView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        binding = DataBindingUtil.inflate(
-                LayoutInflater.from(context), R.layout.view_plan, this, true);
-        setClickable(true);
+        LayoutInflater.from(context).inflate(R.layout.view_plan, this);
+        ButterKnife.bind(this);
     }
 
     /**
@@ -37,18 +52,18 @@ public class PlanView extends RelativeLayout {
      * @param badgeVisible best value badge visibility
      */
     public void setPlan(@NonNull String planName, @NonNull String price, boolean badgeVisible) {
-        binding.plan.setText(planName);
-        binding.price.setText(price);
-        binding.badge.setVisibility(badgeVisible ? VISIBLE : INVISIBLE);
-        binding.card.setBackgroundResource(badgeVisible ? R.drawable.plan_background_badge : R.drawable.plan_background);
-        binding.price.setTextColor(ContextCompat.getColor(getContext(), badgeVisible ? R.color.plan_badge_text : R.color.plan_price));
-        binding.plan.setTextColor(ContextCompat.getColor(getContext(), badgeVisible ? R.color.plan_badge_text : R.color.plan_text));
+        planView.setText(planName);
+        priceView.setText(price);
+        badgeView.setVisibility(badgeVisible ? VISIBLE : INVISIBLE);
+        cardView.setBackgroundResource(badgeVisible ? R.drawable.plan_background_badge : R.drawable.plan_background);
+        priceView.setTextColor(ContextCompat.getColor(getContext(), badgeVisible ? R.color.plan_badge_text : R.color.plan_price));
+        planView.setTextColor(ContextCompat.getColor(getContext(), badgeVisible ? R.color.plan_badge_text : R.color.plan_text));
     }
 
     public void setCurrentPlan() {
-        binding.card.setAlpha(0.15f);
-        binding.currentPlan.setVisibility(VISIBLE);
-        binding.badge.setVisibility(INVISIBLE);
+        cardView.setAlpha(0.15f);
+        currentPlanView.setVisibility(VISIBLE);
+        badgeView.setVisibility(INVISIBLE);
         setClickable(false);
     }
 }

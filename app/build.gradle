@@ -43,9 +43,6 @@ android {
 //            signingConfig signingConfigs.release
         }
     }
-    dataBinding {
-        enabled = true
-    }
     lintOptions {
         abortOnError false
     }
@@ -66,22 +63,18 @@ dependencies {
     compile "com.android.support:appcompat-v7:${supportLibraryVersion}"
     compile "com.android.support:design:${supportLibraryVersion}"
     compile "com.android.support:transition:${supportLibraryVersion}"
-    // PreferenceFragmentCompat(extends support.v4.app.Fragment)
     compile "com.android.support:preference-v7:${supportLibraryVersion}"
-    // @style/PreferenceThemeOverlay.v14.Material https://code.google.com/p/android/issues/detail?id=183258
-    compile "com.android.support:preference-v14:${supportLibraryVersion}"
-    compile "com.android.support:percent:${supportLibraryVersion}"
+    compile 'com.android.support.constraint:constraint-layout:1.0.2'
+
     compile 'com.squareup.okhttp3:logging-interceptor:3.4.1'
     compile "com.google.dagger:dagger:${daggerVersion}"
     apt "com.google.dagger:dagger-compiler:${daggerVersion}"
     apt 'com.google.guava:guava:19.0' // dagger compiler requires Guava
-    provided 'javax.annotation:jsr250-api:1.0'
     compile 'com.jeremyfeinstein.slidingmenu:library:1.3@aar'
 
     compile 'com.deploygate:sdk:3.1'
     compile 'com.google.firebase:firebase-core:10.0.1'
 
-    compile 'com.android.support.constraint:constraint-layout:1.0.2'
 
     // http://jakewharton.github.io/butterknife/
     compile 'com.jakewharton:butterknife:8.5.1'
@@ -89,9 +82,6 @@ dependencies {
 
     // https://github.com/JakeWharton/timber
     compile 'com.jakewharton.timber:timber:4.5.1'
-
-    // http://stackoverflow.com/questions/42583759/databinding-not-working-after-upgrade-android-studio-2-3
-    provided 'com.android.databinding:compiler:2.3.0'
 
     androidTestCompile 'com.android.support.test:runner:0.5'
     androidTestCompile 'com.android.support.test:rules:0.5'

@@ -232,8 +232,8 @@ public class TutorialActivity extends AppCompatActivity {
     private static class IntroductionPagerAdapter extends PagerAdapter {
 
         private static final TutorialItem[] ITEMS = {
-                new TutorialItem(TutorialType.VPN_PERMISSION, R.layout.tutorial_setup_vpn, R.string.tutorial_allow),
-                new TutorialItem(TutorialType.ANALYTICS, R.layout.tutorial_analytics, R.string.tutorial_allow),
+                new TutorialItem(TutorialType.VPN_PERMISSION, R.layout.page_tutorial_setup_vpn, R.string.tutorial_allow),
+                new TutorialItem(TutorialType.ANALYTICS, R.layout.page_tutorial_analytics, R.string.tutorial_allow),
         };
 
         private final LayoutInflater inflater;

@@ -54,7 +54,7 @@ public class InternetKillSwitchActivity extends AppCompatActivity {
         final ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
-            actionBar.setHomeAsUpIndicator(R.drawable.close_vector);
+            actionBar.setHomeAsUpIndicator(R.drawable.ic_close_vector);
         }
 
         final InternetKillSwitch internetKillSwitch = vpnSetting.internetKillSwitch();

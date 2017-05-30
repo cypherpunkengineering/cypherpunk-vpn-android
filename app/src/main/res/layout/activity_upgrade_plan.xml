@@ -29,14 +29,14 @@
 
         <com.cypherpunk.privacy.widget.PlanView
             android:id="@+id/monthly_plan"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="300dp"
+            android:layout_height="76dp"
             android:layout_marginBottom="16dp"/>
 
         <com.cypherpunk.privacy.widget.PlanView
             android:id="@+id/annually_plan"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:layout_width="300dp"
+            android:layout_height="76dp"/>
 
     </LinearLayout>
 

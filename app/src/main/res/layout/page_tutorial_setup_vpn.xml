@@ -38,7 +38,7 @@
         android:layout_marginBottom="40dp"
         android:layout_marginLeft="32dp"
         android:layout_marginRight="32dp"
-        android:src="@drawable/setting_up_vpn"
+        android:src="@drawable/tutorial_setup_vpn"
         tools:ignore="ContentDescription"/>
 
 </LinearLayout>

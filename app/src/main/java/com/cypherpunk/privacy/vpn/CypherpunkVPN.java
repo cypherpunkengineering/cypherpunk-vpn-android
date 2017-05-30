@@ -5,10 +5,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.IBinder;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 
-import com.android.annotations.NonNull;
 import com.cypherpunk.privacy.domain.model.AccountSetting;
 import com.cypherpunk.privacy.domain.model.VpnSetting;
 import com.cypherpunk.privacy.domain.model.vpn.InternetKillSwitch;
