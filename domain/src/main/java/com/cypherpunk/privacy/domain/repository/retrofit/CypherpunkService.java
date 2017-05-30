@@ -15,6 +15,7 @@ import java.util.Map;
 
 import io.reactivex.Completable;
 import io.reactivex.Single;
+import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
@@ -26,31 +27,31 @@ public interface CypherpunkService {
     String ENDPOINT = "https://cypherpunk.privacy.network";
 
     @POST("/api/v0/account/identify/email")
-    Completable identifyEmail(@NonNull EmailRequest request);
+    Completable identifyEmail(@Body @NonNull EmailRequest request);
 
     @POST("/api/v0/account/register/signUp")
-    Single<StatusResult> signUp(@NonNull SignUpRequest request);
+    Single<StatusResult> signUp(@Body @NonNull SignUpRequest request);
 
     @POST("/api/v0/account/email/confirm")
-    Completable resendEmail(@NonNull EmailRequest request);
+    Completable resendEmail(@Body @NonNull EmailRequest request);
 
     @POST("/api/v0/account/authenticate/userpasswd")
-    Single<StatusResult> login(@NonNull LoginRequest request);
+    Single<StatusResult> login(@Body @NonNull LoginRequest request);
 
     @POST("/api/v0/account/password/recover")
-    Completable recoverPassword(@NonNull EmailRequest request);
+    Completable recoverPassword(@Body @NonNull EmailRequest request);
 
     @POST("/api/v0/account/email/change")
-    Completable changeEmail(@NonNull ChangeEmailRequest request);
+    Completable changeEmail(@Body @NonNull ChangeEmailRequest request);
 
     @POST("/api/v0/account/password/change")
-    Completable changePassword(@NonNull ChangePasswordRequest request);
+    Completable changePassword(@Body @NonNull ChangePasswordRequest request);
 
     @GET("/api/v0/account/status")
     Single<StatusResult> getAccountStatus();
 
     @POST("/api/v0/account/upgrade/GooglePlay")
-    Single<StatusResult> upgradeAccount(@NonNull UpgradeAccountRequest request);
+    Single<StatusResult> upgradeAccount(@Body @NonNull UpgradeAccountRequest request);
 
     @GET("/api/v0/location/list/{accountType}")
     Single<Map<String, RegionResult>> serverList(@Path(value = "accountType", encoded = true) String accountType);
