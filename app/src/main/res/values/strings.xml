@@ -69,7 +69,7 @@
     <string name="account_setting_rate">Rate Our Service</string>
     <string name="account_setting_contact">Open a Support Ticket</string>
     <string name="account_setting_contact_summary">Your satisfaction is important to us!</string>
-    <string name="account_setting_help">Help</string>
+    <string name="account_setting_help">Go to Help Center</string>
     <string name="account_setting_logout">Sign out</string>
 
     <!-- account type -->

@@ -84,7 +84,7 @@ public class RegionAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                 return holder;
             }
             case ITEM_VIEW_TYPE_CYPHERPLAY: {
-                final ViewHolder holder = new ViewHolder(inflater.inflate(R.layout.list_item_region_cypherplay, parent, false));
+                final ViewHolder holder = new ViewHolder(inflater.inflate(R.layout.list_item_vpn_cypherplay, parent, false));
                 holder.itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -94,7 +94,7 @@ public class RegionAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                 return holder;
             }
             case ITEM_VIEW_TYPE_FASTEST_LOCATION: {
-                final ViewHolder holder = new ViewHolder(inflater.inflate(R.layout.list_item_region_fastest_location, parent, false));
+                final ViewHolder holder = new ViewHolder(inflater.inflate(R.layout.list_item_vpn_fastest_location, parent, false));
                 holder.itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {

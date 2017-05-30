@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <!-- Theme -->
+
     <style name="CypherPunk" parent="Theme.AppCompat">
         <item name="android:windowBackground">@drawable/window_background</item>
         <item name="colorPrimary">@color/dark_black</item>
@@ -20,6 +22,8 @@
         <item name="colorPrimary">@color/dark_black</item>
         <item name="colorPrimaryDark">@color/dark_black</item>
         <item name="colorAccent">@color/golden_yellow</item>
+        <!--<item name="switchStyle">@style/Widget.Cypherpunk.Switch</item>-->
+        <!--<item name="android:windowAnimationStyle">@style/Animation.Activity.Slide</item>-->
     </style>
 
     <style name="CypherPunk.DialogWhenLarge.NoActionBar">
@@ -29,11 +33,14 @@
 
     <style name="CypherPunk.FullScreenProgressDialog">
         <item name="android:windowBackground">@drawable/window_background_transparent</item>
+        <item name="colorAccent">@color/gray</item>
     </style>
 
     <style name="ButtonTheme">
         <item name="colorAccent">@color/nice_blue</item>
     </style>
+
+    <!-- Widget -->
 
     <style name="Widget.CypherPunk.Button.Colored" parent="Widget.AppCompat.Button.Colored">
         <item name="android:paddingTop">16dp</item>
@@ -45,7 +52,17 @@
         <item name="android:textSize">20sp</item>
     </style>
 
-    <!-- style -->
+    <style name="Widget.Cypherpunk.FrameButton" parent="Widget.AppCompat.Button">
+        <item name="android:background">@drawable/button_frame</item>
+        <item name="android:minHeight">40dp</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:textAppearance">@style/TextAppearance.AppCompat.Widget.Button</item>
+        <item name="android:textSize">18sp</item>
+    </style>
+
+    <style name="Widget.Cypherpunk.Switch" parent="Widget.AppCompat.CompoundButton.Switch">
+        <item name="android:textColor">@android:color/white</item>
+    </style>
 
     <style name="SubHeader">
         <item name="android:textAllCaps">true</item>
@@ -53,184 +70,54 @@
         <item name="android:textSize">16sp</item>
     </style>
 
-    <!-- Theme -->
-
-    <style name="AppTheme" parent="Theme.AppCompat.Light">
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
-
-        <item name="android:textColorPrimary">@android:color/white</item>
-        <item name="android:textColorSecondary">@android:color/white</item>
-        <item name="android:windowBackground">@drawable/window_background</item>
-        <item name="preferenceTheme">@style/CypherpunkPreference</item>
-    </style>
-
-    <style name="AppTheme.DialogWhenLarge" parent="Theme.AppCompat.Light.DialogWhenLarge">
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
-        <item name="windowActionBar">false</item>
-        <item name="windowNoTitle">true</item>
-
-        <item name="android:textColorPrimary">@android:color/white</item>
-        <item name="android:textColorSecondary">@android:color/white</item>
-        <item name="android:windowBackground">@drawable/window_background</item>
-        <item name="preferenceTheme">@style/CypherpunkPreference</item>
-        <item name="switchStyle">@style/Widget.Cypherpunk.Switch</item>
-        <item name="android:windowAnimationStyle">@style/Animation.Activity.Slide</item>
-    </style>
-
-    <style name="AppTheme.NoActionBar">
-        <item name="windowActionBar">false</item>
-        <item name="windowNoTitle">true</item>
-    </style>
-
-    <style name="AppTheme.ButtonTransparent">
-        <item name="colorButtonNormal">#33ffffff</item>
-    </style>
-
-    <style name="AppTheme.RadioButton">
-        <item name="colorButtonNormal">@color/radio_button</item>
-    </style>
-
-    <style name="AppTheme.Progress">
-        <item name="colorAccent">@color/dialog</item>
-    </style>
-
-    <style name="EditTextColorControl">
-        <item name="colorControlNormal">@color/input_layout_control_normal</item>
-        <item name="colorControlActivated">@color/input_layout_control_normal</item>
-        <item name="colorControlHighlight">@color/input_layout_control_normal</item>
-    </style>
-
-    <style name="TextInputLayoutControl">
-        <item name="colorAccent">@color/input_layout_control_normal</item>
-    </style>
-
-    <style name="Animation.Activity.Alpha" parent="android:Animation.Activity">
-        <item name="android:activityOpenEnterAnimation">@anim/alpha_enter</item>
-        <item name="android:activityOpenExitAnimation">@anim/alpha_exit</item>
-        <item name="android:activityCloseEnterAnimation">@anim/alpha_enter</item>
-        <item name="android:activityCloseExitAnimation">@anim/alpha_exit</item>
-    </style>
-
     <style name="Animation.Activity.Slide" parent="android:Animation.Activity">
         <item name="android:activityOpenEnterAnimation">@anim/pop_up_anim_in</item>
         <item name="android:activityOpenExitAnimation">@anim/no_animation</item>
     </style>
 
-    <style name="CypherpunkPreference" parent="@style/PreferenceThemeOverlay.v14.Material">
-        <item name="android:textColorSecondary">#99ffffff</item>
-        <item name="preferenceCategoryStyle">@style/PreferenceCategory</item>
-        <item name="preferenceStyle">@style/CustomPreference</item>
-        <item name="switchPreferenceCompatStyle">@style/switchPreference</item>
+    <!-- Preference -->
+
+    <style name="Preference">
+        <item name="android:layout">@layout/custom_preference</item>
     </style>
 
-    <style name="PreferenceCategory">
+    <style name="Preference.Category">
         <item name="android:layout">@layout/custom_preference_category_margin</item>
         <item name="android:selectable">false</item>
     </style>
 
-    <style name="CustomPreference">
-        <item name="android:layout">@layout/custom_preference</item>
+    <style name="CypherpunkPreferenceFragment">
+        <item name="android:paddingLeft">0dp</item>
+        <item name="android:paddingRight">0dp</item>
     </style>
 
-    <style name="switchPreference" parent="Preference.SwitchPreferenceCompat">
-        <item name="android:layout">@layout/custom_preference</item>
+    <style name="CypherpunkPreferenceFragmentList">
+        <item name="android:paddingLeft">0dp</item>
+        <item name="android:paddingRight">0dp</item>
     </style>
 
-    <!-- widget -->
+    <style name="CypherpunkPreference" parent="PreferenceThemeOverlay">
+        <item name="preferenceStyle">@style/Preference</item>
+        <item name="preferenceScreenStyle">@style/Preference.PreferenceScreen</item>
+        <item name="preferenceCategoryStyle">@style/Preference.Category</item>
+        <item name="preferenceInformationStyle">@style/Preference.Information</item>
+        <item name="checkBoxPreferenceStyle">@style/Preference.CheckBoxPreference</item>
+        <item name="switchPreferenceCompatStyle">@style/Preference.SwitchPreferenceCompat</item>
+        <item name="seekBarPreferenceStyle">@style/Preference.SeekBarPreference</item>
+        <item name="dialogPreferenceStyle">@style/Preference.DialogPreference</item>
+        <item name="editTextPreferenceStyle">@style/Preference.DialogPreference.EditTextPreference
+        </item>
+        <item name="dropdownPreferenceStyle">@style/Preference.DropDown</item>
 
-    <style name="Widget.Cypherpunk.Button.NoCaps" parent="Widget.AppCompat.Button">
-        <item name="android:textAppearance">@style/TextAppearance.Cypherpunk.Button.NoCaps</item>
-    </style>
-
-    <style name="Widget.Cypherpunk.TransparentButton" parent="Widget.AppCompat.Button">
-        <item name="android:background">@drawable/button_transparent</item>
-        <item name="android:gravity">center</item>
-        <item name="android:minHeight">40dp</item>
-        <item name="android:textSize">18sp</item>
-        <item name="android:textAppearance">@style/TextAppearance.Cypherpunk.Button.NoCaps</item>
-    </style>
-
-    <style name="Widget.Cypherpunk.FrameButton" parent="Widget.AppCompat.Button">
-        <item name="android:background">@drawable/button_frame</item>
-        <item name="android:gravity">center</item>
-        <item name="android:minHeight">40dp</item>
-        <item name="android:textSize">18sp</item>
-        <item name="android:textAppearance">@style/TextAppearance.Cypherpunk.Button.NoCaps</item>
-    </style>
-
-    <style name="Widget.Cypherpunk.FrameButton.Big" parent="Widget.Cypherpunk.FrameButton">
-        <item name="android:minHeight">64dp</item>
-        <item name="android:textSize">22sp</item>
-    </style>
-
-    <style name="Widget.Cypherpunk.YellowButton" parent="Widget.AppCompat.Button">
-        <item name="android:background">@drawable/button_yellow</item>
-        <item name="android:gravity">center</item>
-        <item name="android:minHeight">40dp</item>
-        <item name="android:minWidth">300dp</item>
-        <item name="android:textSize">18sp</item>
-        <item name="android:textAppearance">@style/TextAppearance.Cypherpunk.Button.NoCaps</item>
-    </style>
-
-    <style name="Widget.Cypherpunk.YellowButton.Big" parent="Widget.Cypherpunk.YellowButton">
-        <item name="android:minHeight">64dp</item>
-        <item name="android:textSize">22sp</item>
-    </style>
-
-    <style name="Widget.Cypherpunk.TransparentDarkButton" parent="Widget.AppCompat.Button">
-        <item name="android:background">@drawable/button_transparent_bark</item>
-        <item name="android:gravity">center</item>
-        <item name="android:minHeight">40dp</item>
-        <item name="android:textSize">18sp</item>
-        <item name="android:textAppearance">@style/TextAppearance.Cypherpunk.Button.NoCaps</item>
-    </style>
-
-    <style name="Widget.Cypherpunk.TextView.AccountMenu" parent="android:Widget.TextView">
-        <item name="android:paddingLeft">16dp</item>
-        <item name="android:paddingRight">16dp</item>
-        <item name="android:textSize">18sp</item>
-        <item name="android:height">48dp</item>
-        <item name="android:background">?android:attr/selectableItemBackground</item>
-        <item name="android:clickable">true</item>
-        <item name="android:gravity">center_vertical</item>
-        <item name="android:textColor">@android:color/white</item>
-    </style>
-
-    <style name="Widget.Cypherpunk.TextInputLayout" parent="Widget.Design.TextInputLayout">
-        <item name="android:textColorHint">@color/edit_text_hint</item>
-        <item name="android:textColor">@color/edit_text_hint</item>
-    </style>
-
-    <style name="Widget.Cypherpunk.Switch" parent="Widget.AppCompat.CompoundButton.Switch">
-        <item name="android:textColor">@android:color/white</item>
+        <item name="preferenceFragmentCompatStyle">@style/CypherpunkPreferenceFragment</item>
+        <item name="preferenceFragmentListStyle">@style/CypherpunkPreferenceFragmentList</item>
     </style>
 
     <!-- TextAppearance -->
-
-    <style name="TextAppearance.Cypherpunk.Button.NoCaps" parent="Base.TextAppearance.AppCompat.Button">
-        <item name="android:textAllCaps">false</item>
-    </style>
-
-    <style name="TextAppearance.Cypherpunk.SettingLabel" parent="TextAppearance.AppCompat">
-        <item name="android:textColor">@color/settings_label</item>
-        <item name="android:textSize">16sp</item>
-    </style>
-
-    <style name="TextAppearance.Cypherpunk.Yellow" parent="TextAppearance.AppCompat">
-        <item name="android:textColor">#f8e71c</item>
-    </style>
-
-    <style name="TextAppearance.Cypherpunk.Policy" parent="TextAppearance.AppCompat">
-        <item name="android:textColor">#cccccc</item>
-        <item name="android:textSize">12sp</item>
-    </style>
 
     <style name="TextAppearance.Cypherpunk.PolicyLink" parent="TextAppearance.AppCompat">
         <item name="android:textColor">#fff</item>
         <item name="android:textSize">12sp</item>
     </style>
+
 </resources>

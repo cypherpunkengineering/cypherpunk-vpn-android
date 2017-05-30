@@ -78,7 +78,7 @@ public class EditPasswordActivity extends AppCompatActivity {
         final ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
-            actionBar.setHomeAsUpIndicator(R.drawable.close_vector);
+            actionBar.setHomeAsUpIndicator(R.drawable.ic_close_vector);
         }
     }
 

@@ -32,7 +32,7 @@ public class StarView extends AppCompatImageView implements Checkable, View.OnCl
         super(context, attrs, defStyleAttr);
         setClickable(true);
         setOnClickListener(this);
-        setImageResource(R.drawable.region_star);
+        setImageResource(R.drawable.star);
     }
 
     @Override

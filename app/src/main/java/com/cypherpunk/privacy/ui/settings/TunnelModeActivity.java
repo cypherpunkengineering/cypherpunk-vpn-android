@@ -58,7 +58,7 @@ public class TunnelModeActivity extends AppCompatActivity {
         final ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
-            actionBar.setHomeAsUpIndicator(R.drawable.close_vector);
+            actionBar.setHomeAsUpIndicator(R.drawable.ic_close_vector);
         }
 
         final LinearLayout container = ButterKnife.findById(this, R.id.container);
@@ -67,7 +67,7 @@ public class TunnelModeActivity extends AppCompatActivity {
         final TunnelMode tunnelMode = vpnSetting.tunnelMode();
 
         for (final TunnelMode mode : TunnelMode.values()) {
-            final View view = inflater.inflate(R.layout.tunnel_mode_item, container, false);
+            final View view = inflater.inflate(R.layout.list_item_tunnel_mode, container, false);
             container.addView(view);
 
             final Checkable checkable = ButterKnife.findById(view, R.id.checkable);

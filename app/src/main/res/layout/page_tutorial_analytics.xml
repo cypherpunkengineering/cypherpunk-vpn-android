@@ -38,7 +38,7 @@
         android:layout_marginBottom="40dp"
         android:layout_marginLeft="32dp"
         android:layout_marginRight="32dp"
-        android:src="@drawable/one_final_step"
+        android:src="@drawable/tutorial_analytics"
         tools:ignore="ContentDescription"/>
 
 </LinearLayout>

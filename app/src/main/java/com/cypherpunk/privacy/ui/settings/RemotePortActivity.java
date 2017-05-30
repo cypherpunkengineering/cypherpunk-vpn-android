@@ -57,7 +57,7 @@ public class RemotePortActivity extends AppCompatActivity {
         final ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
-            actionBar.setHomeAsUpIndicator(R.drawable.close_vector);
+            actionBar.setHomeAsUpIndicator(R.drawable.ic_close_vector);
         }
 
         final LinearLayout container = ButterKnife.findById(this, R.id.container);
@@ -66,7 +66,7 @@ public class RemotePortActivity extends AppCompatActivity {
         final RemotePort remotePort = vpnSetting.remotePort();
 
         for (final RemotePort.Type type : RemotePort.Type.values()) {
-            final View group = inflater.inflate(R.layout.remote_port_category, container, false);
+            final View group = inflater.inflate(R.layout.list_item_remote_port_category, container, false);
             container.addView(group);
 
             final TextView textView = ButterKnife.findById(group, R.id.category_name);
@@ -75,7 +75,7 @@ public class RemotePortActivity extends AppCompatActivity {
             final LinearLayout ll = ButterKnife.findById(group, R.id.group);
 
             for (final RemotePort.Port port : RemotePort.Port.values()) {
-                final View view = inflater.inflate(R.layout.remote_port_item, ll, false);
+                final View view = inflater.inflate(R.layout.list_item_remote_port, ll, false);
                 ll.addView(view);
 
                 final Checkable checkable = ButterKnife.findById(view, R.id.checkable);

@@ -9,7 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.cypherpunk.privacy.R;
-import com.cypherpunk.privacy.widget.RegionTagView;
+import com.cypherpunk.privacy.widget.RegionBadgeView;
 import com.cypherpunk.privacy.widget.StarView;
 
 import butterknife.BindView;
@@ -37,7 +37,7 @@ class RegionViewHolder extends RecyclerView.ViewHolder {
     StarView favoriteView;
 
     @BindView(R.id.tag)
-    RegionTagView tagView;
+    RegionBadgeView tagView;
 
     private RegionViewHolder(View view) {
         super(view);

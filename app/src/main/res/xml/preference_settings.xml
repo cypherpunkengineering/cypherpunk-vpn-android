@@ -1,15 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <Preference
-        android:layout="@layout/preference_header"
-        android:selectable="false"
-        android:title="@string/settings_header_configuration"/>
-
-    <Preference
-        android:layout="@layout/preference_configuration_header"
-        android:title="@string/settings_header_configuration_basic"/>
-
     <PreferenceCategory
         android:layout="@layout/custom_preference_category"
         android:title="@string/setting_category_app_settings">
@@ -53,21 +44,23 @@
     </PreferenceCategory>
 
     <PreferenceCategory
-        android:layout="@layout/preference_configuration_header"
-        android:title="@string/settings_header_configuration_advanced"/>
+        android:title="@string/settings_header_configuration_advanced">
 
-    <Preference
-        android:key="@string/setting_preference_remote_port"
-        android:title="@string/setting_vpn_remote_port"/>
+        <Preference
+            android:key="@string/setting_preference_remote_port"
+            android:title="@string/setting_vpn_remote_port"/>
 
-    <Preference
-        android:key="@string/setting_preference_split_tunnel"
-        android:summary="@string/setting_split_tunnel_summary"
-        android:title="@string/setting_split_tunnel"/>
+        <Preference
+            android:key="@string/setting_preference_split_tunnel"
+            android:summary="@string/setting_split_tunnel_summary"
+            android:title="@string/setting_split_tunnel"/>
 
-    <SwitchPreferenceCompat
-        android:defaultValue="true"
-        android:key="@string/setting_preference_key_allow_lan_traffic"
-        android:title="@string/setting_allow_lan_traffic"/>
+        <!--suppress AndroidElementNotAllowed -->
+        <SwitchPreferenceCompat
+            android:defaultValue="true"
+            android:key="@string/setting_preference_key_allow_lan_traffic"
+            android:title="@string/setting_allow_lan_traffic"/>
+
+    </PreferenceCategory>
 
 </PreferenceScreen>

@@ -10,6 +10,11 @@ import android.support.v4.app.TaskStackBuilder;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.preference.Preference;
 import android.support.v7.preference.PreferenceFragmentCompat;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.FrameLayout;
+import android.widget.TextView;
 
 import com.cypherpunk.privacy.CypherpunkApplication;
 import com.cypherpunk.privacy.R;
@@ -24,6 +29,7 @@ import com.cypherpunk.privacy.vpn.CypherpunkVPN;
 
 import javax.inject.Inject;
 
+import butterknife.ButterKnife;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.disposables.Disposables;
@@ -49,6 +55,18 @@ public class AccountSettingsFragment extends PreferenceFragmentCompat {
 
     @Inject
     AccountSetting accountSetting;
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        final View view = inflater.inflate(R.layout.fragment_settings, container, false);
+        final TextView headerView = ButterKnife.findById(view, R.id.header);
+        headerView.setText(R.string.settings_header_account);
+
+        final FrameLayout frameLayout = ButterKnife.findById(view, R.id.list_container);
+        final View list = super.onCreateView(inflater, frameLayout, savedInstanceState);
+        frameLayout.addView(list);
+        return view;
+    }
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {

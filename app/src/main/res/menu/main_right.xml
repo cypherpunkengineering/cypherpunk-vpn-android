@@ -5,7 +5,7 @@
 
     <item
         android:id="@+id/action_setting"
-        android:icon="@drawable/settings_vector"
+        android:icon="@drawable/ic_settings_vector"
         android:title="@string/action_settings"
         app:showAsAction="always"/>
 

@@ -65,7 +65,7 @@ public class NetworkActivity extends AppCompatActivity {
         final ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
-            actionBar.setHomeAsUpIndicator(R.drawable.close_vector);
+            actionBar.setHomeAsUpIndicator(R.drawable.ic_close_vector);
         }
 
         // add wifi configuration to realm
@@ -75,7 +75,7 @@ public class NetworkActivity extends AppCompatActivity {
             vpnSetting.addNetworks(wifiNetworks);
         }
 
-        final View header = LayoutInflater.from(this).inflate(R.layout.header_item_network, recyclerView, false);
+        final View header = LayoutInflater.from(this).inflate(R.layout.list_header_network, recyclerView, false);
         {
             final View container = ButterKnife.findById(header, R.id.auto_secure_container);
             final TextView textView = ButterKnife.findById(container, R.id.name);

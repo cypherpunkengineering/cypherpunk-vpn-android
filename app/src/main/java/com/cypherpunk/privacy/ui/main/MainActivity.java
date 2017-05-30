@@ -196,7 +196,7 @@ public class MainActivity extends AppCompatActivity implements
             final ActionBar actionBar = getSupportActionBar();
             if (actionBar != null) {
                 actionBar.setDisplayHomeAsUpEnabled(true);
-                actionBar.setHomeAsUpIndicator(R.drawable.account_vector);
+                actionBar.setHomeAsUpIndicator(R.drawable.ic_account_vector);
             }
 
             getSupportFragmentManager().beginTransaction()
@@ -347,13 +347,6 @@ public class MainActivity extends AppCompatActivity implements
     private String getSimOperatorName() {
         TelephonyManager telephonyManager = (TelephonyManager) getSystemService(TELEPHONY_SERVICE);
         return telephonyManager.getSimOperatorName();
-    }
-
-    private void showSignUpButton() {
-        SpannableStringBuilder sb = new SpannableStringBuilder(getString(R.string.main_sign_up));
-        sb.setSpan(new TextAppearanceSpan(this, R.style.TextAppearance_Cypherpunk_Yellow), 0, 7, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-//        signUpButton.setText(sb);
-//        signUpButton.setVisibility(View.VISIBLE);
     }
 
     @Override

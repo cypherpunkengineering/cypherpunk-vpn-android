@@ -26,7 +26,7 @@ import com.cypherpunk.privacy.domain.repository.VpnServerRepository;
 import com.cypherpunk.privacy.domain.repository.retrofit.result.RegionResult;
 import com.cypherpunk.privacy.domain.repository.retrofit.result.StatusResult;
 import com.cypherpunk.privacy.utils.ResourceUtil;
-import com.cypherpunk.privacy.widget.RegionTagView;
+import com.cypherpunk.privacy.widget.RegionBadgeView;
 
 import java.util.Collections;
 import java.util.List;
@@ -89,7 +89,7 @@ public class RegionFragment extends Fragment {
     TextView nameView;
 
     @BindView(R.id.region_tag)
-    RegionTagView tagView;
+    RegionBadgeView tagView;
 
     @BindView(R.id.allow)
     ImageView allowView;
@@ -198,7 +198,7 @@ public class RegionFragment extends Fragment {
     }
 
     public void toggleAllowIcon(boolean more) {
-        allowView.setImageResource(more ? R.drawable.expand_more_vector : R.drawable.expand_less_vector);
+        allowView.setImageResource(more ? R.drawable.ic_expand_more_vector : R.drawable.ic_expand_less_vector);
     }
 
     public void refreshServerList() {

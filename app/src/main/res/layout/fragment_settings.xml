@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <com.cypherpunk.privacy.widget.TypefaceTextView
+        android:id="@+id/header"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/dark_black"
+        android:gravity="center"
+        android:maxLines="1"
+        android:paddingEnd="?android:listPreferredItemPaddingEnd"
+        android:paddingLeft="?android:listPreferredItemPaddingLeft"
+        android:paddingRight="?android:listPreferredItemPaddingRight"
+        android:paddingStart="?android:listPreferredItemPaddingStart"
+        android:textAppearance="@style/TextAppearance.AppCompat.Title"
+        app:fontName="DosisSemiBold"
+        tools:text="@string/settings_header_configuration"/>
+
+    <FrameLayout
+        android:id="@+id/list_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+</LinearLayout>

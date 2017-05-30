@@ -11,17 +11,17 @@ import com.cypherpunk.privacy.R;
 import com.cypherpunk.privacy.domain.model.vpn.Level;
 import com.cypherpunk.privacy.ui.common.FontCache;
 
-public class RegionTagView extends AppCompatTextView {
+public class RegionBadgeView extends AppCompatTextView {
 
-    public RegionTagView(Context context) {
+    public RegionBadgeView(Context context) {
         super(context);
     }
 
-    public RegionTagView(Context context, AttributeSet attrs) {
+    public RegionBadgeView(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
 
-    public RegionTagView(Context context, AttributeSet attrs, int defStyleAttr) {
+    public RegionBadgeView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
     }
 
@@ -36,7 +36,7 @@ public class RegionTagView extends AppCompatTextView {
 
             case DEVELOPER:
                 setText(R.string.region_level_badge_dev);
-                setBackgroundResource(R.drawable.region_badge_dev);
+                setBackgroundResource(R.drawable.region_badge_developer);
                 setTextColor(Color.WHITE);
                 setTypeface(FontCache.getDosisSemiBold(getContext()));
                 break;
