@@ -294,7 +294,7 @@ public class SplitTunnelActivity extends AppCompatActivity {
         }
     }
 
-    static class AppAdapter extends RecyclerView.Adapter<ItemViewHolder> {
+    private static class AppAdapter extends RecyclerView.Adapter<ItemViewHolder> {
 
         private List<AppInfo> originals;
         private List<AppInfo> items;

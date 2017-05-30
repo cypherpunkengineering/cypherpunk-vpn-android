@@ -156,7 +156,7 @@ public class EditPasswordActivity extends AppCompatActivity {
                 focusView = confirmPasswordEditText;
             }
         } else if (!TextUtils.equals(newPassword, confirmPassword)) {
-            confirmPasswordTextInputLayout.setError(getString(R.string.edit_password_account_error_do_not_match));
+            confirmPasswordTextInputLayout.setError(getString(R.string.error_password_do_not_match));
             if (focusView == null) {
                 focusView = confirmPasswordEditText;
             }
@@ -200,9 +200,9 @@ public class EditPasswordActivity extends AppCompatActivity {
                             dialog = null;
                         }
                         if (error instanceof UnknownHostException) {
-                            Toast.makeText(context, R.string.no_internet, Toast.LENGTH_SHORT).show();
+                            Toast.makeText(context, R.string.error_no_internet, Toast.LENGTH_SHORT).show();
                         } else {
-                            Toast.makeText(context, R.string.api_error, Toast.LENGTH_SHORT).show();
+                            Toast.makeText(context, R.string.error_api, Toast.LENGTH_SHORT).show();
                         }
                     }
                 });

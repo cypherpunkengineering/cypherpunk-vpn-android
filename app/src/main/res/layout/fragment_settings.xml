@@ -20,7 +20,7 @@
         android:paddingStart="?android:listPreferredItemPaddingStart"
         android:textAppearance="@style/TextAppearance.AppCompat.Title"
         app:fontName="DosisSemiBold"
-        tools:text="@string/settings_header_configuration"/>
+        tools:text="@string/setting_header_configuration"/>
 
     <FrameLayout
         android:id="@+id/list_container"

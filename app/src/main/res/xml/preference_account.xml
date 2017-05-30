@@ -48,4 +48,20 @@
 
     </PreferenceCategory>
 
+    <PreferenceCategory android:title="@string/account_setting_category_other">
+
+        <Preference
+            android:key="@string/account_preference_terms_of_service"
+            android:title="@string/account_setting_terms_of_service"/>
+
+        <Preference
+            android:key="@string/account_preference_privacy_policy"
+            android:title="@string/account_setting_privacy_policy"/>
+
+        <Preference
+            android:key="@string/account_preference_license_information"
+            android:title="@string/account_setting_license_information"/>
+
+    </PreferenceCategory>
+
 </PreferenceScreen>

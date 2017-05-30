@@ -178,11 +178,11 @@ public class SignUpActivity extends AppCompatActivity {
                             dialog = null;
                         }
                         if (e instanceof UnknownHostException) {
-                            Toast.makeText(context, R.string.no_internet, Toast.LENGTH_SHORT).show();
+                            Toast.makeText(context, R.string.error_no_internet, Toast.LENGTH_SHORT).show();
                         } else if (e instanceof HttpException) {
                             final HttpException he = (HttpException) e;
                             if (he.code() == 409) {
-                                Toast.makeText(context, R.string.email_already_registered, Toast.LENGTH_SHORT).show();
+                                Toast.makeText(context, R.string.error_email_already_registered, Toast.LENGTH_SHORT).show();
                                 startActivity(LoginActivity.createIntent(context, email));
                             }
                         }

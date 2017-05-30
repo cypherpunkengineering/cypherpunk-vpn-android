@@ -154,7 +154,7 @@ public class EditEmailActivity extends AppCompatActivity {
             emailTextInputLayout.setError(getString(R.string.error_field_required));
             focusView = emailEditText;
         } else if (!Patterns.EMAIL_ADDRESS.matcher(newEmail).matches()) {
-            emailTextInputLayout.setError(getString(R.string.error_invalid_email));
+            emailTextInputLayout.setError(getString(R.string.error_email_invalid));
             focusView = emailEditText;
         }
 
@@ -164,7 +164,7 @@ public class EditEmailActivity extends AppCompatActivity {
                 focusView = confirmEmailEditText;
             }
         } else if (!TextUtils.equals(newEmail, confirmEmail)) {
-            confirmEmailTextInputLayout.setError(getString(R.string.edit_email_account_error_do_not_match));
+            confirmEmailTextInputLayout.setError(getString(R.string.error_email_do_not_match));
             if (focusView == null) {
                 focusView = confirmEmailEditText;
             }
@@ -211,9 +211,9 @@ public class EditEmailActivity extends AppCompatActivity {
                             dialog = null;
                         }
                         if (error instanceof UnknownHostException) {
-                            Toast.makeText(context, R.string.no_internet, Toast.LENGTH_SHORT).show();
+                            Toast.makeText(context, R.string.error_no_internet, Toast.LENGTH_SHORT).show();
                         } else {
-                            Toast.makeText(context, R.string.api_error, Toast.LENGTH_SHORT).show();
+                            Toast.makeText(context, R.string.error_api, Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
