@@ -1,6 +1,6 @@
 package com.cypherpunk.privacy.dagger;
 
-import com.cypherpunk.privacy.domain.model.vpn.RealmVpnServerRepository;
+import com.cypherpunk.privacy.datasource.vpn.RealmVpnServerRepository;
 import com.cypherpunk.privacy.domain.repository.VpnServerRepository;
 
 import javax.inject.Singleton;

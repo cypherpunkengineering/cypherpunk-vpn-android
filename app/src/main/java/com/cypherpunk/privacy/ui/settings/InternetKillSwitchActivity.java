@@ -14,7 +14,7 @@ import android.widget.Checkable;
 
 import com.cypherpunk.privacy.CypherpunkApplication;
 import com.cypherpunk.privacy.R;
-import com.cypherpunk.privacy.domain.model.vpn.InternetKillSwitch;
+import com.cypherpunk.privacy.datasource.vpn.InternetKillSwitch;
 import com.cypherpunk.privacy.domain.model.VpnSetting;
 
 import java.util.ArrayList;

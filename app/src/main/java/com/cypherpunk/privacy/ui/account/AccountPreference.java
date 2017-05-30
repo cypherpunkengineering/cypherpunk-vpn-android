@@ -11,8 +11,8 @@ import android.util.AttributeSet;
 import android.widget.TextView;
 
 import com.cypherpunk.privacy.R;
-import com.cypherpunk.privacy.domain.model.account.Account;
-import com.cypherpunk.privacy.domain.model.account.Subscription;
+import com.cypherpunk.privacy.datasource.account.Account;
+import com.cypherpunk.privacy.datasource.account.Subscription;
 
 import java.util.Date;
 

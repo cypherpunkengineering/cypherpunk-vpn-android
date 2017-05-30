@@ -2,7 +2,7 @@ package com.cypherpunk.privacy.domain.repository.retrofit;
 
 import android.support.annotation.NonNull;
 
-import com.cypherpunk.privacy.domain.model.account.Account;
+import com.cypherpunk.privacy.datasource.account.Account;
 import com.cypherpunk.privacy.domain.repository.NetworkRepository;
 import com.cypherpunk.privacy.domain.repository.retrofit.adapter.AccountTypeAdapter;
 import com.cypherpunk.privacy.domain.repository.retrofit.adapter.ExpirationAdapter;

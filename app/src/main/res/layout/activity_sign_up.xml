@@ -44,7 +44,7 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"/>
 
-    <com.cypherpunk.privacy.widget.TypefaceTextView
+    <com.cypherpunk.privacy.ui.common.TypefaceTextView
         android:id="@+id/welcome"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -70,7 +70,7 @@
         app:layout_constraintTop_toBottomOf="@+id/welcome"
         tools:ignore="ContentDescription"/>
 
-    <com.cypherpunk.privacy.widget.TypefaceTextView
+    <com.cypherpunk.privacy.ui.common.TypefaceTextView
         android:id="@+id/message"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -114,7 +114,7 @@
 
     </android.support.design.widget.TextInputLayout>
 
-    <com.cypherpunk.privacy.widget.TypefaceButton
+    <com.cypherpunk.privacy.ui.common.TypefaceButton
         android:id="@+id/sign_up_button"
         style="@style/Widget.CypherPunk.Button.Colored"
         android:layout_width="wrap_content"
@@ -126,7 +126,7 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/text_input_layout"/>
 
-    <com.cypherpunk.privacy.widget.TypefaceTextView
+    <com.cypherpunk.privacy.ui.common.TypefaceTextView
         android:id="@+id/policy"
         android:layout_width="0dp"
         android:layout_height="wrap_content"

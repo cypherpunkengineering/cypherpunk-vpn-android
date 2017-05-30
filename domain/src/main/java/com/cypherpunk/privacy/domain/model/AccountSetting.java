@@ -3,9 +3,9 @@ package com.cypherpunk.privacy.domain.model;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
-import com.cypherpunk.privacy.domain.model.account.Account;
-import com.cypherpunk.privacy.domain.model.account.Privacy;
-import com.cypherpunk.privacy.domain.model.account.Subscription;
+import com.cypherpunk.privacy.datasource.account.Account;
+import com.cypherpunk.privacy.datasource.account.Privacy;
+import com.cypherpunk.privacy.datasource.account.Subscription;
 
 /**
  * account settings

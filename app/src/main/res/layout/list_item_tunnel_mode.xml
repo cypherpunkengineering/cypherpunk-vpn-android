@@ -32,7 +32,7 @@
         app:layout_constraintVertical_bias="0.523"
         tools:ignore="ContentDescription"/>
 
-    <com.cypherpunk.privacy.widget.TypefaceTextView
+    <com.cypherpunk.privacy.ui.common.TypefaceTextView
         android:id="@+id/title"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -47,7 +47,7 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:text="@string/tunnel_mode_recommended_title"/>
 
-    <com.cypherpunk.privacy.widget.TypefaceTextView
+    <com.cypherpunk.privacy.ui.common.TypefaceTextView
         android:id="@+id/summary"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -58,7 +58,7 @@
         app:layout_constraintTop_toBottomOf="@+id/title"
         tools:text="@string/tunnel_mode_recommended_summary"/>
 
-    <com.cypherpunk.privacy.widget.TypefaceTextView
+    <com.cypherpunk.privacy.ui.common.TypefaceTextView
         android:id="@+id/cipher"
         android:layout_width="106dp"
         android:layout_height="wrap_content"
@@ -70,7 +70,7 @@
         app:layout_constraintLeft_toLeftOf="@id/title"
         app:layout_constraintTop_toBottomOf="@id/summary"/>
 
-    <com.cypherpunk.privacy.widget.TypefaceTextView
+    <com.cypherpunk.privacy.ui.common.TypefaceTextView
         android:id="@+id/cipher_value"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -82,7 +82,7 @@
         app:layout_constraintTop_toBottomOf="@id/cipher"
         tools:text="AES-128-GCM"/>
 
-    <com.cypherpunk.privacy.widget.TypefaceTextView
+    <com.cypherpunk.privacy.ui.common.TypefaceTextView
         android:id="@+id/auth"
         android:layout_width="70dp"
         android:layout_height="wrap_content"
@@ -94,7 +94,7 @@
         app:layout_constraintLeft_toRightOf="@id/cipher"
         app:layout_constraintTop_toBottomOf="@id/summary"/>
 
-    <com.cypherpunk.privacy.widget.TypefaceTextView
+    <com.cypherpunk.privacy.ui.common.TypefaceTextView
         android:id="@+id/auth_value"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -106,7 +106,7 @@
         app:layout_constraintTop_toBottomOf="@id/auth"
         tools:text="SHA-256"/>
 
-    <com.cypherpunk.privacy.widget.TypefaceTextView
+    <com.cypherpunk.privacy.ui.common.TypefaceTextView
         android:id="@+id/key"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -118,7 +118,7 @@
         app:layout_constraintLeft_toRightOf="@id/auth"
         app:layout_constraintTop_toBottomOf="@id/summary"/>
 
-    <com.cypherpunk.privacy.widget.TypefaceTextView
+    <com.cypherpunk.privacy.ui.common.TypefaceTextView
         android:id="@+id/key_value"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

@@ -2,9 +2,9 @@ package com.cypherpunk.privacy.domain.repository.retrofit.result;
 
 import android.support.annotation.NonNull;
 
-import com.cypherpunk.privacy.domain.model.account.Account;
-import com.cypherpunk.privacy.domain.model.account.Privacy;
-import com.cypherpunk.privacy.domain.model.account.Subscription;
+import com.cypherpunk.privacy.datasource.account.Account;
+import com.cypherpunk.privacy.datasource.account.Privacy;
+import com.cypherpunk.privacy.datasource.account.Subscription;
 
 public class StatusResult {
 

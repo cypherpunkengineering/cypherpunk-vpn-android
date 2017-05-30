@@ -19,9 +19,9 @@ import android.widget.TextView;
 import com.cypherpunk.privacy.CypherpunkApplication;
 import com.cypherpunk.privacy.R;
 import com.cypherpunk.privacy.domain.model.VpnSetting;
-import com.cypherpunk.privacy.domain.model.vpn.InternetKillSwitch;
-import com.cypherpunk.privacy.domain.model.vpn.RemotePort;
-import com.cypherpunk.privacy.domain.model.vpn.TunnelMode;
+import com.cypherpunk.privacy.datasource.vpn.InternetKillSwitch;
+import com.cypherpunk.privacy.datasource.vpn.RemotePort;
+import com.cypherpunk.privacy.datasource.vpn.TunnelMode;
 import com.cypherpunk.privacy.vpn.CypherpunkVpnStatus;
 
 import javax.inject.Inject;

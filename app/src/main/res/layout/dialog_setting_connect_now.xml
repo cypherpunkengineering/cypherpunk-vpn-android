@@ -10,7 +10,7 @@
     android:paddingRight="16dp"
     android:paddingTop="16dp">
 
-    <com.cypherpunk.privacy.widget.TypefaceTextView
+    <com.cypherpunk.privacy.ui.common.TypefaceTextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
@@ -18,7 +18,7 @@
         android:textSize="18sp"
         app:fontName="DosisMedium"/>
 
-    <com.cypherpunk.privacy.widget.TypefaceButton
+    <com.cypherpunk.privacy.ui.common.TypefaceButton
         android:id="@+id/connect_button"
         style="@style/Widget.CypherPunk.Button.Colored"
         android:layout_width="260dp"
@@ -29,7 +29,7 @@
         android:textAllCaps="true"
         android:theme="@style/ButtonTheme"/>
 
-    <com.cypherpunk.privacy.widget.TypefaceTextView
+    <com.cypherpunk.privacy.ui.common.TypefaceTextView
         android:id="@+id/later_button"
         android:layout_width="260dp"
         android:layout_height="wrap_content"

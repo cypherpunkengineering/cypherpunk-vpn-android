@@ -56,7 +56,7 @@
             tools:ignore="ContentDescription"
             tools:src="@drawable/flag_us"/>
 
-        <com.cypherpunk.privacy.widget.TypefaceTextView
+        <com.cypherpunk.privacy.ui.common.TypefaceTextView
             android:id="@+id/region_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -70,7 +70,7 @@
             app:layout_constraintTop_toTopOf="parent"
             tools:text="USA WEST"/>
 
-        <com.cypherpunk.privacy.widget.RegionBadgeView
+        <com.cypherpunk.privacy.ui.common.RegionBadgeView
             android:id="@+id/region_tag"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

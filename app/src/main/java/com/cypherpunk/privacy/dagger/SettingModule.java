@@ -5,8 +5,8 @@ import android.support.annotation.NonNull;
 
 import com.cypherpunk.privacy.domain.model.AccountSetting;
 import com.cypherpunk.privacy.domain.model.VpnSetting;
-import com.cypherpunk.privacy.domain.model.account.CypherpunkAccountSetting;
-import com.cypherpunk.privacy.domain.model.vpn.CypherpunkVpnSetting;
+import com.cypherpunk.privacy.datasource.account.CypherpunkAccountSetting;
+import com.cypherpunk.privacy.datasource.vpn.CypherpunkVpnSetting;
 
 import javax.inject.Singleton;
 

@@ -2,7 +2,7 @@ package com.cypherpunk.privacy.vpn;
 
 import android.support.annotation.NonNull;
 
-import com.cypherpunk.privacy.domain.model.vpn.VpnServer;
+import com.cypherpunk.privacy.datasource.vpn.VpnServer;
 import com.cypherpunk.privacy.domain.repository.VpnServerRepository;
 
 import java.net.InetSocketAddress;

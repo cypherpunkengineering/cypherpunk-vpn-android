@@ -3,8 +3,8 @@ package com.cypherpunk.privacy.domain.repository;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
-import com.cypherpunk.privacy.domain.model.vpn.Region;
-import com.cypherpunk.privacy.domain.model.vpn.VpnServer;
+import com.cypherpunk.privacy.datasource.vpn.Region;
+import com.cypherpunk.privacy.datasource.vpn.VpnServer;
 import com.cypherpunk.privacy.domain.repository.retrofit.result.RegionResult;
 
 import java.util.Date;

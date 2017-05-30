@@ -2,6 +2,7 @@ package com.cypherpunk.privacy.ui.region;
 
 import android.content.Context;
 import android.support.annotation.ColorInt;
+import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.StringRes;
 import android.support.v4.content.ContextCompat;
@@ -13,10 +14,9 @@ import android.view.ViewGroup;
 
 import com.cypherpunk.privacy.R;
 import com.cypherpunk.privacy.domain.model.VpnSetting;
-import com.cypherpunk.privacy.domain.model.vpn.VpnServer;
+import com.cypherpunk.privacy.datasource.vpn.VpnServer;
 import com.cypherpunk.privacy.ui.common.FontCache;
-import com.cypherpunk.privacy.utils.ResourceUtil;
-import com.cypherpunk.privacy.widget.StarView;
+import com.cypherpunk.privacy.ui.common.StarView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -131,7 +131,7 @@ public class RegionAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                         : FontCache.getDosisRegular(context));
 
                 holder.favoriteView.setChecked(vpnServer.favorite());
-                holder.flagView.setImageResource(ResourceUtil.getFlag(context, vpnServer.country()));
+                holder.flagView.setImageResource(getFlag(context, vpnServer.country()));
                 holder.tagView.setLevel(vpnServer.level());
                 holder.setEnabled(vpnServer.isSelectable());
                 break;
@@ -240,5 +240,11 @@ public class RegionAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     }
 
     private class FastestLocation {
+    }
+
+    @DrawableRes
+    static int getFlag(Context context, String key) {
+        String packageName = context.getPackageName();
+        return context.getResources().getIdentifier("flag_" + key.toLowerCase(), "drawable", packageName);
     }
 }

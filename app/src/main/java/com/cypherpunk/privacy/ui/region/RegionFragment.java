@@ -18,15 +18,14 @@ import com.cypherpunk.privacy.CypherpunkApplication;
 import com.cypherpunk.privacy.R;
 import com.cypherpunk.privacy.domain.model.AccountSetting;
 import com.cypherpunk.privacy.domain.model.VpnSetting;
-import com.cypherpunk.privacy.domain.model.vpn.Region;
-import com.cypherpunk.privacy.domain.model.vpn.VpnServer;
-import com.cypherpunk.privacy.domain.model.vpn.VpnServerComparator;
+import com.cypherpunk.privacy.datasource.vpn.Region;
+import com.cypherpunk.privacy.datasource.vpn.VpnServer;
+import com.cypherpunk.privacy.datasource.vpn.VpnServerComparator;
 import com.cypherpunk.privacy.domain.repository.NetworkRepository;
 import com.cypherpunk.privacy.domain.repository.VpnServerRepository;
 import com.cypherpunk.privacy.domain.repository.retrofit.result.RegionResult;
 import com.cypherpunk.privacy.domain.repository.retrofit.result.StatusResult;
-import com.cypherpunk.privacy.utils.ResourceUtil;
-import com.cypherpunk.privacy.widget.RegionBadgeView;
+import com.cypherpunk.privacy.ui.common.RegionBadgeView;
 
 import java.util.Collections;
 import java.util.List;
@@ -269,7 +268,7 @@ public class RegionFragment extends Fragment {
     }
 
     private void onVpnServerChanged(@NonNull VpnServer vpnServer) {
-        final int flagResId = ResourceUtil.getFlag(getContext(), vpnServer.country());
+        final int flagResId = RegionAdapter.getFlag(getContext(), vpnServer.country());
 
         nameView.setText(vpnServer.name());
         flagView.setImageResource(flagResId);

@@ -6,7 +6,7 @@
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
-    <com.cypherpunk.privacy.widget.TypefaceTextView
+    <com.cypherpunk.privacy.ui.common.TypefaceTextView
         style="@style/SubHeader"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -18,7 +18,7 @@
         android:text="@string/network_auto_secure"
         app:fontName="DosisMedium"/>
 
-    <com.cypherpunk.privacy.widget.TypefaceTextView
+    <com.cypherpunk.privacy.ui.common.TypefaceTextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/background"
@@ -32,7 +32,7 @@
         android:id="@+id/auto_secure_container"
         layout="@layout/list_item_network"/>
 
-    <com.cypherpunk.privacy.widget.TypefaceTextView
+    <com.cypherpunk.privacy.ui.common.TypefaceTextView
         android:id="@+id/typefaceTextView"
         style="@style/SubHeader"
         android:layout_width="match_parent"
@@ -49,7 +49,7 @@
         android:id="@+id/other_auto_secure_container"
         layout="@layout/list_item_network"/>
 
-    <com.cypherpunk.privacy.widget.TypefaceTextView
+    <com.cypherpunk.privacy.ui.common.TypefaceTextView
         style="@style/SubHeader"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -62,7 +62,7 @@
         android:text="@string/network_wifi_networks"
         app:fontName="DosisMedium"/>
 
-    <com.cypherpunk.privacy.widget.TypefaceTextView
+    <com.cypherpunk.privacy.ui.common.TypefaceTextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/background"
