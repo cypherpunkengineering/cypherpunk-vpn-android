@@ -24,7 +24,7 @@ import retrofit2.http.Path;
  * Cypherpunk API
  */
 public interface CypherpunkService {
-    String ENDPOINT = "https://cypherpunk.privacy.network";
+    String ENDPOINT = "https://api.cypherpunk.com";
 
     @POST("/api/v0/account/identify/email")
     Completable identifyEmail(@Body @NonNull EmailRequest request);
