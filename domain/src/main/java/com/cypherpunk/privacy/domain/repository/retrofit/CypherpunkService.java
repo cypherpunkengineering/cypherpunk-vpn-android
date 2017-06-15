@@ -26,33 +26,33 @@ import retrofit2.http.Path;
 public interface CypherpunkService {
     String ENDPOINT = "https://api.cypherpunk.com";
 
-    @POST("/api/v0/account/identify/email")
+    @POST("/api/v1/account/identify/email")
     Completable identifyEmail(@Body @NonNull EmailRequest request);
 
-    @POST("/api/v0/account/register/signUp")
+    @POST("/api/v1/account/register/signup")
     Single<StatusResult> signUp(@Body @NonNull SignUpRequest request);
 
-    @POST("/api/v0/account/email/confirm")
+    @POST("/api/v1/account/email/confirm")
     Completable resendEmail(@Body @NonNull EmailRequest request);
 
-    @POST("/api/v0/account/authenticate/userpasswd")
+    @POST("/api/v1/account/authenticate/userpasswd")
     Single<StatusResult> login(@Body @NonNull LoginRequest request);
 
-    @POST("/api/v0/account/password/recover")
+    @POST("/api/v1/account/recover")
     Completable recoverPassword(@Body @NonNull EmailRequest request);
 
-    @POST("/api/v0/account/email/change")
+    @POST("/api/v1/account/email/change")
     Completable changeEmail(@Body @NonNull ChangeEmailRequest request);
 
-    @POST("/api/v0/account/password/change")
+    @POST("/api/v1/account/password/change")
     Completable changePassword(@Body @NonNull ChangePasswordRequest request);
 
-    @GET("/api/v0/account/status")
+    @GET("/api/v1/account/status")
     Single<StatusResult> getAccountStatus();
 
-    @POST("/api/v0/account/upgrade/GooglePlay")
+    @POST("/api/v1/account/upgrade/google")
     Single<StatusResult> upgradeAccount(@Body @NonNull UpgradeAccountRequest request);
 
-    @GET("/api/v0/location/list/{accountType}")
+    @GET("/api/v1/location/list/{accountType}")
     Single<Map<String, RegionResult>> serverList(@Path(value = "accountType", encoded = true) String accountType);
 }
