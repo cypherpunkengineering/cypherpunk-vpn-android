@@ -1,4 +1,4 @@
-package com.cypherpunk.privacy.ui.common;
+package com.cypherpunk.privacy.ui.region;
 
 import android.graphics.Canvas;
 import android.graphics.Color;

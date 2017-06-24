@@ -24,7 +24,6 @@ import com.cypherpunk.privacy.CypherpunkApplication;
 import com.cypherpunk.privacy.R;
 import com.cypherpunk.privacy.domain.model.VpnSetting;
 import com.cypherpunk.privacy.datasource.vpn.Network;
-import com.cypherpunk.privacy.ui.common.DividerDecoration;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -28,7 +28,6 @@ import android.widget.TextView;
 import com.cypherpunk.privacy.CypherpunkApplication;
 import com.cypherpunk.privacy.R;
 import com.cypherpunk.privacy.domain.model.VpnSetting;
-import com.cypherpunk.privacy.ui.common.DividerDecoration;
 import com.cypherpunk.privacy.ui.common.FontCache;
 
 import java.util.ArrayList;

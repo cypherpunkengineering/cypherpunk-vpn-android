@@ -8,7 +8,7 @@
     android:orientation="vertical"
     tools:context=".ui.startup.TutorialActivity">
 
-    <com.cypherpunk.privacy.ui.common.TutorialPager
+    <com.cypherpunk.privacy.ui.startup.TutorialPager
         android:id="@+id/pager"
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -40,7 +40,7 @@
         android:visibility="invisible"
         tools:visibility="visible"/>
 
-    <com.cypherpunk.privacy.ui.common.PageIndicator
+    <com.cypherpunk.privacy.ui.startup.PageIndicator
         android:id="@+id/indicator"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

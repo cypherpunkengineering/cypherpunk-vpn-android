@@ -10,7 +10,6 @@ import android.widget.TextView;
 
 import com.cypherpunk.privacy.R;
 import com.cypherpunk.privacy.ui.common.FlagView;
-import com.cypherpunk.privacy.ui.common.RegionBadgeView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

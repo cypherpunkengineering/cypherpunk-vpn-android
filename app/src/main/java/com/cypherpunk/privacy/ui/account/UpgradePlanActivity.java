@@ -23,7 +23,6 @@ import com.cypherpunk.privacy.datasource.account.Subscription;
 import com.cypherpunk.privacy.domain.repository.NetworkRepository;
 import com.cypherpunk.privacy.domain.repository.retrofit.result.StatusResult;
 import com.cypherpunk.privacy.ui.common.FullScreenProgressDialog;
-import com.cypherpunk.privacy.ui.common.PlanView;
 
 import java.util.Collections;
 import java.util.List;

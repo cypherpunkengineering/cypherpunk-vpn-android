@@ -27,13 +27,13 @@
             android:textSize="20sp"
             app:fontName="DosisMedium"/>
 
-        <com.cypherpunk.privacy.ui.common.PlanView
+        <com.cypherpunk.privacy.ui.account.PlanView
             android:id="@+id/monthly_plan"
             android:layout_width="300dp"
             android:layout_height="76dp"
             android:layout_marginBottom="16dp"/>
 
-        <com.cypherpunk.privacy.ui.common.PlanView
+        <com.cypherpunk.privacy.ui.account.PlanView
             android:id="@+id/annually_plan"
             android:layout_width="300dp"
             android:layout_height="76dp"/>

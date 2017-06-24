@@ -1,4 +1,4 @@
-package com.cypherpunk.privacy.ui.common;
+package com.cypherpunk.privacy.ui.settings;
 
 import android.content.Context;
 import android.graphics.Canvas;

@@ -9,7 +9,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.cypherpunk.privacy.R;
-import com.cypherpunk.privacy.ui.common.RotateGradientDrawable;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
