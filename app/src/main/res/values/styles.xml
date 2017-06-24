@@ -20,6 +20,8 @@
     <style name="CypherPunk.FullScreenProgressDialog">
         <item name="android:windowBackground">@drawable/window_background_transparent</item>
         <item name="colorAccent">@color/gray</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
     </style>
 
     <style name="CypherPunk.DialogWhenLarge" parent="Theme.AppCompat.DialogWhenLarge">

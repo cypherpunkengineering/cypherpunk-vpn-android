@@ -2,12 +2,10 @@ package com.cypherpunk.privacy.ui.region;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -42,18 +40,22 @@ import io.reactivex.functions.Function;
 import io.reactivex.observers.DisposableSingleObserver;
 import io.reactivex.schedulers.Schedulers;
 
-public class RegionFragment extends Fragment {
+/**
+ * fragment for select servers
+ */
+public class RegionFragment2 extends Fragment {
 
     public interface RegionFragmentListener {
-        void toggleBottomSheetState();
-
-        void onSelectedRegionChanged(@NonNull String regionName, @DrawableRes int nationalFlagResId, boolean connectNow);
+        void onVpnServerSelected(@NonNull VpnServer vpnServer);
     }
 
-    @NonNull
-    public static RegionFragment newInstance() {
-        return new RegionFragment();
-    }
+    @Nullable
+    private RegionFragmentListener listener;
+
+    @BindView(R.id.recycler_view)
+    RecyclerView recyclerView;
+
+    private Unbinder unbinder;
 
     @Inject
     VpnServerRepository vpnServerRepository;
@@ -67,15 +69,9 @@ public class RegionFragment extends Fragment {
     @Inject
     AccountSetting accountSetting;
 
-    @Nullable
-    private RegionFragmentListener listener;
     @NonNull
     private Disposable disposable = Disposables.empty();
-    private RegionAdapter adapter;
-    private Unbinder unbinder;
-
-    @BindView(R.id.recycler_view)
-    RecyclerView recyclerView;
+    private RegionAdapter2 adapter;
 
     @Override
     public void onAttach(Context context) {
@@ -100,59 +96,40 @@ public class RegionFragment extends Fragment {
     }
 
     @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-
-        ((CypherpunkApplication) getActivity().getApplication()).getAppComponent().inject(this);
-
-        final String id = vpnSetting.regionId();
-        // if no location set, select fastest region using available data
-        if (TextUtils.isEmpty(id)) {
-            tryChangeServer(vpnServerRepository.fastest(), false, false);
-        } else {
-            final VpnServer vpnServer = vpnServerRepository.find(id);
-            if (vpnServer != null) {
-                onVpnServerChanged(vpnServer);
-            }
-        }
-
-        adapter = new RegionAdapter(vpnSetting) {
-            @Override
-            protected void onItemClicked(@NonNull String id) {
-                tryChangeServer(vpnServerRepository.find(id), false, true);
-            }
-
-            @Override
-            protected void onCypherplayClicked() {
-                tryChangeServer(vpnServerRepository.fastest(), true, true);
-            }
-
-            @Override
-            protected void onFastestClicked() {
-                tryChangeServer(vpnServerRepository.fastest(), false, true);
-            }
-        };
-        recyclerView.setAdapter(adapter);
-
-        vpnServerRepository.addChangeListener(realmChangeListener);
-
-        refreshRegionList();
-        syncServerList();
-    }
-
-    private final VpnServerRepository.ChangeListener realmChangeListener = new VpnServerRepository.ChangeListener() {
-        @Override
-        public void onChanged() {
-            refreshRegionList();
-        }
-    };
-
-    @Override
     public void onDestroyView() {
-        vpnServerRepository.removeChangeListener(realmChangeListener);
+//        vpnServerRepository.removeChangeListener(realmChangeListener);
         unbinder.unbind();
         super.onDestroyView();
     }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+        ((CypherpunkApplication) getActivity().getApplication()).getAppComponent()
+                .inject(this);
+
+        adapter = new RegionAdapter2() {
+            @Override
+            protected void onItemClicked(@NonNull VpnServer vpnServer, boolean isCypherPlay) {
+                tryChangeServer(vpnServer, isCypherPlay);
+            }
+        };
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setAdapter(adapter);
+
+//        vpnServerRepository.addChangeListener(realmChangeListener);
+
+        refreshRegionList();
+//        syncServerList();
+    }
+
+//    private final VpnServerRepository.ChangeListener realmChangeListener = new VpnServerRepository.ChangeListener() {
+//        @Override
+//        public void onChanged() {
+//            refreshRegionList();
+//        }
+//    };
 
     @Override
     public void onDestroy() {
@@ -165,7 +142,7 @@ public class RegionFragment extends Fragment {
     }
 
     private void refreshRegionList() {
-        adapter.addRegionList(
+        adapter.addRegionList(vpnServerRepository.fastest(),
                 getOtherList(Region.DEVELOP),
                 getOtherList(Region.NORTH_AMERICA),
                 getOtherList(Region.SOUTH_AMERICA),
@@ -203,7 +180,7 @@ public class RegionFragment extends Fragment {
                         // check if previously selected region is still available
                         final VpnServer vpnServer = vpnServerRepository.findAuthorizedDefault(vpnSetting.regionId());
                         if (vpnServer == null) {
-                            tryChangeServer(vpnServerRepository.fastest(), false, false);
+                            tryChangeServer(vpnServerRepository.fastest(), false);
                         }
                     }
 
@@ -214,21 +191,13 @@ public class RegionFragment extends Fragment {
                 });
     }
 
-    private void tryChangeServer(@Nullable VpnServer vpnServer, boolean isCypherplay, boolean needRefresh) {
+    private void tryChangeServer(@Nullable VpnServer vpnServer, boolean isCypherPlay) {
         if (vpnServer != null) {
-            vpnSetting.updateCypherplayEnabled(isCypherplay);
+            vpnSetting.updateCypherplayEnabled(isCypherPlay);
             vpnSetting.updateRegionId(vpnServer.id());
-            onVpnServerChanged(vpnServer);
-            if (needRefresh) {
-                refreshRegionList();
+            if (listener != null) {
+                listener.onVpnServerSelected(vpnServer);
             }
-        }
-    }
-
-    private void onVpnServerChanged(@NonNull VpnServer vpnServer) {
-        final int flagResId = RegionAdapter.getFlag(getContext(), vpnServer.country());
-        if (listener != null) {
-            listener.onSelectedRegionChanged(vpnServer.name(), flagResId, false);
         }
     }
 }

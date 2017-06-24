@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<android.support.constraint.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -7,28 +7,32 @@
     android:layout_height="48dp"
     android:background="?android:selectableItemBackground"
     android:gravity="center_vertical"
-    android:orientation="horizontal"
-    android:paddingLeft="12dp"
-    android:paddingRight="12dp">
-
-    <ImageView
-        android:id="@+id/flag"
-        android:layout_width="32dp"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="4dp"
-        android:layout_marginRight="4dp"
-        tools:ignore="ContentDescription"
-        tools:src="@drawable/helmet_color_vector"/>
+    android:orientation="horizontal">
 
     <com.cypherpunk.privacy.ui.common.TypefaceTextView
         android:id="@+id/name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
+        android:layout_marginLeft="54dp"
+        android:layout_marginStart="54dp"
         android:text="@string/region_fastest_location"
-        android:textColor="?android:attr/textColorPrimary"
+        android:textColor="#ccffffff"
         android:textSize="18sp"
-        app:fontName="DosisMedium"/>
+        app:fontName="DosisSemiBold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
 
-</LinearLayout>
+    <ImageView
+        android:id="@+id/flag"
+        android:layout_width="24dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="10dp"
+        android:layout_marginRight="10dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/name"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="ContentDescription"
+        tools:src="@drawable/flag_us"/>
+
+</android.support.constraint.ConstraintLayout>

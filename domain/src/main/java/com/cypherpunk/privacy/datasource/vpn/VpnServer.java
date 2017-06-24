@@ -37,5 +37,5 @@ public interface VpnServer {
 
     boolean isSelectable();
 
-    boolean favorite();
+    long latency();
 }

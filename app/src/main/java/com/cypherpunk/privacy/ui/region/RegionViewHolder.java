@@ -2,6 +2,7 @@ package com.cypherpunk.privacy.ui.region;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,7 +11,6 @@ import android.widget.TextView;
 
 import com.cypherpunk.privacy.R;
 import com.cypherpunk.privacy.ui.common.RegionBadgeView;
-import com.cypherpunk.privacy.ui.common.StarView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -33,11 +33,14 @@ class RegionViewHolder extends RecyclerView.ViewHolder {
     @BindView(R.id.name)
     TextView nameView;
 
-    @BindView(R.id.favorite)
-    StarView favoriteView;
-
     @BindView(R.id.tag)
     RegionBadgeView tagView;
+
+    @BindView(R.id.latency)
+    TextView latencyView;
+
+    @BindView(R.id.latency_error)
+    View latencyErrorView;
 
     private RegionViewHolder(View view) {
         super(view);
@@ -50,12 +53,17 @@ class RegionViewHolder extends RecyclerView.ViewHolder {
             flagView.setAlpha(1f);
             nameView.setAlpha(1f);
             tagView.setAlpha(1f);
-            favoriteView.setAlpha(1f);
+            if (TextUtils.isEmpty(latencyView.getText())) {
+                latencyErrorView.setVisibility(View.VISIBLE);
+            } else {
+                latencyView.setVisibility(View.VISIBLE);
+            }
         } else {
-            flagView.setAlpha(0.5f);
-            nameView.setAlpha(0.5f);
-            tagView.setAlpha(0.5f);
-            favoriteView.setAlpha(0.5f);
+            flagView.setAlpha(0.3f);
+            nameView.setAlpha(0.3f);
+            tagView.setAlpha(0.3f);
+            latencyView.setVisibility(View.GONE);
+            latencyErrorView.setVisibility(View.GONE);
         }
     }
 }

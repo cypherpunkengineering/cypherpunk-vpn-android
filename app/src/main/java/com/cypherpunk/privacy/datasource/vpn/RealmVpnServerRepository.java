@@ -22,7 +22,6 @@ import io.realm.Sort;
 
 import static com.cypherpunk.privacy.datasource.vpn.RealmVpnServer.KEY_AUTHORIZED;
 import static com.cypherpunk.privacy.datasource.vpn.RealmVpnServer.KEY_DATE;
-import static com.cypherpunk.privacy.datasource.vpn.RealmVpnServer.KEY_FAVORITE;
 import static com.cypherpunk.privacy.datasource.vpn.RealmVpnServer.KEY_ID;
 import static com.cypherpunk.privacy.datasource.vpn.RealmVpnServer.KEY_LATENCY;
 import static com.cypherpunk.privacy.datasource.vpn.RealmVpnServer.KEY_LEVEL;
@@ -72,7 +71,7 @@ public class RealmVpnServerRepository implements VpnServerRepository {
                     .findAllSorted(KEY_LATENCY, Sort.ASCENDING);
 
             if (results.size() > 0) {
-                return results.get(0);
+                return realm.copyFromRealm(results.get(0));
             }
 
             // if no latency data, just return any location
@@ -135,53 +134,6 @@ public class RealmVpnServerRepository implements VpnServerRepository {
         } finally {
             realm.close();
         }
-    }
-
-    @NonNull
-    @Override
-    public List<VpnServer> findFavorites() {
-        final Realm realm = realmInstance();
-        try {
-            final RealmResults<RealmVpnServer> results = realm.where(RealmVpnServer.class)
-                    .equalTo(KEY_FAVORITE, true)
-                    .findAllSorted(KEY_NAME, Sort.ASCENDING);
-            return new ArrayList<VpnServer>(realm.copyFromRealm(results));
-        } finally {
-            realm.close();
-        }
-    }
-
-    @NonNull
-    @Override
-    public List<VpnServer> findRecent() {
-        final Realm realm = realmInstance();
-        try {
-            final RealmResults<RealmVpnServer> results = realm.where(RealmVpnServer.class)
-                    .equalTo(KEY_FAVORITE, false)
-                    .notEqualTo(KEY_DATE, new Date(0))
-                    .findAllSorted(KEY_DATE, Sort.DESCENDING);
-            final List<VpnServer> vpnServers = new ArrayList<>();
-            for (int i = 0, max = Math.min(3, results.size()); i < max; i++) {
-                vpnServers.add(realm.copyFromRealm(results.get(i)));
-            }
-            return vpnServers;
-        } finally {
-            realm.close();
-        }
-    }
-
-    @Override
-    public void updateFavorite(@NonNull String regionId, boolean favorite) {
-        final Realm realm = realmInstance();
-        final RealmVpnServer region = realm.where(RealmVpnServer.class)
-                .equalTo(KEY_ID, regionId)
-                .findFirst();
-        if (region != null && region.favorite() != favorite) {
-            realm.beginTransaction();
-            region.setFavorite(favorite);
-            realm.commitTransaction();
-        }
-        realm.close();
     }
 
     @Override
@@ -267,7 +219,6 @@ public class RealmVpnServerRepository implements VpnServerRepository {
                 .deleteAllFromRealm();
 
         realm.commitTransaction();
-        realm.close();
 
         // after realm db is updated above, start pinging new location data
         for (String regionId : regionIdList) {
@@ -276,6 +227,8 @@ public class RealmVpnServerRepository implements VpnServerRepository {
                     .findFirst();
             ServerPingerThinger.pingLocation(region, this);
         }
+
+        realm.close();
     }
 
     @Override

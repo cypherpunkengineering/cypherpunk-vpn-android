@@ -6,33 +6,34 @@
     <!-- quick settings tile -->
     <string name="qs_tile_title">Privacy VPN</string>
 
-    <string name="main_status_disconnected">Tap to protect</string>
-    <string name="status_connecting">Connecting</string>
-    <string name="main_status_connected">You are protected</string>
+    <string name="status_disconnected">Disconnected</string>
+    <string name="status_disconnecting">Disconnecting…</string>
+    <string name="status_connecting">Connecting…</string>
+    <string name="status_connected">Connected</string>
 
     <string name="app_name">Cypherpunk</string>
 
     <!-- main -->
     <string name="vpn_cancel">Cancel</string>
     <string name="main_sign_up">Sign Up and get a 7-Day Free Premium Trial</string>
+    <string name="main_status">status</string>
 
     <!-- region -->
-    <string name="region_level_badge_dev">DEV</string>
-    <string name="region_level_badge_premium">PREMIUM</string>
-    <string name="region_level_badge_unavailable">UNAVAILABLE</string>
-    <string name="region_cypherplay">Cypherplay</string>
+    <string name="region_level_badge_dev">dev</string>
+    <string name="region_level_badge_premium">premium</string>
+    <string name="region_level_badge_unavailable">unavailable</string>
+    <string name="region_with">with</string>
+    <string name="region_cypher_play">CypherPlay™</string>
     <string name="region_fastest_location">Fastest Location</string>
-    <string name="region_list_favorite">FAVORITE</string>
-    <string name="region_list_recent">RECENT</string>
-    <string name="region_list_dev">DEVELOPER</string>
-    <string name="region_list_na">NORTH AMERICA</string>
-    <string name="region_list_sa">CENTRAL &amp; SOUTH AMERICA</string>
-    <string name="region_list_cr">CARIBBEAN</string>
-    <string name="region_list_op">OCEANIA &amp; PACIFIC</string>
-    <string name="region_list_eu">EUROPE</string>
-    <string name="region_list_me">MIDDLE EAST</string>
-    <string name="region_list_af">AFRICA</string>
-    <string name="region_list_as">ASIA</string>
+    <string name="region_list_dev">Development</string>
+    <string name="region_list_na">north america</string>
+    <string name="region_list_sa">central &amp; south america</string>
+    <string name="region_list_cr">caribbean</string>
+    <string name="region_list_eu">europe</string>
+    <string name="region_list_me">middle east</string>
+    <string name="region_list_af">africa</string>
+    <string name="region_list_as">asia &amp; india subcontinent</string>
+    <string name="region_list_op">oceania &amp; pacific</string>
 
 
     <!-- menu action -->
@@ -197,9 +198,9 @@
 
 
     <!-- account setting -->
-    <string name="account_setting_header_account">Account</string>
+    <string name="account_setting_header_account">My Account</string>
     <string name="account_setting_category_type">Account Type</string>
-    <string name="account_setting_upgrade">Upgrade</string>
+    <string name="account_setting_upgrade">Manage Account</string>
     <string name="account_setting_category_settings">Account Settings</string>
     <string name="account_setting_email">Email</string>
     <string name="account_setting_password">Password</string>
@@ -263,5 +264,6 @@
     <string name="share">Share</string>
     <string name="share_subject">Checkout cypherpunk</string>
     <string name="share_text">Checkout cypherpunk https://play.google.com/store/apps/details?id=com.cypherpunk.privacy</string>
+    <string name="connect_to">connect to</string>
 
 </resources>

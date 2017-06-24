@@ -184,7 +184,11 @@ public class SignUpActivity extends AppCompatActivity {
                             if (he.code() == 409) {
                                 Toast.makeText(context, R.string.error_email_already_registered, Toast.LENGTH_SHORT).show();
                                 startActivity(LoginActivity.createIntent(context, email));
+                            } else {
+                                Toast.makeText(context, e.getMessage(), Toast.LENGTH_SHORT).show();
                             }
+                        } else {
+                            Toast.makeText(context, e.getMessage(), Toast.LENGTH_SHORT).show();
                         }
                     }
                 });

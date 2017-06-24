@@ -30,14 +30,6 @@ public interface VpnServerRepository {
     @NonNull
     List<VpnServer> findAllByRegion(@NonNull Region region);
 
-    @NonNull
-    List<VpnServer> findFavorites();
-
-    @NonNull
-    List<VpnServer> findRecent();
-
-    void updateFavorite(@NonNull String regionId, boolean favorite);
-
     void updateLastConnectedDate(@NonNull String regionId, @NonNull Date date);
 
     void updateLatency(@NonNull String regionId, long latency);

@@ -36,15 +36,15 @@ import com.cypherpunk.privacy.domain.model.AccountSetting;
 import com.cypherpunk.privacy.domain.model.VpnSetting;
 import com.cypherpunk.privacy.domain.repository.VpnServerRepository;
 import com.cypherpunk.privacy.ui.account.AccountSettingsFragment;
+import com.cypherpunk.privacy.ui.common.BinaryTextureView;
+import com.cypherpunk.privacy.ui.common.ConnectionStatusView;
+import com.cypherpunk.privacy.ui.common.VpnFlatButton;
 import com.cypherpunk.privacy.ui.region.RegionFragment;
 import com.cypherpunk.privacy.ui.settings.AskReconnectDialogFragment;
 import com.cypherpunk.privacy.ui.settings.SettingsFragment;
 import com.cypherpunk.privacy.ui.startup.IdentifyEmailActivity;
 import com.cypherpunk.privacy.vpn.CypherpunkVPN;
 import com.cypherpunk.privacy.vpn.CypherpunkVpnStatus;
-import com.cypherpunk.privacy.ui.common.BinaryTextureView;
-import com.cypherpunk.privacy.ui.common.ConnectionStatusView;
-import com.cypherpunk.privacy.ui.common.VpnFlatButton;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 
 import javax.inject.Inject;
@@ -55,7 +55,6 @@ import de.blinkt.openvpn.core.VpnStatus;
 import timber.log.Timber;
 
 public class MainActivity extends AppCompatActivity implements
-        VpnStatus.StateListener,
         AskReconnectDialogFragment.ConnectDialogListener,
         RegionFragment.RegionFragmentListener {
 
@@ -147,7 +146,8 @@ public class MainActivity extends AppCompatActivity implements
         slidingMenu.setSecondaryShadowDrawable(R.drawable.slide_menu_shadow_right);
 
         // background
-        String operatorName = getSimOperatorName();
+        final TelephonyManager telephonyManager = (TelephonyManager) getSystemService(TELEPHONY_SERVICE);
+        final String operatorName = telephonyManager.getSimOperatorName();
         if (TextUtils.isEmpty(operatorName)) {
             String[] text = {Build.BRAND.toUpperCase(), Build.MODEL.toUpperCase()};
             binaryView.setText(text);
@@ -161,7 +161,12 @@ public class MainActivity extends AppCompatActivity implements
         connectionButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
-                toggleVpn();
+                if (CypherpunkVpnStatus.getInstance().isDisconnected()) {
+                    startVpn();
+                } else {
+                    stopVpn();
+                    regionFragment.refreshServerList();
+                }
             }
         });
         connectingCancelButton.setPaintFlags(
@@ -179,7 +184,35 @@ public class MainActivity extends AppCompatActivity implements
                 return onOptionsItemSelected(item);
             }
         });
-        VpnStatus.addStateListener(this);
+        VpnStatus.addStateListener(new VpnStatus.StateListener() {
+            @Override
+            public void updateState(String state, String logmessage, int localizedResId, VpnStatus.ConnectionStatus level) {
+                switch (level) {
+                    case LEVEL_CONNECTED:
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                binaryView.setState(BinaryTextureView.CONNECTED);
+                                connectionStatusView.setStatus(ConnectionStatusView.CONNECTED);
+                                connectionButton.setStatus(VpnFlatButton.CONNECTED);
+                                connectingCancelButton.setVisibility(View.GONE);
+                            }
+                        });
+                        break;
+                    case LEVEL_NOT_CONNECTED:
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                binaryView.setState(BinaryTextureView.DISCONNECTED);
+                                connectionStatusView.setStatus(ConnectionStatusView.DISCONNECTED);
+                                connectionButton.setStatus(VpnFlatButton.DISCONNECTED);
+                                connectingCancelButton.setVisibility(View.GONE);
+                            }
+                        });
+                        break;
+                }
+            }
+        });
 
         FragmentTransaction fm = getSupportFragmentManager().beginTransaction();
         regionFragment = RegionFragment.newInstance();
@@ -272,19 +305,6 @@ public class MainActivity extends AppCompatActivity implements
         binaryView.stopAnimation();
     }
 
-    @Override
-    public void updateState(String state, String logmessage,
-                            int localizedResId, VpnStatus.ConnectionStatus level) {
-        switch (level) {
-            case LEVEL_CONNECTED:
-                onVpnConnected();
-                break;
-            case LEVEL_NOTCONNECTED:
-                onVpnDisconnected();
-                break;
-        }
-    }
-
     private void startVpn() {
         Timber.d("startVpn()");
         Intent intent = VpnService.prepare(MainActivity.this);
@@ -308,44 +328,6 @@ public class MainActivity extends AppCompatActivity implements
         CypherpunkVPN.getInstance().stop(vpnSetting);
     }
 
-    private void toggleVpn() {
-        if (CypherpunkVpnStatus.getInstance().isDisconnected()) {
-            startVpn();
-        } else {
-            stopVpn();
-            regionFragment.refreshServerList();
-        }
-    }
-
-    private void onVpnConnected() {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                binaryView.setState(BinaryTextureView.CONNECTED);
-                connectionStatusView.setStatus(ConnectionStatusView.CONNECTED);
-                connectionButton.setStatus(VpnFlatButton.CONNECTED);
-                connectingCancelButton.setVisibility(View.GONE);
-            }
-        });
-    }
-
-    private void onVpnDisconnected() {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                binaryView.setState(BinaryTextureView.DISCONNECTED);
-                connectionStatusView.setStatus(ConnectionStatusView.DISCONNECTED);
-                connectionButton.setStatus(VpnFlatButton.DISCONNECTED);
-                connectingCancelButton.setVisibility(View.GONE);
-            }
-        });
-    }
-
-    private String getSimOperatorName() {
-        TelephonyManager telephonyManager = (TelephonyManager) getSystemService(TELEPHONY_SERVICE);
-        return telephonyManager.getSimOperatorName();
-    }
-
     @Override
     public void onConnectDialogButtonClick() {
         startVpn();
@@ -358,10 +340,8 @@ public class MainActivity extends AppCompatActivity implements
             HeightAnimation animation;
             if (layoutParams.height == getBottomContainerMaximumHeight()) {
                 animation = new HeightAnimation(getBottomContainerMinimumHeight(), regionContainer);
-                regionFragment.toggleAllowIcon(false);
             } else {
                 animation = new HeightAnimation(getBottomContainerMaximumHeight(), regionContainer);
-                regionFragment.toggleAllowIcon(true);
             }
             animation.setDuration(300);
             regionContainer.startAnimation(animation);
@@ -377,7 +357,6 @@ public class MainActivity extends AppCompatActivity implements
         ViewGroup.LayoutParams layoutParams = regionContainer.getLayoutParams();
         if (layoutParams.height == getBottomContainerMaximumHeight()) {
             Animation animation = new HeightAnimation(getBottomContainerMinimumHeight(), regionContainer);
-            regionFragment.toggleAllowIcon(false);
             animation.setDuration(300);
             regionContainer.startAnimation(animation);
         }

@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.main.MainActivity2">
+
+    <com.cypherpunk.privacy.ui.common.TypefaceTextView
+        android:id="@+id/status"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAllCaps="true"
+        android:textColor="?android:textColorPrimary"
+        android:textSize="18sp"
+        app:fontName="DosisMedium"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="disconnected"/>
+
+    <com.cypherpunk.privacy.ui.common.TypefaceTextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/main_status"
+        android:textAllCaps="true"
+        android:textColor="#8000ffff"
+        android:textSize="12sp"
+        app:fontName="DosisMedium"
+        app:layout_constraintBottom_toTopOf="@+id/status"
+        app:layout_constraintLeft_toLeftOf="@+id/status"/>
+
+    <LinearLayout
+        android:id="@+id/region_container"
+        android:layout_width="wrap_content"
+        android:layout_height="48dp"
+        android:background="@drawable/region_button_background"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingLeft="16dp"
+        android:paddingRight="4dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.82"
+        tools:ignore="RtlHardcoded">
+
+        <ImageView
+            android:id="@+id/region_flag"
+            android:layout_width="@dimen/national_flag_width"
+            android:layout_height="@dimen/national_flag_height"
+            android:src="@drawable/flag_us"
+            tools:ignore="ContentDescription"/>
+
+        <com.cypherpunk.privacy.ui.common.TypefaceTextView
+            android:id="@+id/region_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="4dp"
+            android:layout_marginRight="4dp"
+            android:paddingLeft="6dp"
+            android:paddingRight="6dp"
+            android:textAppearance="?android:textAppearanceLarge"
+            android:textColor="#c0ffffff"
+            android:textSize="18sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toRightOf="@id/national_flag"
+            app:layout_constraintRight_toLeftOf="@+id/region_tag"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="New York, New York"/>
+
+        <ImageView
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="@drawable/loop_background"
+            android:rotation="90"
+            android:scaleType="center"
+            android:src="@drawable/ic_loop"
+            android:tint="#c0c8ffff"
+            tools:ignore="ContentDescription"/>
+
+    </LinearLayout>
+
+    <FrameLayout
+        android:id="@+id/switch_container"
+        android:layout_width="0dp"
+        android:layout_height="80dp"
+        android:background="#4050ffff"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.3">
+
+        <Button
+            android:id="@+id/connection_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"/>
+
+    </FrameLayout>
+
+</android.support.constraint.ConstraintLayout>

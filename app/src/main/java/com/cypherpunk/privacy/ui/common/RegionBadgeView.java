@@ -1,7 +1,6 @@
 package com.cypherpunk.privacy.ui.common;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.AppCompatTextView;
@@ -30,14 +29,14 @@ public class RegionBadgeView extends AppCompatTextView {
                 setText(R.string.region_level_badge_premium);
                 setBackgroundResource(R.drawable.region_badge_premium);
                 setTextColor(ContextCompat.getColor(getContext(), R.color.region_badge_premium_text));
-                setTypeface(FontCache.getDosisSemiBold(getContext()));
+                setTypeface(FontCache.getDosisBold(getContext()));
                 break;
 
             case DEVELOPER:
                 setText(R.string.region_level_badge_dev);
                 setBackgroundResource(R.drawable.region_badge_developer);
-                setTextColor(Color.WHITE);
-                setTypeface(FontCache.getDosisSemiBold(getContext()));
+                setTextColor(ContextCompat.getColor(getContext(), R.color.region_badge_dev_text));
+                setTypeface(FontCache.getDosisBold(getContext()));
                 break;
 
             case UNAVAILABLE:

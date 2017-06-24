@@ -3,45 +3,30 @@ package com.cypherpunk.privacy.ui.region;
 import android.content.Context;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import android.support.v7.widget.RecyclerView;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.cypherpunk.privacy.R;
 import com.cypherpunk.privacy.datasource.vpn.VpnServer;
-import com.cypherpunk.privacy.domain.model.VpnSetting;
-import com.cypherpunk.privacy.ui.common.FontCache;
 
 import java.util.ArrayList;
 import java.util.List;
 
 // TODO: use DiffUtil
-public class RegionAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class RegionAdapter2 extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private static final int ITEM_VIEW_TYPE_ITEM = 1;
     private static final int ITEM_VIEW_TYPE_DIVIDER = 2;
-    private static final int ITEM_VIEW_TYPE_CYPHERPLAY = 3;
+    private static final int ITEM_VIEW_TYPE_CYPHER_PLAY = 3;
     private static final int ITEM_VIEW_TYPE_FASTEST_LOCATION = 4;
 
     private final List<Object> items = new ArrayList<>();
 
-    @NonNull
-    private final VpnSetting vpnSetting;
-
-    public RegionAdapter(@NonNull VpnSetting vpnSetting) {
-        this.vpnSetting = vpnSetting;
-    }
-
-    protected void onItemClicked(@NonNull String vpnServerId) {
-    }
-
-    protected void onCypherplayClicked() {
-    }
-
-    protected void onFastestClicked() {
+    protected void onItemClicked(@NonNull VpnServer vpnServer, boolean isCypherPlay) {
     }
 
     @Override
@@ -55,28 +40,32 @@ public class RegionAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                     public void onClick(View view) {
                         final int position = holder.getAdapterPosition();
                         final VpnServer vpnServer = (VpnServer) items.get(position);
-                        onItemClicked(vpnServer.id());
+                        onItemClicked(vpnServer, false);
                     }
                 });
 
                 return holder;
             }
-            case ITEM_VIEW_TYPE_CYPHERPLAY: {
-                final ViewHolder holder = new ViewHolder(inflater.inflate(R.layout.list_item_vpn_cypherplay, parent, false));
+            case ITEM_VIEW_TYPE_CYPHER_PLAY: {
+                final CypherPlayViewHolder holder = CypherPlayViewHolder.create(inflater, parent);
                 holder.itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        onCypherplayClicked();
+                        final int position = holder.getAdapterPosition();
+                        final CypherPlay cypherplay = (CypherPlay) items.get(position);
+                        onItemClicked(cypherplay.vpnServer, true);
                     }
                 });
                 return holder;
             }
             case ITEM_VIEW_TYPE_FASTEST_LOCATION: {
-                final ViewHolder holder = new ViewHolder(inflater.inflate(R.layout.list_item_vpn_fastest_location, parent, false));
+                final FastestLocationViewHolder holder = FastestLocationViewHolder.create(inflater, parent);
                 holder.itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        onFastestClicked();
+                        final int position = holder.getAdapterPosition();
+                        final FastestLocation fastestLocation = (FastestLocation) items.get(position);
+                        onItemClicked(fastestLocation.vpnServer, false);
                     }
                 });
                 return holder;
@@ -91,24 +80,32 @@ public class RegionAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder viewHolder, int position) {
+        final Context context = viewHolder.itemView.getContext();
 
         final int viewType = viewHolder.getItemViewType();
         switch (viewType) {
+            case ITEM_VIEW_TYPE_FASTEST_LOCATION: {
+                final FastestLocation fastestLocation = (FastestLocation) items.get(position);
+                final FastestLocationViewHolder holder = (FastestLocationViewHolder) viewHolder;
+                holder.flagView.setImageResource(getFlag(context, fastestLocation.vpnServer.country()));
+                break;
+            }
             case ITEM_VIEW_TYPE_ITEM: {
-                final String currentVpnServerId = vpnSetting.regionId();
                 final VpnServer vpnServer = (VpnServer) items.get(position);
-                final boolean isCurrentVpn = TextUtils.equals(currentVpnServerId, vpnServer.id());
-
-                final Context context = viewHolder.itemView.getContext();
                 final RegionViewHolder holder = (RegionViewHolder) viewHolder;
-
                 holder.nameView.setText(vpnServer.name());
-                holder.nameView.setTypeface(isCurrentVpn
-                        ? FontCache.getDosisBold(context)
-                        : FontCache.getDosisRegular(context));
-
                 holder.flagView.setImageResource(getFlag(context, vpnServer.country()));
                 holder.tagView.setLevel(vpnServer.level());
+                final long latency = vpnServer.latency();
+                if (latency <= 0) {
+                    holder.latencyErrorView.setVisibility(View.VISIBLE);
+                    holder.latencyView.setVisibility(View.GONE);
+                    holder.latencyView.setText("");
+                } else {
+                    holder.latencyErrorView.setVisibility(View.GONE);
+                    holder.latencyView.setVisibility(View.VISIBLE);
+                    holder.latencyView.setText(latency + "ms");
+                }
                 holder.setEnabled(vpnServer.isSelectable());
                 break;
             }
@@ -131,8 +128,8 @@ public class RegionAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         if (items.get(position) instanceof VpnServer) {
             return ITEM_VIEW_TYPE_ITEM;
         }
-        if (items.get(position) instanceof Cypherplay) {
-            return ITEM_VIEW_TYPE_CYPHERPLAY;
+        if (items.get(position) instanceof CypherPlay) {
+            return ITEM_VIEW_TYPE_CYPHER_PLAY;
         }
         if (items.get(position) instanceof FastestLocation) {
             return ITEM_VIEW_TYPE_FASTEST_LOCATION;
@@ -140,19 +137,22 @@ public class RegionAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         return ITEM_VIEW_TYPE_DIVIDER;
     }
 
-    public void addRegionList(
-            @NonNull List<VpnServer> devItems,
-            @NonNull List<VpnServer> naItems,
-            @NonNull List<VpnServer> saItems,
-            @NonNull List<VpnServer> crItems,
-            @NonNull List<VpnServer> euItems,
-            @NonNull List<VpnServer> meItems,
-            @NonNull List<VpnServer> afItems,
-            @NonNull List<VpnServer> asItems,
-            @NonNull List<VpnServer> opItems) {
-        clear();
-        items.add(new Cypherplay());
-        items.add(new FastestLocation());
+    public void addRegionList(@Nullable VpnServer fastestVpnServer,
+                              @NonNull List<VpnServer> devItems,
+                              @NonNull List<VpnServer> naItems,
+                              @NonNull List<VpnServer> saItems,
+                              @NonNull List<VpnServer> crItems,
+                              @NonNull List<VpnServer> euItems,
+                              @NonNull List<VpnServer> meItems,
+                              @NonNull List<VpnServer> afItems,
+                              @NonNull List<VpnServer> asItems,
+                              @NonNull List<VpnServer> opItems) {
+
+        items.clear();
+        if (fastestVpnServer != null) {
+            items.add(new CypherPlay(fastestVpnServer));
+            items.add(new FastestLocation(fastestVpnServer));
+        }
         addItems(devItems, R.string.region_list_dev);
         addItems(naItems, R.string.region_list_na);
         addItems(saItems, R.string.region_list_sa);
@@ -172,16 +172,21 @@ public class RegionAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         }
     }
 
-    public void clear() {
-        int size = items.size();
-        items.clear();
-        notifyItemRangeRemoved(0, size);
+    private class CypherPlay {
+        @NonNull
+        final VpnServer vpnServer;
+
+        private CypherPlay(@NonNull VpnServer vpnServer) {
+            this.vpnServer = vpnServer;
+        }
     }
 
-    private static class ViewHolder extends RecyclerView.ViewHolder {
+    private class FastestLocation {
+        @NonNull
+        final VpnServer vpnServer;
 
-        ViewHolder(View itemView) {
-            super(itemView);
+        private FastestLocation(@NonNull VpnServer vpnServer) {
+            this.vpnServer = vpnServer;
         }
     }
 
@@ -189,20 +194,14 @@ public class RegionAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         @StringRes
         private int nameResId;
 
-        Divider(@StringRes int resId) {
+        private Divider(@StringRes int resId) {
             this.nameResId = resId;
         }
     }
 
-    private class Cypherplay {
-    }
-
-    private class FastestLocation {
-    }
-
     @DrawableRes
-    static int getFlag(Context context, String key) {
-        String packageName = context.getPackageName();
+    public static int getFlag(Context context, String key) {
+        final String packageName = context.getPackageName();
         return context.getResources().getIdentifier("flag_" + key.toLowerCase(), "drawable", packageName);
     }
 }

@@ -20,7 +20,6 @@ public class RealmVpnServer implements RealmModel, VpnServer {
     static final String KEY_AUTHORIZED = "authorized";
     static final String KEY_OV_DEFAULT = "ovDefault";
     static final String KEY_LATENCY = "latency";
-    static final String KEY_FAVORITE = "favorite";
     static final String KEY_DATE = "lastConnectedDate";
 
     @PrimaryKey
@@ -47,7 +46,6 @@ public class RealmVpnServer implements RealmModel, VpnServer {
     private String ovStealth;
 
     private long latency = -1;
-    private boolean favorite = false;
     @NonNull
     private Date lastConnectedDate = new Date(0);
 
@@ -73,7 +71,6 @@ public class RealmVpnServer implements RealmModel, VpnServer {
         this.ovStealth = TextUtils.join(",", ovStealth);
 
         this.latency = -1;
-        this.favorite = false;
         this.lastConnectedDate = new Date(0);
     }
 
@@ -145,8 +142,8 @@ public class RealmVpnServer implements RealmModel, VpnServer {
     }
 
     @Override
-    public boolean favorite() {
-        return favorite;
+    public long latency() {
+        return latency;
     }
 
     void update(@NonNull String name, @NonNull String country, @NonNull String region,
@@ -169,10 +166,6 @@ public class RealmVpnServer implements RealmModel, VpnServer {
         this.latency = latency;
     }
 
-    void setFavorite(boolean favorite) {
-        this.favorite = favorite;
-    }
-
     void setLastConnectedDate(@NonNull Date lastConnectedDate) {
         this.lastConnectedDate = lastConnectedDate;
     }
@@ -192,7 +185,6 @@ public class RealmVpnServer implements RealmModel, VpnServer {
                 ", ovNone='" + ovNone + '\'' +
                 ", ovStrong='" + ovStrong + '\'' +
                 ", ovStealth='" + ovStealth + '\'' +
-                ", favorite=" + favorite +
                 ", lastConnectedDate=" + lastConnectedDate +
                 '}';
     }

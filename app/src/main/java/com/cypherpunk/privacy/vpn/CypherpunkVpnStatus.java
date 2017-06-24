@@ -16,7 +16,7 @@ import de.blinkt.openvpn.core.VpnStatus;
 public class CypherpunkVpnStatus implements VpnStatus.StateListener {
 
     private static VpnStatus.ConnectionStatus level
-            = VpnStatus.ConnectionStatus.LEVEL_NOTCONNECTED;
+            = VpnStatus.ConnectionStatus.LEVEL_NOT_CONNECTED;
     private static CypherpunkVpnStatus singleton;
     private long connectedTime;
     private String originalIp;
@@ -56,7 +56,7 @@ public class CypherpunkVpnStatus implements VpnStatus.StateListener {
     }
 
     public boolean isDisconnected() {
-        return level == VpnStatus.ConnectionStatus.LEVEL_NOTCONNECTED || level == VpnStatus.ConnectionStatus.LEVEL_NONETWORK;
+        return level == VpnStatus.ConnectionStatus.LEVEL_NOT_CONNECTED || level == VpnStatus.ConnectionStatus.LEVEL_NO_NETWORK;
     }
 
     public long getConnectedTime() {

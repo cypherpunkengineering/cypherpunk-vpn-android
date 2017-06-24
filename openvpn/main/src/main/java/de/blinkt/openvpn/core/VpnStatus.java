@@ -61,7 +61,7 @@ public class VpnStatus {
     static final int MAXLOGENTRIES = 1000;
 
     public static boolean isVPNActive() {
-        return mLastLevel != ConnectionStatus.LEVEL_AUTH_FAILED && !(mLastLevel == ConnectionStatus.LEVEL_NOTCONNECTED);
+        return mLastLevel != ConnectionStatus.LEVEL_AUTH_FAILED && !(mLastLevel == ConnectionStatus.LEVEL_NOT_CONNECTED);
     }
 
     public static String getLastCleanLogMessage(Context c) {
@@ -129,8 +129,8 @@ public class VpnStatus {
         LEVEL_VPNPAUSED,
         LEVEL_CONNECTING_SERVER_REPLIED,
         LEVEL_CONNECTING_NO_SERVER_REPLY_YET,
-        LEVEL_NONETWORK,
-        LEVEL_NOTCONNECTED,
+        LEVEL_NO_NETWORK,
+        LEVEL_NOT_CONNECTED,
         LEVEL_START,
         LEVEL_AUTH_FAILED,
         LEVEL_WAITING_FOR_USER_INPUT,
@@ -177,7 +177,7 @@ public class VpnStatus {
     public static final byte[] fdroidkey = {-92, 111, -42, -46, 123, -96, -60, 79, -27, -31, 49, 103, 11, -54, -68, -27, 17, 2, 121, 104};
 
 
-    private static ConnectionStatus mLastLevel = ConnectionStatus.LEVEL_NOTCONNECTED;
+    private static ConnectionStatus mLastLevel = ConnectionStatus.LEVEL_NOT_CONNECTED;
 
     private static LogFileHandler mLogFileHandler;
 
@@ -290,7 +290,7 @@ public class VpnStatus {
     public static void updateStatePause(OpenVPNManagement.pauseReason pauseReason) {
         switch (pauseReason) {
             case noNetwork:
-                VpnStatus.updateStateString("NONETWORK", "", R.string.state_nonetwork, ConnectionStatus.LEVEL_NONETWORK);
+                VpnStatus.updateStateString("NONETWORK", "", R.string.state_nonetwork, ConnectionStatus.LEVEL_NO_NETWORK);
                 break;
             case screenOff:
                 VpnStatus.updateStateString("SCREENOFF", "", R.string.state_screenoff, ConnectionStatus.LEVEL_VPNPAUSED);
@@ -322,7 +322,7 @@ public class VpnStatus {
 
         for (String x : notconnected)
             if (state.equals(x))
-                return ConnectionStatus.LEVEL_NOTCONNECTED;
+                return ConnectionStatus.LEVEL_NOT_CONNECTED;
 
         return ConnectionStatus.UNKNOWN_LEVEL;
 

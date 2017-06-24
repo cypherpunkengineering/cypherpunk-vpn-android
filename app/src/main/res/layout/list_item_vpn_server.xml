@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<android.support.constraint.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -7,45 +7,75 @@
     android:layout_height="48dp"
     android:background="?android:selectableItemBackground"
     android:gravity="center_vertical"
-    android:orientation="horizontal"
-    android:paddingLeft="12dp"
-    android:paddingRight="12dp">
-
-    <ImageView
-        android:id="@+id/flag"
-        android:layout_width="32dp"
-        android:layout_height="24dp"
-        android:layout_marginLeft="4dp"
-        android:layout_marginRight="4dp"
-        tools:ignore="ContentDescription"
-        tools:src="@drawable/flag_us"/>
+    android:orientation="horizontal">
 
     <com.cypherpunk.privacy.ui.common.TypefaceTextView
         android:id="@+id/name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
-        android:textColor="?android:attr/textColorPrimary"
-        android:textSize="18sp"
-        app:fontName="DosisMedium"
+        android:layout_marginLeft="54dp"
+        android:layout_marginStart="54dp"
+        android:textColor="#ccffffff"
+        android:textSize="16sp"
+        app:fontName="DosisSemiBold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         tools:text="US"/>
+
+    <ImageView
+        android:id="@+id/flag"
+        android:layout_width="24dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="10dp"
+        android:layout_marginRight="10dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/name"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="ContentDescription"
+        tools:src="@drawable/flag_us"/>
 
     <com.cypherpunk.privacy.ui.common.RegionBadgeView
         android:id="@+id/tag"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="4dp"
-        android:layout_marginRight="4dp"
-        android:layout_weight="1"
+        android:layout_marginLeft="12dp"
+        android:layout_marginRight="12dp"
+        android:textAllCaps="true"
         android:textSize="12sp"
-        tools:text="premium"/>
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@id/name"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:background="@drawable/region_badge_premium"
+        tools:text="premium"
+        tools:textColor="@color/region_badge_premium_text"/>
 
-    <com.cypherpunk.privacy.ui.common.StarView
-        android:id="@+id/favorite"
-        android:layout_width="44dp"
-        android:layout_height="44dp"
-        android:background="?selectableItemBackgroundBorderless"
-        android:scaleType="center"/>
+    <com.cypherpunk.privacy.ui.common.TypefaceTextView
+        android:id="@+id/latency"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        android:textColor="@color/cyan_blue30"
+        android:textSize="16sp"
+        app:fontName="DosisSemiBold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="11ms"/>
 
-</LinearLayout>
+    <ImageView
+        android:id="@+id/latency_error"
+        android:layout_width="18dp"
+        android:layout_height="18dp"
+        android:layout_marginEnd="22dp"
+        android:layout_marginRight="22dp"
+        android:src="@drawable/ic_exclamation"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="ContentDescription"
+        tools:visibility="visible"/>
+
+</android.support.constraint.ConstraintLayout>

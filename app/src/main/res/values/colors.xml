@@ -3,8 +3,6 @@
     <color name="divider">#4dffffff</color>
     <color name="vpn_button_pressed">#26000000</color>
     <color name="background">#26ffffff</color>
-    <color name="background_dark">#1affffff</color>
-    <color name="background_dark_pressed">#1a757575</color>
     <color name="binary_text_color">#23ffffff</color>
     <color name="binary_text_disconnected">#80f11b35</color>
     <color name="binary_text_connecting">#80ff781b</color>
@@ -17,19 +15,29 @@
     <color name="plan_badge_text">#034698</color>
     <color name="plan_price">#000000</color>
     <color name="plan_text">#333333</color>
-    <color name="region_selected_text">#ffc933</color>
-    <color name="region_disabled_text">#80ffffff</color>
-    <color name="region_badge_premium_text">#453908</color>
     <color name="dark_green">@color/dark_blue_grey</color>
     <color name="light_green">@color/seafoam_blue</color>
 
     <drawable name="window_background">#163238</drawable>   <!-- dark_blue_grey -->
     <drawable name="window_background_transparent">#d5163238</drawable>
 
-    <color name="drawer_background">@color/dark_green</color>
     <color name="text_color_light">@color/light_green</color>
 
     <!-- new -->
+    <color name="region_badge_dev_text">#ffffff</color>
+    <color name="region_badge_premium_text">#463902</color>
+    <color name="region_disabled_text">#b3ffffff</color>
+
+    <color name="marker_foreground">#88ffff</color>
+    <color name="marker_background">#448888</color>
+
+    <color name="preference_item_background">#29ffffff</color>
+    // 255,255,255,0.16
+    <color name="preference_item_background_pressed">#1a757575</color>
+
+    <color name="drawer_title_bar">#091518</color>
+    <color name="drawer_background">#133</color>
+
     <color name="dark_black">#0b1518</color>
     <color name="dark_gray">#302f2f</color>
     <color name="dark_navy_blue">#010011</color>
@@ -59,6 +67,9 @@
     <color name="black20">#33000000</color>
     <color name="black40">#66000000</color>
     <color name="black25">#40000000</color>
+
+    <color name="cyan_blue30">#4dc8ffff</color>
+    <color name="cyan_blue60">#99c8ffff</color>
 
     <color name="gray">#eeeeee</color>
 

@@ -5,86 +5,22 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/window_background">
+    android:background="@drawable/region_background">
 
-    <android.support.constraint.ConstraintLayout
-        android:id="@+id/region_container"
+    <com.cypherpunk.privacy.ui.common.TypefaceTextView
+        android:id="@+id/region_name"
         android:layout_width="0dp"
         android:layout_height="48dp"
-        android:background="@drawable/button_main_region"
+        android:background="@drawable/region_header_background"
+        android:gravity="center_horizontal|bottom"
+        android:paddingBottom="8dp"
+        android:text="@string/connect_to"
+        android:textAllCaps="true"
+        android:textColor="?android:textColorPrimary"
+        app:fontName="DosisBold"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <View
-            android:layout_width="0dp"
-            android:layout_height="1dp"
-            android:background="@color/divider"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent"/>
-
-        <View
-            android:layout_width="0dp"
-            android:layout_height="1dp"
-            android:background="@color/divider"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"/>
-
-        <ImageView
-            android:id="@+id/allow"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="16dp"
-            android:layout_marginRight="16dp"
-            android:src="@drawable/ic_expand_less_vector"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:ignore="ContentDescription"/>
-
-        <ImageView
-            android:id="@+id/national_flag"
-            android:layout_width="@dimen/national_flag_width"
-            android:layout_height="@dimen/national_flag_height"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintHorizontal_chainStyle="packed"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toLeftOf="@+id/region_name"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:ignore="ContentDescription"
-            tools:src="@drawable/flag_us"/>
-
-        <com.cypherpunk.privacy.ui.common.TypefaceTextView
-            android:id="@+id/region_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingLeft="6dp"
-            android:paddingRight="6dp"
-            android:textAppearance="?android:textAppearanceLarge"
-            android:textSize="18sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toRightOf="@id/national_flag"
-            app:layout_constraintRight_toLeftOf="@+id/region_tag"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:text="USA WEST"/>
-
-        <com.cypherpunk.privacy.ui.common.RegionBadgeView
-            android:id="@+id/region_tag"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:paddingLeft="4dp"
-            android:paddingRight="4dp"
-            android:textSize="12sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toRightOf="@id/region_name"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:text="premium"/>
-
-    </android.support.constraint.ConstraintLayout>
+        app:layout_constraintTop_toTopOf="parent"/>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recycler_view"
@@ -95,7 +31,16 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/region_container"/>
+        app:layout_constraintTop_toBottomOf="@+id/region_name"
+        tools:listitem="@layout/list_item_vpn_server"/>
+
+    <View
+        android:layout_width="0dp"
+        android:layout_height="16dp"
+        android:background="@drawable/region_header_fade"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/region_name"/>
 
     <ProgressBar
         android:id="@+id/progress"
@@ -105,6 +50,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/region_container"/>
+        app:layout_constraintTop_toBottomOf="@+id/region_name"
+        tools:visibility="visible"/>
 
 </android.support.constraint.ConstraintLayout>

@@ -58,7 +58,7 @@ public class CypherpunkTileService extends TileService implements VpnStatus.Stat
     @Override
     public void updateState(String state, String logmessage, int localizedResId, VpnStatus.ConnectionStatus level) {
         Tile t = getQsTile();
-        if (level == VpnStatus.ConnectionStatus.LEVEL_AUTH_FAILED || level == VpnStatus.ConnectionStatus.LEVEL_NOTCONNECTED) {
+        if (level == VpnStatus.ConnectionStatus.LEVEL_AUTH_FAILED || level == VpnStatus.ConnectionStatus.LEVEL_NOT_CONNECTED) {
             t.setState(Tile.STATE_INACTIVE);
         } else {
             t.setState(Tile.STATE_ACTIVE);

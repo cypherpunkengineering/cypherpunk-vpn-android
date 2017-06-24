@@ -139,6 +139,7 @@ public class SettingsFragment extends PreferenceFragmentCompat {
                     remotePort.setSummary(getStringFor(vpnSetting.remotePort()));
                     break;
             }
+            // FIXME:
             final CypherpunkVpnStatus vpnStatus = new CypherpunkVpnStatus();
             if (vpnStatus.isConnected()) {
                 AskReconnectDialogFragment.newInstance().show(getFragmentManager());

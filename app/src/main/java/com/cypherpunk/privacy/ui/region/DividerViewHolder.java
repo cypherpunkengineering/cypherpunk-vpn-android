@@ -1,6 +1,7 @@
 package com.cypherpunk.privacy.ui.region;
 
 import android.support.annotation.NonNull;
+import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.cypherpunk.privacy.R;
+import com.cypherpunk.privacy.ui.common.RotateGradientDrawable;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -30,5 +32,6 @@ class DividerViewHolder extends RecyclerView.ViewHolder {
     private DividerViewHolder(View view) {
         super(view);
         ButterKnife.bind(this, view);
+        ViewCompat.setBackground(textView, new RotateGradientDrawable());
     }
 }

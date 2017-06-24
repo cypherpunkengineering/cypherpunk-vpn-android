@@ -245,8 +245,8 @@ public class OpenVPNService extends VpnService implements StateListener, Callbac
             case LEVEL_CONNECTED:
                 return R.drawable.ic_stat_vpn;
             case LEVEL_AUTH_FAILED:
-            case LEVEL_NONETWORK:
-            case LEVEL_NOTCONNECTED:
+            case LEVEL_NO_NETWORK:
+            case LEVEL_NOT_CONNECTED:
                 return R.drawable.ic_stat_vpn_offline;
             case LEVEL_CONNECTING_NO_SERVER_REPLY_YET:
             case LEVEL_WAITING_FOR_USER_INPUT:

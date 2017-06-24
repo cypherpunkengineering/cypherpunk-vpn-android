@@ -45,7 +45,7 @@
         </receiver>
 
         <activity
-            android:name=".ui.main.MainActivity"
+            android:name=".ui.main.MainActivity2"
             android:label=""
             android:theme="@style/CypherPunk.NoActionBar">
             <intent-filter>
@@ -59,9 +59,7 @@
             android:autoRemoveFromRecents="true"
             android:excludeFromRecents="true"
             android:taskAffinity=".ui.main.CypherpunkLaunchVPN"
-            android:theme="@android:style/Theme.Dialog">
-            tools:ignore="ExportedActivity">
-        </activity>
+            android:theme="@android:style/Theme.Dialog"/>
 
         <service
             android:name="de.blinkt.openvpn.core.OpenVPNService"

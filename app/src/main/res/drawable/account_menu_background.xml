@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_pressed="true">
+        <layer-list>
+            <item>
+                <shape>
+                    <solid android:color="#225f66"/>
+                    <corners
+                        android:bottomRightRadius="32dp"
+                        android:topRightRadius="32dp"/>
+                    <size
+                        android:width="64dp"
+                        android:height="64dp"/>
+                </shape>
+            </item>
+            <item
+                android:bottom="2dp"
+                android:right="1dp">
+                <shape>
+                    <solid android:color="#18373d"/>
+                    <corners
+                        android:bottomRightRadius="32dp"
+                        android:topRightRadius="32dp"/>
+                    <size
+                        android:width="64dp"
+                        android:height="64dp"/>
+                </shape>
+            </item>
+        </layer-list>
+    </item>
+    <item>
+        <layer-list>
+            <item>
+                <shape>
+                    <solid android:color="#19474c"/>
+                    <corners
+                        android:bottomRightRadius="32dp"
+                        android:topRightRadius="32dp"/>
+                    <size
+                        android:width="64dp"
+                        android:height="64dp"/>
+                </shape>
+            </item>
+            <item
+                android:bottom="2dp"
+                android:right="1dp">
+                <shape>
+                    <solid android:color="#0c1b1e"/>
+                    <corners
+                        android:bottomRightRadius="32dp"
+                        android:topRightRadius="32dp"/>
+                    <size
+                        android:width="64dp"
+                        android:height="64dp"/>
+                </shape>
+            </item>
+        </layer-list>
+    </item>
+</selector>
