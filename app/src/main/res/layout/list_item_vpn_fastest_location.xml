@@ -23,7 +23,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"/>
 
-    <ImageView
+    <com.cypherpunk.privacy.ui.common.FlagView
         android:id="@+id/flag"
         android:layout_width="24dp"
         android:layout_height="wrap_content"

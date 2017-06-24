@@ -1,7 +1,6 @@
 package com.cypherpunk.privacy.ui.region;
 
 import android.content.Context;
-import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
@@ -87,14 +86,14 @@ public class RegionAdapter2 extends RecyclerView.Adapter<RecyclerView.ViewHolder
             case ITEM_VIEW_TYPE_FASTEST_LOCATION: {
                 final FastestLocation fastestLocation = (FastestLocation) items.get(position);
                 final FastestLocationViewHolder holder = (FastestLocationViewHolder) viewHolder;
-                holder.flagView.setImageResource(getFlag(context, fastestLocation.vpnServer.country()));
+                holder.flagView.setCountry(fastestLocation.vpnServer.country());
                 break;
             }
             case ITEM_VIEW_TYPE_ITEM: {
                 final VpnServer vpnServer = (VpnServer) items.get(position);
                 final RegionViewHolder holder = (RegionViewHolder) viewHolder;
                 holder.nameView.setText(vpnServer.name());
-                holder.flagView.setImageResource(getFlag(context, vpnServer.country()));
+                holder.flagView.setCountry(vpnServer.country());
                 holder.tagView.setLevel(vpnServer.level());
                 final long latency = vpnServer.latency();
                 if (latency <= 0) {
@@ -197,11 +196,5 @@ public class RegionAdapter2 extends RecyclerView.Adapter<RecyclerView.ViewHolder
         private Divider(@StringRes int resId) {
             this.nameResId = resId;
         }
-    }
-
-    @DrawableRes
-    public static int getFlag(Context context, String key) {
-        final String packageName = context.getPackageName();
-        return context.getResources().getIdentifier("flag_" + key.toLowerCase(), "drawable", packageName);
     }
 }

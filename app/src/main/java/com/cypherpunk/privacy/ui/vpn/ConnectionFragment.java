@@ -12,7 +12,6 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.cypherpunk.privacy.R;
@@ -20,7 +19,7 @@ import com.cypherpunk.privacy.datasource.vpn.VpnServer;
 import com.cypherpunk.privacy.domain.model.AccountSetting;
 import com.cypherpunk.privacy.domain.model.VpnSetting;
 import com.cypherpunk.privacy.domain.repository.VpnServerRepository;
-import com.cypherpunk.privacy.ui.region.RegionAdapter2;
+import com.cypherpunk.privacy.ui.common.FlagView;
 import com.cypherpunk.privacy.vpn.CypherpunkVPN;
 import com.cypherpunk.privacy.vpn.CypherpunkVpnStatus;
 
@@ -73,7 +72,7 @@ public class ConnectionFragment extends Fragment implements VpnStatus.StateListe
     TextView regionNameView;
 
     @BindView(R.id.region_flag)
-    ImageView regionFlagView;
+    FlagView regionFlagView;
 
     private Unbinder unbinder;
 
@@ -125,7 +124,7 @@ public class ConnectionFragment extends Fragment implements VpnStatus.StateListe
     public void setVpnServer(@NonNull VpnServer vpnServer) {
         if (regionNameView != null) {
             regionNameView.setText(vpnServer.name());
-            regionFlagView.setImageResource(RegionAdapter2.getFlag(getContext(), vpnServer.country()));
+            regionFlagView.setCountry(vpnServer.country());
         }
     }
 

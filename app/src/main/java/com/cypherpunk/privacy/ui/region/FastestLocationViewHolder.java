@@ -5,9 +5,9 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 
 import com.cypherpunk.privacy.R;
+import com.cypherpunk.privacy.ui.common.FlagView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -25,7 +25,7 @@ class FastestLocationViewHolder extends RecyclerView.ViewHolder {
     }
 
     @BindView(R.id.flag)
-    ImageView flagView;
+    FlagView flagView;
 
     private FastestLocationViewHolder(View view) {
         super(view);

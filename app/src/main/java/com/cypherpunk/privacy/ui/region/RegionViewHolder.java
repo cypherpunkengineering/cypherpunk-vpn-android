@@ -6,10 +6,10 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.cypherpunk.privacy.R;
+import com.cypherpunk.privacy.ui.common.FlagView;
 import com.cypherpunk.privacy.ui.common.RegionBadgeView;
 
 import butterknife.BindView;
@@ -28,7 +28,7 @@ class RegionViewHolder extends RecyclerView.ViewHolder {
     }
 
     @BindView(R.id.flag)
-    ImageView flagView;
+    FlagView flagView;
 
     @BindView(R.id.name)
     TextView nameView;

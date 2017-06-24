@@ -48,7 +48,7 @@
         app:layout_constraintVertical_bias="0.82"
         tools:ignore="RtlHardcoded">
 
-        <ImageView
+        <com.cypherpunk.privacy.ui.common.FlagView
             android:id="@+id/region_flag"
             android:layout_width="@dimen/national_flag_width"
             android:layout_height="@dimen/national_flag_height"
