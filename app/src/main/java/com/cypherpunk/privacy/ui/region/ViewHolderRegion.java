@@ -17,13 +17,13 @@ import butterknife.ButterKnife;
 /**
  * view holder for region
  */
-class RegionViewHolder extends RecyclerView.ViewHolder {
+class ViewHolderRegion extends RecyclerView.ViewHolder {
 
     private static final int LAYOUT_ID = R.layout.list_item_vpn_server;
 
     @NonNull
-    public static RegionViewHolder create(@NonNull LayoutInflater inflater, ViewGroup parent) {
-        return new RegionViewHolder(inflater.inflate(LAYOUT_ID, parent, false));
+    public static ViewHolderRegion create(@NonNull LayoutInflater inflater, ViewGroup parent) {
+        return new ViewHolderRegion(inflater.inflate(LAYOUT_ID, parent, false));
     }
 
     @BindView(R.id.flag)
@@ -41,7 +41,7 @@ class RegionViewHolder extends RecyclerView.ViewHolder {
     @BindView(R.id.latency_error)
     View latencyErrorView;
 
-    private RegionViewHolder(View view) {
+    private ViewHolderRegion(View view) {
         super(view);
         ButterKnife.bind(this, view);
     }

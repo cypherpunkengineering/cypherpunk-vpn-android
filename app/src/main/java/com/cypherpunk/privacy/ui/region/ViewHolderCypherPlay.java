@@ -11,16 +11,16 @@ import com.cypherpunk.privacy.R;
 /**
  * view holder for region
  */
-class CypherPlayViewHolder extends RecyclerView.ViewHolder {
+class ViewHolderCypherPlay extends RecyclerView.ViewHolder {
 
     private static final int LAYOUT_ID = R.layout.list_item_vpn_cypherplay;
 
     @NonNull
-    public static CypherPlayViewHolder create(@NonNull LayoutInflater inflater, ViewGroup parent) {
-        return new CypherPlayViewHolder(inflater.inflate(LAYOUT_ID, parent, false));
+    public static ViewHolderCypherPlay create(@NonNull LayoutInflater inflater, ViewGroup parent) {
+        return new ViewHolderCypherPlay(inflater.inflate(LAYOUT_ID, parent, false));
     }
 
-    private CypherPlayViewHolder(View view) {
+    private ViewHolderCypherPlay(View view) {
         super(view);
     }
 }

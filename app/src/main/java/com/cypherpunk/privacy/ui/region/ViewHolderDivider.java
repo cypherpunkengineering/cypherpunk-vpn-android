@@ -16,19 +16,19 @@ import butterknife.ButterKnife;
 /**
  * view holder for divider
  */
-class DividerViewHolder extends RecyclerView.ViewHolder {
+class ViewHolderDivider extends RecyclerView.ViewHolder {
 
     private static final int LAYOUT_ID = R.layout.list_item_vpn_server_divider;
 
     @NonNull
-    public static DividerViewHolder create(@NonNull LayoutInflater inflater, ViewGroup parent) {
-        return new DividerViewHolder(inflater.inflate(LAYOUT_ID, parent, false));
+    public static ViewHolderDivider create(@NonNull LayoutInflater inflater, ViewGroup parent) {
+        return new ViewHolderDivider(inflater.inflate(LAYOUT_ID, parent, false));
     }
 
     @BindView(R.id.text)
     TextView textView;
 
-    private DividerViewHolder(View view) {
+    private ViewHolderDivider(View view) {
         super(view);
         ButterKnife.bind(this, view);
         ViewCompat.setBackground(textView, new RotateGradientDrawable());

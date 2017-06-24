@@ -15,19 +15,19 @@ import butterknife.ButterKnife;
 /**
  * view holder for region
  */
-class FastestLocationViewHolder extends RecyclerView.ViewHolder {
+class ViewHolderFastestLocation extends RecyclerView.ViewHolder {
 
     private static final int LAYOUT_ID = R.layout.list_item_vpn_fastest_location;
 
     @NonNull
-    public static FastestLocationViewHolder create(@NonNull LayoutInflater inflater, ViewGroup parent) {
-        return new FastestLocationViewHolder(inflater.inflate(LAYOUT_ID, parent, false));
+    public static ViewHolderFastestLocation create(@NonNull LayoutInflater inflater, ViewGroup parent) {
+        return new ViewHolderFastestLocation(inflater.inflate(LAYOUT_ID, parent, false));
     }
 
     @BindView(R.id.flag)
     FlagView flagView;
 
-    private FastestLocationViewHolder(View view) {
+    private ViewHolderFastestLocation(View view) {
         super(view);
         ButterKnife.bind(this, view);
     }

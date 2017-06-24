@@ -33,7 +33,7 @@ public class RegionAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         final LayoutInflater inflater = LayoutInflater.from(parent.getContext());
         switch (viewType) {
             case ITEM_VIEW_TYPE_ITEM: {
-                final RegionViewHolder holder = RegionViewHolder.create(inflater, parent);
+                final ViewHolderRegion holder = ViewHolderRegion.create(inflater, parent);
                 holder.itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -46,7 +46,7 @@ public class RegionAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                 return holder;
             }
             case ITEM_VIEW_TYPE_CYPHER_PLAY: {
-                final CypherPlayViewHolder holder = CypherPlayViewHolder.create(inflater, parent);
+                final ViewHolderCypherPlay holder = ViewHolderCypherPlay.create(inflater, parent);
                 holder.itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -58,7 +58,7 @@ public class RegionAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                 return holder;
             }
             case ITEM_VIEW_TYPE_FASTEST_LOCATION: {
-                final FastestLocationViewHolder holder = FastestLocationViewHolder.create(inflater, parent);
+                final ViewHolderFastestLocation holder = ViewHolderFastestLocation.create(inflater, parent);
                 holder.itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -70,7 +70,7 @@ public class RegionAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                 return holder;
             }
             case ITEM_VIEW_TYPE_DIVIDER: {
-                return DividerViewHolder.create(inflater, parent);
+                return ViewHolderDivider.create(inflater, parent);
             }
             default:
                 throw new IllegalStateException();
@@ -85,13 +85,13 @@ public class RegionAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         switch (viewType) {
             case ITEM_VIEW_TYPE_FASTEST_LOCATION: {
                 final FastestLocation fastestLocation = (FastestLocation) items.get(position);
-                final FastestLocationViewHolder holder = (FastestLocationViewHolder) viewHolder;
+                final ViewHolderFastestLocation holder = (ViewHolderFastestLocation) viewHolder;
                 holder.flagView.setCountry(fastestLocation.vpnServer.country());
                 break;
             }
             case ITEM_VIEW_TYPE_ITEM: {
                 final VpnServer vpnServer = (VpnServer) items.get(position);
-                final RegionViewHolder holder = (RegionViewHolder) viewHolder;
+                final ViewHolderRegion holder = (ViewHolderRegion) viewHolder;
                 holder.nameView.setText(vpnServer.name());
                 holder.flagView.setCountry(vpnServer.country());
                 holder.tagView.setLevel(vpnServer.level());
@@ -110,7 +110,7 @@ public class RegionAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             }
             case ITEM_VIEW_TYPE_DIVIDER: {
                 final Divider divider = (Divider) items.get(position);
-                final DividerViewHolder holder = (DividerViewHolder) viewHolder;
+                final ViewHolderDivider holder = (ViewHolderDivider) viewHolder;
                 holder.textView.setText(divider.nameResId);
                 break;
             }
