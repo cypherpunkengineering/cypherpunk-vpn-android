@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 // TODO: use DiffUtil
-public class RegionAdapter2 extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class RegionAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private static final int ITEM_VIEW_TYPE_ITEM = 1;
     private static final int ITEM_VIEW_TYPE_DIVIDER = 2;

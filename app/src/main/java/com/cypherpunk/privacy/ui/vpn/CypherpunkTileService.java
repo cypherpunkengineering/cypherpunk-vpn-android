@@ -1,4 +1,4 @@
-package com.cypherpunk.privacy.ui.main;
+package com.cypherpunk.privacy.ui.vpn;
 
 import android.annotation.TargetApi;
 import android.content.Intent;

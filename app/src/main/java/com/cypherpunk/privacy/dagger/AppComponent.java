@@ -4,10 +4,10 @@ import com.cypherpunk.privacy.ui.account.AccountSettingsFragment;
 import com.cypherpunk.privacy.ui.account.EditEmailActivity;
 import com.cypherpunk.privacy.ui.account.EditPasswordActivity;
 import com.cypherpunk.privacy.ui.account.UpgradePlanActivity;
-import com.cypherpunk.privacy.ui.main.CypherpunkLaunchVPN;
-import com.cypherpunk.privacy.ui.main.CypherpunkWifiReceiver;
-import com.cypherpunk.privacy.ui.main.MainActivity2;
-import com.cypherpunk.privacy.ui.region.RegionFragment2;
+import com.cypherpunk.privacy.ui.vpn.CypherpunkLaunchVPN;
+import com.cypherpunk.privacy.ui.vpn.CypherpunkWifiReceiver;
+import com.cypherpunk.privacy.ui.main.MainActivity;
+import com.cypherpunk.privacy.ui.region.RegionFragment;
 import com.cypherpunk.privacy.ui.settings.InternetKillSwitchActivity;
 import com.cypherpunk.privacy.ui.settings.NetworkActivity;
 import com.cypherpunk.privacy.ui.settings.RemotePortActivity;
@@ -39,7 +39,7 @@ public interface AppComponent {
 
     void inject(ConfirmationEmailActivity target);
 
-    void inject(RegionFragment2 target);
+    void inject(RegionFragment target);
 
     void inject(TutorialActivity target);
 
@@ -57,7 +57,7 @@ public interface AppComponent {
 
     void inject(CypherpunkWifiReceiver target);
 
-    void inject(MainActivity2 target);
+    void inject(MainActivity target);
 
     void inject(InternetKillSwitchActivity target);
 

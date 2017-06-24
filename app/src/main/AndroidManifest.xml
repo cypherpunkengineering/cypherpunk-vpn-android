@@ -31,13 +31,13 @@
             android:name="firebase_analytics_collection_enabled"
             android:value="false"/>
 
-        <receiver android:name=".ui.main.CypherpunkBootReceiver">
+        <receiver android:name=".ui.vpn.CypherpunkBootReceiver">
             <intent-filter android:priority="9001">
                 <action android:name="android.intent.action.BOOT_COMPLETED"/>
                 <action android:name="android.intent.action.MY_PACKAGE_REPLACED"/>
             </intent-filter>
         </receiver>
-        <receiver android:name=".ui.main.CypherpunkWifiReceiver">
+        <receiver android:name=".ui.vpn.CypherpunkWifiReceiver">
             <intent-filter>
                 <action android:name="android.net.wifi.supplicant.CONNECTION_CHANGE"/>
                 <action android:name="android.net.wifi.STATE_CHANGE"/>
@@ -45,7 +45,7 @@
         </receiver>
 
         <activity
-            android:name=".ui.main.MainActivity2"
+            android:name=".ui.main.MainActivity"
             android:label=""
             android:theme="@style/CypherPunk.NoActionBar">
             <intent-filter>
@@ -55,7 +55,7 @@
         </activity>
 
         <activity
-            android:name=".ui.main.CypherpunkLaunchVPN"
+            android:name=".ui.vpn.CypherpunkLaunchVPN"
             android:autoRemoveFromRecents="true"
             android:excludeFromRecents="true"
             android:taskAffinity=".ui.main.CypherpunkLaunchVPN"
@@ -69,7 +69,7 @@
             </intent-filter>
         </service>
         <service
-            android:name=".ui.main.CypherpunkTileService"
+            android:name=".ui.vpn.CypherpunkTileService"
             android:icon="@drawable/ic_quick"
             android:label="@string/qs_tile_title"
             android:permission="android.permission.BIND_QUICK_SETTINGS_TILE"

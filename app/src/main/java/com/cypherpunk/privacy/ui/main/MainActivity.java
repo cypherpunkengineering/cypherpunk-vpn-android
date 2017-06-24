@@ -18,7 +18,7 @@ import com.cypherpunk.privacy.datasource.vpn.VpnServer;
 import com.cypherpunk.privacy.domain.model.AccountSetting;
 import com.cypherpunk.privacy.domain.model.VpnSetting;
 import com.cypherpunk.privacy.domain.repository.VpnServerRepository;
-import com.cypherpunk.privacy.ui.region.RegionFragment2;
+import com.cypherpunk.privacy.ui.region.RegionFragment;
 import com.cypherpunk.privacy.ui.settings.AskReconnectDialogFragment;
 import com.cypherpunk.privacy.ui.startup.IdentifyEmailActivity;
 import com.cypherpunk.privacy.ui.vpn.ConnectionFragment;
@@ -30,9 +30,9 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class MainActivity2 extends AppCompatActivity implements
+public class MainActivity extends AppCompatActivity implements
         AskReconnectDialogFragment.ConnectDialogListener,
-        RegionFragment2.RegionFragmentListener,
+        RegionFragment.RegionFragmentListener,
         ConnectionFragment.ConnectionFragmentListener {
 
     @Inject
@@ -45,7 +45,7 @@ public class MainActivity2 extends AppCompatActivity implements
     VpnServerRepository vpnServerRepository;
 
     private ConnectionFragment connectionFragment;
-    private RegionFragment2 regionFragment;
+    private RegionFragment regionFragment;
 
     @BindView(R.id.marker)
     ImageView markerView;
@@ -72,7 +72,7 @@ public class MainActivity2 extends AppCompatActivity implements
         }
 
         final FragmentManager manager = getSupportFragmentManager();
-        regionFragment = (RegionFragment2) manager.findFragmentById(R.id.fragment_region);
+        regionFragment = (RegionFragment) manager.findFragmentById(R.id.fragment_region);
         connectionFragment = (ConnectionFragment) manager.findFragmentById(R.id.fragment_connection);
         manager.beginTransaction()
                 .hide(regionFragment)

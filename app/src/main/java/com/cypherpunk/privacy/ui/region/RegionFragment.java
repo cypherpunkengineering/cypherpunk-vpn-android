@@ -43,7 +43,7 @@ import io.reactivex.schedulers.Schedulers;
 /**
  * fragment for select servers
  */
-public class RegionFragment2 extends Fragment {
+public class RegionFragment extends Fragment {
 
     public interface RegionFragmentListener {
         void onVpnServerSelected(@NonNull VpnServer vpnServer);
@@ -71,7 +71,7 @@ public class RegionFragment2 extends Fragment {
 
     @NonNull
     private Disposable disposable = Disposables.empty();
-    private RegionAdapter2 adapter;
+    private RegionAdapter adapter;
 
     @Override
     public void onAttach(Context context) {
@@ -109,7 +109,7 @@ public class RegionFragment2 extends Fragment {
         ((CypherpunkApplication) getActivity().getApplication()).getAppComponent()
                 .inject(this);
 
-        adapter = new RegionAdapter2() {
+        adapter = new RegionAdapter() {
             @Override
             protected void onItemClicked(@NonNull VpnServer vpnServer, boolean isCypherPlay) {
                 tryChangeServer(vpnServer, isCypherPlay);

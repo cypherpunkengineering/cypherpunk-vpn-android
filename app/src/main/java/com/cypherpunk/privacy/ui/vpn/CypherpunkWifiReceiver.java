@@ -1,4 +1,4 @@
-package com.cypherpunk.privacy.ui.main;
+package com.cypherpunk.privacy.ui.vpn;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
