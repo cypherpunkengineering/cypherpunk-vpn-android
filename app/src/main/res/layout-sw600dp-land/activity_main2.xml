@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.main.MainActivity2">
+
+    <ImageView
+        android:id="@+id/logo"
+        android:layout_width="0dp"
+        android:layout_height="48dp"
+        android:background="#0c1b1e"
+        android:scaleType="center"
+        android:src="@drawable/logo"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="ContentDescription"/>
+
+    <View
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:background="#19474c"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/logo"/>
+
+    <fragment
+        android:id="@+id/fragment_account_settings"
+        android:name="com.cypherpunk.privacy.ui.account.AccountSettingsFragment"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@+id/map_container"
+        app:layout_constraintTop_toBottomOf="@+id/logo"
+        tools:layout="@layout/fragment_settings"/>
+
+
+    <FrameLayout
+        android:id="@+id/map_container"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toRightOf="@id/fragment_account_settings"
+        app:layout_constraintRight_toLeftOf="@+id/fragment_settings"
+        app:layout_constraintTop_toBottomOf="@+id/logo">
+
+        <ImageView
+            android:id="@+id/map"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:alpha="0.3"
+            android:scaleType="centerCrop"
+            android:src="@drawable/world_map"
+            tools:ignore="ContentDescription"/>
+
+        <ImageView
+            android:id="@+id/marker"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:src="@drawable/ic_map_pin"
+            android:tint="@color/marker_foreground"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.64"
+            tools:ignore="ContentDescription"/>
+
+        <fragment
+            android:id="@+id/fragment_connection"
+            android:name="com.cypherpunk.privacy.ui.vpn.ConnectionFragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:layout="@layout/fragment_connection"/>
+
+        <fragment
+            android:id="@+id/fragment_region"
+            android:name="com.cypherpunk.privacy.ui.region.RegionFragment2"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:layout="@layout/fragment_region"/>
+
+    </FrameLayout>
+
+    <fragment
+        android:id="@+id/fragment_settings"
+        android:name="com.cypherpunk.privacy.ui.settings.SettingsFragment"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toRightOf="@id/map_container"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/logo"
+        tools:layout="@layout/fragment_settings"/>
+
+</android.support.constraint.ConstraintLayout>

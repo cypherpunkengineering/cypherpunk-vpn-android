@@ -8,6 +8,7 @@ import android.util.AttributeSet;
 
 import com.cypherpunk.privacy.R;
 import com.cypherpunk.privacy.datasource.vpn.Level;
+import com.cypherpunk.privacy.ui.common.FontCache;
 
 public class RegionBadgeView extends AppCompatTextView {
 
