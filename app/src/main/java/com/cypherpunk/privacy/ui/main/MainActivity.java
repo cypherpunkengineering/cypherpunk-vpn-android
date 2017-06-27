@@ -55,7 +55,7 @@ public class MainActivity extends AppCompatActivity implements
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main2);
+        setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
         CypherpunkApplication.instance.getAppComponent().inject(this);

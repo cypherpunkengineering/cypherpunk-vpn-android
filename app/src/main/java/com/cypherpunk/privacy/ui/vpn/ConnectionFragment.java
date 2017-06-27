@@ -20,6 +20,7 @@ import com.cypherpunk.privacy.domain.model.AccountSetting;
 import com.cypherpunk.privacy.domain.model.VpnSetting;
 import com.cypherpunk.privacy.domain.repository.VpnServerRepository;
 import com.cypherpunk.privacy.ui.common.FlagView;
+import com.cypherpunk.privacy.ui.main.ConnectionView;
 import com.cypherpunk.privacy.vpn.CypherpunkVPN;
 import com.cypherpunk.privacy.vpn.CypherpunkVpnStatus;
 
@@ -45,17 +46,6 @@ public class ConnectionFragment extends Fragment implements VpnStatus.StateListe
     @Nullable
     private ConnectionFragmentListener listener;
 
-    private enum Status {
-        DISCONNECTED,
-        CONNECTING,
-        CONNECTED,
-        DISCONNECTING,
-        UNKNOWN
-    }
-
-    @NonNull
-    private Status connectionStatus = Status.UNKNOWN;
-
     @Inject
     VpnSetting vpnSetting;
 
@@ -64,6 +54,9 @@ public class ConnectionFragment extends Fragment implements VpnStatus.StateListe
 
     @Inject
     VpnServerRepository vpnServerRepository;
+
+    @BindView(R.id.connection_button)
+    ConnectionView connectionButton;
 
     @BindView(R.id.status)
     TextView statusView;
@@ -130,20 +123,14 @@ public class ConnectionFragment extends Fragment implements VpnStatus.StateListe
 
     @OnClick(R.id.connection_button)
     void onConnectionButtonClicked() {
-        switch (connectionStatus) {
-            case DISCONNECTED:
-            case DISCONNECTING:
-                tryConnectIfNeeded();
-                break;
-            case CONNECTED:
-            case CONNECTING:
-            default:
-                if (status.isDisconnected()) {
-                    onDisconnected();
-                } else {
-                    tryDisconnect();
-                }
-                break;
+        if (connectionButton.isConnectedOrConnecting()) {
+            if (status.isDisconnected()) {
+                onDisconnected();
+            } else {
+                tryDisconnect();
+            }
+        } else {
+            tryConnectIfNeeded();
         }
     }
 
@@ -165,25 +152,27 @@ public class ConnectionFragment extends Fragment implements VpnStatus.StateListe
     }
 
     private void tryConnect() {
-        connectionStatus = Status.CONNECTING;
-        statusView.setText(R.string.status_connecting);
-        cypherpunkVPN.start(getContext().getApplicationContext(), getContext(),
-                vpnSetting, accountSetting, vpnServerRepository);
+        if (connectionButton.tryConnect()) {
+            statusView.setText(R.string.status_connecting);
+            cypherpunkVPN.start(getContext().getApplicationContext(), getContext(),
+                    vpnSetting, accountSetting, vpnServerRepository);
+        }
     }
 
     private void tryDisconnect() {
-        connectionStatus = Status.DISCONNECTING;
-        statusView.setText(R.string.status_disconnecting);
-        cypherpunkVPN.stop(vpnSetting);
+        if (connectionButton.tryDisconnect()) {
+            statusView.setText(R.string.status_disconnecting);
+            cypherpunkVPN.stop(vpnSetting);
+        }
     }
 
     private void onConnected() {
-        connectionStatus = Status.CONNECTED;
+        connectionButton.setConnected();
         statusView.setText(R.string.status_connected);
     }
 
     private void onDisconnected() {
-        connectionStatus = Status.DISCONNECTED;
+        connectionButton.setDisconnected();
         statusView.setText(R.string.status_disconnected);
     }
 

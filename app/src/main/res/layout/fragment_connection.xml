@@ -14,11 +14,12 @@
         android:textAllCaps="true"
         android:textColor="?android:textColorPrimary"
         android:textSize="18sp"
-        app:fontName="DosisMedium"
+        app:fontName="DosisSemiBold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.52"
         tools:text="disconnected"/>
 
     <com.cypherpunk.privacy.ui.common.TypefaceTextView
@@ -28,7 +29,7 @@
         android:textAllCaps="true"
         android:textColor="#8000ffff"
         android:textSize="12sp"
-        app:fontName="DosisMedium"
+        app:fontName="DosisSemiBold"
         app:layout_constraintBottom_toTopOf="@+id/status"
         app:layout_constraintLeft_toLeftOf="@+id/status"/>
 
@@ -45,7 +46,7 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.82"
+        app:layout_constraintVertical_bias="0.84"
         tools:ignore="RtlHardcoded">
 
         <com.cypherpunk.privacy.ui.common.FlagView
@@ -66,6 +67,7 @@
             android:textAppearance="?android:textAppearanceLarge"
             android:textColor="#c0ffffff"
             android:textSize="18sp"
+            app:fontName="DosisSemiBold"
             tools:text="New York, New York"/>
 
         <ImageView
@@ -80,23 +82,14 @@
 
     </LinearLayout>
 
-    <FrameLayout
-        android:id="@+id/switch_container"
+    <com.cypherpunk.privacy.ui.main.ConnectionView
+        android:id="@+id/connection_button"
         android:layout_width="0dp"
-        android:layout_height="80dp"
-        android:background="#4050ffff"
+        android:layout_height="160dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.3">
-
-        <Button
-            android:id="@+id/connection_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"/>
-
-    </FrameLayout>
+        app:layout_constraintVertical_bias="0.32"/>
 
 </android.support.constraint.ConstraintLayout>
