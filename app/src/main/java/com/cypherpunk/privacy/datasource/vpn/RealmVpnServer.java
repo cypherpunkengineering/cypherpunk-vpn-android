@@ -31,6 +31,9 @@ public class RealmVpnServer implements RealmModel, VpnServer {
     private String country;
     @Required
     private String region; // "NA", "SA", "AS" etc
+    private float lat;
+    private float lng;
+    private float scale;
     @Required
     private String level;
     private boolean authorized;
@@ -53,14 +56,18 @@ public class RealmVpnServer implements RealmModel, VpnServer {
     public RealmVpnServer() {
     }
 
-    RealmVpnServer(@NonNull String id,
-                   @NonNull String name, @NonNull String country, @NonNull String region,
-                   @NonNull String level, boolean authorized, @NonNull String ovHostname,
+    RealmVpnServer(@NonNull String id, @NonNull String name,
+                   @NonNull String country, float lat, float lng, float scale,
+                   @NonNull String region, @NonNull String level, boolean authorized,
+                   @NonNull String ovHostname,
                    @NonNull String[] ovDefault, @NonNull String[] ovNone,
                    @NonNull String[] ovStrong, @NonNull String[] ovStealth) {
         this.id = id;
         this.name = name;
         this.country = country;
+        this.lat = lat;
+        this.lng = lng;
+        this.scale = scale;
         this.region = region;
         this.level = level;
         this.authorized = authorized;
@@ -90,6 +97,21 @@ public class RealmVpnServer implements RealmModel, VpnServer {
     @Override
     public String country() {
         return country;
+    }
+
+    @Override
+    public float lat() {
+        return lat;
+    }
+
+    @Override
+    public float lng() {
+        return lng;
+    }
+
+    @Override
+    public float scale() {
+        return scale;
     }
 
     @NonNull
@@ -151,12 +173,16 @@ public class RealmVpnServer implements RealmModel, VpnServer {
         return ovDefault().length() >= 7 && authorized();
     }
 
-    void update(@NonNull String name, @NonNull String country, @NonNull String region,
-                @NonNull String level, boolean authorized, @NonNull String ovHostname,
+    void update(@NonNull String name, @NonNull String country, float lat, float lng, float scale,
+                @NonNull String region, @NonNull String level, boolean authorized,
+                @NonNull String ovHostname,
                 @NonNull String[] ovDefault, @NonNull String[] ovNone,
                 @NonNull String[] ovStrong, @NonNull String[] ovStealth) {
         this.name = name;
         this.country = country;
+        this.lat = lat;
+        this.lng = lng;
+        this.scale = scale;
         this.region = region;
         this.level = level;
         this.authorized = authorized;
@@ -181,6 +207,9 @@ public class RealmVpnServer implements RealmModel, VpnServer {
                 "id='" + id + '\'' +
                 ", name='" + name + '\'' +
                 ", country='" + country + '\'' +
+                ", lat='" + lat + '\'' +
+                ", lng='" + lng + '\'' +
+                ", scale='" + scale + '\'' +
                 ", region='" + region + '\'' +
                 ", level='" + level + '\'' +
                 ", authorized=" + authorized +

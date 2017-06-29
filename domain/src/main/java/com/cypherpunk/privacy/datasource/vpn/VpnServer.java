@@ -15,6 +15,12 @@ public interface VpnServer {
     @NonNull
     String country();
 
+    float lat();
+
+    float lng();
+
+    float scale();
+
     @NonNull
     Level level();
 
