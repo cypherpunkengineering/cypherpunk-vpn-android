@@ -1,6 +1,9 @@
 package com.cypherpunk.privacy.ui.main;
 
+import android.animation.Animator;
+import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
+import android.animation.ValueAnimator;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -59,7 +62,7 @@ public class ConnectionView extends View {
         knobInfo = new KnobInfo(density, sliderInfo.w);
     }
 
-    private ObjectAnimator animator;
+    private Animator animator;
 
     public boolean isConnectedOrConnecting() {
         switch (connectionStatus) {
@@ -75,12 +78,23 @@ public class ConnectionView extends View {
             case DISCONNECTED:
             case DISCONNECTING:
                 connectionStatus = Status.CONNECTING;
-
                 if (animator != null) {
                     animator.cancel();
                 }
-                animator = ObjectAnimator.ofFloat(this, "fraction", 1f);
-                animator.setDuration(1000);
+
+                setDot(0f);
+
+                final ObjectAnimator animator1 = ObjectAnimator.ofFloat(this, "fraction", 1f);
+                animator1.setDuration(1000);
+
+                final ObjectAnimator animator2 = ObjectAnimator.ofFloat(this, "dot", 1f);
+                animator2.setDuration(1000);
+                animator2.setRepeatCount(ValueAnimator.INFINITE);
+
+                final AnimatorSet animatorSet = new AnimatorSet();
+                animatorSet.playSequentially(animator1, animator2);
+
+                animator = animatorSet;
                 animator.start();
                 return true;
         }
@@ -93,7 +107,6 @@ public class ConnectionView extends View {
             case CONNECTED:
             case CONNECTING:
                 connectionStatus = Status.DISCONNECTING;
-
                 if (animator != null) {
                     animator.cancel();
                 }
@@ -106,33 +119,39 @@ public class ConnectionView extends View {
     }
 
     public void setConnected() {
+        if (animator != null) {
+            animator.cancel();
+        }
         switch (connectionStatus) {
             case DISCONNECTED:
             case DISCONNECTING:
-                if (animator != null) {
-                    animator.cancel();
-                }
+                connectionStatus = Status.CONNECTED;
                 animator = ObjectAnimator.ofFloat(this, "fraction", 1f);
                 animator.setDuration(1000);
                 animator.start();
                 break;
+            default:
+                connectionStatus = Status.CONNECTED;
+                invalidate();
         }
-        connectionStatus = Status.CONNECTED;
     }
 
     public void setDisconnected() {
+        if (animator != null) {
+            animator.cancel();
+        }
         switch (connectionStatus) {
             case CONNECTED:
             case CONNECTING:
-                if (animator != null) {
-                    animator.cancel();
-                }
+                connectionStatus = Status.DISCONNECTED;
                 animator = ObjectAnimator.ofFloat(this, "fraction", 0f);
                 animator.setDuration(1000);
                 animator.start();
                 break;
+            default:
+                connectionStatus = Status.DISCONNECTED;
+                invalidate();
         }
-        connectionStatus = Status.DISCONNECTED;
     }
 
     @Override
@@ -182,15 +201,32 @@ public class ConnectionView extends View {
         return fraction;
     }
 
+    private float dot = 0f;
+
+    public void setDot(@FloatRange(from = 0, to = 1f) float dot) {
+        this.dot = dot;
+        invalidate();
+    }
+
+    public float getDot() {
+        return dot;
+    }
+
     //
     // pipe
     //
 
     private static class PipeInfo {
         private final float radius;
+        private final LinearGradient dotGradient;
+        private final float dotWidth;
 
         private PipeInfo(float density) {
             radius = 2 * density;
+            dotWidth = 40 * density;
+            dotGradient = new LinearGradient(0, -radius, dotWidth, radius,
+                    new int[]{Color.TRANSPARENT, Color.WHITE, Color.WHITE, Color.TRANSPARENT},
+                    new float[]{0f, 0.33f, 0.66f, 1f}, Shader.TileMode.CLAMP);
         }
     }
 
@@ -210,6 +246,16 @@ public class ConnectionView extends View {
         canvas.rotate(180, centerX, centerY);
         canvas.drawRect(rectF, paint);
         canvas.restoreToCount(count);
+
+        if (connectionStatus == Status.CONNECTING) {
+            final int count2 = canvas.save();
+            canvas.translate(-pipeInfo.dotWidth * 2 + (2 * centerX + pipeInfo.dotWidth * 4) * dot, centerY);
+            rectF.set(0f, -pipeInfo.radius, pipeInfo.dotWidth, pipeInfo.radius);
+            paint.setShader(pipeInfo.dotGradient);
+            paint.setAlpha(255);
+            canvas.drawRect(rectF, paint);
+            canvas.restoreToCount(count2);
+        }
     }
 
     //
@@ -290,6 +336,7 @@ public class ConnectionView extends View {
         private final LinearGradient gradient2;
         private final int strokeColorMin = Color.argb(51, 0, 255, 255);
         private final int strokeColorMax = Color.argb(128, 128, 255, 255);
+        private final int dropShadowColor = Color.argb(128, 0, 255, 255);
 
         private SliderInfo(float density) {
             w = 120 * density;
@@ -301,11 +348,11 @@ public class ConnectionView extends View {
             shadowRadius = 40 * density;
 
             gradient = new RadialGradient(0, 0, halfH + shadowRadius,
-                    new int[]{Color.CYAN, Color.TRANSPARENT},
+                    new int[]{dropShadowColor, Color.TRANSPARENT},
                     new float[]{0f, 1f}, Shader.TileMode.CLAMP);
 
             gradient2 = new LinearGradient(0, 0, 0, -halfH - shadowRadius,
-                    new int[]{Color.CYAN, Color.TRANSPARENT},
+                    new int[]{dropShadowColor, Color.TRANSPARENT},
                     new float[]{0f, 1f}, Shader.TileMode.CLAMP);
         }
     }
