@@ -13,6 +13,7 @@ import com.orhanobut.hawk.HawkBuilder;
 
 import de.blinkt.openvpn.core.PRNGFixes;
 import io.realm.Realm;
+import timber.log.Timber;
 
 public class CypherpunkApplication extends Application {
 
@@ -40,6 +41,10 @@ public class CypherpunkApplication extends Application {
                 .setStorage(HawkBuilder.newSharedPrefStorage(this))
                 .setEncryptionMethod(HawkBuilder.EncryptionMethod.MEDIUM)
                 .build();
+
+        if (BuildConfig.DEBUG) {
+            Timber.plant(new Timber.DebugTree());
+        }
     }
 
     public AppComponent getAppComponent() {

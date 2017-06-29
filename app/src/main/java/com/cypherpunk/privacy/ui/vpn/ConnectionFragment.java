@@ -38,6 +38,7 @@ import de.blinkt.openvpn.core.VpnStatus;
 public class ConnectionFragment extends Fragment implements VpnStatusHolder.StateListener {
 
     private static final int REQUEST_CODE_START_VPN = 0;
+    private static final String KEY_STATUS = "status";
 
     public interface ConnectionFragmentListener {
         void onRegionChangeButtonClicked();
@@ -75,6 +76,16 @@ public class ConnectionFragment extends Fragment implements VpnStatusHolder.Stat
     private VpnServer vpnServer;
     private Handler handler;
 
+    private enum Status {
+        DISCONNECTED,
+        CONNECTING,
+        CONNECTED,
+        DISCONNECTING
+    }
+
+    @NonNull
+    private Status status = Status.DISCONNECTED;
+
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
@@ -101,7 +112,6 @@ public class ConnectionFragment extends Fragment implements VpnStatusHolder.Stat
         final View view = inflater.inflate(R.layout.fragment_connection, container, false);
         unbinder = ButterKnife.bind(this, view);
         handler = new Handler();
-        updateState(vpnStatusHolder.status());
         vpnStatusHolder.addListener(this);
         return view;
     }
@@ -112,6 +122,25 @@ public class ConnectionFragment extends Fragment implements VpnStatusHolder.Stat
         unbinder.unbind();
         vpnStatusHolder.removeListener(this);
         super.onDestroyView();
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+        final Status newStatus;
+        if (savedInstanceState != null) {
+            newStatus = (Status) savedInstanceState.getSerializable(KEY_STATUS);
+        } else {
+            newStatus = convert(vpnStatusHolder.status());
+        }
+        onNewStatus(newStatus);
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putSerializable(KEY_STATUS, status);
     }
 
     @OnClick(R.id.region_container)
@@ -131,14 +160,23 @@ public class ConnectionFragment extends Fragment implements VpnStatusHolder.Stat
 
     @OnClick(R.id.connection_button)
     void onConnectionButtonClicked() {
-        if (connectionButton.isConnectedOrConnecting()) {
-            if (vpnStatusHolder.isDisconnected()) {
-                onDisconnected();
-            } else {
-                tryDisconnect();
-            }
-        } else {
-            tryConnectIfNeeded();
+        switch (status) {
+            case CONNECTED:
+            case CONNECTING:
+                // try disconnect
+                if (vpnStatusHolder.isDisconnected()) {
+                    // already disconnected
+                    onNewStatus(Status.DISCONNECTED);
+                } else {
+                    onNewStatus(Status.DISCONNECTING);
+                    vpnManager.stop();
+                }
+                break;
+            case DISCONNECTED:
+            case DISCONNECTING:
+                // try connect
+                tryConnectIfNeeded();
+                break;
         }
     }
 
@@ -160,52 +198,59 @@ public class ConnectionFragment extends Fragment implements VpnStatusHolder.Stat
     }
 
     private void tryConnect() {
-        if (vpnServer == null) {
-            return;
-        }
-        if (connectionButton.tryConnect()) {
-            statusView.setText(R.string.status_connecting);
+        if (vpnServer != null) {
+            onNewStatus(Status.CONNECTING);
             vpnManager.start(getContext(), vpnServer);
         }
     }
 
-    private void tryDisconnect() {
-        if (connectionButton.tryDisconnect()) {
-            statusView.setText(R.string.status_disconnecting);
-            vpnManager.stop();
-        }
-    }
+    private void onNewStatus(@Nullable Status newStatus) {
+        if (newStatus != null && newStatus != status) {
+            status = newStatus;
+            switch (status) {
+                case CONNECTED:
+                    connectionButton.setConnected();
+                    statusView.setText(R.string.status_connected);
+                    break;
 
-    private void onConnected() {
-        connectionButton.setConnected();
-        statusView.setText(R.string.status_connected);
-    }
+                case CONNECTING:
+                    connectionButton.setConnecting();
+                    statusView.setText(R.string.status_connecting);
+                    break;
 
-    private void onDisconnected() {
-        connectionButton.setDisconnected();
-        statusView.setText(R.string.status_disconnected);
-    }
+                case DISCONNECTED:
+                    connectionButton.setDisconnected();
+                    statusView.setText(R.string.status_disconnected);
+                    break;
 
-    private void updateState(@NonNull VpnStatus.ConnectionStatus status) {
-        switch (status) {
-            case LEVEL_CONNECTED:
-                onConnected();
-                break;
-            case LEVEL_NOT_CONNECTED:
-                onDisconnected();
-                break;
+                case DISCONNECTING:
+                    connectionButton.setDisconnecting();
+                    statusView.setText(R.string.status_disconnecting);
+                    break;
+            }
         }
     }
 
     @Override
-    public void onStateChanged(@NonNull final VpnStatus.ConnectionStatus status) {
+    public void onStateChanged(@NonNull final VpnStatus.ConnectionStatus connectionStatus) {
         if (handler != null) {
             handler.post(new Runnable() {
                 @Override
                 public void run() {
-                    updateState(status);
+                    onNewStatus(convert(connectionStatus));
                 }
             });
         }
+    }
+
+    @Nullable
+    private static Status convert(@NonNull VpnStatus.ConnectionStatus connectionStatus) {
+        switch (connectionStatus) {
+            case LEVEL_CONNECTED:
+                return Status.CONNECTED;
+            case LEVEL_NOT_CONNECTED:
+                return Status.DISCONNECTED;
+        }
+        return null;
     }
 }

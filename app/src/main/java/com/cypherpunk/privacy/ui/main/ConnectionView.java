@@ -1,6 +1,7 @@
 package com.cypherpunk.privacy.ui.main;
 
 import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
@@ -13,6 +14,8 @@ import android.graphics.Path;
 import android.graphics.RadialGradient;
 import android.graphics.RectF;
 import android.graphics.Shader;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.support.annotation.FloatRange;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -28,12 +31,11 @@ public class ConnectionView extends View {
         DISCONNECTED,
         CONNECTING,
         CONNECTED,
-        DISCONNECTING,
-        UNKNOWN
+        DISCONNECTING
     }
 
     @NonNull
-    private Status connectionStatus = Status.UNKNOWN;
+    private Status connectionStatus = Status.DISCONNECTED;
 
     private final Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
 
@@ -62,96 +64,137 @@ public class ConnectionView extends View {
         knobInfo = new KnobInfo(density, sliderInfo.w);
     }
 
-    private Animator animator;
+    private Animator connectingAnimator;
+    private Animator disconnectingAnimator;
 
-    public boolean isConnectedOrConnecting() {
-        switch (connectionStatus) {
-            case CONNECTED:
-            case CONNECTING:
-                return true;
+    public void setConnecting() {
+        connectionStatus = Status.CONNECTING;
+        if (connectingAnimator != null) {
+            connectingAnimator.cancel();
         }
-        return false;
+        if (disconnectingAnimator != null) {
+            disconnectingAnimator.cancel();
+        }
+
+        setDot(0f);
+
+        final ObjectAnimator animator1 = ObjectAnimator.ofFloat(this, "fraction", 1f);
+        animator1.setDuration(1000);
+
+        final ObjectAnimator animator2 = ObjectAnimator.ofFloat(this, "dot", 1f);
+        animator2.setDuration(1000);
+        animator2.setRepeatCount(ValueAnimator.INFINITE);
+
+        final AnimatorSet animatorSet = new AnimatorSet();
+        animatorSet.playSequentially(animator1, animator2);
+
+        connectingAnimator = animatorSet;
+        connectingAnimator.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                connectingAnimator = null;
+            }
+        });
+        connectingAnimator.start();
     }
 
-    public boolean tryConnect() {
-        switch (connectionStatus) {
-            case DISCONNECTED:
-            case DISCONNECTING:
-                connectionStatus = Status.CONNECTING;
-                if (animator != null) {
-                    animator.cancel();
-                }
-
-                setDot(0f);
-
-                final ObjectAnimator animator1 = ObjectAnimator.ofFloat(this, "fraction", 1f);
-                animator1.setDuration(1000);
-
-                final ObjectAnimator animator2 = ObjectAnimator.ofFloat(this, "dot", 1f);
-                animator2.setDuration(1000);
-                animator2.setRepeatCount(ValueAnimator.INFINITE);
-
-                final AnimatorSet animatorSet = new AnimatorSet();
-                animatorSet.playSequentially(animator1, animator2);
-
-                animator = animatorSet;
-                animator.start();
-                return true;
+    public void setDisconnecting() {
+        connectionStatus = Status.DISCONNECTING;
+        if (connectingAnimator != null) {
+            connectingAnimator.cancel();
         }
-
-        return false;
-    }
-
-    public boolean tryDisconnect() {
-        switch (connectionStatus) {
-            case CONNECTED:
-            case CONNECTING:
-                connectionStatus = Status.DISCONNECTING;
-                if (animator != null) {
-                    animator.cancel();
-                }
-                animator = ObjectAnimator.ofFloat(this, "fraction", 0f);
-                animator.setDuration(1000);
-                animator.start();
-                return true;
+        if (disconnectingAnimator != null) {
+            disconnectingAnimator.cancel();
         }
-        return false;
+        disconnectingAnimator = ObjectAnimator.ofFloat(this, "fraction", 0f);
+        disconnectingAnimator.setDuration(1000);
+        disconnectingAnimator.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                disconnectingAnimator = null;
+            }
+        });
+        disconnectingAnimator.start();
     }
 
     public void setConnected() {
-        if (animator != null) {
-            animator.cancel();
+        if (disconnectingAnimator != null) {
+            disconnectingAnimator.cancel();
         }
-        switch (connectionStatus) {
-            case DISCONNECTED:
-            case DISCONNECTING:
-                connectionStatus = Status.CONNECTED;
-                animator = ObjectAnimator.ofFloat(this, "fraction", 1f);
-                animator.setDuration(1000);
-                animator.start();
-                break;
-            default:
-                connectionStatus = Status.CONNECTED;
-                invalidate();
+        if (connectingAnimator != null) {
+            connectingAnimator.cancel();
         }
+        connectionStatus = Status.CONNECTED;
+        setFraction(1);
+        invalidate();
     }
 
     public void setDisconnected() {
-        if (animator != null) {
-            animator.cancel();
+        if (connectingAnimator != null) {
+            connectingAnimator.cancel();
         }
-        switch (connectionStatus) {
-            case CONNECTED:
-            case CONNECTING:
-                connectionStatus = Status.DISCONNECTED;
-                animator = ObjectAnimator.ofFloat(this, "fraction", 0f);
-                animator.setDuration(1000);
-                animator.start();
-                break;
-            default:
-                connectionStatus = Status.DISCONNECTED;
-                invalidate();
+
+        connectionStatus = Status.DISCONNECTED;
+
+        if (disconnectingAnimator == null) {
+            setFraction(0f);
+            invalidate();
         }
+    }
+
+    @Override
+    protected Parcelable onSaveInstanceState() {
+        Parcelable superState = super.onSaveInstanceState();
+
+        SavedState ss = new SavedState(superState);
+
+        ss.connectionStatus = connectionStatus;
+        return ss;
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Parcelable state) {
+        SavedState ss = (SavedState) state;
+
+        super.onRestoreInstanceState(state);
+        connectionStatus = ss.connectionStatus;
+    }
+
+    static class SavedState extends BaseSavedState {
+        Status connectionStatus;
+
+        SavedState(Parcelable superState) {
+            super(superState);
+        }
+
+        private SavedState(Parcel in) {
+            super(in);
+            connectionStatus = (Status) in.readSerializable();
+        }
+
+        @Override
+        public void writeToParcel(Parcel out, int flags) {
+            super.writeToParcel(out, flags);
+            out.writeSerializable(connectionStatus);
+        }
+
+        @Override
+        public String toString() {
+            return "ConnectionView.SavedState{"
+                    + Integer.toHexString(System.identityHashCode(this))
+                    + " connectionStatus=" + connectionStatus + "}";
+        }
+
+        public static final Parcelable.Creator<SavedState> CREATOR
+                = new Parcelable.Creator<SavedState>() {
+            public SavedState createFromParcel(Parcel in) {
+                return new SavedState(in);
+            }
+
+            public SavedState[] newArray(int size) {
+                return new SavedState[size];
+            }
+        };
     }
 
     @Override
@@ -336,7 +379,7 @@ public class ConnectionView extends View {
         private final LinearGradient gradient2;
         private final int strokeColorMin = Color.argb(51, 0, 255, 255);
         private final int strokeColorMax = Color.argb(128, 128, 255, 255);
-        private final int dropShadowColor = Color.argb(128, 0, 255, 255);
+        private final int dropShadowColor = Color.argb(64, 0, 255, 255);
 
         private SliderInfo(float density) {
             w = 120 * density;
