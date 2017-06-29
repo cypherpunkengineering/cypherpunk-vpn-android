@@ -14,8 +14,6 @@ import android.graphics.Path;
 import android.graphics.RadialGradient;
 import android.graphics.RectF;
 import android.graphics.Shader;
-import android.os.Parcel;
-import android.os.Parcelable;
 import android.support.annotation.FloatRange;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -143,61 +141,6 @@ public class ConnectionView extends View {
     }
 
     @Override
-    protected Parcelable onSaveInstanceState() {
-        Parcelable superState = super.onSaveInstanceState();
-
-        SavedState ss = new SavedState(superState);
-
-        ss.connectionStatus = connectionStatus;
-        return ss;
-    }
-
-    @Override
-    protected void onRestoreInstanceState(Parcelable state) {
-        SavedState ss = (SavedState) state;
-
-        super.onRestoreInstanceState(state);
-        connectionStatus = ss.connectionStatus;
-    }
-
-    static class SavedState extends BaseSavedState {
-        Status connectionStatus;
-
-        SavedState(Parcelable superState) {
-            super(superState);
-        }
-
-        private SavedState(Parcel in) {
-            super(in);
-            connectionStatus = (Status) in.readSerializable();
-        }
-
-        @Override
-        public void writeToParcel(Parcel out, int flags) {
-            super.writeToParcel(out, flags);
-            out.writeSerializable(connectionStatus);
-        }
-
-        @Override
-        public String toString() {
-            return "ConnectionView.SavedState{"
-                    + Integer.toHexString(System.identityHashCode(this))
-                    + " connectionStatus=" + connectionStatus + "}";
-        }
-
-        public static final Parcelable.Creator<SavedState> CREATOR
-                = new Parcelable.Creator<SavedState>() {
-            public SavedState createFromParcel(Parcel in) {
-                return new SavedState(in);
-            }
-
-            public SavedState[] newArray(int size) {
-                return new SavedState[size];
-            }
-        };
-    }
-
-    @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
 
@@ -262,12 +205,12 @@ public class ConnectionView extends View {
     private static class PipeInfo {
         private final float radius;
         private final LinearGradient dotGradient;
-        private final float dotWidth;
+        private final float dotHalfWidth;
 
         private PipeInfo(float density) {
             radius = 2 * density;
-            dotWidth = 40 * density;
-            dotGradient = new LinearGradient(0, -radius, dotWidth, radius,
+            dotHalfWidth = 20 * density;
+            dotGradient = new LinearGradient(-dotHalfWidth, -radius, dotHalfWidth, radius,
                     new int[]{Color.TRANSPARENT, Color.WHITE, Color.WHITE, Color.TRANSPARENT},
                     new float[]{0f, 0.33f, 0.66f, 1f}, Shader.TileMode.CLAMP);
         }
@@ -290,13 +233,43 @@ public class ConnectionView extends View {
         canvas.drawRect(rectF, paint);
         canvas.restoreToCount(count);
 
+        // dot
         if (connectionStatus == Status.CONNECTING) {
-            final int count2 = canvas.save();
-            canvas.translate(-pipeInfo.dotWidth * 2 + (2 * centerX + pipeInfo.dotWidth * 4) * dot, centerY);
-            rectF.set(0f, -pipeInfo.radius, pipeInfo.dotWidth, pipeInfo.radius);
+            final float x = -pipeInfo.dotHalfWidth + 2 * (centerX + pipeInfo.dotHalfWidth) * dot;
+            final float x2 = x - centerX;
+            final float h;
+            final float w;
+
+            if (x2 - pipeInfo.dotHalfWidth <= -frameInfo.cw * 0.5f) {
+                w = pipeInfo.dotHalfWidth;
+                h = pipeInfo.radius;
+
+            } else if (x2 - pipeInfo.dotHalfWidth < frameInfo.cFrameRect.left) {
+                w = pipeInfo.dotHalfWidth;
+
+                final float dis = frameInfo.cFrameRect.left - (x2 - pipeInfo.dotHalfWidth);
+                h = (float) Math.sqrt(Math.pow(frameInfo.cFrameRect.bottom, 2) - Math.pow(dis, 2));
+
+            } else if (x2 + pipeInfo.dotHalfWidth <= frameInfo.cFrameRect.right) {
+                w = pipeInfo.dotHalfWidth;
+                h = frameInfo.cFrameRect.bottom;
+
+            } else if (x2 + pipeInfo.dotHalfWidth < frameInfo.cw * 0.5f) {
+                w = pipeInfo.dotHalfWidth;
+
+                final float dis = (x2 + pipeInfo.dotHalfWidth) - frameInfo.cFrameRect.right;
+                h = (float) Math.sqrt(Math.pow(frameInfo.cFrameRect.bottom, 2) - Math.pow(dis, 2));
+
+            } else {
+                w = pipeInfo.dotHalfWidth;
+                h = pipeInfo.radius;
+            }
             paint.setShader(pipeInfo.dotGradient);
             paint.setAlpha(255);
-            canvas.drawRect(rectF, paint);
+
+            final int count2 = canvas.save();
+            canvas.translate(x, centerY);
+            canvas.drawRect(-w, -h, w, h, paint);
             canvas.restoreToCount(count2);
         }
     }
@@ -311,6 +284,7 @@ public class ConnectionView extends View {
         private final float h;
         private final float strokeWidthMin;
         private final float strokeWidthRange;
+        private final RectF cFrameRect;
 
         private FrameInfo(float density) {
             w = 152 * density;
@@ -318,6 +292,7 @@ public class ConnectionView extends View {
             h = 76 * density;
             strokeWidthMin = 8 * density;
             strokeWidthRange = density;
+            cFrameRect = new RectF(-cw * 0.5f + h * 0.5f, -h * 0.5f, cw * 0.5f - h * 0.5f, h * 0.5f);
         }
     }
 
