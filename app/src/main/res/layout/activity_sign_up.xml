@@ -13,7 +13,7 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:background="@color/title_bar_background"
-        app:layout_constraintDimensionRatio="h,9:2"
+        app:layout_constraintDimensionRatio="@string/header_ratio"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"/>
@@ -128,12 +128,12 @@
 
     <com.cypherpunk.privacy.ui.common.TypefaceTextView
         android:id="@+id/policy"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="32dp"
-        android:layout_marginRight="32dp"
         android:layout_marginTop="26dp"
         android:lineSpacingMultiplier="1.2"
+        android:paddingLeft="32dp"
+        android:paddingRight="32dp"
         android:textColor="#cccccc"
         android:textSize="12sp"
         app:layout_constraintLeft_toLeftOf="parent"
