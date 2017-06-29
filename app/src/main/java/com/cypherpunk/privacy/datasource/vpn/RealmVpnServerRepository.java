@@ -6,9 +6,9 @@ import android.support.annotation.Nullable;
 import com.cypherpunk.privacy.BuildConfig;
 import com.cypherpunk.privacy.domain.repository.VpnServerRepository;
 import com.cypherpunk.privacy.domain.repository.retrofit.result.RegionResult;
-import com.cypherpunk.privacy.vpn.ServerPingerThinger;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -21,11 +21,9 @@ import io.realm.RealmResults;
 import io.realm.Sort;
 
 import static com.cypherpunk.privacy.datasource.vpn.RealmVpnServer.KEY_AUTHORIZED;
-import static com.cypherpunk.privacy.datasource.vpn.RealmVpnServer.KEY_DATE;
 import static com.cypherpunk.privacy.datasource.vpn.RealmVpnServer.KEY_ID;
 import static com.cypherpunk.privacy.datasource.vpn.RealmVpnServer.KEY_LATENCY;
 import static com.cypherpunk.privacy.datasource.vpn.RealmVpnServer.KEY_LEVEL;
-import static com.cypherpunk.privacy.datasource.vpn.RealmVpnServer.KEY_NAME;
 import static com.cypherpunk.privacy.datasource.vpn.RealmVpnServer.KEY_OV_DEFAULT;
 
 /**
@@ -162,10 +160,11 @@ public class RealmVpnServerRepository implements VpnServerRepository {
         realm.close();
     }
 
+    @NonNull
     @Override
-    public void updateServerList(@NonNull Map<String, RegionResult> result) {
+    public List<String> updateServerList(@NonNull Map<String, RegionResult> result) {
         if (result.isEmpty()) {
-            return;
+            return Collections.emptyList();
         }
 
         final Realm realm = realmInstance();
@@ -219,16 +218,9 @@ public class RealmVpnServerRepository implements VpnServerRepository {
                 .deleteAllFromRealm();
 
         realm.commitTransaction();
-
-        // after realm db is updated above, start pinging new location data
-        for (String regionId : regionIdList) {
-            final RealmVpnServer region = realm.where(RealmVpnServer.class)
-                    .equalTo(KEY_ID, regionId)
-                    .findFirst();
-            ServerPingerThinger.pingLocation(region, this);
-        }
-
         realm.close();
+
+        return regionIdList;
     }
 
     @Override

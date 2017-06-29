@@ -18,11 +18,11 @@ import android.widget.TextView;
 
 import com.cypherpunk.privacy.CypherpunkApplication;
 import com.cypherpunk.privacy.R;
-import com.cypherpunk.privacy.domain.model.VpnSetting;
 import com.cypherpunk.privacy.datasource.vpn.InternetKillSwitch;
 import com.cypherpunk.privacy.datasource.vpn.RemotePort;
 import com.cypherpunk.privacy.datasource.vpn.TunnelMode;
-import com.cypherpunk.privacy.vpn.CypherpunkVpnStatus;
+import com.cypherpunk.privacy.domain.model.VpnSetting;
+import com.cypherpunk.privacy.vpn.VpnStatusHolder;
 
 import javax.inject.Inject;
 
@@ -37,6 +37,9 @@ public class SettingsFragment extends PreferenceFragmentCompat {
     private Preference remotePort;
     private Preference internetKillSwitch;
     private Preference tunnelMode;
+
+    @Inject
+    VpnStatusHolder vpnStatusHolder;
 
     @Inject
     VpnSetting vpnSetting;
@@ -139,9 +142,8 @@ public class SettingsFragment extends PreferenceFragmentCompat {
                     remotePort.setSummary(getStringFor(vpnSetting.remotePort()));
                     break;
             }
-            // FIXME:
-            final CypherpunkVpnStatus vpnStatus = new CypherpunkVpnStatus();
-            if (vpnStatus.isConnected()) {
+
+            if (vpnStatusHolder.isConnected()) {
                 AskReconnectDialogFragment.newInstance().show(getFragmentManager());
             }
         }

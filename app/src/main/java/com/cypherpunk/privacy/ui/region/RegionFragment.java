@@ -19,25 +19,24 @@ import com.cypherpunk.privacy.domain.model.AccountSetting;
 import com.cypherpunk.privacy.domain.model.VpnSetting;
 import com.cypherpunk.privacy.domain.repository.NetworkRepository;
 import com.cypherpunk.privacy.domain.repository.VpnServerRepository;
-import com.cypherpunk.privacy.domain.repository.retrofit.result.RegionResult;
 import com.cypherpunk.privacy.domain.repository.retrofit.result.StatusResult;
+import com.cypherpunk.privacy.vpn.VpnManager;
 
 import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 
 import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
-import io.reactivex.SingleSource;
+import io.reactivex.Completable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.disposables.Disposables;
+import io.reactivex.functions.Action;
 import io.reactivex.functions.Function;
-import io.reactivex.observers.DisposableSingleObserver;
 import io.reactivex.schedulers.Schedulers;
 
 /**
@@ -68,6 +67,9 @@ public class RegionFragment extends Fragment {
 
     @Inject
     AccountSetting accountSetting;
+
+    @Inject
+    VpnManager vpnManager;
 
     @NonNull
     private Disposable disposable = Disposables.empty();
@@ -163,30 +165,26 @@ public class RegionFragment extends Fragment {
 
     private void syncServerList() {
         disposable = networkRepository.getAccountStatus()
-                .flatMap(new Function<StatusResult, SingleSource<Map<String, RegionResult>>>() {
+                .flatMapCompletable(new Function<StatusResult, Completable>() {
                     @Override
-                    public SingleSource<Map<String, RegionResult>> apply(StatusResult result) throws Exception {
+                    public Completable apply(StatusResult result) throws Exception {
                         accountSetting.updateAccount(result.account);
-                        return networkRepository.serverList(result.account.type());
+                        return RegionApplicationService.updateServer(networkRepository,
+                                result.account.type(),
+                                vpnServerRepository,
+                                vpnManager);
                     }
                 })
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribeWith(new DisposableSingleObserver<Map<String, RegionResult>>() {
+                .subscribe(new Action() {
                     @Override
-                    public void onSuccess(Map<String, RegionResult> result) {
-                        vpnServerRepository.updateServerList(result);
-
+                    public void run() throws Exception {
                         // check if previously selected region is still available
                         final VpnServer vpnServer = vpnServerRepository.findAuthorizedDefault(vpnSetting.regionId());
                         if (vpnServer == null) {
                             tryChangeServer(vpnServerRepository.fastest(), false);
                         }
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        e.printStackTrace();
                     }
                 });
     }

@@ -147,8 +147,12 @@ public class CypherpunkVpnSetting implements VpnSetting {
         final Realm realm = Realm.getInstance(conf);
         final RealmResults<RealmNetwork> networks = realm.where(RealmNetwork.class)
                 .findAll();
+        final List<Network> result = new ArrayList<>();
+        for (RealmNetwork realmNetwork : networks) {
+            result.add(realm.copyFromRealm(realmNetwork));
+        }
         realm.close();
-        return new ArrayList<Network>(networks);
+        return result;
     }
 
     // auto connect, block malware, block ads

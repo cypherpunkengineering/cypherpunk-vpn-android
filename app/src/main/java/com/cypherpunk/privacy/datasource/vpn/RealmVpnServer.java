@@ -146,6 +146,11 @@ public class RealmVpnServer implements RealmModel, VpnServer {
         return latency;
     }
 
+    @Override
+    public boolean isPingable() {
+        return ovDefault().length() >= 7 && authorized();
+    }
+
     void update(@NonNull String name, @NonNull String country, @NonNull String region,
                 @NonNull String level, boolean authorized, @NonNull String ovHostname,
                 @NonNull String[] ovDefault, @NonNull String[] ovNone,

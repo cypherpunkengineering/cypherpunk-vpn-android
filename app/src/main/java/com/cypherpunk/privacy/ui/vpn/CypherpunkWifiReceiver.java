@@ -19,9 +19,7 @@ import javax.inject.Inject;
 
 import timber.log.Timber;
 
-/**
- * Created by jmaurice on 2016/10/12.
- */
+// FIXME: use JobScheduler
 public class CypherpunkWifiReceiver extends BroadcastReceiver {
 
     // FIXME:
@@ -33,6 +31,20 @@ public class CypherpunkWifiReceiver extends BroadcastReceiver {
 
     @Inject
     VpnSetting vpnSetting;
+
+    @NonNull
+    private static String getCurrentWifiSsid(@NonNull Context context) {
+        final WifiManager wifiManager = (WifiManager) context.getApplicationContext()
+                .getSystemService(Context.WIFI_SERVICE);
+        final WifiInfo wifiInfo = wifiManager.getConnectionInfo();
+        if (wifiInfo != null) {
+            final String ssid = wifiInfo.getSSID();
+            if (!TextUtils.isEmpty(ssid)) {
+                return ssid;
+            }
+        }
+        return "";
+    }
 
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -49,19 +61,21 @@ public class CypherpunkWifiReceiver extends BroadcastReceiver {
         switch (networkInfo.getState()) {
             case CONNECTED:
                 // check if already got event for this ssid
-                final String ssid = getCurrentWifiSSID(context);
                 if (currentSSID == null) {
+                    final String ssid = getCurrentWifiSsid(context);
                     currentSSID = ssid;
 
                     Timber.d("onWiFiConnected(" + ssid + ")");
 
                     if (vpnSetting.isAutoSecureUntrusted()) {
-                        startIntent(context, !TextUtils.isEmpty(ssid) && vpnSetting.isTrusted(ssid)
-                                ? CypherpunkLaunchVPN.NETWORK_TRUSTED
-                                : CypherpunkLaunchVPN.NETWORK_UNTRUSTED);
+                        VpnConnectionIntentService.Mode mode = !TextUtils.isEmpty(ssid) && vpnSetting.isTrusted(ssid)
+                                ? VpnConnectionIntentService.Mode.TRUSTED
+                                : VpnConnectionIntentService.Mode.UNTRUSTED;
+                        context.startService(VpnConnectionIntentService.createIntent(context, mode));
                     }
                 }
                 break;
+
             case DISCONNECTED:
                 // check if already got event
                 if (currentSSID != null) {
@@ -70,36 +84,11 @@ public class CypherpunkWifiReceiver extends BroadcastReceiver {
                     Timber.d("onWiFiDisconnected()");
 
                     if (vpnSetting.isAutoSecureOther()) {
-                        startIntent(context, CypherpunkLaunchVPN.NETWORK_UNTRUSTED);
+                        context.startService(VpnConnectionIntentService.createIntent(context,
+                                VpnConnectionIntentService.Mode.UNTRUSTED));
                     }
                 }
                 break;
         }
-    }
-
-    @NonNull
-    private String getCurrentWifiSSID(@NonNull Context context) {
-        final WifiManager wifiManager = (WifiManager) context.getApplicationContext()
-                .getSystemService(Context.WIFI_SERVICE);
-        final WifiInfo info = wifiManager.getConnectionInfo();
-        if (info != null) {
-            final String ssid = info.getSSID();
-            if (!TextUtils.isEmpty(ssid)) {
-                return ssid;
-            }
-        }
-        return "";
-    }
-
-    private void startIntent(@NonNull Context context, @NonNull String intention) {
-        Timber.d("startIntent()");
-        final Intent intent = new Intent(CypherpunkLaunchVPN.AUTO_START);
-        intent.setClass(context, CypherpunkLaunchVPN.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
-                | Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS
-                | Intent.FLAG_ACTIVITY_NO_HISTORY
-                | Intent.FLAG_ACTIVITY_NO_ANIMATION);
-        intent.putExtra(intention, true);
-        context.startActivity(intent);
     }
 }

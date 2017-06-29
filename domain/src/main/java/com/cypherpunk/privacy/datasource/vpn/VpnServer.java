@@ -38,4 +38,6 @@ public interface VpnServer {
     boolean isSelectable();
 
     long latency();
+
+    boolean isPingable();
 }

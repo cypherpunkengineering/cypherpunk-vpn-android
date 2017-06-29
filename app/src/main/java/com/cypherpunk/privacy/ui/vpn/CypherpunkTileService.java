@@ -1,40 +1,48 @@
 package com.cypherpunk.privacy.ui.vpn;
 
 import android.annotation.TargetApi;
-import android.content.Intent;
 import android.os.Build;
 import android.service.quicksettings.Tile;
 import android.service.quicksettings.TileService;
+import android.support.annotation.NonNull;
 
-import com.cypherpunk.privacy.vpn.CypherpunkVpnStatus;
+import com.cypherpunk.privacy.CypherpunkApplication;
+import com.cypherpunk.privacy.vpn.VpnStatusHolder;
+
+import javax.inject.Inject;
 
 import de.blinkt.openvpn.core.VpnStatus;
 import timber.log.Timber;
 
-/**
- * Created by jmaurice on 2016/10/04.
- */
+import static com.cypherpunk.privacy.ui.vpn.VpnConnectionIntentService.Mode.TILE;
 
 @TargetApi(Build.VERSION_CODES.N)
-public class CypherpunkTileService extends TileService implements VpnStatus.StateListener {
+public class CypherpunkTileService extends TileService implements VpnStatusHolder.StateListener {
+
+    @Inject
+    VpnStatusHolder vpnStatusHolder;
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        CypherpunkApplication.instance.getAppComponent().inject(this);
+    }
 
     @TargetApi(Build.VERSION_CODES.N)
     @Override
     public void onTileAdded() {
         super.onTileAdded();
-        CypherpunkVpnStatus status = CypherpunkVpnStatus.getInstance();
-        //t.setState(Tile.STATE_UNAVAILABLE);
     }
 
     @Override
     public void onStartListening() {
         super.onStartListening();
-        VpnStatus.addStateListener(this);
+        vpnStatusHolder.addListener(this);
     }
 
     @Override
     public void onStopListening() {
-        VpnStatus.removeStateListener(this);
+        vpnStatusHolder.removeListener(this);
         super.onStopListening();
     }
 
@@ -42,26 +50,20 @@ public class CypherpunkTileService extends TileService implements VpnStatus.Stat
     public void onClick() {
         super.onClick();
         Timber.d("onClick()");
-
-        Intent i = new Intent(CypherpunkLaunchVPN.TILE_CLICK);
-        i.setClass(this, CypherpunkLaunchVPN.class);
-        i.setFlags(
-                Intent.FLAG_ACTIVITY_NEW_TASK
-                        | Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS
-                        | Intent.FLAG_ACTIVITY_NO_HISTORY
-                        | Intent.FLAG_ACTIVITY_NO_ANIMATION
-        );
-        i.putExtra(CypherpunkLaunchVPN.TILE_CLICK, true);
-        this.startActivity(i);
+        startService(VpnConnectionIntentService.createIntent(this, TILE));
     }
 
     @Override
-    public void updateState(String state, String logmessage, int localizedResId, VpnStatus.ConnectionStatus level) {
-        Tile t = getQsTile();
-        if (level == VpnStatus.ConnectionStatus.LEVEL_AUTH_FAILED || level == VpnStatus.ConnectionStatus.LEVEL_NOT_CONNECTED) {
-            t.setState(Tile.STATE_INACTIVE);
-        } else {
-            t.setState(Tile.STATE_ACTIVE);
+    public void onStateChanged(@NonNull VpnStatus.ConnectionStatus status) {
+        final Tile t = getQsTile();
+        switch (status) {
+            case LEVEL_AUTH_FAILED:
+            case LEVEL_NOT_CONNECTED:
+                t.setState(Tile.STATE_INACTIVE);
+                break;
+            default:
+                t.setState(Tile.STATE_ACTIVE);
+                break;
         }
         t.updateTile();
     }

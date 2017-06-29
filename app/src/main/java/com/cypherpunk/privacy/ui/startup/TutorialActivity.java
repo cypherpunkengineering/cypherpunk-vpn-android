@@ -24,12 +24,11 @@ import com.cypherpunk.privacy.domain.model.AccountSetting;
 import com.cypherpunk.privacy.domain.model.VpnSetting;
 import com.cypherpunk.privacy.domain.repository.NetworkRepository;
 import com.cypherpunk.privacy.domain.repository.VpnServerRepository;
-import com.cypherpunk.privacy.domain.repository.retrofit.result.RegionResult;
 import com.cypherpunk.privacy.domain.repository.retrofit.result.StatusResult;
 import com.cypherpunk.privacy.ui.main.MainActivity;
+import com.cypherpunk.privacy.ui.region.RegionApplicationService;
+import com.cypherpunk.privacy.vpn.VpnManager;
 import com.google.firebase.analytics.FirebaseAnalytics;
-
-import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -37,14 +36,12 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.OnPageChange;
-import io.reactivex.SingleSource;
+import io.reactivex.Completable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.disposables.Disposables;
 import io.reactivex.functions.Function;
-import io.reactivex.observers.DisposableSingleObserver;
 import io.reactivex.schedulers.Schedulers;
-import timber.log.Timber;
 
 /**
  * get account type and server list during tutorial.
@@ -67,6 +64,9 @@ public class TutorialActivity extends AppCompatActivity {
 
     @Inject
     AccountSetting accountSetting;
+
+    @Inject
+    VpnManager vpnManager;
 
     @BindView(R.id.pager)
     ViewPager pager;
@@ -180,26 +180,19 @@ public class TutorialActivity extends AppCompatActivity {
 
     private void getServerList() {
         disposable = networkRepository.getAccountStatus()
-                .flatMap(new Function<StatusResult, SingleSource<Map<String, RegionResult>>>() {
+                .flatMapCompletable(new Function<StatusResult, Completable>() {
                     @Override
-                    public SingleSource<Map<String, RegionResult>> apply(StatusResult result) throws Exception {
+                    public Completable apply(StatusResult result) throws Exception {
                         accountSetting.updateAccount(result.account);
-                        return networkRepository.serverList(result.account.type());
+                        return RegionApplicationService.updateServer(networkRepository,
+                                result.account.type(),
+                                vpnServerRepository,
+                                vpnManager);
                     }
                 })
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribeWith(new DisposableSingleObserver<Map<String, RegionResult>>() {
-                    @Override
-                    public void onSuccess(Map<String, RegionResult> result) {
-                        vpnServerRepository.updateServerList(result);
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        Timber.e(e);
-                    }
-                });
+                .subscribe();
     }
 
     @Override

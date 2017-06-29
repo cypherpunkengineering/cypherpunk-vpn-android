@@ -14,15 +14,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.cypherpunk.privacy.CypherpunkApplication;
 import com.cypherpunk.privacy.R;
 import com.cypherpunk.privacy.datasource.vpn.VpnServer;
 import com.cypherpunk.privacy.domain.model.AccountSetting;
-import com.cypherpunk.privacy.domain.model.VpnSetting;
 import com.cypherpunk.privacy.domain.repository.VpnServerRepository;
 import com.cypherpunk.privacy.ui.common.FlagView;
 import com.cypherpunk.privacy.ui.main.ConnectionView;
-import com.cypherpunk.privacy.vpn.CypherpunkVPN;
-import com.cypherpunk.privacy.vpn.CypherpunkVpnStatus;
+import com.cypherpunk.privacy.vpn.VpnManager;
+import com.cypherpunk.privacy.vpn.VpnStatusHolder;
 
 import javax.inject.Inject;
 
@@ -35,7 +35,7 @@ import de.blinkt.openvpn.core.VpnStatus;
 /**
  * fragment for connection handling
  */
-public class ConnectionFragment extends Fragment implements VpnStatus.StateListener {
+public class ConnectionFragment extends Fragment implements VpnStatusHolder.StateListener {
 
     private static final int REQUEST_CODE_START_VPN = 0;
 
@@ -47,13 +47,18 @@ public class ConnectionFragment extends Fragment implements VpnStatus.StateListe
     private ConnectionFragmentListener listener;
 
     @Inject
-    VpnSetting vpnSetting;
-
-    @Inject
     AccountSetting accountSetting;
 
     @Inject
     VpnServerRepository vpnServerRepository;
+
+    @Inject
+    VpnStatusHolder vpnStatusHolder;
+
+    @Inject
+    VpnManager vpnManager;
+
+    private Unbinder unbinder;
 
     @BindView(R.id.connection_button)
     ConnectionView connectionButton;
@@ -66,11 +71,6 @@ public class ConnectionFragment extends Fragment implements VpnStatus.StateListe
 
     @BindView(R.id.region_flag)
     FlagView regionFlagView;
-
-    private Unbinder unbinder;
-
-    private final CypherpunkVpnStatus status = CypherpunkVpnStatus.getInstance();
-    private final CypherpunkVPN cypherpunkVPN = CypherpunkVPN.getInstance();
 
     private VpnServer vpnServer;
     private Handler handler;
@@ -89,13 +89,20 @@ public class ConnectionFragment extends Fragment implements VpnStatus.StateListe
         super.onDetach();
     }
 
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        CypherpunkApplication.instance.getAppComponent().inject(this);
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_connection, container, false);
         unbinder = ButterKnife.bind(this, view);
         handler = new Handler();
-        VpnStatus.addStateListener(this);
+        updateState(vpnStatusHolder.status());
+        vpnStatusHolder.addListener(this);
         return view;
     }
 
@@ -103,7 +110,7 @@ public class ConnectionFragment extends Fragment implements VpnStatus.StateListe
     public void onDestroyView() {
         handler = null;
         unbinder.unbind();
-        VpnStatus.removeStateListener(this);
+        vpnStatusHolder.removeListener(this);
         super.onDestroyView();
     }
 
@@ -115,6 +122,7 @@ public class ConnectionFragment extends Fragment implements VpnStatus.StateListe
     }
 
     public void setVpnServer(@NonNull VpnServer vpnServer) {
+        this.vpnServer = vpnServer;
         if (regionNameView != null) {
             regionNameView.setText(vpnServer.name());
             regionFlagView.setCountry(vpnServer.country());
@@ -124,7 +132,7 @@ public class ConnectionFragment extends Fragment implements VpnStatus.StateListe
     @OnClick(R.id.connection_button)
     void onConnectionButtonClicked() {
         if (connectionButton.isConnectedOrConnecting()) {
-            if (status.isDisconnected()) {
+            if (vpnStatusHolder.isDisconnected()) {
                 onDisconnected();
             } else {
                 tryDisconnect();
@@ -152,17 +160,19 @@ public class ConnectionFragment extends Fragment implements VpnStatus.StateListe
     }
 
     private void tryConnect() {
+        if (vpnServer == null) {
+            return;
+        }
         if (connectionButton.tryConnect()) {
             statusView.setText(R.string.status_connecting);
-            cypherpunkVPN.start(getContext().getApplicationContext(), getContext(),
-                    vpnSetting, accountSetting, vpnServerRepository);
+            vpnManager.start(getContext(), vpnServer);
         }
     }
 
     private void tryDisconnect() {
         if (connectionButton.tryDisconnect()) {
             statusView.setText(R.string.status_disconnecting);
-            cypherpunkVPN.stop(vpnSetting);
+            vpnManager.stop();
         }
     }
 
@@ -176,20 +186,24 @@ public class ConnectionFragment extends Fragment implements VpnStatus.StateListe
         statusView.setText(R.string.status_disconnected);
     }
 
+    private void updateState(@NonNull VpnStatus.ConnectionStatus status) {
+        switch (status) {
+            case LEVEL_CONNECTED:
+                onConnected();
+                break;
+            case LEVEL_NOT_CONNECTED:
+                onDisconnected();
+                break;
+        }
+    }
+
     @Override
-    public void updateState(String state, String logmessage, int localizedResId, final VpnStatus.ConnectionStatus level) {
+    public void onStateChanged(@NonNull final VpnStatus.ConnectionStatus status) {
         if (handler != null) {
             handler.post(new Runnable() {
                 @Override
                 public void run() {
-                    switch (level) {
-                        case LEVEL_CONNECTED:
-                            onConnected();
-                            break;
-                        case LEVEL_NOT_CONNECTED:
-                            onDisconnected();
-                            break;
-                    }
+                    updateState(status);
                 }
             });
         }

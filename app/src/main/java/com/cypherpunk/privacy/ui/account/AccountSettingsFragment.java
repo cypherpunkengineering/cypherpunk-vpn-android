@@ -19,14 +19,13 @@ import android.widget.Toast;
 
 import com.cypherpunk.privacy.CypherpunkApplication;
 import com.cypherpunk.privacy.R;
-import com.cypherpunk.privacy.domain.model.AccountSetting;
-import com.cypherpunk.privacy.domain.model.VpnSetting;
 import com.cypherpunk.privacy.datasource.account.Subscription;
+import com.cypherpunk.privacy.domain.model.AccountSetting;
 import com.cypherpunk.privacy.domain.repository.NetworkRepository;
 import com.cypherpunk.privacy.domain.repository.retrofit.result.StatusResult;
 import com.cypherpunk.privacy.ui.common.Urls;
 import com.cypherpunk.privacy.ui.startup.IdentifyEmailActivity;
-import com.cypherpunk.privacy.vpn.CypherpunkVPN;
+import com.cypherpunk.privacy.vpn.VpnManager;
 
 import javax.inject.Inject;
 
@@ -52,10 +51,10 @@ public class AccountSettingsFragment extends PreferenceFragmentCompat {
     NetworkRepository networkRepository;
 
     @Inject
-    VpnSetting vpnSetting;
+    AccountSetting accountSetting;
 
     @Inject
-    AccountSetting accountSetting;
+    VpnManager vpnManager;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -167,7 +166,7 @@ public class AccountSettingsFragment extends PreferenceFragmentCompat {
                 .setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
                     @Override
                     public boolean onPreferenceClick(Preference preference) {
-                        CypherpunkVPN.getInstance().stop(vpnSetting);
+                        vpnManager.stop();
                         accountSetting.clear();
                         TaskStackBuilder.create(getContext())
                                 .addNextIntent(IdentifyEmailActivity.createIntent(getContext()))

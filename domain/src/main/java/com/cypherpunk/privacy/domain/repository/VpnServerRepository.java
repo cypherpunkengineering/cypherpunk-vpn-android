@@ -34,7 +34,8 @@ public interface VpnServerRepository {
 
     void updateLatency(@NonNull String regionId, long latency);
 
-    void updateServerList(@NonNull Map<String, RegionResult> regionMap);
+    @NonNull
+    List<String> updateServerList(@NonNull Map<String, RegionResult> regionMap);
 
     void addChangeListener(@NonNull ChangeListener listener);
 

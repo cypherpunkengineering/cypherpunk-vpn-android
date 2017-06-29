@@ -29,6 +29,7 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import butterknife.Optional;
 
 public class MainActivity extends AppCompatActivity implements
         AskReconnectDialogFragment.ConnectDialogListener,
@@ -55,8 +56,6 @@ public class MainActivity extends AppCompatActivity implements
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        ButterKnife.bind(this);
 
         CypherpunkApplication.instance.getAppComponent().inject(this);
 
@@ -64,10 +63,15 @@ public class MainActivity extends AppCompatActivity implements
             TaskStackBuilder.create(this)
                     .addNextIntent(IdentifyEmailActivity.createIntent(this))
                     .startActivities();
-            finish();
+            return;
         }
 
-        if (!getResources().getBoolean(R.bool.is_tablet)) {
+        setContentView(R.layout.activity_main);
+        ButterKnife.bind(this);
+
+        final boolean isTablet = getResources().getBoolean(R.bool.is_tablet);
+
+        if (!isTablet) {
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         }
 
@@ -78,17 +82,20 @@ public class MainActivity extends AppCompatActivity implements
                 .hide(regionFragment)
                 .commit();
 
-        slidingMenu = new SlidingMenu(this);
-        slidingMenu.setMode(SlidingMenu.LEFT_RIGHT);
-        slidingMenu.setMenu(R.layout.frame_main_left);
-        slidingMenu.setSecondaryMenu(R.layout.frame_main_right);
-        slidingMenu.setShadowDrawable(R.drawable.slide_menu_shadow);
-        slidingMenu.setSecondaryShadowDrawable(R.drawable.slide_menu_shadow_right);
-        slidingMenu.setShadowWidthRes(R.dimen.slide_menu_shadow_width);
-        slidingMenu.setBehindWidthRes(R.dimen.slide_menu_width);
-        slidingMenu.setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);
-        slidingMenu.setFadeDegree(0.35f);
-        slidingMenu.attachToActivity(this, SlidingMenu.SLIDING_CONTENT, true);
+        if (!isTablet) {
+            slidingMenu = new SlidingMenu(this);
+            slidingMenu.setMode(SlidingMenu.LEFT_RIGHT);
+
+            slidingMenu.setMenu(R.layout.frame_main_left);
+            slidingMenu.setSecondaryMenu(R.layout.frame_main_right);
+            slidingMenu.setShadowDrawable(R.drawable.slide_menu_shadow);
+            slidingMenu.setSecondaryShadowDrawable(R.drawable.slide_menu_shadow_right);
+            slidingMenu.setShadowWidthRes(R.dimen.slide_menu_shadow_width);
+            slidingMenu.setBehindWidthRes(R.dimen.slide_menu_width);
+            slidingMenu.setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);
+            slidingMenu.setFadeDegree(0.35f);
+            slidingMenu.attachToActivity(this, SlidingMenu.SLIDING_CONTENT, true);
+        }
 
         VpnServer vpnServer = null;
         final String id = vpnSetting.regionId();
@@ -103,11 +110,13 @@ public class MainActivity extends AppCompatActivity implements
         }
     }
 
+    @Optional
     @OnClick(R.id.account_menu_button)
     void onAccountMenuButtonClicked() {
         slidingMenu.showMenu();
     }
 
+    @Optional
     @OnClick(R.id.setting_menu_button)
     void onSettingMenuButtonClicked() {
         slidingMenu.showSecondaryMenu();
@@ -115,15 +124,23 @@ public class MainActivity extends AppCompatActivity implements
 
     @Override
     public void onBackPressed() {
-        if (!getResources().getBoolean(R.bool.is_tablet) && slidingMenu.isMenuShowing()) {
-            slidingMenu.showContent();
-        } else if (slidingMenu.isSecondaryMenuShowing()) {
-            slidingMenu.showContent();
-        } else if (!connectionFragment.isVisible()) {
-            hideRegions();
-        } else {
-            super.onBackPressed();
+        if (slidingMenu != null) {
+            if (slidingMenu.isMenuShowing()) {
+                slidingMenu.showContent();
+                return;
+            }
+            if (slidingMenu.isSecondaryMenuShowing()) {
+                slidingMenu.showContent();
+                return;
+            }
         }
+
+        if (!connectionFragment.isVisible()) {
+            hideRegions();
+            return;
+        }
+
+        super.onBackPressed();
     }
 
     @Override

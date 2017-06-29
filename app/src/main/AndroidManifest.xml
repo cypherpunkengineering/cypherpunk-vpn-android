@@ -31,7 +31,7 @@
             android:name="firebase_analytics_collection_enabled"
             android:value="false"/>
 
-        <receiver android:name=".ui.vpn.CypherpunkBootReceiver">
+        <receiver android:name=".ui.vpn.BootAndPackageReplaceReceiver">
             <intent-filter android:priority="9001">
                 <action android:name="android.intent.action.BOOT_COMPLETED"/>
                 <action android:name="android.intent.action.MY_PACKAGE_REPLACED"/>
@@ -55,11 +55,13 @@
         </activity>
 
         <activity
-            android:name=".ui.vpn.CypherpunkLaunchVPN"
+            android:name=".ui.vpn.VpnStartActivity"
             android:autoRemoveFromRecents="true"
             android:excludeFromRecents="true"
             android:taskAffinity=".ui.main.CypherpunkLaunchVPN"
             android:theme="@android:style/Theme.Dialog"/>
+
+        <service android:name=".ui.vpn.VpnConnectionIntentService"/>
 
         <service
             android:name="de.blinkt.openvpn.core.OpenVPNService"

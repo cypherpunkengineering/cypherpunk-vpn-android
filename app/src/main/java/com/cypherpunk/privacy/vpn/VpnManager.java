@@ -9,15 +9,15 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 
-import com.cypherpunk.privacy.domain.model.AccountSetting;
-import com.cypherpunk.privacy.domain.model.VpnSetting;
 import com.cypherpunk.privacy.datasource.vpn.InternetKillSwitch;
 import com.cypherpunk.privacy.datasource.vpn.RemotePort;
 import com.cypherpunk.privacy.datasource.vpn.TunnelMode;
 import com.cypherpunk.privacy.datasource.vpn.VpnServer;
-import com.cypherpunk.privacy.domain.repository.VpnServerRepository;
+import com.cypherpunk.privacy.domain.model.AccountSetting;
+import com.cypherpunk.privacy.domain.model.VpnSetting;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.StringReader;
@@ -33,45 +33,29 @@ import de.blinkt.openvpn.core.ProfileManager;
 import de.blinkt.openvpn.core.VPNLaunchHelper;
 import timber.log.Timber;
 
-/**
- * Created by jmaurice on 7/12/16.
- */
-public class CypherpunkVPN {
-    private static CypherpunkVPN singleton;
-
-    private ConfigParser cp;
-    private VpnProfile vpnProfile;
-    private String conf;
-    private VpnServer vpnServer;
-
-    private OpenVPNService service = null;
+public class VpnManager {
 
     @NonNull
-    public static synchronized CypherpunkVPN getInstance() {
-        if (singleton == null)
-            singleton = new CypherpunkVPN();
-        return singleton;
+    private final VpnSetting vpnSetting;
+    @NonNull
+    private final AccountSetting accountSetting;
+
+    @Nullable
+    private OpenVPNService service = null;
+
+    public VpnManager(@NonNull VpnSetting vpnSetting, @NonNull AccountSetting accountSetting) {
+        this.vpnSetting = vpnSetting;
+        this.accountSetting = accountSetting;
     }
 
-    public static boolean protectSocket(Socket s) {
-        if (getInstance().service == null)
-            return false;
-
-        return getInstance().service.protect(s);
+    boolean protectSocket(@NonNull Socket socket) {
+        return service != null && service.protect(socket);
     }
 
-    public VpnServer getVpnServer() {
-        return vpnServer;
-    }
-
-    public void setVpnServer(VpnServer vpnServer) {
-        this.vpnServer = vpnServer;
-    }
-
-    private ServiceConnection connection = new ServiceConnection() {
+    private final ServiceConnection connection = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
-            OpenVPNService.LocalBinder binder = (OpenVPNService.LocalBinder) iBinder;
+            final OpenVPNService.LocalBinder binder = (OpenVPNService.LocalBinder) iBinder;
             service = binder.getService();
         }
 
@@ -81,96 +65,74 @@ public class CypherpunkVPN {
         }
     };
 
-    public void toggle(final Context context, final Context baseContext,
-                       VpnSetting vpnSetting, AccountSetting accountSetting,
-                       VpnServerRepository vpnServerRepository) {
-        CypherpunkVpnStatus status = CypherpunkVpnStatus.getInstance();
-
-        if (status.isDisconnected()) {
-            start(context, baseContext, vpnSetting, accountSetting, vpnServerRepository);
-        }
-        if (status.isConnected()) {
-            stop(vpnSetting);
-        }
-        if (!status.isConnected() && !status.isDisconnected()) {
-            // connecting
-            stop(vpnSetting);
-        }
-    }
-
-    public void start(final Context context, final Context baseContext,
-                      VpnSetting vpnSetting, AccountSetting accountSetting,
-                      VpnServerRepository vpnServerRepository) {
+    public void start(@NonNull Context ctx, @NonNull VpnServer vpnServer) {
         Timber.d("start()");
 
-        Intent serviceIntent = new Intent(baseContext, OpenVPNService.class);
-        serviceIntent.setAction(OpenVPNService.START_SERVICE);
-        context.bindService(serviceIntent, connection, Context.BIND_AUTO_CREATE);
+        final Context context = ctx.getApplicationContext();
+
+        final Intent intent = new Intent(context, OpenVPNService.class);
+        intent.setAction(OpenVPNService.START_SERVICE);
+        context.bindService(intent, connection, Context.BIND_AUTO_CREATE);
+
+        final String config = generateConfig(context, vpnServer);
+        if (config == null) {
+            Timber.d("Unable to generate OpenVPN profile!");
+            return;
+        }
 
         try {
-            conf = generateConfig(context, vpnSetting, accountSetting, vpnServerRepository);
-            if (conf == null) {
-                Timber.d("Unable to generate OpenVPN profile!");
-                return;
-            }
-            cp = new ConfigParser();
-            cp.parseConfig(new StringReader(conf));
-            vpnProfile = cp.convertProfile();
+            final ConfigParser cp = new ConfigParser();
+            cp.parseConfig(new StringReader(config));
+
+            final VpnProfile vpnProfile = cp.convertProfile();
             ProfileManager.setTemporaryProfile(vpnProfile);
             vpnProfile.mName = vpnServer.name() + ", " + vpnServer.country();
-            for (String pkg : vpnSetting.exceptAppList()) {
-                vpnProfile.mAllowedAppsVpn.add(pkg);
+            for (String packageName : vpnSetting.exceptAppList()) {
+                vpnProfile.mAllowedAppsVpn.add(packageName);
             }
+
+            new Thread() {
+                @Override
+                public void run() {
+                    Timber.d("new Thread() -> VPNLaunchHelper()");
+                    VPNLaunchHelper.startOpenVpn(vpnProfile, context);
+                }
+            }.start();
+
         } catch (Exception e) {
             Timber.e("Exception while generating OpenVPN profile");
             Timber.e(e.getLocalizedMessage());
             e.printStackTrace();
-            return;
         }
-
-        new Thread() {
-            @Override
-            public void run() {
-                Timber.d("new Thread() -> VPNLaunchHelper()");
-                VPNLaunchHelper.startOpenVpn(vpnProfile, baseContext);
-            }
-        }.start();
     }
 
-    public void stop(VpnSetting vpnSetting) {
-        Timber.d("stop()");
+    public void stop() {
+        Timber.d("stop");
         if (service != null) {
-            OpenVPNManagement manager = service.getManagement();
-            if (manager == null)
-                return;
+            final OpenVPNManagement manager = service.getManagement();
+            if (manager != null) {
+                manager.stopVPN(false);
 
-            manager.stopVPN(false);
-            // privacy firewall killswitch
-            switch (vpnSetting.internetKillSwitch()) {
-                case AUTOMATIC:
-                    service.stopKillSwitch();
-                    break;
-                case ALWAYS_ON:
-                    break;
-                case OFF:
-                    service.stopKillSwitch();
-                    break;
+                // privacy firewall kill switch
+                switch (vpnSetting.internetKillSwitch()) {
+                    case AUTOMATIC:
+                        service.stopKillSwitch();
+                        break;
+                    case ALWAYS_ON:
+                        break;
+                    case OFF:
+                        service.stopKillSwitch();
+                        break;
+                }
             }
         }
     }
 
     @Nullable
-    private String generateConfig(Context context, VpnSetting vpnSetting,
-                                  AccountSetting accountSetting, VpnServerRepository vpnServerRepository) {
+    private String generateConfig(@NonNull Context context, @NonNull VpnServer vpnServer) {
         Timber.d("generateConfig()");
 
-        List<String> list = new ArrayList<String>();
-
-        // get currently selected location
-        final VpnServer vpnServer = vpnServerRepository.find(vpnSetting.regionId());
-        if (vpnServer == null) {
-            return null;
-        }
+        final List<String> list = new ArrayList<>();
 
         // standard options
         list.add("client");
@@ -202,7 +164,7 @@ public class CypherpunkVPN {
         // vpn protocol + remote port
         final RemotePort remotePort = vpnSetting.remotePort();
         list.add("proto " + remotePort.type().name().toLowerCase());
-        int rport = remotePort.port().value();
+        final int removePort = remotePort.port().value();
 
         // Always try to send the server a courtesy exit notification in UDP mode
         if (remotePort.type().name().toLowerCase().equals("udp"))
@@ -212,32 +174,31 @@ public class CypherpunkVPN {
         final TunnelMode tunnelMode = vpnSetting.tunnelMode();
         switch (tunnelMode) {
             case MAX_SPEED:
-                list.add("remote " + vpnServer.ovNone() + " " + rport);
+                list.add("remote " + vpnServer.ovNone() + " " + removePort);
                 list.add("cipher " + tunnelMode.cipher().value());
                 break;
             case RECOMMENDED:
-                list.add("remote " + vpnServer.ovDefault() + " " + rport);
+                list.add("remote " + vpnServer.ovDefault() + " " + removePort);
                 list.add("cipher " + tunnelMode.cipher().value());
                 break;
             case MAX_PRIVACY:
-                list.add("remote " + vpnServer.ovStrong() + " " + rport);
+                list.add("remote " + vpnServer.ovStrong() + " " + removePort);
                 list.add("cipher " + tunnelMode.cipher().value());
                 break;
             case MAX_STEALTH:
-                list.add("remote " + vpnServer.ovStealth() + " " + rport);
+                list.add("remote " + vpnServer.ovStealth() + " " + removePort);
                 list.add("cipher " + tunnelMode.cipher().value());
                 list.add("scramble obfuscate cypherpunk-xor-key"); // requires xorpatch'd openvpn
                 break;
         }
 
         // local port
-        int lport = 0;
-        /*
-        if (cypherpunkSetting.vpnPortLocal != null && cypherpunkSetting.vpnPortLocal.length() > 0)
-            lport = Integer.parseInt(cypherpunkSetting.vpnPortLocal);
-        */
-        if (lport > 0 && lport < 65535) {
-            list.add("lport " + lport);
+        final int localPort = 0;
+//        if (cypherpunkSetting.vpnPortLocal != null && cypherpunkSetting.vpnPortLocal.length() > 0) {
+//            localPort = Integer.parseInt(cypherpunkSetting.vpnPortLocal);
+//        }
+        if (localPort > 0 && localPort < 65535) {
+            list.add("lport " + localPort);
             list.add("bind");
         } else {
             // need "nobind" to bind to a random port
@@ -295,25 +256,35 @@ public class CypherpunkVPN {
         list.add("</auth-user-pass>");
 
         // append contents of openvpn.conf
+        BufferedReader br = null;
         try {
-            InputStream is = context.getAssets().open("openvpn.conf");
-            InputStreamReader isr = new InputStreamReader(is);
-            BufferedReader br = new BufferedReader(isr);
-            String line;
-
-            while ((line = br.readLine()) != null)
-                list.add(line);
-        } catch (Exception e) {
+            final InputStream is = context.getAssets().open("openvpn.conf");
+            br = new BufferedReader(new InputStreamReader(is));
+            String s;
+            while ((s = br.readLine()) != null) {
+                list.add(s);
+            }
+        } catch (IOException e) {
             Timber.e("unable to read openvpn.conf: " + e.toString());
             return null;
+        } finally {
+            if (br != null) {
+                try {
+                    br.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
         }
 
-        String[] confLines = list.toArray(new String[0]);
-        String conf = TextUtils.join("\n", confLines);
+        final String[] confLines = list.toArray(new String[list.size()]);
 
-        // debug print
-        //for (String line : confLines) log(line);
+        if (BuildConfig.DEBUG) {
+            for (String line : confLines) {
+                Timber.d(line);
+            }
+        }
 
-        return conf;
+        return TextUtils.join("\n", confLines);
     }
 }

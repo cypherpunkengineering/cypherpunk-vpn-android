@@ -4,8 +4,6 @@ import com.cypherpunk.privacy.ui.account.AccountSettingsFragment;
 import com.cypherpunk.privacy.ui.account.EditEmailActivity;
 import com.cypherpunk.privacy.ui.account.EditPasswordActivity;
 import com.cypherpunk.privacy.ui.account.UpgradePlanActivity;
-import com.cypherpunk.privacy.ui.vpn.CypherpunkLaunchVPN;
-import com.cypherpunk.privacy.ui.vpn.CypherpunkWifiReceiver;
 import com.cypherpunk.privacy.ui.main.MainActivity;
 import com.cypherpunk.privacy.ui.region.RegionFragment;
 import com.cypherpunk.privacy.ui.settings.InternetKillSwitchActivity;
@@ -19,27 +17,29 @@ import com.cypherpunk.privacy.ui.startup.IdentifyEmailActivity;
 import com.cypherpunk.privacy.ui.startup.LoginActivity;
 import com.cypherpunk.privacy.ui.startup.SignUpActivity;
 import com.cypherpunk.privacy.ui.startup.TutorialActivity;
-import com.cypherpunk.privacy.vpn.CypherpunkVpnStatus;
+import com.cypherpunk.privacy.ui.vpn.ConnectionFragment;
+import com.cypherpunk.privacy.ui.vpn.VpnConnectionIntentService;
+import com.cypherpunk.privacy.ui.vpn.VpnStartActivity;
+import com.cypherpunk.privacy.ui.vpn.CypherpunkTileService;
+import com.cypherpunk.privacy.ui.vpn.CypherpunkWifiReceiver;
 
 import javax.inject.Singleton;
 
 import dagger.Component;
 
-@Component(modules = {VpnServerModule.class, ClientModule.class, SettingModule.class})
+@Component(modules = {VpnModule.class, VpnServerModule.class, ClientModule.class, SettingModule.class})
 @Singleton
 public interface AppComponent {
 
-    void inject(LoginActivity target);
-
-    void inject(SignUpActivity target);
-
-    void inject(AccountSettingsFragment target);
+    // Activity
 
     void inject(IdentifyEmailActivity target);
 
     void inject(ConfirmationEmailActivity target);
 
-    void inject(RegionFragment target);
+    void inject(LoginActivity target);
+
+    void inject(SignUpActivity target);
 
     void inject(TutorialActivity target);
 
@@ -51,13 +51,7 @@ public interface AppComponent {
 
     void inject(SplitTunnelActivity target);
 
-    void inject(CypherpunkLaunchVPN target);
-
     void inject(TunnelModeActivity target);
-
-    void inject(CypherpunkWifiReceiver target);
-
-    void inject(MainActivity target);
 
     void inject(InternetKillSwitchActivity target);
 
@@ -65,7 +59,28 @@ public interface AppComponent {
 
     void inject(RemotePortActivity target);
 
+    void inject(MainActivity target);
+
+    void inject(VpnStartActivity target);
+
+    // Fragment
+
     void inject(SettingsFragment target);
 
-    void inject(CypherpunkVpnStatus target);
+    void inject(AccountSettingsFragment target);
+
+    void inject(RegionFragment target);
+
+    void inject(ConnectionFragment target);
+
+    // Service
+
+    void inject(CypherpunkTileService target);
+
+    void inject(VpnConnectionIntentService target);
+
+    // BroadcastReceiver
+
+    void inject(CypherpunkWifiReceiver target);
+
 }
