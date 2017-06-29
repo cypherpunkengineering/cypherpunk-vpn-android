@@ -24,6 +24,8 @@ public interface VpnServer {
     @NonNull
     Level level();
 
+    boolean isAvailable();
+
     boolean authorized();
 
     @NonNull

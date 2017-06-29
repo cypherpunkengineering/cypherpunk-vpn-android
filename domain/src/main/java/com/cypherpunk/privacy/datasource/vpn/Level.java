@@ -5,7 +5,7 @@ import android.support.annotation.NonNull;
 public enum Level {
     PREMIUM("premium"),
     DEVELOPER("developer"),
-    UNAVAILABLE("unavailable");
+    FREE("free");
 
     @NonNull
     private final String value;
@@ -26,6 +26,6 @@ public enum Level {
                 return level;
             }
         }
-        return UNAVAILABLE;
+        return FREE;
     }
 }

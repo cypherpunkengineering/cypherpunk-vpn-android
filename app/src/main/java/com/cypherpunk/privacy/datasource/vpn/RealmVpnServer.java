@@ -117,10 +117,12 @@ public class RealmVpnServer implements RealmModel, VpnServer {
     @NonNull
     @Override
     public Level level() {
-        if (TextUtils.isEmpty(ovDefault)) {
-            return Level.UNAVAILABLE;
-        }
         return Level.find(level);
+    }
+
+    @Override
+    public boolean isAvailable() {
+        return !TextUtils.isEmpty(ovDefault);
     }
 
     @Override

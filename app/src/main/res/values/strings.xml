@@ -34,6 +34,7 @@
     <string name="region_list_af">africa</string>
     <string name="region_list_as">asia &amp; india subcontinent</string>
     <string name="region_list_op">oceania &amp; pacific</string>
+    <string name="region_latency_format">%1$dms</string>
 
 
     <!-- menu action -->

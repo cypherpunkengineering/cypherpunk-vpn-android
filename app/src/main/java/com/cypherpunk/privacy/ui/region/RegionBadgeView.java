@@ -24,28 +24,35 @@ public class RegionBadgeView extends AppCompatTextView {
         super(context, attrs, defStyleAttr);
     }
 
-    public void setLevel(@NonNull Level level) {
-        switch (level) {
-            case PREMIUM:
-                setText(R.string.region_level_badge_premium);
-                setBackgroundResource(R.drawable.region_badge_premium);
-                setTextColor(ContextCompat.getColor(getContext(), R.color.region_badge_premium_text));
-                setTypeface(FontCache.getDosisBold(getContext()));
-                break;
+    public void setLevel(@NonNull Level level, boolean isAvailable) {
+        if (isAvailable) {
+            switch (level) {
+                case PREMIUM:
+                    setText(R.string.region_level_badge_premium);
+                    setBackgroundResource(R.drawable.region_badge_premium);
+                    setTextColor(ContextCompat.getColor(getContext(), R.color.region_badge_premium_text));
+                    setTypeface(FontCache.getDosisBold(getContext()));
+                    break;
 
-            case DEVELOPER:
-                setText(R.string.region_level_badge_dev);
-                setBackgroundResource(R.drawable.region_badge_developer);
-                setTextColor(ContextCompat.getColor(getContext(), R.color.region_badge_dev_text));
-                setTypeface(FontCache.getDosisBold(getContext()));
-                break;
+                case DEVELOPER:
+                    setText(R.string.region_level_badge_dev);
+                    setBackgroundResource(R.drawable.region_badge_developer);
+                    setTextColor(ContextCompat.getColor(getContext(), R.color.region_badge_dev_text));
+                    setTypeface(FontCache.getDosisBold(getContext()));
+                    break;
 
-            case UNAVAILABLE:
-                setText(R.string.region_level_badge_unavailable);
-                setBackgroundResource(0);
-                setTextColor(ContextCompat.getColor(getContext(), R.color.region_disabled_text));
-                setTypeface(FontCache.getDosisRegular(getContext()));
-                break;
+                case FREE:
+                    setText(null);
+                    setBackgroundResource(0);
+                    setTextColor(ContextCompat.getColor(getContext(), R.color.region_disabled_text));
+                    setTypeface(FontCache.getDosisRegular(getContext()));
+                    break;
+            }
+        } else {
+            setText(R.string.region_level_badge_unavailable);
+            setBackgroundResource(0);
+            setTextColor(ContextCompat.getColor(getContext(), R.color.region_disabled_text));
+            setTypeface(FontCache.getDosisRegular(getContext()));
         }
     }
 }

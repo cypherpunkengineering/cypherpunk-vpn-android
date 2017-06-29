@@ -94,7 +94,7 @@ public class RegionAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                 final ViewHolderRegion holder = (ViewHolderRegion) viewHolder;
                 holder.nameView.setText(vpnServer.name());
                 holder.flagView.setCountry(vpnServer.country());
-                holder.tagView.setLevel(vpnServer.level());
+                holder.tagView.setLevel(vpnServer.level(), vpnServer.isAvailable());
                 final long latency = vpnServer.latency();
                 if (latency <= 0) {
                     holder.latencyErrorView.setVisibility(View.VISIBLE);
@@ -103,7 +103,7 @@ public class RegionAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                 } else {
                     holder.latencyErrorView.setVisibility(View.GONE);
                     holder.latencyView.setVisibility(View.VISIBLE);
-                    holder.latencyView.setText(latency + "ms");
+                    holder.latencyView.setText(context.getString(R.string.region_latency_format, latency));
                 }
                 holder.setEnabled(vpnServer.isSelectable());
                 break;
