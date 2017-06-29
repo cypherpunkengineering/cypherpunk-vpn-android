@@ -69,9 +69,7 @@ public class MainActivity extends AppCompatActivity implements
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
-        final boolean isTablet = getResources().getBoolean(R.bool.is_tablet);
-
-        if (!isTablet) {
+        if (!getResources().getBoolean(R.bool.is_tablet)) {
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         }
 
@@ -82,20 +80,18 @@ public class MainActivity extends AppCompatActivity implements
                 .hide(regionFragment)
                 .commit();
 
-        if (!isTablet) {
-            slidingMenu = new SlidingMenu(this);
-            slidingMenu.setMode(SlidingMenu.LEFT_RIGHT);
+        slidingMenu = new SlidingMenu(this);
+        slidingMenu.setMode(SlidingMenu.LEFT_RIGHT);
 
-            slidingMenu.setMenu(R.layout.frame_main_left);
-            slidingMenu.setSecondaryMenu(R.layout.frame_main_right);
-            slidingMenu.setShadowDrawable(R.drawable.slide_menu_shadow);
-            slidingMenu.setSecondaryShadowDrawable(R.drawable.slide_menu_shadow_right);
-            slidingMenu.setShadowWidthRes(R.dimen.slide_menu_shadow_width);
-            slidingMenu.setBehindWidthRes(R.dimen.slide_menu_width);
-            slidingMenu.setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);
-            slidingMenu.setFadeDegree(0.35f);
-            slidingMenu.attachToActivity(this, SlidingMenu.SLIDING_CONTENT, true);
-        }
+        slidingMenu.setMenu(R.layout.frame_main_left);
+        slidingMenu.setSecondaryMenu(R.layout.frame_main_right);
+        slidingMenu.setShadowDrawable(R.drawable.slide_menu_shadow);
+        slidingMenu.setSecondaryShadowDrawable(R.drawable.slide_menu_shadow_right);
+        slidingMenu.setShadowWidthRes(R.dimen.slide_menu_shadow_width);
+        slidingMenu.setBehindWidthRes(R.dimen.slide_menu_width);
+        slidingMenu.setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);
+        slidingMenu.setFadeDegree(0.35f);
+        slidingMenu.attachToActivity(this, SlidingMenu.SLIDING_CONTENT, true);
 
         VpnServer vpnServer = null;
         final String id = vpnSetting.regionId();
