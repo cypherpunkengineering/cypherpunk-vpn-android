@@ -269,10 +269,20 @@ public class CypherpunkVPN {
         if (vpnSetting.isCypherplayEnabled()) {
             dns += 4;
         }
+        list.add("pull-filter ignore \"dhcp-option DOMAIN local\"");
         list.add("pull-filter ignore \"dhcp-option DNS 10.10.10.10\"");
+        list.add("pull-filter ignore \"dhcp-option DNS 10.10.11.10\"");
+        list.add("pull-filter ignore \"dhcp-option DNS 10.10.12.10\"");
         list.add("pull-filter ignore \"route 10.10.10.10 255.255.255.255\"");
+        list.add("pull-filter ignore \"route 10.10.11.10 255.255.255.255\"");
+        list.add("pull-filter ignore \"route 10.10.12.10 255.255.255.255\"");
+        list.add("dhcp-option DOMAIN local");
         list.add("dhcp-option DNS 10.10.10." + dns);
+        list.add("dhcp-option DNS 10.10.11." + dns);
+        list.add("dhcp-option DNS 10.10.12." + dns);
         list.add("route 10.10.10." + dns);
+        list.add("route 10.10.11." + dns);
+        list.add("route 10.10.12." + dns);
 
         // append username/password
         list.add("<auth-user-pass>");
