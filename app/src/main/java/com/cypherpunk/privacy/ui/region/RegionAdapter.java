@@ -171,6 +171,16 @@ public class RegionAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         }
     }
 
+    public List<VpnServer> getVpnServers() {
+        final List<VpnServer> result = new ArrayList<>();
+        for (Object obj : items) {
+            if (obj instanceof VpnServer) {
+                result.add((VpnServer) obj);
+            }
+        }
+        return result;
+    }
+
     private class CypherPlay {
         @NonNull
         final VpnServer vpnServer;

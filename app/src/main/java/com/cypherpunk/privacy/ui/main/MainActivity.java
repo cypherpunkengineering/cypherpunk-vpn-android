@@ -7,10 +7,8 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.TaskStackBuilder;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
-import android.widget.ImageView;
 
 import com.cypherpunk.privacy.CypherpunkApplication;
 import com.cypherpunk.privacy.R;
@@ -23,6 +21,8 @@ import com.cypherpunk.privacy.ui.settings.AskReconnectDialogFragment;
 import com.cypherpunk.privacy.ui.startup.IdentifyEmailActivity;
 import com.cypherpunk.privacy.ui.vpn.ConnectionFragment;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
+
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -48,8 +48,8 @@ public class MainActivity extends AppCompatActivity implements
     private ConnectionFragment connectionFragment;
     private RegionFragment regionFragment;
 
-    @BindView(R.id.marker)
-    ImageView markerView;
+    @BindView(R.id.map)
+    WorldMapView mapView;
 
     private SlidingMenu slidingMenu;
 
@@ -102,6 +102,7 @@ public class MainActivity extends AppCompatActivity implements
             vpnServer = vpnServerRepository.fastest();
         }
         if (vpnServer != null) {
+            mapView.setVpnServer(vpnServer);
             connectionFragment.setVpnServer(vpnServer);
         }
     }
@@ -133,6 +134,7 @@ public class MainActivity extends AppCompatActivity implements
 
         if (!connectionFragment.isVisible()) {
             hideRegions();
+            mapView.setOffsetMode(false);
             return;
         }
 
@@ -142,8 +144,14 @@ public class MainActivity extends AppCompatActivity implements
     @Override
     public void onVpnServerSelected(@NonNull VpnServer vpnServer) {
         hideRegions();
+        mapView.setVpnServer(vpnServer);
         connectionFragment.setVpnServer(vpnServer);
         connectionFragment.tryConnectIfNeeded();
+    }
+
+    @Override
+    public void onVpnServerListChanged(@NonNull List<VpnServer> vpnServerList) {
+        mapView.setVpnServers(vpnServerList);
     }
 
     @Override
@@ -155,7 +163,7 @@ public class MainActivity extends AppCompatActivity implements
                 .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
                 .commit();
 
-        markerView.setColorFilter(ContextCompat.getColor(this, R.color.marker_background));
+        mapView.setOffsetMode(true);
     }
 
     private void hideRegions() {
@@ -165,8 +173,6 @@ public class MainActivity extends AppCompatActivity implements
                 // TODO: use custom transition
                 .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
                 .commit();
-
-        markerView.setColorFilter(ContextCompat.getColor(this, R.color.marker_foreground));
     }
 
     // FIXME:

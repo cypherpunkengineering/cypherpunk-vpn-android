@@ -46,6 +46,8 @@ public class RegionFragment extends Fragment {
 
     public interface RegionFragmentListener {
         void onVpnServerSelected(@NonNull VpnServer vpnServer);
+
+        void onVpnServerListChanged(@NonNull List<VpnServer> vpnServerList);
     }
 
     @Nullable
@@ -154,6 +156,10 @@ public class RegionFragment extends Fragment {
                 getOtherList(Region.AF),
                 getOtherList(Region.ASIA),
                 getOtherList(Region.OCEANIA_PACIFIC));
+
+        if (listener != null) {
+            listener.onVpnServerListChanged(adapter.getVpnServers());
+        }
     }
 
     @NonNull
