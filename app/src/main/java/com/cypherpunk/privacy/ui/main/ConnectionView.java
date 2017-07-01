@@ -19,6 +19,9 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.View;
+import android.view.animation.LinearInterpolator;
+
+import com.cypherpunk.privacy.ui.common.FontCache;
 
 /**
  * custom view for connection button
@@ -64,20 +67,28 @@ public class ConnectionView extends View {
 
     private Animator connectingAnimator;
     private Animator disconnectingAnimator;
+    private Animator connectedAnimator;
 
     public void setConnecting() {
         connectionStatus = Status.CONNECTING;
-        if (connectingAnimator != null) {
-            connectingAnimator.cancel();
-        }
         if (disconnectingAnimator != null) {
             disconnectingAnimator.cancel();
+            disconnectingAnimator = null;
+        }
+        if (connectedAnimator != null) {
+            connectedAnimator.cancel();
+            connectedAnimator = null;
+        }
+        if (connectingAnimator != null) {
+            connectingAnimator.cancel();
+            connectingAnimator = null;
         }
 
-        setDot(0f);
+        dot = 0f;
+        pipeScale = 1f;
 
         final ObjectAnimator animator1 = ObjectAnimator.ofFloat(this, "fraction", 1f);
-        animator1.setDuration(1000);
+        animator1.setDuration(500);
 
         final ObjectAnimator animator2 = ObjectAnimator.ofFloat(this, "dot", 1f);
         animator2.setDuration(1000);
@@ -100,27 +111,64 @@ public class ConnectionView extends View {
         connectionStatus = Status.DISCONNECTING;
         if (connectingAnimator != null) {
             connectingAnimator.cancel();
+            connectingAnimator = null;
         }
         if (disconnectingAnimator != null) {
             disconnectingAnimator.cancel();
+            disconnectingAnimator = null;
         }
-        disconnectingAnimator = ObjectAnimator.ofFloat(this, "fraction", 0f);
-        disconnectingAnimator.setDuration(1000);
-        disconnectingAnimator.addListener(new AnimatorListenerAdapter() {
+        if (connectedAnimator != null) {
+            connectedAnimator.cancel();
+            connectedAnimator = null;
+        }
+
+        final ValueAnimator animator1 = ObjectAnimator.ofFloat(this, "pipeScale", 10f, 1f);
+        animator1.setInterpolator(new LinearInterpolator());
+        animator1.setDuration(200);
+
+        final ObjectAnimator animator2 = ObjectAnimator.ofFloat(this, "fraction", 0f);
+        animator2.setDuration(500);
+        animator2.addListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationEnd(Animator animation) {
                 disconnectingAnimator = null;
             }
         });
+
+        final AnimatorSet animatorSet = new AnimatorSet();
+        animatorSet.playSequentially(animator1, animator2);
+
+        disconnectingAnimator = animatorSet;
         disconnectingAnimator.start();
     }
 
     public void setConnected() {
         if (disconnectingAnimator != null) {
             disconnectingAnimator.cancel();
+            disconnectingAnimator = null;
         }
         if (connectingAnimator != null) {
             connectingAnimator.cancel();
+            connectingAnimator = null;
+        }
+        if (connectedAnimator == null) {
+            pipeScale = 1f;
+            textPosition = 0f;
+
+            final ValueAnimator animator1 = ObjectAnimator.ofFloat(this, "pipeScale", 1f, 10f);
+            animator1.setInterpolator(new LinearInterpolator());
+            animator1.setDuration(800);
+
+            final ObjectAnimator animator2 = ObjectAnimator.ofFloat(this, "textPosition", 0f, 1f);
+            animator2.setInterpolator(new LinearInterpolator());
+            animator2.setDuration(20000);
+            animator2.setRepeatCount(ValueAnimator.INFINITE);
+
+            final AnimatorSet animatorSet = new AnimatorSet();
+            animatorSet.playSequentially(animator1, animator2);
+
+            connectedAnimator = animatorSet;
+            connectedAnimator.start();
         }
         connectionStatus = Status.CONNECTED;
         setFraction(1);
@@ -130,8 +178,12 @@ public class ConnectionView extends View {
     public void setDisconnected() {
         if (connectingAnimator != null) {
             connectingAnimator.cancel();
+            connectingAnimator = null;
         }
-
+        if (connectedAnimator != null) {
+            connectedAnimator.cancel();
+            connectedAnimator = null;
+        }
         connectionStatus = Status.DISCONNECTED;
 
         if (disconnectingAnimator == null) {
@@ -199,6 +251,36 @@ public class ConnectionView extends View {
     }
 
     //
+    // pipeScale
+    //
+
+    private float pipeScale = 1f;
+
+    public float getPipeScale() {
+        return pipeScale;
+    }
+
+    public void setPipeScale(float pipeScale) {
+        this.pipeScale = pipeScale;
+        invalidate();
+    }
+
+    //
+    // textPosition
+    //
+
+    private float textPosition;
+
+    public float getTextPosition() {
+        return textPosition;
+    }
+
+    public void setTextPosition(float textPosition) {
+        this.textPosition = textPosition;
+        invalidate();
+    }
+
+    //
     // pipe
     //
 
@@ -224,7 +306,11 @@ public class ConnectionView extends View {
         paint.setStyle(Paint.Style.FILL);
 
         // left pipe
-        rectF.set(0f, centerY - pipeInfo.radius, frameRect.left, centerY + pipeInfo.radius);
+        final float pipeRadius = pipeInfo.radius * pipeScale;
+        final float pipeRight = pipeScale > 1
+                ? frameRect.left + frameInfo.strokeWidthMin
+                : frameRect.left;
+        rectF.set(0f, centerY - pipeRadius, pipeRight, centerY + pipeRadius);
         canvas.drawRect(rectF, paint);
 
         // right pipe
@@ -232,6 +318,30 @@ public class ConnectionView extends View {
         canvas.rotate(180, centerX, centerY);
         canvas.drawRect(rectF, paint);
         canvas.restoreToCount(count);
+
+        final float density = getContext().getResources().getDisplayMetrics().density;
+
+        if (connectionStatus == Status.CONNECTED && textPosition > 0) {
+            final String text = "x`8 0 # = v 7 mb\" | y 9 # 8 M } _ + kl $ #mn x -( }e f l]> ! 03 @jno x~`.xl ty }[sx k j";
+            final float textLength = paint.measureText(text);
+
+            paint.setShader(null);
+            paint.setStyle(Paint.Style.FILL);
+            paint.setTextSize(11 * density);
+            paint.setTypeface(FontCache.getDosisSemiBold(getContext()));
+
+            final int count2 = canvas.save();
+            canvas.translate(-textLength * textPosition, centerY - 2 * density);
+            paint.setColor(Color.rgb(127, 255, 251));
+            canvas.drawText(text + text, 0f, 0f, paint);
+            canvas.restoreToCount(count2);
+
+            final int count3 = canvas.save();
+            canvas.translate(-textLength + textLength * textPosition, centerY + 13 * density);
+            paint.setColor(Color.rgb(95, 191, 187));
+            canvas.drawText(text + text, 0f, 0f, paint);
+            canvas.restoreToCount(count3);
+        }
 
         // dot
         if (connectionStatus == Status.CONNECTING) {
@@ -381,7 +491,7 @@ public class ConnectionView extends View {
         final int count = canvas.save();
         canvas.translate(centerX, centerY);
 
-        paint.setColor(colorWith(fraction, Color.BLACK, Color.CYAN));
+        paint.setColor(colorWith(fraction, Color.BLACK, Color.rgb(0, 128, 128)));
         paint.setAlpha(128);
         paint.setStyle(Paint.Style.FILL);
 
