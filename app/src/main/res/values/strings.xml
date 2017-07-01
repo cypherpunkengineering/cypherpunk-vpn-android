@@ -193,9 +193,8 @@
     <string name="split_tunnel_search_hint">Search Apps</string>
 
     <!-- connect dialog -->
-    <string name="connect_dialog_message">Reconnect to apply new settings?</string>
-    <string name="connect_dialog_connect">Connect</string>
-    <string name="connect_dialog_later">Not now</string>
+    <string name="reconnect_1">reconnect</string>
+    <string name="reconnect_2">" to apply changes"</string>
 
 
     <!-- account setting -->

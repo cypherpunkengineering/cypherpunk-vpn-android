@@ -1,10 +1,12 @@
 package com.cypherpunk.privacy.ui.settings;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.preference.Preference;
@@ -22,13 +24,19 @@ import com.cypherpunk.privacy.datasource.vpn.InternetKillSwitch;
 import com.cypherpunk.privacy.datasource.vpn.RemotePort;
 import com.cypherpunk.privacy.datasource.vpn.TunnelMode;
 import com.cypherpunk.privacy.domain.model.VpnSetting;
-import com.cypherpunk.privacy.vpn.VpnStatusHolder;
 
 import javax.inject.Inject;
 
 import butterknife.ButterKnife;
 
 public class SettingsFragment extends PreferenceFragmentCompat {
+
+    public interface SettingsFragmentListener {
+        void askReconnectingIfNeeded();
+    }
+
+    @Nullable
+    private SettingsFragmentListener listener;
 
     private static final int REQUEST_CODE_INTERNET_KILL_SWITCH = 2;
     private static final int REQUEST_CODE_TUNNEL_MODE = 3;
@@ -39,10 +47,21 @@ public class SettingsFragment extends PreferenceFragmentCompat {
     private Preference tunnelMode;
 
     @Inject
-    VpnStatusHolder vpnStatusHolder;
-
-    @Inject
     VpnSetting vpnSetting;
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (context instanceof SettingsFragmentListener) {
+            listener = (SettingsFragmentListener) context;
+        }
+    }
+
+    @Override
+    public void onDetach() {
+        listener = null;
+        super.onDetach();
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -77,6 +96,26 @@ public class SettingsFragment extends PreferenceFragmentCompat {
                     @Override
                     public boolean onPreferenceClick(Preference preference) {
                         startActivity(NetworkActivity.createIntent(getContext()));
+                        return true;
+                    }
+                });
+
+        // Block Malware
+        findPreference(getString(R.string.setting_preference_key_block_malware))
+                .setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+                    @Override
+                    public boolean onPreferenceChange(Preference preference, Object newValue) {
+                        askReconnectingIfNeeded();
+                        return true;
+                    }
+                });
+
+        // Block Ads
+        findPreference(getString(R.string.setting_preference_key_block_ads))
+                .setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+                    @Override
+                    public boolean onPreferenceChange(Preference preference, Object newValue) {
+                        askReconnectingIfNeeded();
                         return true;
                     }
                 });
@@ -127,6 +166,12 @@ public class SettingsFragment extends PreferenceFragmentCompat {
                 });
     }
 
+    private void askReconnectingIfNeeded() {
+        if (listener != null) {
+            listener.askReconnectingIfNeeded();
+        }
+    }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -142,10 +187,7 @@ public class SettingsFragment extends PreferenceFragmentCompat {
                     remotePort.setSummary(getStringFor(vpnSetting.remotePort()));
                     break;
             }
-
-            if (vpnStatusHolder.isConnected()) {
-                AskReconnectDialogFragment.newInstance().show(getFragmentManager());
-            }
+            askReconnectingIfNeeded();
         }
     }
 

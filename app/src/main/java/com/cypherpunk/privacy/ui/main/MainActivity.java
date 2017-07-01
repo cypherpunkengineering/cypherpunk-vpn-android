@@ -9,6 +9,8 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.TaskStackBuilder;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.view.LayoutInflater;
+import android.view.View;
 
 import com.cypherpunk.privacy.CypherpunkApplication;
 import com.cypherpunk.privacy.R;
@@ -17,9 +19,10 @@ import com.cypherpunk.privacy.domain.model.AccountSetting;
 import com.cypherpunk.privacy.domain.model.VpnSetting;
 import com.cypherpunk.privacy.domain.repository.VpnServerRepository;
 import com.cypherpunk.privacy.ui.region.RegionFragment;
-import com.cypherpunk.privacy.ui.settings.AskReconnectDialogFragment;
+import com.cypherpunk.privacy.ui.settings.SettingsFragment;
 import com.cypherpunk.privacy.ui.startup.IdentifyEmailActivity;
 import com.cypherpunk.privacy.ui.vpn.ConnectionFragment;
+import com.cypherpunk.privacy.vpn.VpnStatusHolder;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 
 import java.util.List;
@@ -32,7 +35,7 @@ import butterknife.OnClick;
 import butterknife.Optional;
 
 public class MainActivity extends AppCompatActivity implements
-        AskReconnectDialogFragment.ConnectDialogListener,
+        SettingsFragment.SettingsFragmentListener,
         RegionFragment.RegionFragmentListener,
         ConnectionFragment.ConnectionFragmentListener {
 
@@ -45,6 +48,9 @@ public class MainActivity extends AppCompatActivity implements
     @Inject
     VpnServerRepository vpnServerRepository;
 
+    @Inject
+    VpnStatusHolder vpnStatusHolder;
+
     private ConnectionFragment connectionFragment;
     private RegionFragment regionFragment;
 
@@ -52,6 +58,7 @@ public class MainActivity extends AppCompatActivity implements
     WorldMapView mapView;
 
     private SlidingMenu slidingMenu;
+    private View reconnectPanel;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -82,7 +89,6 @@ public class MainActivity extends AppCompatActivity implements
 
         slidingMenu = new SlidingMenu(this);
         slidingMenu.setMode(SlidingMenu.LEFT_RIGHT);
-
         slidingMenu.setMenu(R.layout.frame_main_left);
         slidingMenu.setSecondaryMenu(R.layout.frame_main_right);
         slidingMenu.setShadowDrawable(R.drawable.slide_menu_shadow_left);
@@ -91,7 +97,18 @@ public class MainActivity extends AppCompatActivity implements
         slidingMenu.setBehindWidthRes(R.dimen.slide_menu_width);
         slidingMenu.setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);
         slidingMenu.setFadeDegree(0.35f);
-        slidingMenu.attachToActivity(this, SlidingMenu.SLIDING_CONTENT, true);
+        slidingMenu.attachToActivity(this, SlidingMenu.SLIDING_CONTENT, false);
+
+        reconnectPanel = LayoutInflater.from(this).inflate(R.layout.panel_reconnect, slidingMenu, false);
+        slidingMenu.addView(reconnectPanel);
+        reconnectPanel.setVisibility(View.GONE);
+        reconnectPanel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                v.setVisibility(View.GONE);
+                connectionFragment.tryConnectIfNeeded();
+            }
+        });
 
         VpnServer vpnServer = null;
         final String id = vpnSetting.regionId();
@@ -144,6 +161,7 @@ public class MainActivity extends AppCompatActivity implements
     @Override
     public void onVpnServerSelected(@NonNull VpnServer vpnServer) {
         hideRegions();
+        reconnectPanel.setVisibility(View.GONE);
         mapView.setVpnServer(vpnServer);
         connectionFragment.setVpnServer(vpnServer);
         connectionFragment.tryConnectIfNeeded();
@@ -175,9 +193,10 @@ public class MainActivity extends AppCompatActivity implements
                 .commit();
     }
 
-    // FIXME:
     @Override
-    public void onConnectDialogButtonClick() {
-        connectionFragment.tryConnectIfNeeded();
+    public void askReconnectingIfNeeded() {
+        if (vpnStatusHolder.isConnected()) {
+            reconnectPanel.setVisibility(View.VISIBLE);
+        }
     }
 }
