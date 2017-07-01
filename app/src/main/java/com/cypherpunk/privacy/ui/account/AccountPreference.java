@@ -75,14 +75,17 @@ public class AccountPreference extends Preference {
                 case NONE:
                     expirationViewView.setText("");
                     break;
-                case FOREVER:
-                    expirationViewView.setText(R.string.account_plan_forever);
-                    break;
                 case MONTHLY:
                     expirationViewView.setText(renewalExpirationText(ctx, R.string.account_plan_monthly, expiration));
                     break;
                 case ANNUALLY:
                     expirationViewView.setText(renewalExpirationText(ctx, R.string.account_plan_annually, expiration));
+                    break;
+                case FOREVER:
+                    expirationViewView.setText(R.string.account_plan_forever);
+                    break;
+                case LIFETIME:
+                    expirationViewView.setText(R.string.account_plan_lifetime);
                     break;
             }
         }

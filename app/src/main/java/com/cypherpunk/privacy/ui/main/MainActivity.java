@@ -85,7 +85,7 @@ public class MainActivity extends AppCompatActivity implements
 
         slidingMenu.setMenu(R.layout.frame_main_left);
         slidingMenu.setSecondaryMenu(R.layout.frame_main_right);
-        slidingMenu.setShadowDrawable(R.drawable.slide_menu_shadow);
+        slidingMenu.setShadowDrawable(R.drawable.slide_menu_shadow_left);
         slidingMenu.setSecondaryShadowDrawable(R.drawable.slide_menu_shadow_right);
         slidingMenu.setShadowWidthRes(R.dimen.slide_menu_shadow_width);
         slidingMenu.setBehindWidthRes(R.dimen.slide_menu_width);

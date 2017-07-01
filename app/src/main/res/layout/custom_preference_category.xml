@@ -2,6 +2,7 @@
 <com.cypherpunk.privacy.ui.common.TypefaceTextView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+android:id/title"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -10,7 +11,8 @@
     android:paddingLeft="?android:listPreferredItemPaddingLeft"
     android:paddingRight="?android:listPreferredItemPaddingRight"
     android:paddingStart="?android:listPreferredItemPaddingStart"
-    android:paddingTop="16dip"
+    android:paddingTop="16dp"
     android:textAppearance="@style/TextAppearance.AppCompat.Body2"
     android:textColor="?colorAccent"
-    app:fontName="DosisMedium"/>
+    app:fontName="DosisMedium"
+    tools:text="category"/>

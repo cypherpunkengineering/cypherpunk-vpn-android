@@ -10,6 +10,6 @@
     <dimen name="national_flag_height">24dp</dimen>
 
     <dimen name="bottom_sheet_margin_top">55dp</dimen>
-    <dimen name="slide_menu_shadow_width">16dp</dimen>
+    <dimen name="slide_menu_shadow_width">80dp</dimen>
     <dimen name="slide_menu_width">300dp</dimen>
 </resources>

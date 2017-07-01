@@ -89,13 +89,7 @@ public class AccountSettingsFragment extends PreferenceFragmentCompat {
 
         getStatus();
 
-        final Subscription.Renewal renewal = subscription.renewal();
-
-        final boolean upgradeVisible = renewal != Subscription.Renewal.ANNUALLY
-                && renewal != Subscription.Renewal.FOREVER
-                && renewal != Subscription.Renewal.LIFETIME;
         final Preference upgrade = findPreference(getString(R.string.account_preference_upgrade));
-        upgrade.setVisible(upgradeVisible);
         upgrade.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
@@ -106,6 +100,7 @@ public class AccountSettingsFragment extends PreferenceFragmentCompat {
 
         // email
         final Preference email = findPreference(getString(R.string.account_preference_edit_email));
+        email.setVisible(false);
         email.setSummary(accountSetting.email());
         email.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
@@ -115,14 +110,16 @@ public class AccountSettingsFragment extends PreferenceFragmentCompat {
             }
         });
 
-        findPreference(getString(R.string.account_preference_edit_password))
-                .setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-                    @Override
-                    public boolean onPreferenceClick(Preference preference) {
-                        startActivity(EditPasswordActivity.createIntent(getContext()));
-                        return true;
-                    }
-                });
+        // password
+        final Preference password = findPreference(getString(R.string.account_preference_edit_password));
+        password.setVisible(false);
+        password.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                startActivity(EditPasswordActivity.createIntent(getContext()));
+                return true;
+            }
+        });
 
         findPreference(getString(R.string.account_preference_share))
                 .setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {

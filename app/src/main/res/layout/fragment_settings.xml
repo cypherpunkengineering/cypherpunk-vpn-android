@@ -10,8 +10,8 @@
     <com.cypherpunk.privacy.ui.common.TypefaceTextView
         android:id="@+id/header"
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:background="@color/drawer_title_bar"
+        android:layout_height="78dp"
+        android:background="@drawable/drawer_title_bar"
         android:gravity="center"
         android:maxLines="1"
         android:paddingEnd="?android:listPreferredItemPaddingEnd"
@@ -21,6 +21,11 @@
         android:textAppearance="@style/TextAppearance.AppCompat.Title"
         app:fontName="DosisSemiBold"
         tools:text="@string/setting_header_configuration"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="#255"/>
 
     <FrameLayout
         android:id="@+id/list_container"

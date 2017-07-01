@@ -5,7 +5,7 @@
     android:id="@+id/right_drawer"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/drawer_background">
+    android:background="@drawable/drawer_background">
 
     <fragment
         android:id="@+id/fragment_settings"

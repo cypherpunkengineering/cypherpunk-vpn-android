@@ -31,12 +31,9 @@
     <color name="marker_foreground">#88ffff</color>
     <color name="marker_background">#448888</color>
 
-    <color name="preference_item_background">#29ffffff</color>
     // 255,255,255,0.16
-    <color name="preference_item_background_pressed">#1a757575</color>
-
-    <color name="drawer_title_bar">#091518</color>
-    <color name="drawer_background">#133</color>
+    <color name="preference_item_background">#1affffff</color>
+    <color name="preference_item_background_pressed">#29757575</color>
 
     <color name="dark_black">#0b1518</color>
     <color name="dark_gray">#302f2f</color>
