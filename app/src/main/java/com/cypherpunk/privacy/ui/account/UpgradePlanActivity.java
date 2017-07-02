@@ -9,22 +9,24 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
-import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.cypherpunk.privacy.BuildConfig;
 import com.cypherpunk.privacy.CypherpunkApplication;
 import com.cypherpunk.privacy.R;
 import com.cypherpunk.privacy.billing.IabHelper;
 import com.cypherpunk.privacy.billing.IabResult;
 import com.cypherpunk.privacy.billing.Inventory;
 import com.cypherpunk.privacy.billing.Purchase;
-import com.cypherpunk.privacy.domain.model.AccountSetting;
+import com.cypherpunk.privacy.billing.SkuDetails;
 import com.cypherpunk.privacy.datasource.account.Subscription;
+import com.cypherpunk.privacy.domain.model.AccountSetting;
 import com.cypherpunk.privacy.domain.repository.NetworkRepository;
 import com.cypherpunk.privacy.domain.repository.retrofit.result.StatusResult;
 import com.cypherpunk.privacy.ui.common.FullScreenProgressDialog;
 
-import java.util.Collections;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -40,8 +42,14 @@ import io.reactivex.schedulers.Schedulers;
 
 public class UpgradePlanActivity extends AppCompatActivity {
 
+    private static final String PUBLIC_KEY = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAjG76qnaQN3mpl2g5CqND9KIm5oKkKt9vb7bW2i8+Si/8FI2yQKTaKnkGtOxRRNhy0y50S2oNFyuasxWFLHtDCHpodVI9rvJ5zAc+z79Qxrgke1SMzDU1z+oSf3/HWa2yVcAVyBolbvLtras7TXCsKIIWaXbMwccN3L2tW0kZkNkGryqlJJ0Nw/zGCmOY6t5hDZ5Ogh4avlND14naO4P4OqtE0eJh5BJ8WQFUe5mHvp8QLOsN0E6hUr2kf7pLMi9MZ3CR9fFvIk9phiPiB8vDD35c4b22SD5EcWgJCIiIVI6IPhg3cJo4H8ZnKd0O6xmEvAal7YRScGQRMcp6aZLu3wIDAQAB";
+    private static final String SKU_MONTHLY = "monthly1295";
+    private static final String SKU_ANNUALLY = "annually9995";
+    private static final int RC_REQUEST = 10001;
+
     private FullScreenProgressDialog dialog;
     private Disposable disposable = Disposables.empty();
+    private IabHelper helper;
 
     @Inject
     NetworkRepository networkRepository;
@@ -49,11 +57,14 @@ public class UpgradePlanActivity extends AppCompatActivity {
     @Inject
     AccountSetting accountSetting;
 
-    @BindView(R.id.monthly_plan)
-    PlanView monthlyPlan;
+    @BindView(R.id.button_annually)
+    TextView annuallyButton;
 
-    @BindView(R.id.annually_plan)
-    PlanView annuallyPlan;
+    @BindView(R.id.button_monthly)
+    TextView monthlyButton;
+
+    @BindView(R.id.save)
+    TextView saveView;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -76,86 +87,33 @@ public class UpgradePlanActivity extends AppCompatActivity {
             actionBar.setHomeAsUpIndicator(R.drawable.ic_close_vector);
         }
 
-        monthlyPlan.setPlan("1 MONTH", "$12.95", false);
-        annuallyPlan.setPlan("12 MONTHS", "$ 8.32", true);
+//        annuallyButton.setVisibility(View.GONE);
+//        monthlyButton.setVisibility(View.GONE);
+//        saveView.setVisibility(View.GONE);
 
-        final Subscription subscription = accountSetting.subscription();
-        switch (subscription.renewal()) {
-            case NONE:
-                break;
-            case MONTHLY:
-                monthlyPlan.setCurrentPlan();
-                break;
-            case ANNUALLY:
-                monthlyPlan.setVisibility(View.GONE);
-                annuallyPlan.setCurrentPlan();
-                break;
-        }
-
-        setupBilling();
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == android.R.id.home) {
-            finish();
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    protected void onDestroy() {
-        if (dialog != null) {
-            dialog.dismiss();
-            dialog = null;
-        }
-        disposable.dispose();
-        super.onDestroy();
-    }
-
-    @OnClick(R.id.monthly_plan)
-    void onMonthlyPlanClicked() {
-        purchase(SKU_MONTHLY);
-    }
-
-    @OnClick(R.id.annually_plan)
-    void onAnnuallyPlanClicked() {
-        purchase(SKU_ANNUALLY);
-    }
-
-    private void purchase(@NonNull String sku) {
-        try {
-            helper.launchPurchaseFlow(this, sku, IabHelper.ITEM_TYPE_SUBS, getOldSkus(),
-                    RC_REQUEST, purchaseFinishedListener, accountSetting.accountId());
-        } catch (IabHelper.IabAsyncInProgressException e) {
-            e.printStackTrace();
-        }
-    }
-
-    private static final String PUBLIC_KEY = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAjG76qnaQN3mpl2g5CqND9KIm5oKkKt9vb7bW2i8+Si/8FI2yQKTaKnkGtOxRRNhy0y50S2oNFyuasxWFLHtDCHpodVI9rvJ5zAc+z79Qxrgke1SMzDU1z+oSf3/HWa2yVcAVyBolbvLtras7TXCsKIIWaXbMwccN3L2tW0kZkNkGryqlJJ0Nw/zGCmOY6t5hDZ5Ogh4avlND14naO4P4OqtE0eJh5BJ8WQFUe5mHvp8QLOsN0E6hUr2kf7pLMi9MZ3CR9fFvIk9phiPiB8vDD35c4b22SD5EcWgJCIiIVI6IPhg3cJo4H8ZnKd0O6xmEvAal7YRScGQRMcp6aZLu3wIDAQAB";
-    static final String SKU_MONTHLY = "monthly1295";
-    static final String SKU_ANNUALLY = "annually9995";
-    static final int RC_REQUEST = 10001;
-
-    private IabHelper helper;
-
-    private void setupBilling() {
         helper = new IabHelper(this, PUBLIC_KEY);
-        helper.enableDebugLogging(true);
+        helper.enableDebugLogging(BuildConfig.DEBUG);
         helper.startSetup(new IabHelper.OnIabSetupFinishedListener() {
             @Override
             public void onIabSetupFinished(IabResult result) {
-                if (!result.isSuccess()) {
+                if (result.isFailure()) {
+                    if (result.getResponse() == IabHelper.BILLING_RESPONSE_RESULT_BILLING_UNAVAILABLE) {
+                        helper = null;
+                    }
+                    finish();
                     Toast.makeText(UpgradePlanActivity.this, "Problem setting up in-app billing: " + result, Toast.LENGTH_SHORT).show();
                     return;
                 }
 
-                // Have we been disposed of in the meantime? If so, quit.
-                if (helper == null) return;
+                if (helper == null) {
+                    finish();
+                    return;
+                }
 
                 try {
-                    helper.queryInventoryAsync(gotInventoryFinishedListener);
+                    List<String> subscriptionSkus = new ArrayList<>();
+                    subscriptionSkus.add(SKU_MONTHLY);
+                    helper.queryInventoryAsync(true, null, subscriptionSkus, gotInventoryFinishedListener);
                 } catch (IabHelper.IabAsyncInProgressException e) {
                     e.printStackTrace();
                 }
@@ -163,22 +121,92 @@ public class UpgradePlanActivity extends AppCompatActivity {
         });
     }
 
-    IabHelper.QueryInventoryFinishedListener gotInventoryFinishedListener = new IabHelper.QueryInventoryFinishedListener() {
+    private final IabHelper.QueryInventoryFinishedListener gotInventoryFinishedListener = new IabHelper.QueryInventoryFinishedListener() {
 
         @Override
         public void onQueryInventoryFinished(IabResult result, Inventory inv) {
+            if (result.isFailure()) {
+                finish();
+                Toast.makeText(UpgradePlanActivity.this, "Problem setting up in-app billing: " + result, Toast.LENGTH_SHORT).show();
+                return;
+            }
+            if (helper == null) {
+                finish();
+                return;
+            }
 
-        }
-    };
+            final SkuDetails skuDetailsAnnually = inv.getSkuDetails(SKU_ANNUALLY);
+            final SkuDetails skuDetailsMonthly = inv.getSkuDetails(SKU_MONTHLY);
 
-    IabHelper.OnIabPurchaseFinishedListener purchaseFinishedListener = new IabHelper.OnIabPurchaseFinishedListener() {
-        @Override
-        public void onIabPurchaseFinished(IabResult result, Purchase info) {
-            if (result.isSuccess()) {
-                upgradeAccount(info.getDeveloperPayload(), info.getSku(), info.getOriginalJson());
+            if (skuDetailsAnnually == null || skuDetailsMonthly == null) {
+                return;
+            }
+
+//            annuallyButton.setVisibility(View.VISIBLE);
+//            monthlyButton.setVisibility(View.VISIBLE);
+//            saveView.setVisibility(View.VISIBLE);
+
+            final long annuallyPrice = skuDetailsAnnually.getPriceAmountMicros();
+            final long monthlyPrice = skuDetailsMonthly.getPriceAmountMicros();
+
+            annuallyButton.setText(skuDetailsAnnually.getPrice() +
+                    skuDetailsAnnually.getPriceCurrencyCode() +
+                    "/MO\nBilled Annually");
+
+            monthlyButton.setText(skuDetailsMonthly.getPrice() +
+                    skuDetailsMonthly.getPriceCurrencyCode() +
+                    "/MO\nBilled Monthly");
+
+            final int percent = (int) (100 * (monthlyPrice - annuallyPrice) / monthlyPrice);
+            saveView.setText("SAVE " + percent + "%");
+
+            final Subscription subscription = accountSetting.subscription();
+            switch (subscription.renewal()) {
+                case NONE:
+                    break;
+                case MONTHLY:
+                    monthlyButton.setEnabled(false);
+                    break;
+                case ANNUALLY:
+                    monthlyButton.setEnabled(false);
+                    annuallyButton.setEnabled(false);
+                    break;
             }
         }
     };
+
+    @OnClick(R.id.button_annually)
+    void annuallyButtonClicked() {
+        purchase(SKU_ANNUALLY);
+    }
+
+    @OnClick(R.id.button_monthly)
+    void monthlyButtonClicked() {
+        purchase(SKU_MONTHLY);
+    }
+
+    private void purchase(@NonNull String sku) {
+        final Subscription subscription = accountSetting.subscription();
+        List<String> oldSkus = null;
+        switch (subscription.renewal()) {
+            case MONTHLY:
+                oldSkus = new ArrayList<>();
+                oldSkus.add(SKU_MONTHLY);
+                break;
+            case ANNUALLY:
+                oldSkus = new ArrayList<>();
+                oldSkus.add(SKU_ANNUALLY);
+                break;
+        }
+
+        final String payload = "";
+        try {
+            helper.launchPurchaseFlow(this, sku, IabHelper.ITEM_TYPE_SUBS, oldSkus, RC_REQUEST,
+                    purchaseFinishedListener, payload);
+        } catch (IabHelper.IabAsyncInProgressException e) {
+            e.printStackTrace();
+        }
+    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -186,6 +214,17 @@ public class UpgradePlanActivity extends AppCompatActivity {
             super.onActivityResult(requestCode, resultCode, data);
         }
     }
+
+    private final IabHelper.OnIabPurchaseFinishedListener purchaseFinishedListener = new IabHelper.OnIabPurchaseFinishedListener() {
+        @Override
+        public void onIabPurchaseFinished(IabResult result, Purchase info) {
+            if (result.isSuccess()) {
+                upgradeAccount(info.getDeveloperPayload(), info.getSku(), info.getOriginalJson());
+            } else {
+                Toast.makeText(UpgradePlanActivity.this, "cannot purchased", Toast.LENGTH_SHORT).show();
+            }
+        }
+    };
 
     /**
      * @param accountId    developerPayload
@@ -208,9 +247,9 @@ public class UpgradePlanActivity extends AppCompatActivity {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeWith(new DisposableSingleObserver<StatusResult>() {
                     @Override
-                    public void onSuccess(StatusResult accountStatus) {
-                        accountSetting.updateAccount(accountStatus.account);
-                        accountSetting.updateSubscription(accountStatus.subscription);
+                    public void onSuccess(StatusResult result) {
+                        accountSetting.updateAccount(result.account);
+                        accountSetting.updateSubscription(result.subscription);
 
                         if (dialog != null) {
                             dialog.dismiss();
@@ -232,16 +271,27 @@ public class UpgradePlanActivity extends AppCompatActivity {
                 });
     }
 
-    @Nullable
-    public List<String> getOldSkus() {
-        final Subscription subscription = accountSetting.subscription();
-        switch (subscription.renewal()) {
-            case MONTHLY:
-                return Collections.singletonList(SKU_MONTHLY);
-            case ANNUALLY:
-                return Collections.singletonList(SKU_ANNUALLY);
-            default:
-                return null;
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            finish();
+            return true;
         }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onDestroy() {
+        disposable.dispose();
+        if (dialog != null) {
+            dialog.dismiss();
+            dialog = null;
+        }
+        if (helper != null) {
+            helper.disposeWhenFinished();
+            helper = null;
+        }
+        super.onDestroy();
     }
 }

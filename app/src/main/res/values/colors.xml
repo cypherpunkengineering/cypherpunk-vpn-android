@@ -69,6 +69,7 @@
     <color name="cyan_blue60">#99c8ffff</color>
 
     <color name="gray">#eeeeee</color>
+    <color name="gray80">#cccccc</color>
 
     <!-- https://github.com/cypherpunkengineering/cypherpunk-vpn-desktop/blob/master/client/src/web/assets/css/theme.less -->
     <color name="dark_background">#0f2125</color> <!-- multiply(@dark_blue_grey, #aaa) -->
