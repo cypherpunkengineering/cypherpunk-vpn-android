@@ -40,31 +40,14 @@
                 <action android:name="android.intent.action.MY_PACKAGE_REPLACED"/>
             </intent-filter>
         </receiver>
+
+        <!-- TODO: replace JobScheduler -->
         <receiver android:name=".ui.vpn.CypherpunkWifiReceiver">
             <intent-filter>
                 <action android:name="android.net.wifi.supplicant.CONNECTION_CHANGE"/>
                 <action android:name="android.net.wifi.STATE_CHANGE"/>
             </intent-filter>
         </receiver>
-
-        <activity
-            android:name=".ui.main.MainActivity"
-            android:theme="@style/CypherPunk.NoActionBar">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-                <category android:name="android.intent.category.LAUNCHER"/>
-            </intent-filter>
-        </activity>
-
-        <activity
-            android:name=".ui.vpn.VpnStartActivity"
-            android:autoRemoveFromRecents="true"
-            android:excludeFromRecents="true"
-            android:taskAffinity=".ui.main.CypherpunkLaunchVPN"
-            android:theme="@android:style/Theme.Dialog"
-            tools:ignore="UnusedAttribute"/>
-
-        <service android:name=".ui.vpn.VpnConnectionIntentService"/>
 
         <service
             android:name="de.blinkt.openvpn.core.OpenVPNService"
@@ -73,6 +56,7 @@
                 <action android:name="android.net.VpnService"/>
             </intent-filter>
         </service>
+
         <service
             android:name=".ui.vpn.CypherpunkTileService"
             android:icon="@drawable/ic_quick"
@@ -86,6 +70,25 @@
                 android:name="android.service.quicksettings.ACTIVE_TILE"
                 android:value="false"/>
         </service>
+
+        <service android:name=".ui.vpn.VpnConnectionIntentService"/>
+
+        <activity
+            android:name=".ui.vpn.VpnStartActivity"
+            android:autoRemoveFromRecents="true"
+            android:excludeFromRecents="true"
+            android:taskAffinity=".ui.main.CypherpunkLaunchVPN"
+            android:theme="@android:style/Theme.Dialog"
+            tools:ignore="UnusedAttribute"/>
+
+        <activity
+            android:name=".ui.main.MainActivity"
+            android:theme="@style/CypherPunk.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity>
 
         <activity
             android:name=".ui.startup.LoginActivity"
