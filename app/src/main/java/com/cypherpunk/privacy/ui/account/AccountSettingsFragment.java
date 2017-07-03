@@ -2,7 +2,6 @@ package com.cypherpunk.privacy.ui.account;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -71,8 +70,7 @@ public class AccountSettingsFragment extends PreferenceFragmentCompat {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        setDivider(new ColorDrawable(ContextCompat.getColor(getContext(), R.color.divider)));
-        setDividerHeight(getContext().getResources().getDimensionPixelSize(R.dimen.divider));
+        setDivider(ContextCompat.getDrawable(getContext(), R.drawable.divider));
     }
 
     @Override

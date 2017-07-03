@@ -12,14 +12,14 @@ import android.support.annotation.IntRange;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
-public class RotateGradientDrawable extends Drawable {
+class RotateGradientDrawable extends Drawable {
 
     private final Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
     private final double sin;
     private final double cos;
     private final int color;
 
-    public RotateGradientDrawable() {
+    RotateGradientDrawable() {
         final double theta = Math.PI * 7 / 180;
         sin = Math.sin(theta);
         cos = Math.cos(theta);

@@ -23,8 +23,7 @@ public class VpnModule {
 
     @Provides
     @Singleton
-    public VpnManager provideCypherpunkVPN(VpnSetting vpnSetting, AccountSetting accountSetting,
-                                           VpnServerRepository vpnServerRepository) {
+    public VpnManager provideCypherpunkVPN(VpnSetting vpnSetting, AccountSetting accountSetting) {
         return new VpnManager(vpnSetting, accountSetting);
     }
 }

@@ -144,7 +144,7 @@ public class SplitTunnelActivity extends AppCompatActivity {
 
         final TextView textView = (TextView) searchView.findViewById(android.support.v7.appcompat.R.id.search_src_text);
         textView.setTypeface(FontCache.getDosisMedium(this));
-        textView.setHintTextColor(ContextCompat.getColor(this, R.color.search_view_hint_text));
+        textView.setHintTextColor(ContextCompat.getColor(this, R.color.white50));
 
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
@@ -295,8 +295,8 @@ public class SplitTunnelActivity extends AppCompatActivity {
 
     private static class AppAdapter extends RecyclerView.Adapter<ItemViewHolder> {
 
-        private List<AppInfo> originals;
-        private List<AppInfo> items;
+        private final List<AppInfo> originals;
+        private final List<AppInfo> items;
 
         AppAdapter(@NonNull List<AppInfo> data) {
             originals = new ArrayList<>(data);

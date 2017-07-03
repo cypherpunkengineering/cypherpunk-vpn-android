@@ -197,13 +197,13 @@ public class VpnManager {
 //        if (cypherpunkSetting.vpnPortLocal != null && cypherpunkSetting.vpnPortLocal.length() > 0) {
 //            localPort = Integer.parseInt(cypherpunkSetting.vpnPortLocal);
 //        }
-        if (localPort > 0 && localPort < 65535) {
-            list.add("lport " + localPort);
-            list.add("bind");
-        } else {
+//        if (localPort > 0 && localPort < 65535) {
+//            list.add("lport " + localPort);
+//            list.add("bind");
+//        } else {
             // need "nobind" to bind to a random port
             list.add("nobind");
-        }
+//        }
 
         // privacy firewall killswitch
         final InternetKillSwitch internetKillSwitch = vpnSetting.internetKillSwitch();

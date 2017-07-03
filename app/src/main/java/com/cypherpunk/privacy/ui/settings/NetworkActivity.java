@@ -22,8 +22,8 @@ import android.widget.TextView;
 
 import com.cypherpunk.privacy.CypherpunkApplication;
 import com.cypherpunk.privacy.R;
-import com.cypherpunk.privacy.domain.model.VpnSetting;
 import com.cypherpunk.privacy.datasource.vpn.Network;
+import com.cypherpunk.privacy.domain.model.VpnSetting;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -131,7 +131,7 @@ public class NetworkActivity extends AppCompatActivity {
         private List<Network> items = new ArrayList<>();
         private final View headerView;
 
-        protected void onNetworkCheckedChanged(@NonNull Network network, boolean isChecked) {
+        void onNetworkCheckedChanged(@NonNull Network network, boolean isChecked) {
         }
 
         NetworkAdapter(List<Network> items, @Nullable View headerView) {

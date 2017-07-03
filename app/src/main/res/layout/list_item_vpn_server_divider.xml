@@ -16,7 +16,7 @@
         android:paddingRight="16dp"
         android:paddingTop="10dp"
         android:textAllCaps="true"
-        android:textColor="@color/cyan_blue60"
+        android:textColor="@color/cyan3_60"
         android:textSize="14sp"
         app:fontName="DosisSemiBold"
         tools:text="Development"/>
@@ -25,6 +25,6 @@
         android:layout_width="match_parent"
         android:layout_height="2dp"
         android:layout_gravity="bottom"
-        android:background="#1250ffff"/>
+        android:background="@color/cyan2_07"/>
 
 </LinearLayout>

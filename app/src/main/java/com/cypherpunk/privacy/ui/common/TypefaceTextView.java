@@ -7,18 +7,17 @@ import android.support.v7.widget.AppCompatTextView;
 import android.util.AttributeSet;
 
 import com.cypherpunk.privacy.R;
-import com.cypherpunk.privacy.ui.common.FontCache;
 
 /**
  * Dosis font TextView
  */
 public class TypefaceTextView extends AppCompatTextView {
 
-    public static final int DOSIS_REGULAR = 0;
-    public static final int DOSIS_MEDIUM = 1;
-    public static final int DOSIS_SEMI_BOLD = 2;
-    public static final int DOSIS_BOLD = 3;
-    public static final int INCONSOLATE_REGULAR = 4;
+    private static final int DOSIS_REGULAR = 0;
+    private static final int DOSIS_MEDIUM = 1;
+    private static final int DOSIS_SEMI_BOLD = 2;
+    private static final int DOSIS_BOLD = 3;
+    private static final int INCONSOLATE_REGULAR = 4;
 
     public TypefaceTextView(Context context) {
         this(context, null);

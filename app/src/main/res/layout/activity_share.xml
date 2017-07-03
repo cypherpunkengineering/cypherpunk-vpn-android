@@ -33,11 +33,15 @@
 
     <com.cypherpunk.privacy.ui.common.TypefaceButton
         android:id="@+id/share_button"
-        style="@style/Widget.Cypherpunk.FrameButton"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_marginBottom="16dp"
-        android:text="@string/share"/>
+        android:background="@drawable/button_frame"
+        android:minHeight="40dp"
+        android:text="@string/share"
+        android:textAllCaps="false"
+        android:textAppearance="@style/TextAppearance.AppCompat.Widget.Button"
+        android:textSize="18sp"/>
 
 </LinearLayout>

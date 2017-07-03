@@ -4,10 +4,10 @@
         <layer-list>
             <item>
                 <shape>
-                    <solid android:color="#225f66"/>
+                    <solid android:color="@color/green2"/>
                     <corners
-                        android:bottomRightRadius="32dp"
-                        android:topRightRadius="32dp"/>
+                        android:bottomLeftRadius="32dp"
+                        android:topLeftRadius="32dp"/>
                     <size
                         android:width="64dp"
                         android:height="64dp"/>
@@ -15,12 +15,12 @@
             </item>
             <item
                 android:bottom="2dp"
-                android:right="1dp">
+                android:left="1dp">
                 <shape>
-                    <solid android:color="#18373d"/>
+                    <solid android:color="@color/black3_50"/>
                     <corners
-                        android:bottomRightRadius="32dp"
-                        android:topRightRadius="32dp"/>
+                        android:bottomLeftRadius="32dp"
+                        android:topLeftRadius="32dp"/>
                     <size
                         android:width="64dp"
                         android:height="64dp"/>
@@ -32,10 +32,10 @@
         <layer-list>
             <item>
                 <shape>
-                    <solid android:color="#19474c"/>
+                    <solid android:color="@color/green2"/>
                     <corners
-                        android:bottomRightRadius="32dp"
-                        android:topRightRadius="32dp"/>
+                        android:bottomLeftRadius="32dp"
+                        android:topLeftRadius="32dp"/>
                     <size
                         android:width="64dp"
                         android:height="64dp"/>
@@ -43,12 +43,12 @@
             </item>
             <item
                 android:bottom="2dp"
-                android:right="1dp">
+                android:left="1dp">
                 <shape>
-                    <solid android:color="#0c1b1e"/>
+                    <solid android:color="@color/black3"/>
                     <corners
-                        android:bottomRightRadius="32dp"
-                        android:topRightRadius="32dp"/>
+                        android:bottomLeftRadius="32dp"
+                        android:topLeftRadius="32dp"/>
                     <size
                         android:width="64dp"
                         android:height="64dp"/>

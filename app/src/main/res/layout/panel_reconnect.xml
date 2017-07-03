@@ -16,7 +16,7 @@
         android:layout_marginLeft="2dp"
         android:layout_marginRight="2dp"
         android:src="@drawable/ic_refresh_vector"
-        android:tint="#0f1f1e"
+        android:tint="@color/black2"
         tools:ignore="ContentDescription"/>
 
     <com.cypherpunk.privacy.ui.common.TypefaceTextView
@@ -24,7 +24,7 @@
         android:layout_height="wrap_content"
         android:text="@string/reconnect_1"
         android:textAllCaps="true"
-        android:textColor="#0f1f1e"
+        android:textColor="@color/black2"
         android:textSize="16sp"
         android:textStyle="bold"
         app:fontName="DosisBold"/>
@@ -33,7 +33,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/reconnect_2"
-        android:textColor="#0f1f1e"
+        android:textColor="@color/black2"
         android:textSize="16sp"
         app:fontName="DosisMedium"/>
 

@@ -47,7 +47,7 @@ public class PageIndicator extends RadioGroup implements ViewPager.OnPageChangeL
         viewPager.addOnPageChangeListener(this);
     }
 
-    public void setPagePosition(int position) {
+    private void setPagePosition(int position) {
         final int childCount = getChildCount();
         for (int i = 0; i < childCount; i++) {
             getChildAt(i).setSelected(i == position);

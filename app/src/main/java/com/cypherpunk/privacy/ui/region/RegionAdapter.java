@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 // TODO: use DiffUtil
-public class RegionAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+class RegionAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private static final int ITEM_VIEW_TYPE_ITEM = 1;
     private static final int ITEM_VIEW_TYPE_DIVIDER = 2;
@@ -136,16 +136,16 @@ public class RegionAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         return ITEM_VIEW_TYPE_DIVIDER;
     }
 
-    public void addRegionList(@Nullable VpnServer fastestVpnServer,
-                              @NonNull List<VpnServer> devItems,
-                              @NonNull List<VpnServer> naItems,
-                              @NonNull List<VpnServer> saItems,
-                              @NonNull List<VpnServer> crItems,
-                              @NonNull List<VpnServer> euItems,
-                              @NonNull List<VpnServer> meItems,
-                              @NonNull List<VpnServer> afItems,
-                              @NonNull List<VpnServer> asItems,
-                              @NonNull List<VpnServer> opItems) {
+    void addRegionList(@Nullable VpnServer fastestVpnServer,
+                       @NonNull List<VpnServer> devItems,
+                       @NonNull List<VpnServer> naItems,
+                       @NonNull List<VpnServer> saItems,
+                       @NonNull List<VpnServer> crItems,
+                       @NonNull List<VpnServer> euItems,
+                       @NonNull List<VpnServer> meItems,
+                       @NonNull List<VpnServer> afItems,
+                       @NonNull List<VpnServer> asItems,
+                       @NonNull List<VpnServer> opItems) {
 
         items.clear();
         if (fastestVpnServer != null) {
@@ -171,7 +171,7 @@ public class RegionAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         }
     }
 
-    public List<VpnServer> getVpnServers() {
+    List<VpnServer> getVpnServers() {
         final List<VpnServer> result = new ArrayList<>();
         for (Object obj : items) {
             if (obj instanceof VpnServer) {
@@ -201,7 +201,7 @@ public class RegionAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
     private class Divider {
         @StringRes
-        private int nameResId;
+        private final int nameResId;
 
         private Divider(@StringRes int resId) {
             this.nameResId = resId;

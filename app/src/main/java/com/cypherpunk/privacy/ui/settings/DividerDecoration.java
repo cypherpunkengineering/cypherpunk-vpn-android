@@ -13,17 +13,17 @@ import android.view.View;
 
 import com.cypherpunk.privacy.R;
 
-public class DividerDecoration extends RecyclerView.ItemDecoration {
+class DividerDecoration extends RecyclerView.ItemDecoration {
 
     private final Paint paint;
     private final int dividerHeight;
     private final int startPosition;
 
-    public DividerDecoration(Context context) {
+    DividerDecoration(Context context) {
         this(context, 1);
     }
 
-    public DividerDecoration(@NonNull Context context, @IntRange(from = 1) int startPosition) {
+    DividerDecoration(@NonNull Context context, @IntRange(from = 1) int startPosition) {
         paint = new Paint(Paint.ANTI_ALIAS_FLAG);
         paint.setColor(ContextCompat.getColor(context, R.color.divider));
         dividerHeight = (int) (1 * context.getResources().getDisplayMetrics().density);

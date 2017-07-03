@@ -30,28 +30,28 @@ public class RegionBadgeView extends AppCompatTextView {
                 case PREMIUM:
                     setText(R.string.region_level_badge_premium);
                     setBackgroundResource(R.drawable.region_badge_premium);
-                    setTextColor(ContextCompat.getColor(getContext(), R.color.region_badge_premium_text));
+                    setTextColor(ContextCompat.getColor(getContext(), R.color.text_region_badge_premium));
                     setTypeface(FontCache.getDosisBold(getContext()));
                     break;
 
                 case DEVELOPER:
                     setText(R.string.region_level_badge_dev);
                     setBackgroundResource(R.drawable.region_badge_developer);
-                    setTextColor(ContextCompat.getColor(getContext(), R.color.region_badge_dev_text));
+                    setTextColor(ContextCompat.getColor(getContext(), R.color.text_region_badge_developer));
                     setTypeface(FontCache.getDosisBold(getContext()));
                     break;
 
                 case FREE:
                     setText(null);
                     setBackgroundResource(0);
-                    setTextColor(ContextCompat.getColor(getContext(), R.color.region_disabled_text));
+                    setTextColor(ContextCompat.getColor(getContext(), R.color.white70));
                     setTypeface(FontCache.getDosisRegular(getContext()));
                     break;
             }
         } else {
             setText(R.string.region_level_badge_unavailable);
             setBackgroundResource(0);
-            setTextColor(ContextCompat.getColor(getContext(), R.color.region_disabled_text));
+            setTextColor(ContextCompat.getColor(getContext(), R.color.white70));
             setTypeface(FontCache.getDosisRegular(getContext()));
         }
     }

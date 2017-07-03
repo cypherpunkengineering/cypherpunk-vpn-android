@@ -27,7 +27,7 @@
         android:layout_height="wrap_content"
         android:text="@string/main_status"
         android:textAllCaps="true"
-        android:textColor="#8000ffff"
+        android:textColor="@color/cyan_50"
         android:textSize="12sp"
         app:fontName="DosisSemiBold"
         app:layout_constraintBottom_toTopOf="@+id/status"
@@ -65,7 +65,7 @@
             android:paddingLeft="6dp"
             android:paddingRight="6dp"
             android:textAppearance="?android:textAppearanceLarge"
-            android:textColor="#c0ffffff"
+            android:textColor="@color/white75"
             android:textSize="18sp"
             app:fontName="DosisSemiBold"
             tools:text="New York, New York"/>
@@ -76,7 +76,7 @@
             android:background="@drawable/loop_background"
             android:scaleType="center"
             android:src="@drawable/ic_chevron_right"
-            android:tint="#ffffff"
+            android:tint="@color/white"
             tools:ignore="ContentDescription"/>
 
     </LinearLayout>

@@ -45,7 +45,7 @@ public class ServerPingerThinger extends Thread {
             sock2.setTcpNoDelay(true);
 
             // protect sockets so it doesn't go thru VPN connection
-            socketProtected = vpnManager.protectSocket(sock1);
+            vpnManager.protectSocket(sock1);
             socketProtected = vpnManager.protectSocket(sock2);
 
             // sleep for a random delay before pinging

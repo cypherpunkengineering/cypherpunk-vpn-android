@@ -28,7 +28,7 @@
         android:gravity="center_horizontal"
         android:lineSpacingMultiplier="1.2"
         android:text="@string/tutorial_1_text"
-        android:textColor="@color/greeny_blue"
+        android:textColor="@color/green_blue"
         android:textSize="18sp"
         app:fontName="DosisMedium"/>
 

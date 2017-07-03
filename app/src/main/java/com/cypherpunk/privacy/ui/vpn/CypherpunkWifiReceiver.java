@@ -48,47 +48,52 @@ public class CypherpunkWifiReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        CypherpunkApplication.instance.getAppComponent().inject(this);
+        final String action = intent.getAction();
+        if (TextUtils.equals(action, WifiManager.SUPPLICANT_CONNECTION_CHANGE_ACTION) ||
+                TextUtils.equals(action, WifiManager.NETWORK_STATE_CHANGED_ACTION)) {
 
-        final NetworkInfo networkInfo = intent.getParcelableExtra(WifiManager.EXTRA_NETWORK_INFO);
-        if (networkInfo == null) {
-            return;
-        }
-        if (networkInfo.getType() != ConnectivityManager.TYPE_WIFI) {
-            return;
-        }
+            CypherpunkApplication.instance.getAppComponent().inject(this);
 
-        switch (networkInfo.getState()) {
-            case CONNECTED:
-                // check if already got event for this ssid
-                if (currentSSID == null) {
-                    final String ssid = getCurrentWifiSsid(context);
-                    currentSSID = ssid;
+            final NetworkInfo networkInfo = intent.getParcelableExtra(WifiManager.EXTRA_NETWORK_INFO);
+            if (networkInfo == null) {
+                return;
+            }
+            if (networkInfo.getType() != ConnectivityManager.TYPE_WIFI) {
+                return;
+            }
 
-                    Timber.d("onWiFiConnected(" + ssid + ")");
+            switch (networkInfo.getState()) {
+                case CONNECTED:
+                    // check if already got event for this ssid
+                    if (currentSSID == null) {
+                        final String ssid = getCurrentWifiSsid(context);
+                        currentSSID = ssid;
 
-                    if (vpnSetting.isAutoSecureUntrusted()) {
-                        VpnConnectionIntentService.Mode mode = !TextUtils.isEmpty(ssid) && vpnSetting.isTrusted(ssid)
-                                ? VpnConnectionIntentService.Mode.TRUSTED
-                                : VpnConnectionIntentService.Mode.UNTRUSTED;
-                        context.startService(VpnConnectionIntentService.createIntent(context, mode));
+                        Timber.d("onWiFiConnected(" + ssid + ")");
+
+                        if (vpnSetting.isAutoSecureUntrusted()) {
+                            VpnConnectionIntentService.Mode mode = !TextUtils.isEmpty(ssid) && vpnSetting.isTrusted(ssid)
+                                    ? VpnConnectionIntentService.Mode.TRUSTED
+                                    : VpnConnectionIntentService.Mode.UNTRUSTED;
+                            context.startService(VpnConnectionIntentService.createIntent(context, mode));
+                        }
                     }
-                }
-                break;
+                    break;
 
-            case DISCONNECTED:
-                // check if already got event
-                if (currentSSID != null) {
-                    currentSSID = null;
+                case DISCONNECTED:
+                    // check if already got event
+                    if (currentSSID != null) {
+                        currentSSID = null;
 
-                    Timber.d("onWiFiDisconnected()");
+                        Timber.d("onWiFiDisconnected()");
 
-                    if (vpnSetting.isAutoSecureOther()) {
-                        context.startService(VpnConnectionIntentService.createIntent(context,
-                                VpnConnectionIntentService.Mode.UNTRUSTED));
+                        if (vpnSetting.isAutoSecureOther()) {
+                            context.startService(VpnConnectionIntentService.createIntent(context,
+                                    VpnConnectionIntentService.Mode.UNTRUSTED));
+                        }
                     }
-                }
-                break;
+                    break;
+            }
         }
     }
 }

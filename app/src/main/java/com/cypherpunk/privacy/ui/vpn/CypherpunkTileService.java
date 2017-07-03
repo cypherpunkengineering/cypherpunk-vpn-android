@@ -28,12 +28,6 @@ public class CypherpunkTileService extends TileService implements VpnStatusHolde
         CypherpunkApplication.instance.getAppComponent().inject(this);
     }
 
-    @TargetApi(Build.VERSION_CODES.N)
-    @Override
-    public void onTileAdded() {
-        super.onTileAdded();
-    }
-
     @Override
     public void onStartListening() {
         super.onStartListening();

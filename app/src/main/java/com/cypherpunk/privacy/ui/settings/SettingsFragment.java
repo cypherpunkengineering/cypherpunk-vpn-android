@@ -3,7 +3,6 @@ package com.cypherpunk.privacy.ui.settings;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -78,8 +77,7 @@ public class SettingsFragment extends PreferenceFragmentCompat {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        setDivider(new ColorDrawable(ContextCompat.getColor(getContext(), R.color.divider)));
-        setDividerHeight(getContext().getResources().getDimensionPixelSize(R.dimen.divider));
+        setDivider(ContextCompat.getDrawable(getContext(), R.drawable.divider));
     }
 
     @Override
@@ -192,7 +190,7 @@ public class SettingsFragment extends PreferenceFragmentCompat {
     }
 
     @StringRes
-    public static int getStringFor(@NonNull InternetKillSwitch internetKillSwitch) {
+    private static int getStringFor(@NonNull InternetKillSwitch internetKillSwitch) {
         switch (internetKillSwitch) {
             case AUTOMATIC:
                 return R.string.internet_kill_switch_automatic_title;
@@ -205,12 +203,12 @@ public class SettingsFragment extends PreferenceFragmentCompat {
         }
     }
 
-    public static String getStringFor(@NonNull RemotePort remotePort) {
+    private static String getStringFor(@NonNull RemotePort remotePort) {
         return remotePort.type().name() + " " + remotePort.port().value();
     }
 
     @StringRes
-    public static int getStringFor(@NonNull TunnelMode mode) {
+    private static int getStringFor(@NonNull TunnelMode mode) {
         switch (mode) {
             case RECOMMENDED:
                 return R.string.tunnel_mode_recommended_title;

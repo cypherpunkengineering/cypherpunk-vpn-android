@@ -18,8 +18,8 @@ import android.widget.TextView;
 
 import com.cypherpunk.privacy.CypherpunkApplication;
 import com.cypherpunk.privacy.R;
-import com.cypherpunk.privacy.domain.model.VpnSetting;
 import com.cypherpunk.privacy.datasource.vpn.TunnelMode;
+import com.cypherpunk.privacy.domain.model.VpnSetting;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -124,7 +124,7 @@ public class TunnelModeActivity extends AppCompatActivity {
     }
 
     @StringRes
-    public static int getTitleFor(@NonNull TunnelMode mode) {
+    private static int getTitleFor(@NonNull TunnelMode mode) {
         switch (mode) {
             case RECOMMENDED:
                 return R.string.tunnel_mode_recommended_title;
@@ -140,7 +140,7 @@ public class TunnelModeActivity extends AppCompatActivity {
     }
 
     @StringRes
-    public static int getSummaryFor(@NonNull TunnelMode mode) {
+    private static int getSummaryFor(@NonNull TunnelMode mode) {
         switch (mode) {
             case RECOMMENDED:
                 return R.string.tunnel_mode_recommended_summary;
