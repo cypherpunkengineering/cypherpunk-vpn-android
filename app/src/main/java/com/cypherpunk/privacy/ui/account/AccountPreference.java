@@ -8,6 +8,7 @@ import android.support.v7.preference.Preference;
 import android.support.v7.preference.PreferenceViewHolder;
 import android.text.format.DateFormat;
 import android.util.AttributeSet;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.cypherpunk.privacy.R;
@@ -44,7 +45,8 @@ public class AccountPreference extends Preference {
         super.onBindViewHolder(holder);
         final TextView usernameView = ButterKnife.findById(holder.itemView, R.id.username);
         final TextView typeView = ButterKnife.findById(holder.itemView, R.id.type);
-        final TextView expirationViewView = (TextView) holder.itemView.findViewById(R.id.expiration);
+        final TextView expirationViewView = ButterKnife.findById(holder.itemView, R.id.expiration);
+        final ImageView imageView = ButterKnife.findById(holder.itemView, R.id.image);
 
         usernameView.setText(username);
 
@@ -52,15 +54,19 @@ public class AccountPreference extends Preference {
             switch (type) {
                 case FREE:
                     typeView.setText(R.string.account_type_free);
+                    imageView.setImageResource(R.drawable.account_banner_free);
                     break;
                 case PREMIUM:
                     typeView.setText(R.string.account_type_premium);
+                    imageView.setImageResource(R.drawable.account_banner_premium);
                     break;
                 case ORGANIZATION:
                     typeView.setText(R.string.account_type_organization);
+                    imageView.setImageResource(R.drawable.account_banner_premium);
                     break;
                 case DEVELOPER:
                     typeView.setText(R.string.account_type_developer);
+                    imageView.setImageResource(R.drawable.account_banner_premium);
                     break;
             }
         }
