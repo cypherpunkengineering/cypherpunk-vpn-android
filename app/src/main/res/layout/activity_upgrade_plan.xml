@@ -52,7 +52,7 @@
         app:layout_constraintTop_toBottomOf="@+id/text1"/>
 
     <com.cypherpunk.privacy.ui.common.TypefaceTextView
-        android:id="@+id/save"
+        android:id="@+id/discount"
         android:layout_width="100dp"
         android:layout_height="24dp"
         android:layout_marginTop="0dp"

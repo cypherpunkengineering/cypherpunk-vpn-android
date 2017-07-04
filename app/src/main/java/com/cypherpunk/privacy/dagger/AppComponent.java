@@ -1,6 +1,7 @@
 package com.cypherpunk.privacy.dagger;
 
 import com.cypherpunk.privacy.ui.account.AccountSettingsFragment;
+import com.cypherpunk.privacy.ui.account.BillingActivity;
 import com.cypherpunk.privacy.ui.account.EditEmailActivity;
 import com.cypherpunk.privacy.ui.account.EditPasswordActivity;
 import com.cypherpunk.privacy.ui.account.UpgradePlanActivity;
@@ -83,4 +84,5 @@ public interface AppComponent {
 
     void inject(CypherpunkWifiReceiver target);
 
+    void inject(BillingActivity target);
 }

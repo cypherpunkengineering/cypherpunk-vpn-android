@@ -43,8 +43,9 @@ android {
 //            signingConfig signingConfigs.release
         }
     }
-    lintOptions {
-        abortOnError false
+    productFlavors {
+        amazon
+        play
     }
 }
 
@@ -53,9 +54,9 @@ configurations.all {
 }
 
 dependencies {
+    amazonCompile fileTree(dir: 'libs', include: ['*.jar'])
     compile project(':domain')
     compile project(':vpn')
-    compile fileTree(dir: 'libs', include: ['*.jar'])
 
     def daggerVersion = '2.6'
 
@@ -70,11 +71,12 @@ dependencies {
     compile "com.google.dagger:dagger:${daggerVersion}"
     apt "com.google.dagger:dagger-compiler:${daggerVersion}"
     apt 'com.google.guava:guava:20.0' // dagger compiler requires Guava
-    compile 'com.jeremyfeinstein.slidingmenu:library:1.3@aar'
 
     // http://jakewharton.github.io/butterknife/
     compile 'com.jakewharton:butterknife:8.5.1'
     provided 'com.jakewharton:butterknife-compiler:8.5.1'
+
+    compile 'com.jeremyfeinstein.slidingmenu:library:1.3@aar'
 
     // https://github.com/JakeWharton/timber
     compile 'com.jakewharton.timber:timber:4.5.1'
