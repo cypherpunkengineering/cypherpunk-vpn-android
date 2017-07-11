@@ -45,7 +45,7 @@ import io.reactivex.schedulers.Schedulers;
 public class RegionFragment extends Fragment {
 
     public interface RegionFragmentListener {
-        void onVpnServerSelected(@NonNull VpnServer vpnServer);
+        void onVpnServerSelected(@NonNull VpnServer vpnServer, boolean isUserSelected);
 
         void onVpnServerListChanged(@NonNull List<VpnServer> vpnServerList);
     }
@@ -116,33 +116,20 @@ public class RegionFragment extends Fragment {
         adapter = new RegionAdapter() {
             @Override
             protected void onItemClicked(@NonNull VpnServer vpnServer, boolean isCypherPlay) {
-                tryChangeServer(vpnServer, isCypherPlay);
+                tryChangeServer(vpnServer, isCypherPlay, true);
             }
         };
         recyclerView.setHasFixedSize(true);
         recyclerView.setAdapter(adapter);
 
-//        vpnServerRepository.addChangeListener(realmChangeListener);
-
         refreshRegionList();
-//        syncServerList();
+        syncServerList();
     }
-
-//    private final VpnServerRepository.ChangeListener realmChangeListener = new VpnServerRepository.ChangeListener() {
-//        @Override
-//        public void onChanged() {
-//            refreshRegionList();
-//        }
-//    };
 
     @Override
     public void onDestroy() {
         disposable.dispose();
         super.onDestroy();
-    }
-
-    public void refreshServerList() {
-        syncServerList();
     }
 
     private void refreshRegionList() {
@@ -186,21 +173,22 @@ public class RegionFragment extends Fragment {
                 .subscribe(new Action() {
                     @Override
                     public void run() throws Exception {
+                        refreshRegionList();
                         // check if previously selected region is still available
                         final VpnServer vpnServer = vpnServerRepository.findAuthorizedDefault(vpnSetting.regionId());
                         if (vpnServer == null) {
-                            tryChangeServer(vpnServerRepository.fastest(), false);
+                            tryChangeServer(vpnServerRepository.fastest(), false, false);
                         }
                     }
                 });
     }
 
-    private void tryChangeServer(@Nullable VpnServer vpnServer, boolean isCypherPlay) {
+    private void tryChangeServer(@Nullable VpnServer vpnServer, boolean isCypherPlay, boolean isUserSelected) {
         if (vpnServer != null) {
             vpnSetting.updateCypherplayEnabled(isCypherPlay);
             vpnSetting.updateRegionId(vpnServer.id());
             if (listener != null) {
-                listener.onVpnServerSelected(vpnServer);
+                listener.onVpnServerSelected(vpnServer, isUserSelected);
             }
         }
     }

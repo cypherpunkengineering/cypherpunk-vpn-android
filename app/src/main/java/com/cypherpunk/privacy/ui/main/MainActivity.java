@@ -159,12 +159,14 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     @Override
-    public void onVpnServerSelected(@NonNull VpnServer vpnServer) {
+    public void onVpnServerSelected(@NonNull VpnServer vpnServer, boolean isUserSelected) {
         hideRegions();
         reconnectPanel.setVisibility(View.GONE);
         mapView.setVpnServer(vpnServer);
         connectionFragment.setVpnServer(vpnServer);
-        connectionFragment.tryConnectIfNeeded();
+        if (isUserSelected) {
+            connectionFragment.tryConnectIfNeeded();
+        }
     }
 
     @Override
