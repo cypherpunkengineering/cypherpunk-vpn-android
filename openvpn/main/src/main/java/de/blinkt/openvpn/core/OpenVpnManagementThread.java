@@ -14,6 +14,9 @@ import android.os.ParcelFileDescriptor;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
+import com.cypherpunk.privacy.vpn.BuildConfig;
+import com.cypherpunk.privacy.vpn.R;
+
 import junit.framework.Assert;
 
 import java.io.FileDescriptor;
@@ -29,8 +32,6 @@ import java.util.LinkedList;
 import java.util.Locale;
 import java.util.Vector;
 
-import com.cypherpunk.privacy.vpn.BuildConfig;
-import com.cypherpunk.privacy.vpn.R;
 import de.blinkt.openvpn.VpnProfile;
 import de.blinkt.openvpn.core.VpnStatus.ConnectionStatus;
 
@@ -171,22 +172,24 @@ public class OpenVpnManagementThread implements Runnable, OpenVPNManagement {
         }
     }
 
-    void requestClose(FileDescriptor fd)
-    {
+    void requestClose(FileDescriptor fd) {
         Exception ex = null;
-        try
-        {
+        try {
             Method getInt = FileDescriptor.class.getDeclaredMethod("getInt$");
-            int fdint = (Integer)getInt.invoke(fd);
+            int fdint = (Integer) getInt.invoke(fd);
             mOpenVPNService.closeOpenVPNtun(fdint);
+        } catch (NoSuchMethodException e) {
+            ex = e;
+        } catch (IllegalArgumentException e) {
+            ex = e;
+        } catch (IllegalAccessException e) {
+            ex = e;
+        } catch (InvocationTargetException e) {
+            ex = e;
+        } catch (NullPointerException e) {
+            ex = e;
         }
-        catch (NoSuchMethodException e) { ex = e; }
-        catch (IllegalArgumentException e) { ex = e; }
-        catch (IllegalAccessException e) { ex = e; }
-        catch (InvocationTargetException e) { ex = e; }
-        catch (NullPointerException e) { ex = e; }
-        if (ex != null)
-        {
+        if (ex != null) {
             ex.printStackTrace();
             Log.d("Openvpn", "Failed to retrieve fd from socket: " + fd);
         }
@@ -363,13 +366,13 @@ public class OpenVpnManagementThread implements Runnable, OpenVPNManagement {
 
     private void releaseHoldCmd() {
         mResumeHandler.removeCallbacks(mResumeHoldRunnable);
-        if ((System.currentTimeMillis() - mLastHoldRelease) < 5000) {
-            try {
-                Thread.sleep(3000);
-            } catch (InterruptedException ignored) {
-            }
-
-        }
+//        if ((System.currentTimeMillis() - mLastHoldRelease) < 5000) {
+//            try {
+//                Thread.sleep(3000);
+//            } catch (InterruptedException ignored) {
+//            }
+//
+//        }
         mWaitingForRelease = false;
         mLastHoldRelease = System.currentTimeMillis();
         managmentCommand("hold release\n");
