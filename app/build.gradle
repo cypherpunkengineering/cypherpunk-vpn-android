@@ -9,8 +9,8 @@ android {
         applicationId "com.cypherpunk.privacy"
         minSdkVersion 15
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 73
-        versionName "0.8.0"
+        versionCode 78
+        versionName "0.8.6"
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         vectorDrawables.generatedDensities = ['hdpi', 'xhdpi', 'xxhdpi']
