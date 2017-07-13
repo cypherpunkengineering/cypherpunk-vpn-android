@@ -241,9 +241,9 @@
     <string name="account_plan_forever">Forever</string>
 
     <!-- subscription expiration -->
-    <string name="account_plan_expiration_format">MMM dd, yyyy</string>
-    <string name="account_plan_expiration_date">Renews %1$s on %2$s</string>
-    <string name="account_plan_expiration_nodate">Renews %1$s</string>
+    <string name="account_plan_expired_format">Expired on M/d/yyyy</string>
+    <string name="account_plan_expires">Expires</string>
+    <string name="account_plan_renews">Renews</string>
 
     <!-- upgrade account -->
     <string name="title_activity_upgrade_plan">Upgrade Account</string>

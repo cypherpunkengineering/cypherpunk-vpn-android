@@ -3,7 +3,6 @@ package com.cypherpunk.privacy.ui.account;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.annotation.StringRes;
 import android.support.v7.preference.Preference;
 import android.support.v7.preference.PreferenceViewHolder;
 import android.text.format.DateFormat;
@@ -15,7 +14,9 @@ import com.cypherpunk.privacy.R;
 import com.cypherpunk.privacy.datasource.account.Account;
 import com.cypherpunk.privacy.datasource.account.Subscription;
 
+import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 
 import butterknife.ButterKnife;
 
@@ -74,6 +75,7 @@ public class AccountPreference extends Preference {
         if (subscription != null) {
             final Subscription.Type type = subscription.type();
             final Date expiration = subscription.expiration();
+            final boolean isRenews = subscription.isRenews();
 
             final Context ctx = getContext();
 
@@ -82,16 +84,18 @@ public class AccountPreference extends Preference {
                     expirationViewView.setText("");
                     break;
                 case TRIAL:
-                    expirationViewView.setText(R.string.account_plan_trial);
-                    break;
                 case DAILY:
-                    expirationViewView.setText(R.string.account_plan_daily);
-                    break;
+                case SEMIANNUALLY:
                 case MONTHLY:
-                    expirationViewView.setText(typeExpirationText(ctx, R.string.account_plan_monthly, expiration));
-                    break;
                 case ANNUALLY:
-                    expirationViewView.setText(typeExpirationText(ctx, R.string.account_plan_annually, expiration));
+                    if (expiration == null) {
+                        expirationViewView.setText("");
+                    } else {
+                        final Calendar now = Calendar.getInstance(Locale.ENGLISH);
+                        final Calendar exp = Calendar.getInstance();
+                        exp.setTimeInMillis(expiration.getTime());
+                        expirationViewView.setText(expirationText(ctx, isRenews, now, exp));
+                    }
                     break;
                 case FOREVER:
                     expirationViewView.setText(R.string.account_plan_forever);
@@ -100,13 +104,47 @@ public class AccountPreference extends Preference {
         }
     }
 
-    private static String typeExpirationText(@NonNull Context ctx, @StringRes int typeResId, @Nullable Date expiration) {
-        if (expiration != null) {
-            return ctx.getString(R.string.account_plan_expiration_date,
-                    ctx.getString(typeResId),
-                    DateFormat.format(ctx.getString(R.string.account_plan_expiration_format), expiration).toString());
+    private static String expirationText(@NonNull Context ctx, boolean isRenews,
+                                         @NonNull Calendar now, @NonNull Calendar expiration) {
+
+        final long diff = (expiration.getTimeInMillis() - now.getTimeInMillis()) / (60 * 60 * 1000); // hours
+        if (diff < 0) {
+            return DateFormat.format(ctx.getString(R.string.account_plan_expired_format), expiration).toString();
+        }
+
+        final String prefix = ctx.getString(isRenews
+                ? R.string.account_plan_renews : R.string.account_plan_expires);
+
+        if (diff < 1) {
+            return prefix + " in less than an hour";
+        }
+        if (diff < 6) {
+            return prefix + " in less than six hours";
+        }
+
+        final int expirationDayOfMonth = expiration.get(Calendar.DAY_OF_MONTH);
+        final int nowDayOfMonth = now.get(Calendar.DAY_OF_MONTH);
+        if (expirationDayOfMonth == nowDayOfMonth) {
+            return prefix + " today";
+        }
+
+        final Calendar tomorrow = (Calendar) now.clone();
+        tomorrow.add(Calendar.DAY_OF_MONTH, 1);
+        final int tomorrowDayOfMonth = tomorrow.get(Calendar.DAY_OF_MONTH);
+        if (expirationDayOfMonth == tomorrowDayOfMonth) {
+            return prefix + " tomorrow";
+        }
+
+        if (diff <= 30 * 24) {
+            return prefix + " in " + ((int) (Math.ceil(diff / 24.0))) + " days";
+        } else if (diff <= 50 * 24) {
+            return prefix + " in " + ((int) (Math.ceil(diff / 24.0 / 7))) + " weeks";
+        } else if (diff <= 300 * 24) {
+            return prefix + " in " + ((int) (Math.ceil(diff / 24.0 / 30))) + " months";
+        } else if (diff <= 400 * 24) {
+            return prefix + " in one year";
         } else {
-            return ctx.getString(R.string.account_plan_expiration_nodate, ctx.getString(typeResId));
+            return prefix + " in over a year";
         }
     }
 

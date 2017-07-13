@@ -1,10 +1,12 @@
 package com.cypherpunk.privacy.ui.account;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.TaskStackBuilder;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.preference.Preference;
@@ -38,6 +40,10 @@ import retrofit2.HttpException;
 
 public class AccountSettingsFragment extends PreferenceFragmentCompat {
 
+    public interface AccountSettingsFragmentListener {
+        void onAccountChecked();
+    }
+
     private static final int REQUEST_CODE_UPGRADE_PLAN = 1;
     private static final int REQUEST_CODE_EDIT_EMAIL = 2;
 
@@ -54,6 +60,23 @@ public class AccountSettingsFragment extends PreferenceFragmentCompat {
 
     @Inject
     VpnManager vpnManager;
+
+    @Nullable
+    private AccountSettingsFragmentListener listener;
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (context instanceof AccountSettingsFragmentListener) {
+            listener = (AccountSettingsFragmentListener) context;
+        }
+    }
+
+    @Override
+    public void onDetach() {
+        listener = null;
+        super.onDetach();
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -85,7 +108,7 @@ public class AccountSettingsFragment extends PreferenceFragmentCompat {
         accountPreference = (AccountPreference) findPreference(getString(R.string.account_preference_account));
         accountPreference.setInfo(accountSetting.email(), accountSetting.accountType(), subscription);
 
-        getStatus();
+        checkAccount();
 
         final Preference upgrade = findPreference(getString(R.string.account_preference_upgrade));
         upgrade.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
@@ -235,7 +258,7 @@ public class AccountSettingsFragment extends PreferenceFragmentCompat {
         }
     }
 
-    private void getStatus() {
+    private void checkAccount() {
         disposable = networkRepository.getAccountStatus()
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -247,6 +270,10 @@ public class AccountSettingsFragment extends PreferenceFragmentCompat {
 
                         accountPreference.setInfo(accountSetting.email(), accountStatus.account.type(),
                                 accountStatus.subscription);
+
+                        if (listener != null) {
+                            listener.onAccountChecked();
+                        }
                     }
 
                     @Override
