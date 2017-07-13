@@ -24,6 +24,7 @@ public class RealmVpnServer implements RealmModel, VpnServer {
 
     @PrimaryKey
     @Required
+    @NonNull
     private String id;
     @Required
     private String name;
@@ -232,11 +233,12 @@ public class RealmVpnServer implements RealmModel, VpnServer {
 
         RealmVpnServer that = (RealmVpnServer) o;
 
-        return id != null ? id.equals(that.id) : that.id == null;
+        return id.equals(that.id);
+
     }
 
     @Override
     public int hashCode() {
-        return id != null ? id.hashCode() : 0;
+        return id.hashCode();
     }
 }

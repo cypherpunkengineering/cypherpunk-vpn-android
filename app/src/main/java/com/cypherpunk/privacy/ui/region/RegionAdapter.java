@@ -4,6 +4,7 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
+import android.support.v7.util.DiffUtil;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,7 +16,6 @@ import com.cypherpunk.privacy.datasource.vpn.VpnServer;
 import java.util.ArrayList;
 import java.util.List;
 
-// TODO: use DiffUtil
 class RegionAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private static final int ITEM_VIEW_TYPE_ITEM = 1;
@@ -147,27 +147,60 @@ class RegionAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                        @NonNull List<VpnServer> asItems,
                        @NonNull List<VpnServer> opItems) {
 
-        items.clear();
+        final List<Object> newItems = new ArrayList<>();
+
         if (fastestVpnServer != null) {
-            items.add(new CypherPlay(fastestVpnServer));
-            items.add(new FastestLocation(fastestVpnServer));
+            newItems.add(new CypherPlay(fastestVpnServer));
+            newItems.add(new FastestLocation(fastestVpnServer));
         }
-        addItems(devItems, R.string.region_list_dev);
-        addItems(naItems, R.string.region_list_na);
-        addItems(saItems, R.string.region_list_sa);
-        addItems(crItems, R.string.region_list_cr);
-        addItems(euItems, R.string.region_list_eu);
-        addItems(meItems, R.string.region_list_me);
-        addItems(afItems, R.string.region_list_af);
-        addItems(asItems, R.string.region_list_as);
-        addItems(opItems, R.string.region_list_op);
-        notifyItemRangeInserted(0, items.size());
+
+        addItems(devItems, R.string.region_list_dev, newItems);
+        addItems(naItems, R.string.region_list_na, newItems);
+        addItems(saItems, R.string.region_list_sa, newItems);
+        addItems(crItems, R.string.region_list_cr, newItems);
+        addItems(euItems, R.string.region_list_eu, newItems);
+        addItems(meItems, R.string.region_list_me, newItems);
+        addItems(afItems, R.string.region_list_af, newItems);
+        addItems(asItems, R.string.region_list_as, newItems);
+        addItems(opItems, R.string.region_list_op, newItems);
+
+        if (items.isEmpty()) {
+            items.addAll(newItems);
+            notifyItemRangeInserted(0, items.size());
+
+        } else {
+            final DiffUtil.DiffResult result = DiffUtil.calculateDiff(new DiffUtil.Callback() {
+                @Override
+                public int getOldListSize() {
+                    return items.size();
+                }
+
+                @Override
+                public int getNewListSize() {
+                    return newItems.size();
+                }
+
+                @Override
+                public boolean areItemsTheSame(int oldItemPosition, int newItemPosition) {
+                    return items.get(oldItemPosition).equals(newItems.get(newItemPosition));
+                }
+
+                @Override
+                public boolean areContentsTheSame(int oldItemPosition, int newItemPosition) {
+                    return false;
+                }
+            });
+            items.clear();
+            items.addAll(newItems);
+            result.dispatchUpdatesTo(this);
+        }
     }
 
-    private void addItems(@NonNull List<VpnServer> data, @StringRes int dividerName) {
+    private void addItems(@NonNull List<VpnServer> data, @StringRes int dividerName,
+                          @NonNull List<Object> out) {
         if (!data.isEmpty()) {
-            items.add(new Divider(dividerName));
-            items.addAll(data);
+            out.add(new Divider(dividerName));
+            out.addAll(data);
         }
     }
 
@@ -181,30 +214,78 @@ class RegionAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         return result;
     }
 
-    private class CypherPlay {
+    private static class CypherPlay {
         @NonNull
         final VpnServer vpnServer;
 
         private CypherPlay(@NonNull VpnServer vpnServer) {
             this.vpnServer = vpnServer;
         }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+
+            CypherPlay that = (CypherPlay) o;
+
+            return vpnServer.equals(that.vpnServer);
+
+        }
+
+        @Override
+        public int hashCode() {
+            return vpnServer.hashCode();
+        }
     }
 
-    private class FastestLocation {
+    private static class FastestLocation {
         @NonNull
         final VpnServer vpnServer;
 
         private FastestLocation(@NonNull VpnServer vpnServer) {
             this.vpnServer = vpnServer;
         }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+
+            FastestLocation that = (FastestLocation) o;
+
+            return vpnServer.equals(that.vpnServer);
+
+        }
+
+        @Override
+        public int hashCode() {
+            return vpnServer.hashCode();
+        }
     }
 
-    private class Divider {
+    private static class Divider {
         @StringRes
         private final int nameResId;
 
         private Divider(@StringRes int resId) {
             this.nameResId = resId;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+
+            Divider divider = (Divider) o;
+
+            return nameResId == divider.nameResId;
+
+        }
+
+        @Override
+        public int hashCode() {
+            return nameResId;
         }
     }
 }
