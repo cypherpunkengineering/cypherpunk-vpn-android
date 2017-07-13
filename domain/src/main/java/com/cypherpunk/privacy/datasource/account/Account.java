@@ -46,7 +46,9 @@ public class Account {
         FREE("free"),
         PREMIUM("premium"),
         ORGANIZATION("organization"),
-        DEVELOPER("developer");
+        DEVELOPER("developer"),
+        INVITATION("invitation"),
+        PENDING("pending");
 
         @NonNull
         private final String value;

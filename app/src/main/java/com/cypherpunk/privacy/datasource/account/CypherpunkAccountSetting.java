@@ -38,6 +38,12 @@ public class CypherpunkAccountSetting implements AccountSetting {
         return !TextUtils.isEmpty(email());
     }
 
+    @Override
+    public boolean isPending() {
+        final Account.Type type = accountType();
+        return type == Account.Type.INVITATION || type == Account.Type.PENDING;
+    }
+
     // secret
 
     @Nullable

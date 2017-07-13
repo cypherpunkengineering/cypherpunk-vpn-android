@@ -14,6 +14,8 @@ public interface AccountSetting {
 
     boolean isSignedIn();
 
+    boolean isPending();
+
     // secret
 
     @Nullable

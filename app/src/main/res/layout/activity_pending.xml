@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.startup.ConfirmationEmailActivity">
+
+    <View
+        android:id="@+id/header_background"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@color/black5"
+        app:layout_constraintDimensionRatio="@string/header_ratio"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <android.support.v4.widget.Space
+        android:id="@+id/space"
+        android:layout_width="10dp"
+        android:layout_height="1dp"
+        app:layout_constraintBottom_toBottomOf="@+id/header_background"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"/>
+
+    <ImageView
+        android:id="@+id/arrow"
+        android:layout_width="24dp"
+        android:layout_height="12dp"
+        android:src="@drawable/ic_arrow_drop_down_vector"
+        android:tint="@color/black5"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/space"
+        tools:ignore="ContentDescription"/>
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="0dp"
+        android:layout_height="56dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"/>
+
+    <com.cypherpunk.privacy.ui.common.TypefaceTextView
+        android:id="@+id/welcome"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="2dp"
+        android:text="pending"
+        android:textColor="@color/green_blue"
+        android:textSize="16sp"
+        app:fontName="DosisMedium"
+        app:layout_constraintBottom_toTopOf="@+id/mail"
+        app:layout_constraintLeft_toLeftOf="@+id/mail"
+        app:layout_constraintTop_toTopOf="@+id/header_background"
+        app:layout_constraintVertical_chainStyle="packed"/>
+
+    <com.cypherpunk.privacy.ui.common.TypefaceTextView
+        android:id="@+id/mail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/logo"
+        android:textColor="?android:textColorPrimary"
+        android:textSize="18sp"
+        app:fontName="DosisSemiBold"
+        app:layout_constraintBottom_toBottomOf="@+id/header_background"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/welcome"
+        tools:text="wiz@cypherpunk.com"/>
+
+    <com.cypherpunk.privacy.ui.common.TypefaceTextView
+        android:id="@+id/status"
+        android:layout_width="220dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:gravity="center_horizontal"
+        android:text="pending"
+        android:textSize="18sp"
+        app:fontName="DosisMedium"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/arrow"/>
+
+</android.support.constraint.ConstraintLayout>

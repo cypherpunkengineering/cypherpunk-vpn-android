@@ -21,6 +21,7 @@ import com.cypherpunk.privacy.domain.repository.VpnServerRepository;
 import com.cypherpunk.privacy.ui.region.RegionFragment;
 import com.cypherpunk.privacy.ui.settings.SettingsFragment;
 import com.cypherpunk.privacy.ui.startup.IdentifyEmailActivity;
+import com.cypherpunk.privacy.ui.startup.PendingActivity;
 import com.cypherpunk.privacy.ui.vpn.ConnectionFragment;
 import com.cypherpunk.privacy.vpn.VpnStatusHolder;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
@@ -69,6 +70,13 @@ public class MainActivity extends AppCompatActivity implements
         if (!accountSetting.isSignedIn()) {
             TaskStackBuilder.create(this)
                     .addNextIntent(IdentifyEmailActivity.createIntent(this))
+                    .startActivities();
+            return;
+        }
+
+        if (accountSetting.isPending()) {
+            TaskStackBuilder.create(this)
+                    .addNextIntent(PendingActivity.createIntent(this, accountSetting.email()))
                     .startActivities();
             return;
         }

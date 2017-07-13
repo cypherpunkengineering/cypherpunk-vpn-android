@@ -108,6 +108,9 @@
         <activity
             android:name=".ui.startup.TutorialActivity"
             android:theme="@style/CypherPunk.NoActionBar"/>
+        <activity
+            android:name=".ui.startup.PendingActivity"
+            android:theme="@style/CypherPunk.NoActionBar"/>
 
         <!-- cypherpunk settings -->
         <activity
