@@ -35,9 +35,10 @@ import io.reactivex.Completable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.disposables.Disposables;
-import io.reactivex.functions.Action;
 import io.reactivex.functions.Function;
+import io.reactivex.observers.DisposableCompletableObserver;
 import io.reactivex.schedulers.Schedulers;
+import timber.log.Timber;
 
 /**
  * fragment for select servers
@@ -170,15 +171,20 @@ public class RegionFragment extends Fragment {
                 })
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Action() {
+                .subscribeWith(new DisposableCompletableObserver() {
                     @Override
-                    public void run() throws Exception {
+                    public void onComplete() {
                         refreshRegionList();
                         // check if previously selected region is still available
                         final VpnServer vpnServer = vpnServerRepository.findAuthorizedDefault(vpnSetting.regionId());
                         if (vpnServer == null) {
                             tryChangeServer(vpnServerRepository.fastest(), false, false);
                         }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        Timber.e(e);
                     }
                 });
     }
