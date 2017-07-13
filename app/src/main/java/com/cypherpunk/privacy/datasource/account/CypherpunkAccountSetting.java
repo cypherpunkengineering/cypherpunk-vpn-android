@@ -19,8 +19,11 @@ public class CypherpunkAccountSetting implements AccountSetting {
 
     private static final String KEY_ACCOUNT_ID = "account_id";
     private static final String KEY_ACCOUNT_TYPE = "account_type";
-    private static final String KEY_STATUS_RENEWAL = "status_renewal";
-    private static final String KEY_STATUS_EXPIRATION = "status_expiration";
+
+    private static final String KEY_SUBSCRIPTION_TYPE = "status_renewal";
+    private static final String KEY_SUBSCRIPTION_EXPIRATION = "status_expiration";
+    private static final String KEY_SUBSCRIPTION_ACTIVE = "status_active";
+    private static final String KEY_SUBSCRIPTION_RENEWS = "status_renews";
 
     private static final String PREF_KEY_VPN_USERNAME = "vpn_username";
     private static final String PREF_KEY_VPN_PASSWORD = "vpn_password";
@@ -42,6 +45,11 @@ public class CypherpunkAccountSetting implements AccountSetting {
     public boolean isPending() {
         final Account.Type type = accountType();
         return type == Account.Type.INVITATION || type == Account.Type.PENDING;
+    }
+
+    @Override
+    public boolean isActive() {
+        return subscription().isActive();
     }
 
     // secret
@@ -113,15 +121,20 @@ public class CypherpunkAccountSetting implements AccountSetting {
     @NonNull
     @Override
     public Subscription subscription() {
-        return new Subscription(Subscription.Renewal.find(pref.getString(KEY_STATUS_RENEWAL, "")),
-                new ExpirationAdapter().fromJson(pref.getString(KEY_STATUS_EXPIRATION, "")));
+        return new Subscription(
+                Subscription.Type.find(pref.getString(KEY_SUBSCRIPTION_TYPE, "")),
+                new ExpirationAdapter().fromJson(pref.getString(KEY_SUBSCRIPTION_EXPIRATION, "")),
+                pref.getBoolean(KEY_SUBSCRIPTION_ACTIVE, false),
+                pref.getBoolean(KEY_SUBSCRIPTION_RENEWS, false));
     }
 
     @Override
     public void updateSubscription(@NonNull Subscription subscription) {
         pref.edit()
-                .putString(KEY_STATUS_RENEWAL, subscription.renewal().value())
-                .putString(KEY_STATUS_EXPIRATION, new ExpirationAdapter().toJson(subscription.expiration()))
+                .putString(KEY_SUBSCRIPTION_TYPE, subscription.type().value())
+                .putString(KEY_SUBSCRIPTION_EXPIRATION, new ExpirationAdapter().toJson(subscription.expiration()))
+                .putBoolean(KEY_SUBSCRIPTION_ACTIVE, subscription.isActive())
+                .putBoolean(KEY_SUBSCRIPTION_RENEWS, subscription.isRenews())
                 .apply();
     }
 

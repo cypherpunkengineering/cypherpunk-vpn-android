@@ -11,18 +11,22 @@ import java.util.Date;
 public class Subscription {
 
     @NonNull
-    private final Renewal renewal;
+    private final Type type;
     @Nullable
     private final Date expiration;
+    private final boolean active;
+    private final boolean renews;
 
-    public Subscription(@NonNull Renewal renewal, @Nullable Date expiration) {
-        this.renewal = renewal;
+    public Subscription(@NonNull Type type, @Nullable Date expiration, boolean active, boolean renews) {
+        this.type = type;
         this.expiration = expiration;
+        this.active = active;
+        this.renews = renews;
     }
 
     @NonNull
-    public Renewal renewal() {
-        return renewal;
+    public Type type() {
+        return type;
     }
 
     @Nullable
@@ -30,25 +34,35 @@ public class Subscription {
         return expiration;
     }
 
-    public enum Renewal {
+    public boolean isActive() {
+        return active;
+    }
+
+    public boolean isRenews() {
+        return renews;
+    }
+
+    public enum Type {
         NONE("none"),
+        TRIAL("trial"),
+        DAILY("daily"),
         MONTHLY("monthly"),
+        SEMIANNUALLY("semiannually"),
         ANNUALLY("annually"),
-        FOREVER("forever"),
-        LIFETIME("lifetime");
+        FOREVER("forever");
 
         @NonNull
         private final String value;
 
-        Renewal(@NonNull String value) {
+        Type(@NonNull String value) {
             this.value = value;
         }
 
         @NonNull
-        public static Renewal find(String value) {
-            for (Renewal renewal : values()) {
-                if (renewal.value.equals(value)) {
-                    return renewal;
+        public static Type find(String value) {
+            for (Type type : values()) {
+                if (type.value.equals(value)) {
+                    return type;
                 }
             }
             return NONE;

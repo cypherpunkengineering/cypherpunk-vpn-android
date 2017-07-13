@@ -72,38 +72,41 @@ public class AccountPreference extends Preference {
         }
 
         if (subscription != null) {
-            final Subscription.Renewal renewal = subscription.renewal();
+            final Subscription.Type type = subscription.type();
             final Date expiration = subscription.expiration();
 
             final Context ctx = getContext();
 
-            switch (renewal) {
+            switch (type) {
                 case NONE:
                     expirationViewView.setText("");
                     break;
+                case TRIAL:
+                    expirationViewView.setText(R.string.account_plan_trial);
+                    break;
+                case DAILY:
+                    expirationViewView.setText(R.string.account_plan_daily);
+                    break;
                 case MONTHLY:
-                    expirationViewView.setText(renewalExpirationText(ctx, R.string.account_plan_monthly, expiration));
+                    expirationViewView.setText(typeExpirationText(ctx, R.string.account_plan_monthly, expiration));
                     break;
                 case ANNUALLY:
-                    expirationViewView.setText(renewalExpirationText(ctx, R.string.account_plan_annually, expiration));
+                    expirationViewView.setText(typeExpirationText(ctx, R.string.account_plan_annually, expiration));
                     break;
                 case FOREVER:
                     expirationViewView.setText(R.string.account_plan_forever);
-                    break;
-                case LIFETIME:
-                    expirationViewView.setText(R.string.account_plan_lifetime);
                     break;
             }
         }
     }
 
-    private static String renewalExpirationText(@NonNull Context ctx, @StringRes int renewalResId, @Nullable Date expiration) {
+    private static String typeExpirationText(@NonNull Context ctx, @StringRes int typeResId, @Nullable Date expiration) {
         if (expiration != null) {
             return ctx.getString(R.string.account_plan_expiration_date,
-                    ctx.getString(renewalResId),
+                    ctx.getString(typeResId),
                     DateFormat.format(ctx.getString(R.string.account_plan_expiration_format), expiration).toString());
         } else {
-            return ctx.getString(R.string.account_plan_expiration_nodate, ctx.getString(renewalResId));
+            return ctx.getString(R.string.account_plan_expiration_nodate, ctx.getString(typeResId));
         }
     }
 

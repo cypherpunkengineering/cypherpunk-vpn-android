@@ -16,6 +16,8 @@ public interface AccountSetting {
 
     boolean isPending();
 
+    boolean isActive();
+
     // secret
 
     @Nullable

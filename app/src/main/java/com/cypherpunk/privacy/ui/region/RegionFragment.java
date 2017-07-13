@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 
 import com.cypherpunk.privacy.CypherpunkApplication;
 import com.cypherpunk.privacy.R;
+import com.cypherpunk.privacy.datasource.account.Account;
 import com.cypherpunk.privacy.datasource.vpn.Region;
 import com.cypherpunk.privacy.datasource.vpn.VpnServer;
 import com.cypherpunk.privacy.datasource.vpn.VpnServerComparator;
@@ -19,7 +20,6 @@ import com.cypherpunk.privacy.domain.model.AccountSetting;
 import com.cypherpunk.privacy.domain.model.VpnSetting;
 import com.cypherpunk.privacy.domain.repository.NetworkRepository;
 import com.cypherpunk.privacy.domain.repository.VpnServerRepository;
-import com.cypherpunk.privacy.domain.repository.retrofit.result.StatusResult;
 import com.cypherpunk.privacy.vpn.VpnManager;
 
 import java.util.Collections;
@@ -31,11 +31,9 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
-import io.reactivex.Completable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.disposables.Disposables;
-import io.reactivex.functions.Function;
 import io.reactivex.observers.DisposableCompletableObserver;
 import io.reactivex.schedulers.Schedulers;
 import timber.log.Timber;
@@ -157,18 +155,10 @@ public class RegionFragment extends Fragment {
         return regionList;
     }
 
-    private void syncServerList() {
-        disposable = networkRepository.getAccountStatus()
-                .flatMapCompletable(new Function<StatusResult, Completable>() {
-                    @Override
-                    public Completable apply(StatusResult result) throws Exception {
-                        accountSetting.updateAccount(result.account);
-                        return RegionApplicationService.updateServer(networkRepository,
-                                result.account.type(),
-                                vpnServerRepository,
-                                vpnManager);
-                    }
-                })
+    public void syncServerList() {
+        final Account.Type type = accountSetting.accountType();
+        disposable = RegionApplicationService.updateServer(networkRepository, type,
+                vpnServerRepository, vpnManager)
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeWith(new DisposableCompletableObserver() {

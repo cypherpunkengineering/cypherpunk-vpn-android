@@ -158,6 +158,30 @@ public class ConnectionFragment extends Fragment implements VpnStatusHolder.Stat
         }
     }
 
+    /**
+     * check user is active or not.
+     * if user is not active, disabled connection switch and kill current connection.
+     */
+    public void update() {
+        final boolean isActive = accountSetting.isActive();
+        connectionButton.setEnabled(isActive);
+        if (!isActive) {
+            switch (status) {
+                case CONNECTED:
+                case CONNECTING:
+                    // try disconnect
+                    if (vpnStatusHolder.isDisconnected()) {
+                        // already disconnected
+                        onNewStatus(Status.DISCONNECTED);
+                    } else {
+                        onNewStatus(Status.DISCONNECTING);
+                        vpnManager.stop();
+                    }
+                    break;
+            }
+        }
+    }
+
     @OnClick(R.id.connection_button)
     void onConnectionButtonClicked() {
         switch (status) {

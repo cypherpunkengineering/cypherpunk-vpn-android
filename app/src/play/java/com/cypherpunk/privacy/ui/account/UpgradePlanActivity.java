@@ -103,7 +103,7 @@ public class UpgradePlanActivity extends BillingActivity {
     protected void purchase(@NonNull PurchaseItem.Type type) {
         final Subscription subscription = accountSetting.subscription();
         List<String> oldSkus = null;
-        switch (subscription.renewal()) {
+        switch (subscription.type()) {
             case MONTHLY:
                 oldSkus = new ArrayList<>();
                 oldSkus.add(SKU_MONTHLY);

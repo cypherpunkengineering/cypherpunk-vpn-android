@@ -186,7 +186,7 @@ public abstract class BillingActivity extends AppCompatActivity {
         }
 
         final Subscription subscription = accountSetting.subscription();
-        switch (subscription.renewal()) {
+        switch (subscription.type()) {
             case NONE:
                 break;
             case MONTHLY:

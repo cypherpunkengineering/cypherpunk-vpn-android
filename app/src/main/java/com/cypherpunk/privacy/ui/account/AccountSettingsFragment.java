@@ -220,11 +220,10 @@ public class AccountSettingsFragment extends PreferenceFragmentCompat {
                     accountPreference.setInfo(accountSetting.email(), accountSetting.accountType(),
                             subscription);
 
-                    final Subscription.Renewal renewal = subscription.renewal();
+                    final Subscription.Type type = subscription.type();
 
-                    final boolean upgradeVisible = renewal != Subscription.Renewal.ANNUALLY
-                            && renewal != Subscription.Renewal.FOREVER
-                            && renewal != Subscription.Renewal.LIFETIME;
+                    final boolean upgradeVisible = type != Subscription.Type.ANNUALLY
+                            && type != Subscription.Type.FOREVER;
                     findPreference("upgrade").setVisible(upgradeVisible);
                     break;
                 }

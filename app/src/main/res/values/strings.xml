@@ -233,11 +233,12 @@
     <string name="account_type_developer">Developer</string>
 
     <!-- subscription type -->
+    <string name="account_plan_trial">Trial</string>
+    <string name="account_plan_daily">Daily</string>
     <string name="account_plan_monthly">Monthly</string>
     <string name="account_plan_semiannually">Semiannually</string>
     <string name="account_plan_annually">Annually</string>
     <string name="account_plan_forever">Forever</string>
-    <string name="account_plan_lifetime">Lifetime</string>
 
     <!-- subscription expiration -->
     <string name="account_plan_expiration_format">MMM dd, yyyy</string>

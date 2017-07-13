@@ -17,7 +17,9 @@ import com.cypherpunk.privacy.R;
 import com.cypherpunk.privacy.datasource.vpn.VpnServer;
 import com.cypherpunk.privacy.domain.model.AccountSetting;
 import com.cypherpunk.privacy.domain.model.VpnSetting;
+import com.cypherpunk.privacy.domain.repository.NetworkRepository;
 import com.cypherpunk.privacy.domain.repository.VpnServerRepository;
+import com.cypherpunk.privacy.domain.repository.retrofit.result.StatusResult;
 import com.cypherpunk.privacy.ui.region.RegionFragment;
 import com.cypherpunk.privacy.ui.settings.SettingsFragment;
 import com.cypherpunk.privacy.ui.startup.IdentifyEmailActivity;
@@ -34,6 +36,13 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Optional;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.disposables.Disposables;
+import io.reactivex.functions.Consumer;
+import io.reactivex.observers.DisposableSingleObserver;
+import io.reactivex.schedulers.Schedulers;
+import timber.log.Timber;
 
 public class MainActivity extends AppCompatActivity implements
         SettingsFragment.SettingsFragmentListener,
@@ -51,6 +60,12 @@ public class MainActivity extends AppCompatActivity implements
 
     @Inject
     VpnStatusHolder vpnStatusHolder;
+
+    @Inject
+    NetworkRepository networkRepository;
+
+    @NonNull
+    private Disposable disposable = Disposables.empty();
 
     private ConnectionFragment connectionFragment;
     private RegionFragment regionFragment;
@@ -130,6 +145,39 @@ public class MainActivity extends AppCompatActivity implements
             mapView.setVpnServer(vpnServer);
             connectionFragment.setVpnServer(vpnServer);
         }
+
+        checkAccount();
+    }
+
+    @Override
+    public void onDestroy() {
+        disposable.dispose();
+        super.onDestroy();
+    }
+
+    private void checkAccount() {
+        disposable = networkRepository.getAccountStatus()
+                .subscribeOn(Schedulers.newThread())
+                .doOnSuccess(new Consumer<StatusResult>() {
+                    @Override
+                    public void accept(StatusResult result) throws Exception {
+                        accountSetting.updateAccount(result.account);
+                        accountSetting.updateSubscription(result.subscription);
+                    }
+                })
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(new DisposableSingleObserver<StatusResult>() {
+                    @Override
+                    public void onSuccess(StatusResult result) {
+                        connectionFragment.update();
+                        regionFragment.syncServerList();
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        Timber.e(e);
+                    }
+                });
     }
 
     @Optional

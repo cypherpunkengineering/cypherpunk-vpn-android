@@ -6,7 +6,7 @@ import com.cypherpunk.privacy.datasource.account.Account;
 import com.cypherpunk.privacy.domain.repository.NetworkRepository;
 import com.cypherpunk.privacy.domain.repository.retrofit.adapter.AccountTypeAdapter;
 import com.cypherpunk.privacy.domain.repository.retrofit.adapter.ExpirationAdapter;
-import com.cypherpunk.privacy.domain.repository.retrofit.adapter.RenewalAdapter;
+import com.cypherpunk.privacy.domain.repository.retrofit.adapter.SubscriptionTypeAdapter;
 import com.cypherpunk.privacy.domain.repository.retrofit.requst.ChangeEmailRequest;
 import com.cypherpunk.privacy.domain.repository.retrofit.requst.ChangePasswordRequest;
 import com.cypherpunk.privacy.domain.repository.retrofit.requst.EmailRequest;
@@ -40,7 +40,7 @@ public class RetrofitRepository implements NetworkRepository {
                 .baseUrl(CypherpunkService.ENDPOINT)
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .addConverterFactory(MoshiConverterFactory.create(new Moshi.Builder()
-                        .add(new RenewalAdapter())
+                        .add(new SubscriptionTypeAdapter())
                         .add(new ExpirationAdapter())
                         .add(new AccountTypeAdapter())
                         .build()))
