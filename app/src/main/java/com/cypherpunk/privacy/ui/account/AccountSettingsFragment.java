@@ -107,6 +107,13 @@ public class AccountSettingsFragment extends PreferenceFragmentCompat {
 
         accountPreference = (AccountPreference) findPreference(getString(R.string.account_preference_account));
         accountPreference.setInfo(accountSetting.email(), accountSetting.accountType(), subscription);
+        accountPreference.setAccountPreferenceListener(new AccountPreference.AccountPreferenceListener() {
+            @Override
+            public void onRenewNowClicked() {
+                final String url = Urls.UPGRADE + "?secret=" + accountSetting.secret();
+                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url)));
+            }
+        });
 
         checkAccount();
 
@@ -114,8 +121,8 @@ public class AccountSettingsFragment extends PreferenceFragmentCompat {
         upgrade.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
-                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://cypherpunk.com/account?secret=foo")));
-//                startActivityForResult(new Intent(getContext(), UpgradePlanActivity.class), REQUEST_CODE_UPGRADE_PLAN);
+                final String url = Urls.UPGRADE + "?secret=" + accountSetting.secret();
+                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url)));
                 return true;
             }
         });

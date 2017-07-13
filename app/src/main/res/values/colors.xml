@@ -75,12 +75,16 @@
     <color name="green2">#ff19474c</color>
     <color name="green4">#ff003333</color>
 
+    <color name="green5">#1e9664</color>
+    <color name="green5_65">#a61e9664</color>
+
     <color name="yellow">#fff8cf1c</color>
     <color name="yellow2">#fff8e71c</color>
     <color name="yellow3_80">#ccffc864</color>
     <color name="orange_80">#ccfa783c</color>
     <color name="red2">#ffe95f40</color>
     <color name="red">#ffb43b2e</color>
+    <color name="pink">#ff9988</color>
 
     <color name="divider">@color/white20</color>
 

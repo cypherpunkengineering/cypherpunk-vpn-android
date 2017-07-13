@@ -195,6 +195,7 @@
     <!-- account setting -->
     <string name="account_setting_header_account">My Account</string>
     <string name="account_setting_username">username</string>
+    <string name="account_setting_renew_now">renew now</string>
     <string name="account_setting_category_type">Account Type</string>
     <string name="account_setting_category_settings">Account Settings</string>
     <string name="account_setting_upgrade">Manage Account</string>
@@ -227,10 +228,11 @@
     <string name="account_preference_license_information">preference_license_information</string>
 
     <!-- account type -->
-    <string name="account_type_free">Free</string>
-    <string name="account_type_premium">Premium</string>
-    <string name="account_type_organization">Organization</string>
-    <string name="account_type_developer">Developer</string>
+    <string name="account_type_free">Free Account</string>
+    <string name="account_type_premium">Premium Account</string>
+    <string name="account_type_organization">Organization Account</string>
+    <string name="account_type_developer">Developer Account</string>
+    <string name="account_type_expired">Expired Account</string>
 
     <!-- subscription type -->
     <string name="account_plan_trial">Trial</string>
@@ -241,7 +243,7 @@
     <string name="account_plan_forever">Forever</string>
 
     <!-- subscription expiration -->
-    <string name="account_plan_expired_format">Expired on M/d/yyyy</string>
+    <string name="account_plan_expired">Expired on %1$s</string>
     <string name="account_plan_expires">Expires</string>
     <string name="account_plan_renews">Renews</string>
 

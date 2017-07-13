@@ -5,26 +5,29 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/preference_item_background"
-    android:gravity="center_horizontal"
-    android:orientation="vertical">
+    android:background="@color/preference_item_background">
 
     <ImageView
         android:id="@+id/image"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:layout_marginTop="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/username_icon"
         app:layout_constraintDimensionRatio="29:10"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_chainStyle="spread_inside"
         tools:ignore="ContentDescription"/>
 
     <ImageView
         android:id="@+id/username_icon"
-        android:layout_width="55dp"
-        android:layout_height="40dp"
+        android:layout_width="56dp"
+        android:layout_height="44dp"
         android:layout_marginTop="12dp"
         android:background="@color/cyan_blue_25"
+        app:layout_constraintBottom_toTopOf="@+id/privacy_icon"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toBottomOf="@id/image"
         tools:ignore="ContentDescription"/>
@@ -33,6 +36,7 @@
         android:id="@+id/username_label"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
         android:text="@string/account_setting_username"
         android:textAllCaps="true"
         android:textColor="@color/cyan3_50"
@@ -57,12 +61,12 @@
 
     <ImageView
         android:id="@+id/privacy_icon"
-        android:layout_width="55dp"
-        android:layout_height="40dp"
+        android:layout_width="56dp"
+        android:layout_height="44dp"
         android:layout_marginBottom="6dp"
         android:scaleType="center"
         android:src="@drawable/ic_key"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/renew"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toBottomOf="@id/username_icon"
         tools:ignore="ContentDescription"/>
@@ -71,6 +75,7 @@
         android:id="@+id/type"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
         android:textColor="?colorAccent"
         android:textSize="17sp"
         app:fontName="DosisMedium"
@@ -88,5 +93,24 @@
         app:layout_constraintLeft_toRightOf="@id/privacy_icon"
         app:layout_constraintTop_toBottomOf="@id/type"
         tools:text="Renews On 02/02/2016"/>
+
+    <com.cypherpunk.privacy.ui.common.TypefaceTextView
+        android:id="@+id/renew"
+        android:layout_width="0dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="0dp"
+        android:background="@drawable/renew_background"
+        android:gravity="center_vertical"
+        android:paddingLeft="56dp"
+        android:paddingRight="56dp"
+        android:text="@string/account_setting_renew_now"
+        android:textAllCaps="true"
+        android:textColor="@color/renew_text_color"
+        app:fontName="DosisMedium"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/privacy_icon"/>
 
 </android.support.constraint.ConstraintLayout>

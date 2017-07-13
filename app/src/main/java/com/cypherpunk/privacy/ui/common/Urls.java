@@ -9,4 +9,5 @@ public class Urls {
     public static final String HELP = "https://cypherpunk.com/support";
     public static final String TERMS_OF_SERVICE = "https://cypherpunk.com/terms-of-service";
     public static final String PRIVACY_POLICY = "https://cypherpunk.com/privacy-policy";
+    public static final String UPGRADE = "https://cypherpunk.com/account/upgrade";
 }

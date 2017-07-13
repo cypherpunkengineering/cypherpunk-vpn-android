@@ -1,12 +1,15 @@
 package com.cypherpunk.privacy.ui.account;
 
 import android.content.Context;
+import android.support.annotation.IntRange;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.preference.Preference;
 import android.support.v7.preference.PreferenceViewHolder;
 import android.text.format.DateFormat;
 import android.util.AttributeSet;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -16,7 +19,6 @@ import com.cypherpunk.privacy.datasource.account.Subscription;
 
 import java.util.Calendar;
 import java.util.Date;
-import java.util.Locale;
 
 import butterknife.ButterKnife;
 
@@ -48,8 +50,22 @@ public class AccountPreference extends Preference {
         final TextView typeView = ButterKnife.findById(holder.itemView, R.id.type);
         final TextView expirationViewView = ButterKnife.findById(holder.itemView, R.id.expiration);
         final ImageView imageView = ButterKnife.findById(holder.itemView, R.id.image);
+        final View renewView = ButterKnife.findById(holder.itemView, R.id.renew);
+
+        final Context ctx = getContext();
+
+        renewView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (listener != null) {
+                    listener.onRenewNowClicked();
+                }
+            }
+        });
 
         usernameView.setText(username);
+        typeView.setTextColor(ContextCompat.getColor(ctx, R.color.yellow));
+        renewView.setVisibility(View.GONE);
 
         if (type != null) {
             switch (type) {
@@ -77,8 +93,6 @@ public class AccountPreference extends Preference {
             final Date expiration = subscription.expiration();
             final boolean isRenews = subscription.isRenews();
 
-            final Context ctx = getContext();
-
             switch (type) {
                 case NONE:
                     expirationViewView.setText("");
@@ -91,10 +105,21 @@ public class AccountPreference extends Preference {
                     if (expiration == null) {
                         expirationViewView.setText("");
                     } else {
-                        final Calendar now = Calendar.getInstance(Locale.ENGLISH);
-                        final Calendar exp = Calendar.getInstance();
-                        exp.setTimeInMillis(expiration.getTime());
-                        expirationViewView.setText(expirationText(ctx, isRenews, now, exp));
+                        final Date now = new Date();
+                        final long diffHours = (expiration.getTime() - now.getTime()) / (60 * 60 * 1000);
+                        if (diffHours < 0) {
+                            expirationViewView.setText(ctx.getString(R.string.account_plan_expired,
+                                    DateFormat.getDateFormat(ctx).format(expiration)));
+                            expirationViewView.setTextColor(ContextCompat.getColor(ctx, R.color.pink));
+
+                            typeView.setText(R.string.account_type_expired);
+                            typeView.setTextColor(ContextCompat.getColor(ctx, R.color.white50));
+
+                            renewView.setVisibility(View.VISIBLE);
+                        } else {
+                            expirationViewView.setTextColor(ContextCompat.getColor(ctx, R.color.cyan3_50));
+                            expirationViewView.setText(expirationText(ctx, isRenews, diffHours, now, expiration));
+                        }
                     }
                     break;
                 case FOREVER:
@@ -104,13 +129,8 @@ public class AccountPreference extends Preference {
         }
     }
 
-    private static String expirationText(@NonNull Context ctx, boolean isRenews,
-                                         @NonNull Calendar now, @NonNull Calendar expiration) {
-
-        final long diff = (expiration.getTimeInMillis() - now.getTimeInMillis()) / (60 * 60 * 1000); // hours
-        if (diff < 0) {
-            return DateFormat.format(ctx.getString(R.string.account_plan_expired_format), expiration).toString();
-        }
+    private static String expirationText(@NonNull Context ctx, boolean isRenews, @IntRange(from = 0) long diff,
+                                         @NonNull Date nowDate, @NonNull Date expirationDate) {
 
         final String prefix = ctx.getString(isRenews
                 ? R.string.account_plan_renews : R.string.account_plan_expires);
@@ -121,6 +141,12 @@ public class AccountPreference extends Preference {
         if (diff < 6) {
             return prefix + " in less than six hours";
         }
+
+        final Calendar now = Calendar.getInstance();
+        now.setTime(nowDate);
+
+        final Calendar expiration = Calendar.getInstance();
+        expiration.setTime(expirationDate);
 
         final int expirationDayOfMonth = expiration.get(Calendar.DAY_OF_MONTH);
         final int nowDayOfMonth = now.get(Calendar.DAY_OF_MONTH);
@@ -158,5 +184,16 @@ public class AccountPreference extends Preference {
         this.type = type;
         this.subscription = subscription;
         notifyChanged();
+    }
+
+    interface AccountPreferenceListener {
+        void onRenewNowClicked();
+    }
+
+    @Nullable
+    private AccountPreferenceListener listener;
+
+    void setAccountPreferenceListener(@Nullable AccountPreferenceListener l) {
+        listener = l;
     }
 }
