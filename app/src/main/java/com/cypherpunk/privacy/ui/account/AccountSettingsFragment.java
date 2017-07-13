@@ -91,7 +91,8 @@ public class AccountSettingsFragment extends PreferenceFragmentCompat {
         upgrade.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
-                startActivityForResult(new Intent(getContext(), UpgradePlanActivity.class), REQUEST_CODE_UPGRADE_PLAN);
+                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://cypherpunk.com/account?secret=foo")));
+//                startActivityForResult(new Intent(getContext(), UpgradePlanActivity.class), REQUEST_CODE_UPGRADE_PLAN);
                 return true;
             }
         });
