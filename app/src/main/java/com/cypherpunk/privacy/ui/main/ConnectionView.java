@@ -28,6 +28,8 @@ import com.cypherpunk.privacy.ui.common.FontCache;
  */
 public class ConnectionView extends View {
 
+    private static final String CIPHER_TEXT = "x`8 0 # = v 7 mb\" | y 9 # 8 M } _ + kl $ #mn x -( }e f l]> ! 03 @jno x~`.xl ty }[sx k j ";
+
     private enum Status {
         DISCONNECTED,
         CONNECTING,
@@ -322,8 +324,15 @@ public class ConnectionView extends View {
         final float density = getContext().getResources().getDisplayMetrics().density;
 
         if (connectionStatus == Status.CONNECTED && textPosition > 0) {
-            final String text = "x`8 0 # = v 7 mb\" | y 9 # 8 M } _ + kl $ #mn x -( }e f l]> ! 03 @jno x~`.xl ty }[sx k j";
-            final float textLength = paint.measureText(text);
+            final float cipherTextLength = paint.measureText(CIPHER_TEXT);
+            final int width = getWidth() * 2;
+
+            String text = "";
+            int textLength = 0;
+            while (textLength < width) {
+                textLength += cipherTextLength;
+                text += CIPHER_TEXT;
+            }
 
             paint.setShader(null);
             paint.setStyle(Paint.Style.FILL);
@@ -331,15 +340,15 @@ public class ConnectionView extends View {
             paint.setTypeface(FontCache.getDosisSemiBold(getContext()));
 
             final int count2 = canvas.save();
-            canvas.translate(-textLength * textPosition, centerY - 2 * density);
+            canvas.translate(-cipherTextLength * textPosition, centerY - 2 * density);
             paint.setColor(Color.rgb(127, 255, 251));
-            canvas.drawText(text + text, 0f, 0f, paint);
+            canvas.drawText(text, 0f, 0f, paint);
             canvas.restoreToCount(count2);
 
             final int count3 = canvas.save();
-            canvas.translate(-textLength + textLength * textPosition, centerY + 13 * density);
+            canvas.translate(-cipherTextLength + cipherTextLength * textPosition, centerY + 13 * density);
             paint.setColor(Color.rgb(95, 191, 187));
-            canvas.drawText(text + text, 0f, 0f, paint);
+            canvas.drawText(text, 0f, 0f, paint);
             canvas.restoreToCount(count3);
         }
 
