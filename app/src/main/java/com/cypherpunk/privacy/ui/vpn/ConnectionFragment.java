@@ -165,7 +165,9 @@ public class ConnectionFragment extends Fragment implements VpnStatusHolder.Stat
     public void update() {
         final boolean isActive = accountSetting.isActive();
         connectionButton.setEnabled(isActive);
+        connectionButton.setAlpha(isActive ? 1f : 0.3f);
         if (!isActive) {
+            statusView.setText(R.string.status_account_expired);
             switch (status) {
                 case CONNECTED:
                 case CONNECTING:
@@ -252,6 +254,9 @@ public class ConnectionFragment extends Fragment implements VpnStatusHolder.Stat
                     statusView.setText(R.string.status_disconnecting);
                     break;
             }
+        }
+        if (!connectionButton.isEnabled()) {
+            statusView.setText(R.string.status_account_expired);
         }
     }
 

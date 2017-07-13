@@ -12,6 +12,7 @@
     <string name="status_disconnecting">Disconnecting…</string>
     <string name="status_connecting">Connecting…</string>
     <string name="status_connected">Connected</string>
+    <string name="status_account_expired">Account Expired</string>
 
     <!-- region -->
     <string name="region_level_badge_dev">dev</string>
