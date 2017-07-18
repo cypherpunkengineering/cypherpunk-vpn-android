@@ -15,16 +15,13 @@ import com.cypherpunk.privacy.R;
 import com.cypherpunk.privacy.datasource.account.Account;
 import com.cypherpunk.privacy.datasource.vpn.Region;
 import com.cypherpunk.privacy.datasource.vpn.VpnServer;
-import com.cypherpunk.privacy.datasource.vpn.VpnServerComparator;
 import com.cypherpunk.privacy.domain.model.AccountSetting;
 import com.cypherpunk.privacy.domain.model.VpnSetting;
 import com.cypherpunk.privacy.domain.repository.NetworkRepository;
 import com.cypherpunk.privacy.domain.repository.VpnServerRepository;
 import com.cypherpunk.privacy.vpn.VpnManager;
 
-import java.util.Collections;
 import java.util.List;
-import java.util.Locale;
 
 import javax.inject.Inject;
 
@@ -150,9 +147,7 @@ public class RegionFragment extends Fragment {
 
     @NonNull
     private List<VpnServer> getOtherList(@NonNull Region region) {
-        final List<VpnServer> regionList = vpnServerRepository.findAllByRegion(region);
-        Collections.sort(regionList, new VpnServerComparator(Locale.getDefault()));
-        return regionList;
+        return vpnServerRepository.findAllByRegion(region);
     }
 
     public void syncServerList() {

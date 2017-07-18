@@ -127,7 +127,8 @@ public class RealmVpnServerRepository implements VpnServerRepository {
         try {
             final RealmResults<RealmVpnServer> results = realm.where(RealmVpnServer.class)
                     .equalTo(RealmVpnServer.KEY_REGION, region.value())
-                    .findAll();
+                    .findAll()
+                    .sort(RealmVpnServer.KEY_NAME);
             return new ArrayList<VpnServer>(realm.copyFromRealm(results));
         } finally {
             realm.close();
