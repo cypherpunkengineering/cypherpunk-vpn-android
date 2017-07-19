@@ -1,131 +1,168 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
+<ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".ui.startup.LoginActivity">
+    android:layout_height="match_parent">
 
-    <View
-        android:id="@+id/header_background"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:background="@color/black5"
-        app:layout_constraintDimensionRatio="@string/header_ratio"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
-
-    <android.support.v4.widget.Space
-        android:id="@+id/space"
-        android:layout_width="10dp"
-        android:layout_height="1dp"
-        app:layout_constraintBottom_toBottomOf="@+id/header_background"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"/>
-
-    <ImageView
-        android:id="@+id/arrow"
-        android:layout_width="24dp"
-        android:layout_height="12dp"
-        android:src="@drawable/ic_arrow_drop_down_vector"
-        android:tint="@color/black5"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/space"
-        tools:ignore="ContentDescription"/>
-
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/toolbar"
-        android:layout_width="0dp"
-        android:layout_height="?attr/actionBarSize"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"/>
-
-    <com.cypherpunk.privacy.ui.common.TypefaceTextView
-        android:id="@+id/welcome"
-        android:layout_width="wrap_content"
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="2dp"
-        android:text="@string/sign_in_header"
-        android:textColor="@color/green_blue"
-        android:textSize="16sp"
-        app:fontName="DosisMedium"
-        app:layout_constraintBottom_toTopOf="@+id/mail"
-        app:layout_constraintLeft_toLeftOf="@+id/mail"
-        app:layout_constraintTop_toTopOf="@+id/header_background"
-        app:layout_constraintVertical_chainStyle="packed"/>
+        tools:context=".ui.startup.LoginActivity">
 
-    <com.cypherpunk.privacy.ui.common.TypefaceTextView
-        android:id="@+id/mail"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/logo"
-        android:textColor="?android:textColorPrimary"
-        android:textSize="18sp"
-        app:fontName="DosisSemiBold"
-        app:layout_constraintBottom_toBottomOf="@+id/header_background"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/welcome"
-        tools:text="wiz@cypherpunk.com"/>
+        <com.cypherpunk.privacy.ui.startup.PipeView
+            android:id="@+id/pipe"
+            android:layout_width="0dp"
+            android:layout_height="34dp"
+            android:layout_marginTop="101dp"
+            android:background="@drawable/pipe_background"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
 
-    <android.support.design.widget.TextInputLayout
-        android:id="@+id/text_input_layout"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="32dp"
-        android:layout_marginRight="32dp"
-        android:layout_marginTop="32dp"
-        app:hintEnabled="false"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/arrow"
-        app:layout_constraintWidth_max="352dp">
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginTop="2dp"
+            android:background="@drawable/pipe_overlay"
+            app:layout_constraintBottom_toBottomOf="@id/pipe"
+            app:layout_constraintLeft_toLeftOf="@id/pipe"
+            app:layout_constraintRight_toRightOf="@id/pipe"
+            app:layout_constraintTop_toTopOf="@id/pipe"/>
 
-        <android.support.design.widget.TextInputEditText
-            android:id="@+id/edit_text"
-            android:layout_width="match_parent"
+        <ImageView
+            android:layout_width="210dp"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:background="@drawable/edit_text_background"
-            android:hint="@string/hint_password"
-            android:imeOptions="actionDone"
-            android:inputType="textPassword"
-            android:maxLines="1"
-            android:textSize="18sp">
+            android:layout_marginTop="5dp"
+            android:scaleType="fitEnd"
+            android:src="@drawable/login_mascot"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="ContentDescription"/>
 
-            <requestFocus/>
+        <View
+            android:id="@+id/header_background"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="@color/black5"
+            app:layout_constraintDimensionRatio="@string/header_ratio"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/pipe"/>
 
-        </android.support.design.widget.TextInputEditText>
+        <android.support.v4.widget.Space
+            android:id="@+id/space"
+            android:layout_width="10dp"
+            android:layout_height="1dp"
+            app:layout_constraintBottom_toBottomOf="@+id/header_background"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"/>
 
-    </android.support.design.widget.TextInputLayout>
+        <ImageView
+            android:id="@+id/arrow"
+            android:layout_width="24dp"
+            android:layout_height="12dp"
+            android:src="@drawable/ic_arrow_drop_down_vector"
+            android:tint="@color/black5"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/space"
+            tools:ignore="ContentDescription"/>
 
-    <com.cypherpunk.privacy.ui.common.TypefaceButton
-        android:id="@+id/login_button"
-        style="@style/Widget.CypherPunk.Button.Colored"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:text="@string/sign_in"
-        android:theme="@style/ButtonTheme"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/text_input_layout"/>
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="0dp"
+            android:layout_height="?attr/actionBarSize"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"/>
 
-    <com.cypherpunk.privacy.ui.common.TypefaceTextView
-        android:id="@+id/forgot_password_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:background="?android:attr/selectableItemBackground"
-        android:padding="8dp"
-        android:text="@string/sign_in_forgot_password"
-        android:textColor="?android:textColorSecondary"
-        app:fontName="DosisMedium"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/login_button"/>
+        <com.cypherpunk.privacy.ui.common.TypefaceTextView
+            android:id="@+id/welcome"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="2dp"
+            android:text="@string/sign_in_header"
+            android:textColor="@color/green_blue"
+            android:textSize="16sp"
+            app:fontName="DosisMedium"
+            app:layout_constraintBottom_toTopOf="@+id/mail"
+            app:layout_constraintLeft_toLeftOf="@+id/mail"
+            app:layout_constraintTop_toTopOf="@+id/header_background"
+            app:layout_constraintVertical_chainStyle="packed"/>
 
-</android.support.constraint.ConstraintLayout>
+        <com.cypherpunk.privacy.ui.common.TypefaceTextView
+            android:id="@+id/mail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/logo"
+            android:textColor="?android:textColorPrimary"
+            android:textSize="18sp"
+            app:fontName="DosisSemiBold"
+            app:layout_constraintBottom_toBottomOf="@+id/header_background"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/welcome"
+            tools:text="wiz@cypherpunk.com"/>
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/text_input_layout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="32dp"
+            android:layout_marginRight="32dp"
+            android:layout_marginTop="32dp"
+            app:hintEnabled="false"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/arrow"
+            app:layout_constraintWidth_max="352dp">
+
+            <android.support.design.widget.TextInputEditText
+                android:id="@+id/edit_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:background="@drawable/edit_text_background"
+                android:hint="@string/hint_password"
+                android:imeOptions="actionDone"
+                android:inputType="textPassword"
+                android:maxLines="1"
+                android:textSize="18sp">
+
+                <requestFocus/>
+
+            </android.support.design.widget.TextInputEditText>
+
+        </android.support.design.widget.TextInputLayout>
+
+        <com.cypherpunk.privacy.ui.common.TypefaceButton
+            android:id="@+id/login_button"
+            style="@style/Widget.CypherPunk.Button.Colored"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@string/sign_in"
+            android:theme="@style/ButtonTheme"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/text_input_layout"/>
+
+        <com.cypherpunk.privacy.ui.common.TypefaceTextView
+            android:id="@+id/forgot_password_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:background="?android:attr/selectableItemBackground"
+            android:padding="8dp"
+            android:text="@string/sign_in_forgot_password"
+            android:textColor="?android:textColorSecondary"
+            app:fontName="DosisMedium"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/login_button"/>
+
+    </android.support.constraint.ConstraintLayout>
+
+</ScrollView>
