@@ -142,8 +142,14 @@ public class IdentifyEmailActivity extends AppCompatActivity {
                             Toast.makeText(context, R.string.error_no_internet, Toast.LENGTH_SHORT).show();
                         } else if (error instanceof HttpException) {
                             HttpException httpException = (HttpException) error;
-                            if (httpException.code() == 401 || httpException.code() == 400) {
-                                startActivity(SignUpActivity.createIntent(context, email));
+                            switch (httpException.code()) {
+                                case 400:
+                                case 401:
+                                    startActivity(SignUpActivity.createIntent(context, email));
+                                    break;
+                                case 402:
+                                    startActivity(PendingActivity.createIntent(context));
+                                    break;
                             }
                         }
                     }

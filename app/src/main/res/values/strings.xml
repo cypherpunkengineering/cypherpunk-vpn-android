@@ -88,6 +88,10 @@
     <string name="sign_in_forgot_password"><u>Forgot password?</u></string>
     <string name="sign_in_sent_password_recovery">We sent you password recovery email.</string>
 
+    <!-- pending -->
+    <string name="pending_title">Please wait a little longer!</string>
+    <string name="pending_description">Sorry, we are currently only offering limited previews via invitations only.\n\nWe\'ll let you know as soon as we launch, so please keep an eye on your inbox!</string>
+
     <!-- tutorial -->
     <string name="tutorial_allow">Allow</string>
     <string name="tutorial_do_not_allow">Don’t allow</string>

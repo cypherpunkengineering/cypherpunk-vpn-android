@@ -87,7 +87,7 @@ public class MainActivity extends AppCompatActivity implements
 
         if (accountSetting.isPending()) {
             TaskStackBuilder.create(this)
-                    .addNextIntent(PendingActivity.createIntent(this, accountSetting.email()))
+                    .addNextIntent(PendingActivity.createIntent(this))
                     .startActivities();
             return;
         }

@@ -20,13 +20,9 @@ import butterknife.ButterKnife;
  */
 public class PendingActivity extends AppCompatActivity {
 
-    private static final String EXTRA_EMAIL = "email";
-
     @NonNull
-    public static Intent createIntent(@NonNull Context context, @Nullable String email) {
-        final Intent intent = new Intent(context, PendingActivity.class);
-        intent.putExtra(EXTRA_EMAIL, email);
-        return intent;
+    public static Intent createIntent(@NonNull Context context) {
+        return new Intent(context, PendingActivity.class);
     }
 
     @Override
@@ -40,15 +36,11 @@ public class PendingActivity extends AppCompatActivity {
         }
 
         final Toolbar toolbar = ButterKnife.findById(this, R.id.toolbar);
-        final TextView mailView = ButterKnife.findById(this, R.id.mail);
 
         setSupportActionBar(toolbar);
         final ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayShowTitleEnabled(false);
         }
-
-        final String email = getIntent().getStringExtra(EXTRA_EMAIL);
-        mailView.setText(email);
     }
 }
