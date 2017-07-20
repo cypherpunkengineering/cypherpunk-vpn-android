@@ -35,7 +35,7 @@ public interface NetworkRepository {
     Completable changePassword(@NonNull String oldPassword, @NonNull String newPassword);
 
     @NonNull
-    Single<StatusResult> getAccountStatus();
+    Single<StatusResult> accountStatus();
 
     @NonNull
     Single<StatusResult> upgradeAccount(String accountId, @NonNull String sku, String purchaseJson);

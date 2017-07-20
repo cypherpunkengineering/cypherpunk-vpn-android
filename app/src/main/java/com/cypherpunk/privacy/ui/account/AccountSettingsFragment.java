@@ -265,7 +265,7 @@ public class AccountSettingsFragment extends PreferenceFragmentCompat {
     }
 
     private void checkAccount() {
-        disposable = networkRepository.getAccountStatus()
+        disposable = networkRepository.accountStatus()
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeWith(new DisposableSingleObserver<StatusResult>() {

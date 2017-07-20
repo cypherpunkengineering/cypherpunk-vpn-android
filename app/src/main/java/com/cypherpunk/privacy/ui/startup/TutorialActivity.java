@@ -179,7 +179,7 @@ public class TutorialActivity extends AppCompatActivity {
     }
 
     private void getServerList() {
-        disposable = networkRepository.getAccountStatus()
+        disposable = networkRepository.accountStatus()
                 .flatMapCompletable(new Function<StatusResult, Completable>() {
                     @Override
                     public Completable apply(StatusResult result) throws Exception {

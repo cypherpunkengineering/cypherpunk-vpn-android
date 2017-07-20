@@ -92,7 +92,7 @@ public class RetrofitRepository implements NetworkRepository {
 
     @NonNull
     @Override
-    public Single<StatusResult> getAccountStatus() {
+    public Single<StatusResult> accountStatus() {
         return service.getAccountStatus();
     }
 

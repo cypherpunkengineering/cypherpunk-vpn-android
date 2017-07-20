@@ -149,7 +149,7 @@ public class ConfirmationEmailActivity extends AppCompatActivity {
 
         final Context context = this;
 
-        disposables.add(networkRepository.getAccountStatus()
+        disposables.add(networkRepository.accountStatus()
                 .map(new Function<StatusResult, Boolean>() {
                     @Override
                     public Boolean apply(StatusResult result) throws Exception {
