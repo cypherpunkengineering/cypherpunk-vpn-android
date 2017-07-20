@@ -113,7 +113,7 @@
     <string name="setting_vpn_dns_block_malware">Block Malware</string>
     <string name="setting_vpn_dns_block_ads">Block Ads</string>
     <string name="setting_internet_kill_switch">Internet Killswitch</string>
-    <string name="setting_tunnel_mode">Tunnel Mode</string>
+    <string name="setting_tunnel_mode">Encryption</string>
     <string name="setting_vpn_remote_port">Remote Port</string>
     <string name="setting_split_tunnel">Split Tunnel</string>
     <string name="setting_split_tunnel_summary">Configure which apps to route through VPN</string>
@@ -164,7 +164,7 @@
     <string name="internet_kill_switch_warning_summary">You will not be able to access the internet while disconnected!</string>
 
     <!-- tunnel mode -->
-    <string name="title_activity_tunnel_mode">Tunnel Mode</string>
+    <string name="title_activity_tunnel_mode">Encryption</string>
     <string name="tunnel_mode_recommended">RECOMMENDED</string>
     <string name="tunnel_mode_recommended_title">Recommended Default</string>
     <string name="tunnel_mode_recommended_summary">Good balance of speed and privacy.</string>
