@@ -14,12 +14,14 @@ public class PurchaseItem {
     private final String title;
     private final String description;
     private final String price;
+    private final long priceMicros;
 
-    public PurchaseItem(@NonNull Type type, String title, String description, String price) {
+    public PurchaseItem(@NonNull Type type, String title, String description, String price, long priceMicros) {
         this.type = type;
         this.title = title;
         this.description = description;
         this.price = price;
+        this.priceMicros = priceMicros;
     }
 
     @NonNull
@@ -37,5 +39,9 @@ public class PurchaseItem {
 
     public String getPrice() {
         return price;
+    }
+
+    public long getPriceMicros() {
+        return priceMicros;
     }
 }

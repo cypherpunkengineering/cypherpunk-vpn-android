@@ -109,6 +109,9 @@ public class AccountSettingsFragment extends PreferenceFragmentCompat {
             public void onRenewNowClicked() {
                 final String url = Urls.UPGRADE + "?secret=" + accountSetting.secret();
                 startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url)));
+
+                // TODO: after IAB available
+//                startActivity(new Intent(getContext(), UpgradePlanActivity.class));
             }
         });
 
@@ -238,16 +241,8 @@ public class AccountSettingsFragment extends PreferenceFragmentCompat {
         if (resultCode == Activity.RESULT_OK) {
             switch (requestCode) {
                 case REQUEST_CODE_UPGRADE_PLAN: {
-                    final Subscription subscription = accountSetting.subscription();
-
                     accountPreference.setInfo(accountSetting.email(), accountSetting.accountType(),
-                            subscription);
-
-                    final Subscription.Type type = subscription.type();
-
-                    final boolean upgradeVisible = type != Subscription.Type.ANNUALLY
-                            && type != Subscription.Type.FOREVER;
-                    findPreference("upgrade").setVisible(upgradeVisible);
+                            accountSetting.subscription());
                     break;
                 }
                 case REQUEST_CODE_EDIT_EMAIL: {

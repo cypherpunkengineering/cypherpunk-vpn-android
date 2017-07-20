@@ -20,8 +20,6 @@ import com.cypherpunk.privacy.domain.repository.NetworkRepository;
 import com.cypherpunk.privacy.domain.repository.retrofit.result.StatusResult;
 import com.cypherpunk.privacy.ui.common.FullScreenProgressDialog;
 
-import java.util.List;
-
 import javax.inject.Inject;
 
 import butterknife.BindView;
@@ -32,6 +30,7 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.disposables.Disposables;
 import io.reactivex.observers.DisposableSingleObserver;
 import io.reactivex.schedulers.Schedulers;
+import timber.log.Timber;
 
 public abstract class BillingActivity extends AppCompatActivity {
 
@@ -74,9 +73,9 @@ public abstract class BillingActivity extends AppCompatActivity {
             actionBar.setHomeAsUpIndicator(R.drawable.ic_close_vector);
         }
 
-//        annuallyButton.setVisibility(View.GONE);
-//        monthlyButton.setVisibility(View.GONE);
-//        discountView.setVisibility(View.GONE);
+        annuallyButton.setVisibility(View.GONE);
+        monthlyButton.setVisibility(View.GONE);
+        discountView.setVisibility(View.GONE);
     }
 
     @OnClick(R.id.button_annually)
@@ -160,30 +159,22 @@ public abstract class BillingActivity extends AppCompatActivity {
 
     protected abstract void purchase(@NonNull PurchaseItem.Type type);
 
-    protected void onQueryResult(@NonNull List<PurchaseItem> items) {
-//        final long annuallyPrice = skuDetailsAnnually.getPriceAmountMicros();
-//        final long monthlyPrice = skuDetailsMonthly.getPriceAmountMicros();
-//
-//        final int percent = (int) (100 * (monthlyPrice - annuallyPrice) / monthlyPrice);
-//        discountView.setText("SAVE " + percent + "%");
+    protected void onQueryResult(@NonNull PurchaseItem monthlyItem, @NonNull PurchaseItem annuallyItem) {
+        annuallyButton.setVisibility(View.VISIBLE);
+        monthlyButton.setVisibility(View.VISIBLE);
 
-        for (PurchaseItem item : items) {
-            switch (item.type()) {
-                case MONTHLY:
-                    monthlyButton.setText(item.getPrice() +
-                            "/MO\nBilled Monthly");
-
-                    monthlyButton.setVisibility(View.VISIBLE);
-//                    discountView.setVisibility(View.VISIBLE);
-                    break;
-
-                case ANNUALLY:
-                    annuallyButton.setText(item.getPrice() +
-                            "/MO\nBilled Annually");
-                    annuallyButton.setVisibility(View.VISIBLE);
-                    break;
-            }
+        final long mp = monthlyItem.getPriceMicros();
+        final long ap = annuallyItem.getPriceMicros() / 12;
+        if (mp > 0 && ap > 0) {
+            final int percent = (int) (100 * (mp - ap) / mp);
+            discountView.setText(getString(R.string.upgrade_save_format, percent));
+            discountView.setVisibility(View.VISIBLE);
+        } else {
+            discountView.setVisibility(View.GONE);
         }
+
+        monthlyButton.setText(getString(R.string.upgrade_monthly_format, monthlyItem.getPrice()));
+        annuallyButton.setText(getString(R.string.upgrade_annually_format, annuallyItem.getPrice()));
 
         final Subscription subscription = accountSetting.subscription();
         switch (subscription.type()) {
@@ -202,11 +193,15 @@ public abstract class BillingActivity extends AppCompatActivity {
     protected void onPurchaseResult(@NonNull PurchaseResult purchaseResult) {
         if (purchaseResult.isSuccess()) {
             final String accountId = accountSetting.accountId();
-            upgradeAccount(accountId == null ? "" : accountId, purchaseResult.getSku(),
-                    purchaseResult.getResultJson());
+            final String sku = purchaseResult.getSku();
+            final String resultJson = purchaseResult.getResultJson();
+            if (sku != null && resultJson != null) {
+                upgradeAccount(accountId == null ? "" : accountId, sku, resultJson);
+            } else {
+                Timber.d("purchased. but sku (" + sku + ") or resultJson (" + resultJson + ") is null.");
+            }
         } else {
             Toast.makeText(BillingActivity.this, "purchase failed", Toast.LENGTH_SHORT).show();
         }
     }
-
 }

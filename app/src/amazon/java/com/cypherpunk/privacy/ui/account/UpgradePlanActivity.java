@@ -3,6 +3,7 @@ package com.cypherpunk.privacy.ui.account;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.widget.Toast;
 
 import com.amazon.device.iap.PurchasingListener;
 import com.amazon.device.iap.PurchasingService;
@@ -115,26 +116,38 @@ public class UpgradePlanActivity extends BillingActivity implements PurchasingLi
         final List<PurchaseItem> productItems = new ArrayList<>();
 
         final Map<String, Product> productData = response.getProductData();
+
+        PurchaseItem monthlyItem = null;
+        PurchaseItem annuallyItem = null;
+
         if (productData != null) {
             for (Product product : productData.values()) {
                 switch (product.getSku()) {
                     case SKU_MONTHLY:
-                        productItems.add(new PurchaseItem(PurchaseItem.Type.MONTHLY,
+                        monthlyItem = new PurchaseItem(PurchaseItem.Type.MONTHLY,
                                 product.getTitle(),
                                 product.getDescription(),
-                                product.getPrice()));
+                                product.getPrice(),
+                                0);
                         break;
                     case SKU_ANNUALLY:
-                        productItems.add(new PurchaseItem(PurchaseItem.Type.ANNUALLY,
+                        annuallyItem = new PurchaseItem(PurchaseItem.Type.ANNUALLY,
                                 product.getTitle(),
                                 product.getDescription(),
-                                product.getPrice()));
+                                product.getPrice(),
+                                0);
                         break;
                 }
             }
         }
 
-        onQueryResult(productItems);
+        if (monthlyItem == null || annuallyItem == null) {
+            Toast.makeText(UpgradePlanActivity.this, "Purchase items not found", Toast.LENGTH_SHORT).show();
+            finish();
+            return;
+        }
+
+        onQueryResult(monthlyItem, annuallyItem);
     }
 
     /**

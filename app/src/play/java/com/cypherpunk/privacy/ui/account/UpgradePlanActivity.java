@@ -17,11 +17,13 @@ import com.cypherpunk.privacy.datasource.account.Subscription;
 import java.util.ArrayList;
 import java.util.List;
 
+import timber.log.Timber;
+
 public class UpgradePlanActivity extends BillingActivity {
 
     private static final String PUBLIC_KEY = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAjG76qnaQN3mpl2g5CqND9KIm5oKkKt9vb7bW2i8+Si/8FI2yQKTaKnkGtOxRRNhy0y50S2oNFyuasxWFLHtDCHpodVI9rvJ5zAc+z79Qxrgke1SMzDU1z+oSf3/HWa2yVcAVyBolbvLtras7TXCsKIIWaXbMwccN3L2tW0kZkNkGryqlJJ0Nw/zGCmOY6t5hDZ5Ogh4avlND14naO4P4OqtE0eJh5BJ8WQFUe5mHvp8QLOsN0E6hUr2kf7pLMi9MZ3CR9fFvIk9phiPiB8vDD35c4b22SD5EcWgJCIiIVI6IPhg3cJo4H8ZnKd0O6xmEvAal7YRScGQRMcp6aZLu3wIDAQAB";
-    private static final String SKU_MONTHLY = "monthly1295";
-    private static final String SKU_ANNUALLY = "annually9995";
+    private static final String SKU_MONTHLY = "monthly1195";
+    private static final String SKU_ANNUALLY = "annually6900";
     private static final int RC_REQUEST = 10001;
 
     private IabHelper helper;
@@ -66,8 +68,8 @@ public class UpgradePlanActivity extends BillingActivity {
         @Override
         public void onQueryInventoryFinished(IabResult result, Inventory inv) {
             if (result.isFailure()) {
-                finish();
                 Toast.makeText(UpgradePlanActivity.this, "Problem setting up in-app billing: " + result, Toast.LENGTH_SHORT).show();
+                finish();
                 return;
             }
             if (helper == null) {
@@ -80,21 +82,28 @@ public class UpgradePlanActivity extends BillingActivity {
             final SkuDetails skuDetailsAnnually = inv.getSkuDetails(SKU_ANNUALLY);
             final SkuDetails skuDetailsMonthly = inv.getSkuDetails(SKU_MONTHLY);
 
-            if (skuDetailsMonthly != null) {
-                items.add(new PurchaseItem(PurchaseItem.Type.MONTHLY,
-                        skuDetailsMonthly.getTitle(),
-                        skuDetailsMonthly.getDescription(),
-                        skuDetailsMonthly.getPrice()));
+            if (skuDetailsAnnually == null || skuDetailsMonthly == null) {
+                Toast.makeText(UpgradePlanActivity.this, "Purchase items not found", Toast.LENGTH_SHORT).show();
+                finish();
+                return;
             }
 
-            if (skuDetailsAnnually != null) {
-                items.add(new PurchaseItem(PurchaseItem.Type.ANNUALLY,
-                        skuDetailsAnnually.getTitle(),
-                        skuDetailsAnnually.getDescription(),
-                        skuDetailsAnnually.getPrice()));
-            }
+            Timber.d("UpgradePlanActivity", skuDetailsMonthly.toString());
+            Timber.d("UpgradePlanActivity", skuDetailsAnnually.toString());
 
-            onQueryResult(items);
+            final PurchaseItem monthlyItem = new PurchaseItem(PurchaseItem.Type.MONTHLY,
+                    skuDetailsMonthly.getTitle(),
+                    skuDetailsMonthly.getDescription(),
+                    skuDetailsMonthly.getPrice(),
+                    skuDetailsMonthly.getPriceAmountMicros());
+
+            final PurchaseItem purchaseItem = new PurchaseItem(PurchaseItem.Type.ANNUALLY,
+                    skuDetailsAnnually.getTitle(),
+                    skuDetailsAnnually.getDescription(),
+                    skuDetailsAnnually.getPrice(),
+                    skuDetailsAnnually.getPriceAmountMicros());
+
+            onQueryResult(monthlyItem, purchaseItem);
         }
     };
 
@@ -146,9 +155,11 @@ public class UpgradePlanActivity extends BillingActivity {
         @Override
         public void onIabPurchaseFinished(IabResult result, Purchase info) {
             if (result.isSuccess()) {
-                onPurchaseResult(new PurchaseResult(true, info.getSku(), info.getOriginalJson(), "success"));
+                onPurchaseResult(new PurchaseResult(true, info == null ? null : info.getSku(),
+                        info == null ? null : info.getOriginalJson(), "success"));
             } else {
-                onPurchaseResult(new PurchaseResult(false, info.getSku(), info.getOriginalJson(), "failed"));
+                onPurchaseResult(new PurchaseResult(false, info == null ? null : info.getSku(),
+                        info == null ? null : info.getOriginalJson(), "failed"));
             }
         }
     };

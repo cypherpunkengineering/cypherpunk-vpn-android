@@ -261,6 +261,9 @@
     <string name="upgrade_text">Get Cypherpunk Premium\nSelect your plan</string>
     <string name="upgrade_plan_text1">Basic VPN</string>
     <string name="upgrade_plan_text2">Unlimited Data on 2 devices.</string>
+    <string name="upgrade_monthly_format">%1$s/MO\nBilled Monthly</string>
+    <string name="upgrade_annually_format">%1$s/YR\nBilled Annually</string>
+    <string name="upgrade_save_format">SAVE %1$d</string>
 
     <!-- edit profile-->
     <string name="title_activity_edit_email">Update Email</string>
