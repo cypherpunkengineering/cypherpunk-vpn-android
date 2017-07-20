@@ -112,7 +112,7 @@
     <string name="setting_vpn_auto_start_connect">Auto-connect on device boot</string>
     <string name="setting_vpn_dns_block_malware">Block Malware</string>
     <string name="setting_vpn_dns_block_ads">Block Ads</string>
-    <string name="setting_internet_kill_switch">Leak Protection</string>
+    <string name="setting_internet_kill_switch">Internet Killswitch</string>
     <string name="setting_tunnel_mode">Tunnel Mode</string>
     <string name="setting_vpn_remote_port">Remote Port</string>
     <string name="setting_split_tunnel">Split Tunnel</string>
