@@ -121,7 +121,7 @@ public class AccountSettingsFragment extends PreferenceFragmentCompat {
         upgrade.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
-                final String url = Urls.UPGRADE + "?secret=" + accountSetting.secret();
+                final String url = Urls.ACCOUNT + "?secret=" + accountSetting.secret();
                 startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url)));
                 return true;
             }
