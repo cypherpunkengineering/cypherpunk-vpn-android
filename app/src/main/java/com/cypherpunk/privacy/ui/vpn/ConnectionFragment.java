@@ -16,8 +16,10 @@ import android.widget.TextView;
 
 import com.cypherpunk.privacy.CypherpunkApplication;
 import com.cypherpunk.privacy.R;
+import com.cypherpunk.privacy.datasource.vpn.InternetKillSwitch;
 import com.cypherpunk.privacy.datasource.vpn.VpnServer;
 import com.cypherpunk.privacy.domain.model.AccountSetting;
+import com.cypherpunk.privacy.domain.model.VpnSetting;
 import com.cypherpunk.privacy.domain.repository.VpnServerRepository;
 import com.cypherpunk.privacy.ui.common.FlagView;
 import com.cypherpunk.privacy.ui.main.ConnectionView;
@@ -58,6 +60,9 @@ public class ConnectionFragment extends Fragment implements VpnStatusHolder.Stat
 
     @Inject
     VpnManager vpnManager;
+
+    @Inject
+    VpnSetting vpnSetting;
 
     private Unbinder unbinder;
 
@@ -138,6 +143,13 @@ public class ConnectionFragment extends Fragment implements VpnStatusHolder.Stat
     }
 
     @Override
+    public void onStart() {
+        super.onStart();
+        // update text for kill switch
+        update();
+    }
+
+    @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putSerializable(KEY_STATUS, status);
@@ -185,6 +197,14 @@ public class ConnectionFragment extends Fragment implements VpnStatusHolder.Stat
                         vpnManager.stop();
                     }
                     break;
+            }
+        } else {
+            if (status == Status.DISCONNECTED) {
+                if (vpnSetting.internetKillSwitch() == InternetKillSwitch.ALWAYS_ON) {
+                    statusView.setText(R.string.status_kill_switch_active);
+                } else {
+                    statusView.setText(R.string.status_disconnected);
+                }
             }
         }
     }
@@ -251,7 +271,11 @@ public class ConnectionFragment extends Fragment implements VpnStatusHolder.Stat
 
                 case DISCONNECTED:
                     connectionButton.setDisconnected();
-                    statusView.setText(R.string.status_disconnected);
+                    if (vpnSetting.internetKillSwitch() == InternetKillSwitch.ALWAYS_ON) {
+                        statusView.setText(R.string.status_kill_switch_active);
+                    } else {
+                        statusView.setText(R.string.status_disconnected);
+                    }
                     break;
 
                 case DISCONNECTING:
