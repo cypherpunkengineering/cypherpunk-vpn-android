@@ -3,6 +3,7 @@ package com.cypherpunk.privacy.ui.startup;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -24,6 +25,7 @@ import com.cypherpunk.privacy.domain.model.AccountSetting;
 import com.cypherpunk.privacy.domain.repository.NetworkRepository;
 import com.cypherpunk.privacy.domain.repository.retrofit.result.StatusResult;
 import com.cypherpunk.privacy.ui.common.FullScreenProgressDialog;
+import com.cypherpunk.privacy.ui.common.Urls;
 
 import java.net.UnknownHostException;
 
@@ -36,7 +38,6 @@ import butterknife.OnEditorAction;
 import butterknife.OnTextChanged;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
-import io.reactivex.observers.DisposableCompletableObserver;
 import io.reactivex.observers.DisposableSingleObserver;
 import io.reactivex.schedulers.Schedulers;
 import retrofit2.HttpException;
@@ -181,38 +182,7 @@ public class LoginActivity extends AppCompatActivity {
 
     @OnClick(R.id.forgot_password_button)
     void onForgotPasswordButtonClicked() {
-        dialog = new FullScreenProgressDialog(this);
-        dialog.show();
-
-        final Context context = this;
-
-        disposables.add(networkRepository
-                .recoverPassword(email)
-                .subscribeOn(Schedulers.newThread())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeWith(new DisposableCompletableObserver() {
-                    @Override
-                    public void onComplete() {
-                        if (dialog != null) {
-                            dialog.dismiss();
-                            dialog = null;
-                        }
-                        Toast.makeText(context, R.string.sign_in_sent_password_recovery, Toast.LENGTH_SHORT).show();
-                    }
-
-                    @Override
-                    public void onError(Throwable error) {
-                        if (dialog != null) {
-                            dialog.dismiss();
-                            dialog = null;
-                        }
-                        if (error instanceof UnknownHostException) {
-                            Toast.makeText(context, R.string.error_no_internet, Toast.LENGTH_SHORT).show();
-                        } else {
-                            Toast.makeText(context, R.string.error_api, Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                }));
+        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(Urls.RECOVER)));
     }
 
     @Override
