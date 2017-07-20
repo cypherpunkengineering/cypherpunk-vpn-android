@@ -16,7 +16,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.cypherpunk.privacy.CypherpunkApplication;
 import com.cypherpunk.privacy.R;
@@ -227,7 +226,7 @@ public class AccountSettingsFragment extends PreferenceFragmentCompat {
                 .setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
                     @Override
                     public boolean onPreferenceClick(Preference preference) {
-                        Toast.makeText(getContext(), "not yet implemented", Toast.LENGTH_SHORT).show();
+                        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(Urls.LICENSE)));
                         return true;
                     }
                 });

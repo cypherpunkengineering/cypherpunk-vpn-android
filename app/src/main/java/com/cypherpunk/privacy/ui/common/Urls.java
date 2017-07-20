@@ -11,4 +11,5 @@ public class Urls {
     public static final String PRIVACY_POLICY = "https://cypherpunk.com/privacy-policy";
     public static final String UPGRADE = "https://cypherpunk.com/account/upgrade";
     public static final String ACCOUNT = "https://cypherpunk.com/account";
+    public static final String LICENSE = "https://cypherpunk.com/legal/license/android";
 }
