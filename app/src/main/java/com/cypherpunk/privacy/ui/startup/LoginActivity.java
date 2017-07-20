@@ -156,10 +156,15 @@ public class LoginActivity extends AppCompatActivity {
                         accountSetting.updateEmail(email);
                         accountSetting.updatePrivacy(result.privacy);
 
-                        TaskStackBuilder.create(context)
-                                .addNextIntent(new Intent(context, TutorialActivity.class))
-                                .startActivities();
-                        finish();
+                        if (result.account.confirmed()) {
+                            TaskStackBuilder.create(context)
+                                    .addNextIntent(new Intent(context, TutorialActivity.class))
+                                    .startActivities();
+                        } else {
+                            TaskStackBuilder.create(context)
+                                    .addNextIntent(ConfirmationEmailActivity.createIntent(context, email))
+                                    .startActivities();
+                        }
                     }
 
                     @Override
