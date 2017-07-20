@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,7 +42,7 @@ import timber.log.Timber;
 public class RegionFragment extends Fragment {
 
     public interface RegionFragmentListener {
-        void onVpnServerSelected(@NonNull VpnServer vpnServer, boolean isUserSelected);
+        void onVpnServerSelected(@NonNull VpnServer vpnServer, boolean isCypherPlay, boolean isUserSelected);
 
         void onVpnServerListChanged(@NonNull List<VpnServer> vpnServerList);
     }
@@ -109,6 +110,8 @@ public class RegionFragment extends Fragment {
         ((CypherpunkApplication) getActivity().getApplication()).getAppComponent()
                 .inject(this);
 
+        loadCurrentVpnServer();
+
         adapter = new RegionAdapter() {
             @Override
             protected void onItemClicked(@NonNull VpnServer vpnServer, boolean isCypherPlay) {
@@ -120,6 +123,21 @@ public class RegionFragment extends Fragment {
 
         refreshRegionList();
         syncServerList();
+    }
+
+    private void loadCurrentVpnServer() {
+        final String id = vpnSetting.regionId();
+        if (!TextUtils.isEmpty(id)) {
+            final VpnServer vpnServer = vpnServerRepository.find(id);
+            if (vpnServer != null) {
+                if (listener != null) {
+                    listener.onVpnServerSelected(vpnServer, vpnSetting.isCypherplayEnabled(), false);
+                }
+                return;
+            }
+        }
+
+        tryChangeServer(vpnServerRepository.fastest(), false, false);
     }
 
     @Override
@@ -179,7 +197,7 @@ public class RegionFragment extends Fragment {
             vpnSetting.updateCypherplayEnabled(isCypherPlay);
             vpnSetting.updateRegionId(vpnServer.id());
             if (listener != null) {
-                listener.onVpnServerSelected(vpnServer, isUserSelected);
+                listener.onVpnServerSelected(vpnServer, isCypherPlay, isUserSelected);
             }
         }
     }

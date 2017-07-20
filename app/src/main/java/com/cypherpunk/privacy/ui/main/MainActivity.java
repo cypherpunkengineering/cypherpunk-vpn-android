@@ -8,7 +8,6 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.TaskStackBuilder;
 import android.support.v7.app.AppCompatActivity;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 
@@ -16,9 +15,6 @@ import com.cypherpunk.privacy.CypherpunkApplication;
 import com.cypherpunk.privacy.R;
 import com.cypherpunk.privacy.datasource.vpn.VpnServer;
 import com.cypherpunk.privacy.domain.model.AccountSetting;
-import com.cypherpunk.privacy.domain.model.VpnSetting;
-import com.cypherpunk.privacy.domain.repository.NetworkRepository;
-import com.cypherpunk.privacy.domain.repository.VpnServerRepository;
 import com.cypherpunk.privacy.ui.account.AccountSettingsFragment;
 import com.cypherpunk.privacy.ui.region.RegionFragment;
 import com.cypherpunk.privacy.ui.settings.SettingsFragment;
@@ -46,19 +42,10 @@ public class MainActivity extends AppCompatActivity implements
         AccountSettingsFragment.AccountSettingsFragmentListener {
 
     @Inject
-    VpnSetting vpnSetting;
-
-    @Inject
     AccountSetting accountSetting;
 
     @Inject
-    VpnServerRepository vpnServerRepository;
-
-    @Inject
     VpnStatusHolder vpnStatusHolder;
-
-    @Inject
-    NetworkRepository networkRepository;
 
     @NonNull
     private Disposable disposable = Disposables.empty();
@@ -131,19 +118,6 @@ public class MainActivity extends AppCompatActivity implements
                 connectionFragment.tryConnectIfNeeded();
             }
         });
-
-        VpnServer vpnServer = null;
-        final String id = vpnSetting.regionId();
-        if (!TextUtils.isEmpty(id)) {
-            vpnServer = vpnServerRepository.find(id);
-        }
-        if (vpnServer == null) {
-            vpnServer = vpnServerRepository.fastest();
-        }
-        if (vpnServer != null) {
-            mapView.setVpnServer(vpnServer);
-            connectionFragment.setVpnServer(vpnServer);
-        }
     }
 
     @Override
@@ -187,11 +161,14 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     @Override
-    public void onVpnServerSelected(@NonNull VpnServer vpnServer, boolean isUserSelected) {
-        hideRegions();
+    public void onVpnServerSelected(@NonNull VpnServer vpnServer, boolean isCypherPlay,
+                                    boolean isUserSelected) {
+        if (isUserSelected) {
+            hideRegions();
+        }
         reconnectPanel.setVisibility(View.GONE);
         mapView.setVpnServer(vpnServer);
-        connectionFragment.setVpnServer(vpnServer);
+        connectionFragment.setVpnServer(vpnServer, isCypherPlay);
         if (isUserSelected) {
             connectionFragment.tryConnectIfNeeded();
         }

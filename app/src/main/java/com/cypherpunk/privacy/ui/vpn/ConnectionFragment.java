@@ -150,11 +150,16 @@ public class ConnectionFragment extends Fragment implements VpnStatusHolder.Stat
         }
     }
 
-    public void setVpnServer(@NonNull VpnServer vpnServer) {
+    public void setVpnServer(@NonNull VpnServer vpnServer, boolean isCypherPlay) {
         this.vpnServer = vpnServer;
         if (regionNameView != null) {
-            regionNameView.setText(vpnServer.name());
-            regionFlagView.setCountry(vpnServer.country());
+            if (isCypherPlay) {
+                regionNameView.setText(R.string.region_cypher_play);
+                regionFlagView.setImageResource(R.drawable.ic_cypher_play);
+            } else {
+                regionNameView.setText(vpnServer.name());
+                regionFlagView.setCountry(vpnServer.country());
+            }
         }
     }
 
