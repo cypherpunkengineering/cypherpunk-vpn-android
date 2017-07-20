@@ -32,7 +32,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
         android:scaleType="fitEnd"
-        android:src="@drawable/login_mascot"
+        android:src="@drawable/mascot_login"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
