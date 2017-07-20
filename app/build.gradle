@@ -72,6 +72,9 @@ dependencies {
     apt "com.google.dagger:dagger-compiler:${daggerVersion}"
     apt 'com.google.guava:guava:20.0' // dagger compiler requires Guava
 
+    // https://github.com/firebase/firebase-jobdispatcher-android#user-content-firebase-jobdispatcher-
+    compile 'com.firebase:firebase-jobdispatcher:0.7.0'
+
     // http://jakewharton.github.io/butterknife/
     compile 'com.jakewharton:butterknife:8.5.1'
     provided 'com.jakewharton:butterknife-compiler:8.5.1'

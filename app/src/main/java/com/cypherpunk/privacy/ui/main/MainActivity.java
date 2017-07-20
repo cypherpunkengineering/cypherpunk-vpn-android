@@ -14,6 +14,7 @@ import com.cypherpunk.privacy.CypherpunkApplication;
 import com.cypherpunk.privacy.R;
 import com.cypherpunk.privacy.datasource.vpn.VpnServer;
 import com.cypherpunk.privacy.domain.model.AccountSetting;
+import com.cypherpunk.privacy.ui.account.AccountCheckJobService;
 import com.cypherpunk.privacy.ui.account.AccountSettingsFragment;
 import com.cypherpunk.privacy.ui.region.RegionFragment;
 import com.cypherpunk.privacy.ui.settings.SettingsFragment;
@@ -69,6 +70,9 @@ public class MainActivity extends AppCompatActivity implements
             navigator.signOut(this);
             return;
         }
+
+        // check account periodically
+        AccountCheckJobService.setNextJob(this);
 
         if (accountSetting.isPending()) {
             navigator.pending(this);
