@@ -190,6 +190,7 @@ public class ConnectionView extends View {
 
         if (disconnectingAnimator == null) {
             setFraction(0f);
+            setPipeScale(1f);
             invalidate();
         }
     }
@@ -340,13 +341,13 @@ public class ConnectionView extends View {
             paint.setTypeface(FontCache.getDosisSemiBold(getContext()));
 
             final int count2 = canvas.save();
-            canvas.translate(-cipherTextLength * textPosition, centerY - 2 * density);
+            canvas.translate(-cipherTextLength * textPosition, centerY - 3.5f * density);
             paint.setColor(Color.rgb(127, 255, 251));
             canvas.drawText(text, 0f, 0f, paint);
             canvas.restoreToCount(count2);
 
             final int count3 = canvas.save();
-            canvas.translate(-cipherTextLength + cipherTextLength * textPosition, centerY + 13 * density);
+            canvas.translate(-cipherTextLength + cipherTextLength * textPosition, centerY + 11.5f * density);
             paint.setColor(Color.rgb(95, 191, 187));
             canvas.drawText(text, 0f, 0f, paint);
             canvas.restoreToCount(count3);
