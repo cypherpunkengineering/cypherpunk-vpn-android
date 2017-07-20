@@ -6,7 +6,6 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.app.TaskStackBuilder;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,8 +17,6 @@ import com.cypherpunk.privacy.domain.model.AccountSetting;
 import com.cypherpunk.privacy.ui.account.AccountSettingsFragment;
 import com.cypherpunk.privacy.ui.region.RegionFragment;
 import com.cypherpunk.privacy.ui.settings.SettingsFragment;
-import com.cypherpunk.privacy.ui.startup.IdentifyEmailActivity;
-import com.cypherpunk.privacy.ui.startup.PendingActivity;
 import com.cypherpunk.privacy.ui.vpn.ConnectionFragment;
 import com.cypherpunk.privacy.vpn.VpnStatusHolder;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
@@ -47,6 +44,9 @@ public class MainActivity extends AppCompatActivity implements
     @Inject
     VpnStatusHolder vpnStatusHolder;
 
+    @Inject
+    Navigator navigator;
+
     @NonNull
     private Disposable disposable = Disposables.empty();
 
@@ -66,16 +66,12 @@ public class MainActivity extends AppCompatActivity implements
         CypherpunkApplication.instance.getAppComponent().inject(this);
 
         if (!accountSetting.isSignedIn()) {
-            TaskStackBuilder.create(this)
-                    .addNextIntent(IdentifyEmailActivity.createIntent(this))
-                    .startActivities();
+            navigator.signOut(this);
             return;
         }
 
         if (accountSetting.isPending()) {
-            TaskStackBuilder.create(this)
-                    .addNextIntent(PendingActivity.createIntent(this))
-                    .startActivities();
+            navigator.pending(this);
             return;
         }
 

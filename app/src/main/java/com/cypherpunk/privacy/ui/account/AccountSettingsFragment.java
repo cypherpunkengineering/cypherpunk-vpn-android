@@ -7,7 +7,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.TaskStackBuilder;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.preference.Preference;
 import android.support.v7.preference.PreferenceFragmentCompat;
@@ -24,8 +23,7 @@ import com.cypherpunk.privacy.domain.model.AccountSetting;
 import com.cypherpunk.privacy.domain.repository.NetworkRepository;
 import com.cypherpunk.privacy.domain.repository.retrofit.result.StatusResult;
 import com.cypherpunk.privacy.ui.common.Urls;
-import com.cypherpunk.privacy.ui.startup.IdentifyEmailActivity;
-import com.cypherpunk.privacy.vpn.VpnManager;
+import com.cypherpunk.privacy.ui.main.Navigator;
 
 import javax.inject.Inject;
 
@@ -58,7 +56,7 @@ public class AccountSettingsFragment extends PreferenceFragmentCompat {
     AccountSetting accountSetting;
 
     @Inject
-    VpnManager vpnManager;
+    Navigator navigator;
 
     @Nullable
     private AccountSettingsFragmentListener listener;
@@ -187,16 +185,12 @@ public class AccountSettingsFragment extends PreferenceFragmentCompat {
                     }
                 });
 
+        // Sign out
         findPreference(getString(R.string.account_preference_sign_out))
                 .setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
                     @Override
                     public boolean onPreferenceClick(Preference preference) {
-                        vpnManager.stop();
-                        accountSetting.clear();
-                        TaskStackBuilder.create(getContext())
-                                .addNextIntent(IdentifyEmailActivity.createIntent(getContext()))
-                                .startActivities();
-                        getActivity().finish();
+                        navigator.signOut(getContext());
                         return true;
                     }
                 });
@@ -287,10 +281,14 @@ public class AccountSettingsFragment extends PreferenceFragmentCompat {
                         error.printStackTrace();
                         if (error instanceof HttpException) {
                             HttpException httpException = (HttpException) error;
-                            if (httpException.code() == 400) {
-                                TaskStackBuilder.create(getContext())
-                                        .addNextIntent(IdentifyEmailActivity.createIntent(getContext()))
-                                        .startActivities();
+                            switch (httpException.code()) {
+                                case 400:
+                                case 401:
+                                    navigator.signOut(getContext());
+                                    break;
+                                case 402:
+                                    navigator.pending(getContext());
+                                    break;
                             }
                         }
                     }
