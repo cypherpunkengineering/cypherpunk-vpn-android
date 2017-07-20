@@ -102,9 +102,12 @@ public class MainActivity extends AppCompatActivity implements
         final FragmentManager manager = getSupportFragmentManager();
         regionFragment = (RegionFragment) manager.findFragmentById(R.id.fragment_region);
         connectionFragment = (ConnectionFragment) manager.findFragmentById(R.id.fragment_connection);
-        manager.beginTransaction()
-                .hide(regionFragment)
-                .commit();
+
+        if (savedInstanceState == null) {
+            manager.beginTransaction()
+                    .hide(regionFragment)
+                    .commit();
+        }
 
         slidingMenu = new SlidingMenu(this);
         slidingMenu.setMode(SlidingMenu.LEFT_RIGHT);

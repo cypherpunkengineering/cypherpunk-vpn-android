@@ -7,10 +7,13 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
+import android.graphics.PointF;
 import android.graphics.PorterDuff;
 import android.graphics.RadialGradient;
 import android.graphics.Shader;
 import android.graphics.drawable.Drawable;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
@@ -26,35 +29,29 @@ import java.util.List;
 
 public class WorldMapView extends View {
 
-    private static final int LNG_OFFSET = 11;
-    private static final double pi = Math.PI;
-    private static final double halfPi = pi / 2;
-    private static final double epsilon = Math.ulp(1.0);
-
-    private final Path path = new Path();
-    private final Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
-    private final RadialGradient gradient;
-    private final int MAP_SIZE;
-    private final float POINT_RADIUS;
-    private final float MARKER_SIZE;
-    private final float markerUpOffset;
-
-    private float MARKER_BASE_POSITION_X;
-    private float MARKER_BASE_POSITION_Y;
+    private static final int MARKER_COLOR = Color.rgb(136, 255, 255);
+    private static final int MARKER_COLOR_DIM = Color.rgb(68, 136, 136);
 
     private final Drawable mapDrawable;
     private final Drawable markerDrawable;
 
-    // map center
-    private float centerX;
-    private float centerY;
+    private final int MAP_SIZE;
+    private final int MARKER_RADIUS;
+    private final float POINT_RADIUS;
+    private final float MARKER_UP_OFFSET;
 
-    // marker position
-    private float markerCenterX;
-    private float markerCenterY;
+    private final Path path = new Path();
+    private final Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
+    private final RadialGradient gradient;
+
+    private final PointF mapCenter = new PointF();
+    private final PointF markerCenter = new PointF();
+    @Nullable
+    private PointF markerBase;
 
     private final List<VpnServer> vpnServerList = new ArrayList<>();
     private VpnServer vpnServer;
+    private boolean isOffsetMode;
 
     public WorldMapView(Context context) {
         this(context, null);
@@ -73,47 +70,71 @@ public class WorldMapView extends View {
         MAP_SIZE = mapDrawable.getIntrinsicWidth();
 
         markerDrawable = ContextCompat.getDrawable(context, R.drawable.ic_map_pin);
-        markerDrawable.setColorFilter(Color.rgb(136, 255, 255), PorterDuff.Mode.SRC_ATOP);
-        MARKER_SIZE = 48 * density;
+        markerDrawable.setColorFilter(MARKER_COLOR, PorterDuff.Mode.SRC_ATOP);
+        MARKER_RADIUS = (int) (24 * density);
+        MARKER_UP_OFFSET = 20 * density;
 
         POINT_RADIUS = 2 * density;
         paint.setStrokeWidth(1 * density);
         gradient = new RadialGradient(0, 0, POINT_RADIUS * 5,
                 Color.argb(255, 0, 255, 255), Color.TRANSPARENT, Shader.TileMode.CLAMP);
-
-        markerUpOffset = 20 * density;
     }
 
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
-        MARKER_BASE_POSITION_X = w * 0.5f;
-        MARKER_BASE_POSITION_Y = h * 0.65f;
+        markerBase = new PointF(w * 0.5f, h * 0.65f);
+        updatePosition();
+    }
 
-        markerCenterX = MARKER_BASE_POSITION_X;
-        markerCenterY = MARKER_BASE_POSITION_Y;
+    private void updatePosition() {
+        if (markerBase == null) {
+            return;
+        }
+        if (vpnServer == null) {
+            return;
+        }
+
+        final int[] newXY = getXY(vpnServer.lat(), vpnServer.lng());
+
+        if (isOffsetMode) {
+            final float scale = vpnServer.scale();
+            final float s = 2 * (scale > 0 ? scale : 1f);
+            mapCenter.x = newXY[0] - markerBase.x * 0.5f / s;
+            mapCenter.y = newXY[1] + markerBase.y * 0.2f / s;
+            markerCenter.x = markerBase.x * (1 + 0.5f);
+            markerCenter.y = markerBase.y * (1 - 0.2f);
+        } else {
+            mapCenter.x = newXY[0];
+            mapCenter.y = newXY[1];
+            markerCenter.x = markerBase.x;
+            markerCenter.y = markerBase.y;
+        }
     }
 
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
+        if (markerBase == null) {
+            return;
+        }
 
         if (vpnServer != null) {
             final float scale = vpnServer.scale();
-            final float s = scale > 0 ? 2 * scale : 2f;
+            final float s = 2 * (scale > 0 ? scale : 1f);
 
             final int count = canvas.save();
-            canvas.scale(s, s, MARKER_BASE_POSITION_X, MARKER_BASE_POSITION_Y);
+            canvas.scale(s, s, markerBase.x, markerBase.y);
 
             // draw map
-            final int left = (int) (MARKER_BASE_POSITION_X - centerX);
-            final int top = (int) (MARKER_BASE_POSITION_Y - centerY);
+            final int left = (int) (markerBase.x - mapCenter.x);
+            final int top = (int) (markerBase.y - mapCenter.y);
             mapDrawable.setBounds(left, top,
                     left + mapDrawable.getIntrinsicWidth(),
                     top + mapDrawable.getIntrinsicHeight());
             mapDrawable.draw(canvas);
 
-            // draw vpn server markers
+            // draw vpn server points
             for (VpnServer vpnServer : vpnServerList) {
                 final int[] xy = getXY(vpnServer.lat(), vpnServer.lng());
 
@@ -133,7 +154,7 @@ public class WorldMapView extends View {
                 canvas.restoreToCount(count2);
             }
 
-            // draw current marker
+            // draw current point
             final int[] xy = getXY(vpnServer.lat(), vpnServer.lng());
             {
                 final int count3 = canvas.save();
@@ -163,84 +184,88 @@ public class WorldMapView extends View {
 
             // draw marker
             final int count4 = canvas.save();
-            canvas.translate(markerCenterX, markerCenterY);
+            canvas.translate(markerCenter.x, markerCenter.y);
 
-            markerDrawable.setBounds((int) (-MARKER_SIZE * 0.5f), -(int) MARKER_SIZE,
-                    (int) (MARKER_SIZE * 0.5f), 0);
+            markerDrawable.setBounds(-MARKER_RADIUS, -MARKER_RADIUS * 2, MARKER_RADIUS, 0);
             markerDrawable.draw(canvas);
 
             canvas.restoreToCount(count4);
         }
     }
 
-    private int[] getXY(float lat, float lng) {
-        final double[] coordinates = vanDerGrinten3Raw(toRad(lng - LNG_OFFSET), toRad(lat));
-        return new int[]{
-                (int) ((coordinates[0] * 150.0 + 460.0) * MAP_SIZE / 920.0),
-                (int) ((-coordinates[1] * 150.0 + 325.0) * MAP_SIZE / 920.0)
-        };
-    }
-
     public void setOffsetMode(boolean isEnabled) {
-        markerDrawable.setColorFilter(isEnabled ? Color.rgb(68, 136, 136) : Color.rgb(136, 255, 255),
-                PorterDuff.Mode.SRC_ATOP);
+        isOffsetMode = isEnabled;
+        markerDrawable.setColorFilter(isEnabled ? MARKER_COLOR_DIM : MARKER_COLOR, PorterDuff.Mode.SRC_ATOP);
 
-        final float scale = 2 * vpnServer.scale();
+        if (markerBase == null) {
+            return;
+        }
 
         final float newX;
         final float newY;
         final float newMarkerCenterX;
         final float newMarkerCenterY;
+
+        final int[] newXY = getXY(vpnServer.lat(), vpnServer.lng());
+
         if (isEnabled) {
-            newX = centerX - getWidth() * 0.25f / scale;
-            newY = centerY + getHeight() * 0.1f / scale;
-            newMarkerCenterX = getWidth() * 0.75f;
-            newMarkerCenterY = getHeight() * 0.54f;
+            final float scale = vpnServer.scale();
+            final float s = 2 * (scale > 0 ? scale : 1f);
+            newX = newXY[0] - markerBase.x * 0.5f / s;
+            newY = newXY[1] + markerBase.y * 0.2f / s;
+            newMarkerCenterX = markerBase.x * (1 + 0.5f);
+            newMarkerCenterY = markerBase.y * (1 - 0.2f);
         } else {
-            final int[] newXY = getXY(vpnServer.lat(), vpnServer.lng());
             newX = newXY[0];
             newY = newXY[1];
-            newMarkerCenterX = MARKER_BASE_POSITION_X;
-            newMarkerCenterY = MARKER_BASE_POSITION_Y;
+            newMarkerCenterX = markerBase.x;
+            newMarkerCenterY = markerBase.y;
         }
-        if (centerX > 0 && centerY > 0) {
-            final float lastX = centerX;
-            final float lastY = centerY;
-            final float lastMarkerCenterX = markerCenterX;
-            final float lastMarkerCenterY = markerCenterY;
+
+        if (mapCenter.x > 0 && mapCenter.y > 0) {
+            final float lastX = mapCenter.x;
+            final float lastY = mapCenter.y;
+            final float lastMarkerCenterX = markerCenter.x;
+            final float lastMarkerCenterY = markerCenter.y;
+
             final ValueAnimator animator = ValueAnimator.ofFloat(0f, 1f);
             animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
                 @Override
                 public void onAnimationUpdate(ValueAnimator animation) {
                     final float fraction = animation.getAnimatedFraction();
-                    centerX = lastX + (newX - lastX) * fraction;
-                    centerY = lastY + (newY - lastY) * fraction;
-                    markerCenterX = lastMarkerCenterX + (newMarkerCenterX - lastMarkerCenterX) * fraction;
-                    markerCenterY = lastMarkerCenterY + (newMarkerCenterY - lastMarkerCenterY) * fraction;
+                    mapCenter.x = lastX + (newX - lastX) * fraction;
+                    mapCenter.y = lastY + (newY - lastY) * fraction;
+                    markerCenter.x = lastMarkerCenterX + (newMarkerCenterX - lastMarkerCenterX) * fraction;
+                    markerCenter.y = lastMarkerCenterY + (newMarkerCenterY - lastMarkerCenterY) * fraction;
                     invalidate();
                 }
             });
             animator.setDuration(500);
             animator.start();
-
         } else {
-            centerX = newX;
-            centerY = newY;
+            mapCenter.x = newX;
+            mapCenter.y = newY;
+            markerCenter.x = newMarkerCenterX;
+            markerCenter.y = newMarkerCenterY;
             invalidate();
         }
     }
 
     public void setVpnServer(@NonNull VpnServer newVpnServer) {
-        markerDrawable.setColorFilter(Color.rgb(136, 255, 255), PorterDuff.Mode.SRC_ATOP);
+        markerDrawable.setColorFilter(MARKER_COLOR, PorterDuff.Mode.SRC_ATOP);
         vpnServer = newVpnServer;
+
+        if (markerBase == null) {
+            return;
+        }
 
         final int[] newXY = getXY(vpnServer.lat(), vpnServer.lng());
 
-        if (centerX > 0 && centerY > 0) {
-            final float lastX = centerX;
-            final float lastY = centerY;
-            final float lastMarkerCenterY1 = markerCenterY;
-            final float newMarkerCenterY1 = lastMarkerCenterY1 - markerUpOffset;
+        if (mapCenter.x > 0 && mapCenter.y > 0) {
+            final float lastX = mapCenter.x;
+            final float lastY = mapCenter.y;
+            final float lastMarkerCenterY = markerCenter.y;
+            final float newMarkerCenterY1 = lastMarkerCenterY - MARKER_UP_OFFSET;
 
             // maker up
             final ValueAnimator animator1 = ValueAnimator.ofFloat(0f, 1f);
@@ -248,15 +273,15 @@ public class WorldMapView extends View {
                 @Override
                 public void onAnimationUpdate(ValueAnimator animation) {
                     final float fraction = animation.getAnimatedFraction();
-                    markerCenterY = lastMarkerCenterY1 + (newMarkerCenterY1 - lastMarkerCenterY1) * fraction;
+                    markerCenter.y = lastMarkerCenterY + (newMarkerCenterY1 - lastMarkerCenterY) * fraction;
                     invalidate();
                 }
             });
             animator1.setDuration(300);
 
-            final float lastMarkerCenterX = markerCenterX;
-            final float newMarkerCenterX = MARKER_BASE_POSITION_X;
-            final float newMarkerCenterY2 = MARKER_BASE_POSITION_Y - markerUpOffset;
+            final float lastMarkerCenterX = markerCenter.x;
+            final float newMarkerCenterX = markerBase.x;
+            final float newMarkerCenterY2 = markerBase.y - MARKER_UP_OFFSET;
 
             // translate map
             final ValueAnimator animator2 = ValueAnimator.ofFloat(0f, 1f);
@@ -264,24 +289,24 @@ public class WorldMapView extends View {
                 @Override
                 public void onAnimationUpdate(ValueAnimator animation) {
                     final float fraction = animation.getAnimatedFraction();
-                    centerX = lastX + (newXY[0] - lastX) * fraction;
-                    centerY = lastY + (newXY[1] - lastY) * fraction;
-                    markerCenterX = lastMarkerCenterX + (newMarkerCenterX - lastMarkerCenterX) * fraction;
-                    markerCenterY = newMarkerCenterY1 + (newMarkerCenterY2 - newMarkerCenterY1) * fraction;
+                    mapCenter.x = lastX + (newXY[0] - lastX) * fraction;
+                    mapCenter.y = lastY + (newXY[1] - lastY) * fraction;
+                    markerCenter.x = lastMarkerCenterX + (newMarkerCenterX - lastMarkerCenterX) * fraction;
+                    markerCenter.y = newMarkerCenterY1 + (newMarkerCenterY2 - newMarkerCenterY1) * fraction;
                     invalidate();
                 }
             });
             animator2.setDuration(1600);
 
             // marker down
-            final float newMarkerCenterY3 = MARKER_BASE_POSITION_Y;
+            final float newMarkerCenterY3 = markerBase.y;
 
             final ValueAnimator animator3 = ValueAnimator.ofFloat(0f, 1f);
             animator3.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
                 @Override
                 public void onAnimationUpdate(ValueAnimator animation) {
                     final float fraction = animation.getAnimatedFraction();
-                    markerCenterY = newMarkerCenterY2 + (newMarkerCenterY3 - newMarkerCenterY2) * fraction;
+                    markerCenter.y = newMarkerCenterY2 + (newMarkerCenterY3 - newMarkerCenterY2) * fraction;
                     invalidate();
                 }
             });
@@ -292,39 +317,112 @@ public class WorldMapView extends View {
             animatorSet.start();
 
         } else {
-            centerX = newXY[0];
-            centerY = newXY[1];
-            markerCenterX = MARKER_BASE_POSITION_X;
-            markerCenterY = MARKER_BASE_POSITION_Y;
+            mapCenter.x = newXY[0];
+            mapCenter.y = newXY[1];
+            markerCenter.x = markerBase.x;
+            markerCenter.y = markerBase.y;
             invalidate();
         }
-    }
-
-    private static double toRad(float degree) {
-        return degree * Math.PI / 180;
-    }
-
-    private static double[] vanDerGrinten3Raw(double lambda, double phi) {
-        if (Math.abs(phi) < epsilon) {
-            return new double[]{lambda, 0};
-        }
-
-        double sinTheta = phi / halfPi;
-        double theta = Math.asin(sinTheta);
-        if (Math.abs(lambda) < epsilon || Math.abs(Math.abs(phi) - halfPi) < epsilon) {
-            return new double[]{0, pi * Math.tan(theta / 2)};
-        }
-
-        double A = (pi / lambda - lambda / pi) / 2;
-        double y1 = sinTheta / (1 + Math.cos(theta));
-        return new double[]{
-                pi * ((lambda < 0 ? -1 : 1) * Math.sqrt(A * A + 1 - y1 * y1) - A),
-                pi * y1};
     }
 
     public void setVpnServers(List<VpnServer> vpnServerList) {
         this.vpnServerList.clear();
         this.vpnServerList.addAll(vpnServerList);
         invalidate();
+    }
+
+    //
+    // SavedState
+    //
+
+    @Override
+    protected Parcelable onSaveInstanceState() {
+        final Parcelable superState = super.onSaveInstanceState();
+        final SavedState ss = new SavedState(superState);
+        ss.isOffsetMode = isOffsetMode;
+        return ss;
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Parcelable state) {
+        final SavedState ss = (SavedState) state;
+        super.onRestoreInstanceState(ss.getSuperState());
+        setOffsetMode(ss.isOffsetMode);
+    }
+
+    private static class SavedState extends BaseSavedState {
+        boolean isOffsetMode;
+
+        SavedState(Parcelable superState) {
+            super(superState);
+        }
+
+        private SavedState(Parcel in) {
+            super(in);
+            isOffsetMode = (Boolean) in.readValue(null);
+        }
+
+        @Override
+        public void writeToParcel(Parcel out, int flags) {
+            super.writeToParcel(out, flags);
+            out.writeValue(isOffsetMode);
+        }
+
+        @Override
+        public String toString() {
+            return "WorldMapView.SavedState{"
+                    + Integer.toHexString(System.identityHashCode(this))
+                    + " isOffsetMode=" + isOffsetMode + "}";
+        }
+
+        public static final Parcelable.Creator<SavedState> CREATOR
+                = new Parcelable.Creator<SavedState>() {
+            public SavedState createFromParcel(Parcel in) {
+                return new SavedState(in);
+            }
+
+            public SavedState[] newArray(int size) {
+                return new SavedState[size];
+            }
+        };
+    }
+
+    //
+    // Calculate Map
+    //
+
+    private static final int LNG_OFFSET = 11;
+    private static final double PI = Math.PI;
+    private static final double HALF_PI = PI / 2;
+    private static final double EPSILON = Math.ulp(1.0);
+
+    private static double toRad(float degree) {
+        return degree * PI / 180;
+    }
+
+    private int[] getXY(float lat, float lng) {
+        final double[] coordinates = vanDerGrinten3Raw(toRad(lng - LNG_OFFSET), toRad(lat));
+        return new int[]{
+                (int) ((coordinates[0] * 150.0 + 460.0) * MAP_SIZE / 920.0),
+                (int) ((-coordinates[1] * 150.0 + 325.0) * MAP_SIZE / 920.0)
+        };
+    }
+
+    private static double[] vanDerGrinten3Raw(double lambda, double phi) {
+        if (Math.abs(phi) < EPSILON) {
+            return new double[]{lambda, 0};
+        }
+
+        final double sinTheta = phi / HALF_PI;
+        final double theta = Math.asin(sinTheta);
+        if (Math.abs(lambda) < EPSILON || Math.abs(Math.abs(phi) - HALF_PI) < EPSILON) {
+            return new double[]{0, PI * Math.tan(theta / 2)};
+        }
+
+        final double A = (PI / lambda - lambda / PI) / 2;
+        final double y1 = sinTheta / (1 + Math.cos(theta));
+        return new double[]{
+                PI * ((lambda < 0 ? -1 : 1) * Math.sqrt(A * A + 1 - y1 * y1) - A),
+                PI * y1};
     }
 }
