@@ -81,7 +81,7 @@
     <string name="confirmation_email_check_again">Check again</string>
     <string name="confirmation_email_resend_email">Resend email</string>
     <string name="confirmation_back_login">Back to Sign In</string>
-    <string name="confirmation_email_resend">Re-send confirmation email</string>
+    <string name="confirmation_email_resend">confirmation email has been resent to %1$s</string>
 
     <!-- sign in-->
     <string name="sign_in_header">Welcome back.</string>

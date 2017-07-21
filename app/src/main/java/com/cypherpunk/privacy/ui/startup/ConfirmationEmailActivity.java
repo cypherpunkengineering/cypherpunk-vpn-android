@@ -127,7 +127,8 @@ public class ConfirmationEmailActivity extends AppCompatActivity {
                     @Override
                     public void onComplete() {
                         resendButton.setEnabled(true);
-                        Toast.makeText(context, R.string.confirmation_email_resend, Toast.LENGTH_SHORT).show();
+                        final String message = getString(R.string.confirmation_email_resend, email);
+                        Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
                     }
 
                     @Override
