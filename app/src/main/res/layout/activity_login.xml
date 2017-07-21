@@ -32,8 +32,8 @@
             app:layout_constraintTop_toTopOf="@id/pipe"/>
 
         <ImageView
-            android:layout_width="210dp"
-            android:layout_height="wrap_content"
+            android:layout_width="260dp"
+            android:layout_height="100dp"
             android:layout_marginTop="5dp"
             android:scaleType="fitEnd"
             android:src="@drawable/mascot_login"
