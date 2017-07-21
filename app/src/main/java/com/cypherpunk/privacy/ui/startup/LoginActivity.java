@@ -8,7 +8,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputLayout;
-import android.support.v4.app.TaskStackBuilder;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -26,6 +25,7 @@ import com.cypherpunk.privacy.domain.repository.NetworkRepository;
 import com.cypherpunk.privacy.domain.repository.retrofit.result.StatusResult;
 import com.cypherpunk.privacy.ui.common.FullScreenProgressDialog;
 import com.cypherpunk.privacy.ui.common.Urls;
+import com.cypherpunk.privacy.ui.main.Navigator;
 
 import java.net.UnknownHostException;
 
@@ -63,6 +63,9 @@ public class LoginActivity extends AppCompatActivity {
 
     @Inject
     AccountSetting accountSetting;
+
+    @Inject
+    Navigator navigator;
 
     @BindView(R.id.text_input_layout)
     TextInputLayout textInputLayout;
@@ -152,18 +155,16 @@ public class LoginActivity extends AppCompatActivity {
                             dialog = null;
                         }
 
-                        accountSetting.updateSecret(result.secret);
                         accountSetting.updateEmail(email);
+                        accountSetting.updateSecret(result.secret);
                         accountSetting.updatePrivacy(result.privacy);
+                        accountSetting.updateAccount(result.account);
+                        accountSetting.updateSubscription(result.subscription);
 
                         if (result.account.confirmed()) {
-                            TaskStackBuilder.create(context)
-                                    .addNextIntent(new Intent(context, TutorialActivity.class))
-                                    .startActivities();
+                            navigator.tutorialOrPending(context);
                         } else {
-                            TaskStackBuilder.create(context)
-                                    .addNextIntent(ConfirmationEmailActivity.createIntent(context, email))
-                                    .startActivities();
+                            navigator.confirmEmail(context, email);
                         }
                     }
 

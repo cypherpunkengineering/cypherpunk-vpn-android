@@ -31,6 +31,7 @@ import com.cypherpunk.privacy.domain.repository.NetworkRepository;
 import com.cypherpunk.privacy.domain.repository.retrofit.result.StatusResult;
 import com.cypherpunk.privacy.ui.common.FullScreenProgressDialog;
 import com.cypherpunk.privacy.ui.common.Urls;
+import com.cypherpunk.privacy.ui.main.Navigator;
 
 import java.net.UnknownHostException;
 
@@ -71,6 +72,9 @@ public class SignUpActivity extends AppCompatActivity {
 
     @Inject
     AccountSetting accountSetting;
+
+    @Inject
+    Navigator navigator;
 
     @BindView(R.id.text_input_layout)
     TextInputLayout textInputLayout;
@@ -163,11 +167,13 @@ public class SignUpActivity extends AppCompatActivity {
                             dialog = null;
                         }
 
-                        accountSetting.updateSecret(result.secret);
                         accountSetting.updateEmail(email);
+                        accountSetting.updateSecret(result.secret);
                         accountSetting.updatePrivacy(result.privacy);
+                        accountSetting.updateAccount(result.account);
+                        accountSetting.updateSubscription(result.subscription);
 
-                        startActivity(ConfirmationEmailActivity.createIntent(context, email));
+                        navigator.confirmEmail(context, email);
                     }
 
                     @Override
@@ -183,6 +189,7 @@ public class SignUpActivity extends AppCompatActivity {
                             final HttpException he = (HttpException) e;
                             if (he.code() == 409) {
                                 Toast.makeText(context, R.string.error_email_already_registered, Toast.LENGTH_SHORT).show();
+                                finish();
                                 startActivity(LoginActivity.createIntent(context, email));
                             } else {
                                 Toast.makeText(context, e.getMessage(), Toast.LENGTH_SHORT).show();

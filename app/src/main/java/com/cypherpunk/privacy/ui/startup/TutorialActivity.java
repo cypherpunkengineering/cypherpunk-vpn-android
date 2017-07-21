@@ -48,6 +48,11 @@ import io.reactivex.schedulers.Schedulers;
  */
 public class TutorialActivity extends AppCompatActivity {
 
+    @NonNull
+    public static Intent createIntent(@NonNull Context context) {
+        return new Intent(context, TutorialActivity.class);
+    }
+
     private static final int GRANT_VPN_PERMISSION = 1;
 
     @NonNull

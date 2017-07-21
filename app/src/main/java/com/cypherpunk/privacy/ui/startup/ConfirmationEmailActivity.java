@@ -17,8 +17,10 @@ import android.widget.Toast;
 
 import com.cypherpunk.privacy.CypherpunkApplication;
 import com.cypherpunk.privacy.R;
+import com.cypherpunk.privacy.domain.model.AccountSetting;
 import com.cypherpunk.privacy.domain.repository.NetworkRepository;
 import com.cypherpunk.privacy.domain.repository.retrofit.result.StatusResult;
+import com.cypherpunk.privacy.ui.main.Navigator;
 
 import org.reactivestreams.Publisher;
 
@@ -53,6 +55,12 @@ public class ConfirmationEmailActivity extends AppCompatActivity {
 
     @Inject
     NetworkRepository networkRepository;
+
+    @Inject
+    AccountSetting accountSetting;
+
+    @Inject
+    Navigator navigator;
 
     @BindView(R.id.status)
     TextView statusView;
@@ -154,6 +162,10 @@ public class ConfirmationEmailActivity extends AppCompatActivity {
                 .map(new Function<StatusResult, Boolean>() {
                     @Override
                     public Boolean apply(StatusResult result) throws Exception {
+                        accountSetting.updateSecret(result.secret);
+                        accountSetting.updatePrivacy(result.privacy);
+                        accountSetting.updateAccount(result.account);
+                        accountSetting.updateSubscription(result.subscription);
                         return result.account.confirmed();
                     }
                 })
@@ -177,11 +189,7 @@ public class ConfirmationEmailActivity extends AppCompatActivity {
                         Timber.d("confirmed = " + confirmed);
                         if (confirmed) {
                             dispose();
-
-                            TaskStackBuilder.create(context)
-                                    .addNextIntent(new Intent(context, TutorialActivity.class))
-                                    .startActivities();
-                            finish();
+                            navigator.tutorialOrPending(context);
                         }
                     }
 

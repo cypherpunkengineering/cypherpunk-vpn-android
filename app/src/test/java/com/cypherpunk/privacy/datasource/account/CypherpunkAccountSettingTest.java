@@ -24,27 +24,27 @@ public class CypherpunkAccountSettingTest {
         final Context context = RuntimeEnvironment.application;
         final CypherpunkAccountSetting accountSetting = spy(new CypherpunkAccountSetting(context));
 
-        // when invitation
+        // true when invitation
         doReturn(Account.Type.INVITATION).when(accountSetting).accountType();
         assertThat(accountSetting.isPending()).isTrue();
 
-        // when pending
+        // true when pending
         doReturn(Account.Type.PENDING).when(accountSetting).accountType();
         assertThat(accountSetting.isPending()).isTrue();
 
-        // when free
+        // false when free
         doReturn(Account.Type.FREE).when(accountSetting).accountType();
         assertThat(accountSetting.isPending()).isFalse();
 
-        // when developer
+        // false when developer
         doReturn(Account.Type.DEVELOPER).when(accountSetting).accountType();
         assertThat(accountSetting.isPending()).isFalse();
 
-        // when organization
+        // false when organization
         doReturn(Account.Type.ORGANIZATION).when(accountSetting).accountType();
         assertThat(accountSetting.isPending()).isFalse();
 
-        // when premium
+        // false when premium
         doReturn(Account.Type.PREMIUM).when(accountSetting).accountType();
         assertThat(accountSetting.isPending()).isFalse();
     }
