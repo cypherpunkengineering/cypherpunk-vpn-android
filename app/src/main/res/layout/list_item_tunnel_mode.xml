@@ -60,75 +60,22 @@
         tools:text="@string/tunnel_mode_recommended_summary"/>
 
     <com.cypherpunk.privacy.ui.common.TypefaceTextView
-        android:id="@+id/cipher"
-        android:layout_width="106dp"
+        android:id="@+id/detail"
+        android:layout_width="230dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="@string/tunnel_mode_cipher"
-        android:textColor="@color/white33"
-        android:textSize="12sp"
-        app:fontName="DosisRegular"
-        app:layout_constraintLeft_toLeftOf="@id/title"
-        app:layout_constraintTop_toBottomOf="@id/summary"/>
-
-    <com.cypherpunk.privacy.ui.common.TypefaceTextView
-        android:id="@+id/cipher_value"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="1dp"
-        android:paddingBottom="12dp"
-        android:textColor="@color/white75"
-        app:fontName="DosisRegular"
-        app:layout_constraintLeft_toLeftOf="@+id/cipher"
-        app:layout_constraintTop_toBottomOf="@id/cipher"
-        tools:text="AES-128-GCM"/>
-
-    <com.cypherpunk.privacy.ui.common.TypefaceTextView
-        android:id="@+id/auth"
-        android:layout_width="70dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="@string/tunnel_mode_auth"
-        android:textColor="@color/white33"
-        android:textSize="12sp"
-        app:fontName="DosisRegular"
-        app:layout_constraintLeft_toRightOf="@id/cipher"
-        app:layout_constraintTop_toBottomOf="@id/summary"/>
-
-    <com.cypherpunk.privacy.ui.common.TypefaceTextView
-        android:id="@+id/auth_value"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="2dp"
-        android:paddingBottom="12dp"
-        android:textColor="@color/white75"
-        app:fontName="DosisRegular"
-        app:layout_constraintLeft_toLeftOf="@id/auth"
-        app:layout_constraintTop_toBottomOf="@id/auth"
-        tools:text="SHA-256"/>
-
-    <com.cypherpunk.privacy.ui.common.TypefaceTextView
-        android:id="@+id/key"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="@string/tunnel_mode_key"
-        android:textColor="@color/white33"
-        android:textSize="12sp"
-        app:fontName="DosisRegular"
-        app:layout_constraintLeft_toRightOf="@id/auth"
-        app:layout_constraintTop_toBottomOf="@id/summary"/>
-
-    <com.cypherpunk.privacy.ui.common.TypefaceTextView
-        android:id="@+id/key_value"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="2dp"
-        android:paddingBottom="12dp"
-        android:textColor="@color/white75"
-        app:fontName="DosisRegular"
-        app:layout_constraintLeft_toLeftOf="@id/key"
-        app:layout_constraintTop_toBottomOf="@id/key"
-        tools:text="RSA-4096"/>
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/tunnel_mode_detail_background"
+        android:drawablePadding="4dp"
+        android:paddingBottom="8dp"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp"
+        android:paddingTop="4dp"
+        android:textColor="@color/cyan_blue6_75"
+        android:textSize="13sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="@id/summary"
+        app:layout_constraintTop_toBottomOf="@id/summary"
+        tools:text="@string/tunnel_mode_recommended_details"/>
 
 </android.support.constraint.ConstraintLayout>

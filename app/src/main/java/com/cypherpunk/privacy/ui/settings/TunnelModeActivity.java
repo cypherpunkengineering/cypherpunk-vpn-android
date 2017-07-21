@@ -3,9 +3,12 @@ package com.cypherpunk.privacy.ui.settings;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.StringRes;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -83,14 +86,9 @@ public class TunnelModeActivity extends AppCompatActivity {
             final TextView summaryView = ButterKnife.findById(view, R.id.summary);
             summaryView.setText(getSummaryFor(mode));
 
-            final TextView cypherView = ButterKnife.findById(view, R.id.cipher_value);
-            cypherView.setText(mode.cipher().value());
-
-            final TextView authView = ButterKnife.findById(view, R.id.auth_value);
-            authView.setText(mode.auth().value());
-
-            final TextView keyView = ButterKnife.findById(view, R.id.key_value);
-            keyView.setText(mode.key().value());
+            final TextView detailView = ButterKnife.findById(view, R.id.detail);
+            detailView.setText(getDetailFor(mode));
+            detailView.setCompoundDrawables(getDrawableFor(this, mode), null, null, null);
 
             view.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -152,6 +150,35 @@ public class TunnelModeActivity extends AppCompatActivity {
                 return R.string.tunnel_mode_max_stealth_summary;
             default:
                 throw new IllegalArgumentException();
+        }
+    }
+
+    @StringRes
+    private static int getDetailFor(@NonNull TunnelMode mode) {
+        switch (mode) {
+            case RECOMMENDED:
+                return R.string.tunnel_mode_recommended_details;
+            case MAX_SPEED:
+                return R.string.tunnel_mode_max_speed_details;
+            case MAX_PRIVACY:
+                return R.string.tunnel_mode_max_privacy_details;
+            case MAX_STEALTH:
+                return R.string.tunnel_mode_max_stealth_details;
+            default:
+                throw new IllegalArgumentException();
+        }
+    }
+
+    private static Drawable getDrawableFor(@NonNull Context context, @NonNull TunnelMode mode) {
+        switch (mode) {
+            case MAX_SPEED:
+                final int size = (int) (13 * context.getResources().getDisplayMetrics().density);
+                final Drawable d = ContextCompat.getDrawable(context, R.drawable.ic_warning_black_36dp);
+                d.setBounds(0, 0, size, size);
+                d.setColorFilter(ContextCompat.getColor(context, R.color.cyan_blue6_75), PorterDuff.Mode.SRC_ATOP);
+                return d;
+            default:
+                return null;
         }
     }
 }
