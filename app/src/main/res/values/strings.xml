@@ -112,15 +112,15 @@
     <string name="setting_network_summary">Privacy when you need it most</string>
     <string name="setting_vpn_auto_start_connect">Auto-connect on device boot</string>
     <string name="setting_vpn_dns_block_malware">Block Malware</string>
-    <string name="setting_vpn_dns_block_ads">Block Ads</string>
+    <string name="setting_vpn_dns_block_ads">Block Ads &amp; Trackers</string>
     <string name="setting_internet_kill_switch">Internet Killswitch</string>
     <string name="setting_tunnel_mode">Encryption</string>
     <string name="setting_vpn_remote_port">Remote Port</string>
-    <string name="setting_split_tunnel">Split Tunnel</string>
+    <string name="setting_split_tunnel">Per-application VPN</string>
     <string name="setting_split_tunnel_summary">Configure which apps to route through VPN</string>
     <string name="setting_allow_lan_traffic">Always Allow LAN Traffic</string>
 
-    <!-- preference key -->¬
+    <!-- preference key -->
     <string name="setting_preference_network">preference_network</string>
     <string name="setting_preference_internet_kill_switch">preference_internet_kill_switch</string>
     <string name="setting_preference_tunnel_mode">preference_tunnel_mode</string>
@@ -166,17 +166,22 @@
 
     <!-- tunnel mode -->
     <string name="title_activity_tunnel_mode">Encryption</string>
-    <string name="tunnel_mode_recommended">RECOMMENDED</string>
-    <string name="tunnel_mode_recommended_title">Recommended Default</string>
+    <string name="tunnel_mode_recommended">BALANCED</string>
+    <string name="tunnel_mode_recommended_title">Balanced — Recommended</string>
     <string name="tunnel_mode_recommended_summary">Good balance of speed and privacy.</string>
-    <string name="tunnel_mode_max_speed">MAX SPEED</string>
+    <string name="tunnel_mode_recommended_details">128-bit AES</string>
+    <string name="tunnel_mode_max_speed">SPEED</string>
     <string name="tunnel_mode_max_speed_title">Max Speed</string>
-    <string name="tunnel_mode_max_speed_summary">Fastest speed by using no additional encryption.</string>
-    <string name="tunnel_mode_max_privacy">MAX PRIVACY</string>
+    <string name="tunnel_mode_max_speed_summary">Fastest speed by disabling encryption.</string>
+    <string name="tunnel_mode_max_speed_details">UNENCRYPTED</string>
+    <string name="tunnel_mode_max_privacy">PRIVACY</string>
     <string name="tunnel_mode_max_privacy_title">Max Privacy</string>
-    <string name="tunnel_mode_max_privacy_summary">Higher security by using stronger encryption.</string>
+    <string name="tunnel_mode_max_privacy_summary">Use strongest available encryption.</string>
+    <string name="tunnel_mode_max_privacy_details">256-bit AES</string>
+    <string name="tunnel_mode_max_stealth">STEALTH</string>
     <string name="tunnel_mode_max_stealth_title">Max Stealth</string>
-    <string name="tunnel_mode_max_stealth_summary">Anti-censorship stealth encryption.</string>
+    <string name="tunnel_mode_max_stealth_summary">Anti-censorship for hostile networks.</string>
+    <string name="tunnel_mode_max_stealth_details">128-bit AES + XOR on HTTPS port</string>
     <string name="tunnel_mode_cipher">Cipher</string>
     <string name="tunnel_mode_auth">Auth</string>
     <string name="tunnel_mode_key">Key</string>
@@ -210,11 +215,10 @@
     <string name="account_setting_category_more">More</string>
     <string name="account_setting_share">Share Cypherpunk with a Friend</string>
     <string name="account_setting_rate">Rate Our Service</string>
-    <string name="account_setting_contact">Open a Support Ticket</string>
-    <string name="account_setting_contact_summary">Your satisfaction is important to us!</string>
+    <string name="account_setting_contact">Report an Issue</string>
     <string name="account_setting_help">Go to Help Center</string>
     <string name="account_setting_logout">Sign out</string>
-    <string name="account_setting_category_other">Other</string>
+    <string name="account_setting_category_other">Legal Information</string>
     <string name="account_setting_terms_of_service">Terms of Service</string>
     <string name="account_setting_privacy_policy">Privacy Policy</string>
     <string name="account_setting_license_information">License Information</string>
@@ -246,7 +250,7 @@
     <string name="account_plan_monthly">Monthly</string>
     <string name="account_plan_semiannually">Semiannually</string>
     <string name="account_plan_annually">Annually</string>
-    <string name="account_plan_forever">Forever</string>
+    <string name="account_plan_forever">Lifetime</string>
 
     <!-- subscription expiration -->
     <string name="account_plan_expired">Expired on %1$s</string>

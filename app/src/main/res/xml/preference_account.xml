@@ -35,7 +35,6 @@
 
         <Preference
             android:key="@string/account_preference_support"
-            android:summary="@string/account_setting_contact_summary"
             android:title="@string/account_setting_contact"/>
 
         <Preference
