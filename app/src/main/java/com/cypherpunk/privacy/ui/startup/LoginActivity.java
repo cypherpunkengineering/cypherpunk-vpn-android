@@ -187,7 +187,8 @@ public class LoginActivity extends AppCompatActivity {
 
     @OnClick(R.id.forgot_password_button)
     void onForgotPasswordButtonClicked() {
-        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(Urls.RECOVER)));
+        final String url = Urls.RECOVER + "?email=" + email;
+        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url)));
     }
 
     @Override
