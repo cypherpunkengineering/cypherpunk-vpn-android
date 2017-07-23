@@ -32,7 +32,7 @@ public interface CypherpunkService {
     @POST("/api/v1/account/register/signup")
     Single<StatusResult> signUp(@Body @NonNull SignUpRequest request);
 
-    @POST("/api/v1/account/recover/email")
+    @POST("/api/v1/account/confirm/resend")
     Completable resendEmail(@Body @NonNull EmailRequest request);
 
     @POST("/api/v1/account/authenticate/userpasswd")
