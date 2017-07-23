@@ -35,6 +35,7 @@ public class Navigator {
     public void pending(@NonNull Context context) {
         vpnManager.stop();
         TaskStackBuilder.create(context)
+                .addNextIntent(IdentifyEmailActivity.createIntent(context))
                 .addNextIntent(PendingActivity.createIntent(context))
                 .startActivities();
     }
