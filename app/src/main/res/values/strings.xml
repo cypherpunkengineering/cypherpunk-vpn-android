@@ -47,7 +47,7 @@
     <string name="error_email_invalid">invalid email</string>
     <string name="error_email_already_registered">email address is already registered</string>
     <string name="error_email_do_not_match">Email addresses do not match</string>
-    <string name="error_password_invalid">invalid password</string>
+    <string name="error_password_invalid">wrong password</string>
     <string name="error_password_do_not_match">Passwords do not match</string>
 
     <!-- hint -->

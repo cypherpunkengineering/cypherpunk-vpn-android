@@ -41,6 +41,7 @@ import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.observers.DisposableSingleObserver;
 import io.reactivex.schedulers.Schedulers;
 import retrofit2.HttpException;
+import timber.log.Timber;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -170,6 +171,7 @@ public class LoginActivity extends AppCompatActivity {
 
                     @Override
                     public void onError(Throwable e) {
+                        Timber.e(e);
                         if (dialog != null) {
                             dialog.dismiss();
                             dialog = null;
@@ -178,8 +180,8 @@ public class LoginActivity extends AppCompatActivity {
                             Toast.makeText(context, R.string.error_no_internet, Toast.LENGTH_SHORT).show();
                         } else if (e instanceof HttpException) {
                             final HttpException he = (HttpException) e;
-                            if (he.code() == 400) {
-                                Toast.makeText(context, R.string.error_password_invalid, Toast.LENGTH_SHORT).show();
+                            if (he.code() == 401) {
+                                textInputLayout.setError(getString(R.string.error_password_invalid));
                             }
                         }
                     }
