@@ -20,10 +20,10 @@ import com.cypherpunk.privacy.ui.startup.LoginActivity;
 import com.cypherpunk.privacy.ui.startup.SignUpActivity;
 import com.cypherpunk.privacy.ui.startup.TutorialActivity;
 import com.cypherpunk.privacy.ui.vpn.ConnectionFragment;
-import com.cypherpunk.privacy.ui.vpn.VpnConnectionIntentService;
-import com.cypherpunk.privacy.ui.vpn.VpnStartActivity;
 import com.cypherpunk.privacy.ui.vpn.CypherpunkTileService;
 import com.cypherpunk.privacy.ui.vpn.CypherpunkWifiReceiver;
+import com.cypherpunk.privacy.ui.vpn.VpnConnectionIntentService;
+import com.cypherpunk.privacy.ui.vpn.VpnStartActivity;
 
 import javax.inject.Singleton;
 

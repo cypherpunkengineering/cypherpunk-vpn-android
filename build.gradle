@@ -29,6 +29,7 @@ project.ext {
     targetSdkVersion = 25
 
     supportLibraryVersion = '25.3.1'
+    daggerVersion = '2.11'
 }
 
 task clean(type: Delete) {

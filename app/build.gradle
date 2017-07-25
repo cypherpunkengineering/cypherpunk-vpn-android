@@ -58,7 +58,6 @@ dependencies {
     compile project(':domain')
     compile project(':vpn')
 
-    def daggerVersion = '2.6'
 
     compile "com.android.support:appcompat-v7:${supportLibraryVersion}"
     compile "com.android.support:design:${supportLibraryVersion}"
@@ -69,8 +68,7 @@ dependencies {
     compile 'com.squareup.okhttp3:logging-interceptor:3.4.1'
 
     compile "com.google.dagger:dagger:${daggerVersion}"
-    apt "com.google.dagger:dagger-compiler:${daggerVersion}"
-    apt 'com.google.guava:guava:20.0' // dagger compiler requires Guava
+    provided "com.google.dagger:dagger-compiler:${daggerVersion}"
 
     // https://github.com/firebase/firebase-jobdispatcher-android#user-content-firebase-jobdispatcher-
     compile 'com.firebase:firebase-jobdispatcher:0.7.0'
