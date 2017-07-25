@@ -7,6 +7,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.app.AppCompatDelegate;
 import android.view.LayoutInflater;
 import android.view.View;
 
@@ -38,6 +39,10 @@ public class MainActivity extends AppCompatActivity implements
         RegionFragment.RegionFragmentListener,
         ConnectionFragment.ConnectionFragmentListener,
         AccountSettingsFragment.AccountSettingsFragmentListener {
+
+    static {
+        AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
+    }
 
     @Inject
     AccountSetting accountSetting;

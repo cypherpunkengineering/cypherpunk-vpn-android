@@ -15,8 +15,8 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="2dp"
         android:layout_marginRight="2dp"
-        android:src="@drawable/ic_refresh_vector"
         android:tint="@color/black2"
+        app:srcCompat="@drawable/ic_refresh_vector"
         tools:ignore="ContentDescription"/>
 
     <com.cypherpunk.privacy.ui.common.TypefaceTextView

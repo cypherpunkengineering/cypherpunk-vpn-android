@@ -69,7 +69,7 @@ public class WorldMapView extends View {
         mapDrawable.setAlpha(77);
         MAP_SIZE = mapDrawable.getIntrinsicWidth();
 
-        markerDrawable = ContextCompat.getDrawable(context, R.drawable.ic_map_pin);
+        markerDrawable = ContextCompat.getDrawable(context, R.drawable.ic_map_pin_vector);
         markerDrawable.setColorFilter(MARKER_COLOR, PorterDuff.Mode.SRC_ATOP);
         MARKER_RADIUS = (int) (24 * density);
         MARKER_UP_OFFSET = 20 * density;

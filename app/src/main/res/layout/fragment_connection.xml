@@ -75,8 +75,8 @@
             android:layout_height="40dp"
             android:background="@drawable/loop_background"
             android:scaleType="center"
-            android:src="@drawable/ic_chevron_right"
             android:tint="@color/white"
+            app:srcCompat="@drawable/ic_chevron_right_vector"
             tools:ignore="ContentDescription"/>
 
     </LinearLayout>
