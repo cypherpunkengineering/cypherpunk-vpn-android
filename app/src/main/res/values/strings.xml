@@ -147,7 +147,7 @@
     <string name="network_auto_secure">Auto-secure</string>
     <string name="network_auto_secure_description">Cypherpunk can automatically secure connections to untrusted networks.</string>
     <string name="newt_work_auto_secure_connections">Auto secure connections</string>
-    <string name="network_other_networks">Other Networks</string>
+    <string name="network_other_networks">Cellular  Networks</string>
     <string name="network_other_auto_secure_connections">Auto secure connections</string>
     <string name="network_wifi_networks">Wi-Fi Networks</string>
     <string name="network_wifi_description">Add the networks you trust. Cypherpunk will NOT automatically connect through the VPN when you connect to these trusted networks.</string>
