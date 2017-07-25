@@ -98,6 +98,7 @@ public class InternetKillSwitchActivity extends AppCompatActivity {
                                 update(InternetKillSwitch.ALWAYS_ON);
                         }
                     }
+                    finish();
                 }
             });
 

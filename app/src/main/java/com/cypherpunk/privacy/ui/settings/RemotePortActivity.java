@@ -17,8 +17,8 @@ import android.widget.TextView;
 
 import com.cypherpunk.privacy.CypherpunkApplication;
 import com.cypherpunk.privacy.R;
-import com.cypherpunk.privacy.domain.model.VpnSetting;
 import com.cypherpunk.privacy.datasource.vpn.RemotePort;
+import com.cypherpunk.privacy.domain.model.VpnSetting;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -99,6 +99,7 @@ public class RemotePortActivity extends AppCompatActivity {
 
                             update(RemotePort.create(type, port));
                         }
+                        finish();
                     }
                 });
             }

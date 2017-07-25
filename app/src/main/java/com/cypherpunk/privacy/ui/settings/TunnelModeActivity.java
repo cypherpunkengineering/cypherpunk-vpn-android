@@ -101,6 +101,7 @@ public class TunnelModeActivity extends AppCompatActivity {
 
                         update(mode);
                     }
+                    finish();
                 }
             });
         }
