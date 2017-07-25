@@ -154,10 +154,12 @@ public class SplitTunnelActivity extends AppCompatActivity {
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                if (TextUtils.isEmpty(newText)) {
-                    adapter.clearTextFilter();
-                } else {
-                    adapter.setFilterText(newText);
+                if (adapter != null) {
+                    if (TextUtils.isEmpty(newText)) {
+                        adapter.clearTextFilter();
+                    } else {
+                        adapter.setFilterText(newText);
+                    }
                 }
                 return false;
             }
@@ -191,7 +193,9 @@ public class SplitTunnelActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         disposable.dispose();
-        vpnSetting.updateExceptAppList(adapter.getCheckedList());
+        if (adapter != null) {
+            vpnSetting.updateExceptAppList(adapter.getCheckedList());
+        }
         super.onDestroy();
     }
 
