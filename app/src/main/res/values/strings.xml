@@ -156,7 +156,7 @@
     <string name="title_activity_internet_kill_switch">Internet Killswitch</string>
     <string name="internet_kill_switch_description">Prevent accidental privacy leaks by disabling all internet connectivity if you are disconnected from the Cypherpunk Privacy Network</string>
     <string name="internet_kill_switch_automatic_title">Automatic [recommended]</string>
-    <string name="internet_kill_switch_automatic_summary">Enable the killswitch while connecting protecting you in case of accidental disconnections.</string>
+    <string name="internet_kill_switch_automatic_summary">Enable the killswitch while connecting, protecting you in case of accidental disconnections.</string>
     <string name="internet_kill_switch_off_title">Off</string>
     <string name="internet_kill_switch_off_summary">Don\'t use the killswitch feature.</string>
     <string name="internet_kill_switch_always_on_title">Always On</string>

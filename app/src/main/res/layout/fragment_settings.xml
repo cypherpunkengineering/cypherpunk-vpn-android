@@ -18,6 +18,7 @@
         android:paddingLeft="?android:listPreferredItemPaddingLeft"
         android:paddingRight="?android:listPreferredItemPaddingRight"
         android:paddingStart="?android:listPreferredItemPaddingStart"
+        android:paddingTop="16dp"
         android:textAppearance="@style/TextAppearance.AppCompat.Title"
         app:fontName="DosisSemiBold"
         tools:text="@string/setting_header_configuration"/>

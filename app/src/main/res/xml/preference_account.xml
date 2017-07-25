@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
     <com.cypherpunk.privacy.ui.account.AccountPreference
@@ -47,20 +48,19 @@
 
     </PreferenceCategory>
 
-    <PreferenceCategory android:title="@string/account_setting_category_other">
+    <Preference
+        android:key="@string/account_preference_terms_of_service"
+        android:title="@string/account_setting_terms_of_service"
+        app:layout="@layout/custom_preference_sub"/>
 
-        <Preference
-            android:key="@string/account_preference_terms_of_service"
-            android:title="@string/account_setting_terms_of_service"/>
+    <Preference
+        android:key="@string/account_preference_privacy_policy"
+        android:title="@string/account_setting_privacy_policy"
+        app:layout="@layout/custom_preference_sub"/>
 
-        <Preference
-            android:key="@string/account_preference_privacy_policy"
-            android:title="@string/account_setting_privacy_policy"/>
-
-        <Preference
-            android:key="@string/account_preference_license_information"
-            android:title="@string/account_setting_license_information"/>
-
-    </PreferenceCategory>
+    <Preference
+        android:key="@string/account_preference_license_information"
+        android:title="@string/account_setting_license_information"
+        app:layout="@layout/custom_preference_sub"/>
 
 </PreferenceScreen>

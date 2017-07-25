@@ -211,13 +211,13 @@ public class SettingsFragment extends PreferenceFragmentCompat {
     private static int getStringFor(@NonNull TunnelMode mode) {
         switch (mode) {
             case RECOMMENDED:
-                return R.string.tunnel_mode_recommended_title;
+                return R.string.tunnel_mode_recommended;
             case MAX_SPEED:
-                return R.string.tunnel_mode_max_speed_title;
+                return R.string.tunnel_mode_max_speed;
             case MAX_PRIVACY:
-                return R.string.tunnel_mode_max_privacy_title;
+                return R.string.tunnel_mode_max_privacy;
             case MAX_STEALTH:
-                return R.string.tunnel_mode_max_stealth_title;
+                return R.string.tunnel_mode_max_stealth;
             default:
                 throw new IllegalArgumentException();
         }

@@ -67,7 +67,7 @@
         android:layout_marginTop="10dp"
         android:background="@drawable/tunnel_mode_detail_background"
         android:drawablePadding="4dp"
-        android:paddingBottom="8dp"
+        android:paddingBottom="4dp"
         android:paddingLeft="8dp"
         android:paddingRight="8dp"
         android:paddingTop="4dp"
