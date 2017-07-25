@@ -51,8 +51,10 @@ class RegionAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                     @Override
                     public void onClick(View view) {
                         final int position = holder.getAdapterPosition();
-                        final CypherPlay cypherplay = (CypherPlay) items.get(position);
-                        onItemClicked(cypherplay.vpnServer, true);
+                        if (position >= 0 && position < items.size()) {
+                            final CypherPlay cypherplay = (CypherPlay) items.get(position);
+                            onItemClicked(cypherplay.vpnServer, true);
+                        }
                     }
                 });
                 return holder;
