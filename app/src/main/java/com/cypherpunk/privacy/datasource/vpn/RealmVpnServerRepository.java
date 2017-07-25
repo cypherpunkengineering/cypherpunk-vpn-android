@@ -19,6 +19,7 @@ import io.realm.RealmChangeListener;
 import io.realm.RealmConfiguration;
 import io.realm.RealmResults;
 import io.realm.Sort;
+import io.realm.exceptions.RealmMigrationNeededException;
 
 import static com.cypherpunk.privacy.datasource.vpn.RealmVpnServer.KEY_AUTHORIZED;
 import static com.cypherpunk.privacy.datasource.vpn.RealmVpnServer.KEY_ID;
@@ -44,7 +45,13 @@ public class RealmVpnServerRepository implements VpnServerRepository {
 
     @NonNull
     private Realm realmInstance() {
-        return Realm.getInstance(conf);
+        try {
+            return Realm.getInstance(conf);
+        } catch (RealmMigrationNeededException e) {
+            // if exception occur delete db
+            Realm.deleteRealm(conf);
+            return Realm.getInstance(conf);
+        }
     }
 
     @Override
