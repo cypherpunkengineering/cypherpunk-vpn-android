@@ -204,6 +204,10 @@ public class CypherpunkVPN {
         list.add("proto " + remotePort.type().name().toLowerCase());
         int rport = remotePort.port().value();
 
+        // Always try to send the server a courtesy exit notification in UDP mode
+        if (remotePort.type().name().toLowerCase().equals("udp"))
+            list.add("explicit-exit-notify");
+
         // vpn crypto profile
         final TunnelMode tunnelMode = vpnSetting.tunnelMode();
         switch (tunnelMode) {
