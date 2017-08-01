@@ -45,7 +45,7 @@ public class SettingsFragment extends PreferenceFragmentCompat {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_settings, container, false);
         final TextView headerView = ButterKnife.findById(view, R.id.header);
-        headerView.setText(R.string.settings_header_configuration);
+        headerView.setText(R.string.setting_header_configuration);
 
         final FrameLayout frameLayout = ButterKnife.findById(view, R.id.list_container);
         final View list = super.onCreateView(inflater, frameLayout, savedInstanceState);

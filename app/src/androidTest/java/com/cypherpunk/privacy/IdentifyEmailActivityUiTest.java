@@ -94,7 +94,7 @@ public class IdentifyEmailActivityUiTest {
         onView(withId(R.id.submit_button)).perform(click());
 
         // エラーメッセージが表示されるかチェック
-        onView(withText(R.string.error_invalid_email)).check(matches(isDisplayed()));
+        onView(withText(R.string.error_email_invalid)).check(matches(isDisplayed()));
     }
 
     @Test
