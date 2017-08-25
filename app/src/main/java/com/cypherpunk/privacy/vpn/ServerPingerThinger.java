@@ -27,7 +27,7 @@ public class ServerPingerThinger extends Thread {
     }
 
     public static boolean isPingable(VpnServer vpnServer) {
-        return vpnServer.ovDefault().length() >= 7 && vpnServer.authorized();
+        return vpnServer.ovDefault().split(",", -1)[0].length() >= 7 && vpnServer.authorized();
     }
 
     public static void pingLocation(VpnServer vpnServer, @NonNull VpnServerRepository vpnServerRepository) {
@@ -41,7 +41,7 @@ public class ServerPingerThinger extends Thread {
 
         ServerPingerThinger pinger = new ServerPingerThinger(vpnServerRepository);
         pinger.locationId = vpnServer.id();
-        pinger.address = new InetSocketAddress(vpnServer.ovDefault(), 443);
+        pinger.address = new InetSocketAddress(vpnServer.ovDefault().split(",", -1)[0], 443);
         pinger.start();
     }
 

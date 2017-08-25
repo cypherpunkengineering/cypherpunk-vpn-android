@@ -212,19 +212,19 @@ public class CypherpunkVPN {
         final TunnelMode tunnelMode = vpnSetting.tunnelMode();
         switch (tunnelMode) {
             case MAX_SPEED:
-                list.add("remote " + vpnServer.ovNone() + " " + rport);
+                list.add("remote " + vpnServer.ovNone().split(",", -1)[0] + " " + rport);
                 list.add("cipher " + tunnelMode.cipher().value());
                 break;
             case RECOMMENDED:
-                list.add("remote " + vpnServer.ovDefault() + " " + rport);
+                list.add("remote " + vpnServer.ovDefault().split(",", -1)[0] + " " + rport);
                 list.add("cipher " + tunnelMode.cipher().value());
                 break;
             case MAX_PRIVACY:
-                list.add("remote " + vpnServer.ovStrong() + " " + rport);
+                list.add("remote " + vpnServer.ovStrong().split(",", -1)[0] + " " + rport);
                 list.add("cipher " + tunnelMode.cipher().value());
                 break;
             case MAX_STEALTH:
-                list.add("remote " + vpnServer.ovStealth() + " " + rport);
+                list.add("remote " + vpnServer.ovStealth().split(",", -1)[0] + " " + rport);
                 list.add("cipher " + tunnelMode.cipher().value());
                 list.add("scramble obfuscate cypherpunk-xor-key"); // requires xorpatch'd openvpn
                 break;
