@@ -71,9 +71,14 @@ public class MainActivity extends AppCompatActivity implements
 
         CypherpunkApplication.instance.getAppComponent().inject(this);
 
-        if (!accountSetting.isSignedIn()) {
+        final String email = accountSetting.email();
+        if (!accountSetting.isSignedIn() || email == null) {
             navigator.signOut(this);
             return;
+        }
+
+        if (!accountSetting.isConfirmed()) {
+            navigator.confirmEmail(this, email);
         }
 
         // check account periodically

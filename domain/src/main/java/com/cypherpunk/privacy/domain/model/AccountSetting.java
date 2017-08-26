@@ -18,6 +18,8 @@ public interface AccountSetting {
 
     boolean isActive();
 
+    boolean isConfirmed();
+
     // secret
 
     @Nullable

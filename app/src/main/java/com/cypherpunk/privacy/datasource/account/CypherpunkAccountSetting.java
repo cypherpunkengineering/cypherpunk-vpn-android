@@ -19,6 +19,7 @@ public class CypherpunkAccountSetting implements AccountSetting {
 
     private static final String KEY_ACCOUNT_ID = "account_id";
     private static final String KEY_ACCOUNT_TYPE = "account_type";
+    private static final String KEY_ACCOUNT_CONFIRMED = "confirmed";
 
     private static final String KEY_SUBSCRIPTION_TYPE = "status_renewal";
     private static final String KEY_SUBSCRIPTION_EXPIRATION = "status_expiration";
@@ -50,6 +51,11 @@ public class CypherpunkAccountSetting implements AccountSetting {
     @Override
     public boolean isActive() {
         return subscription().isActive();
+    }
+
+    @Override
+    public boolean isConfirmed() {
+        return pref.getBoolean(KEY_ACCOUNT_CONFIRMED, false);
     }
 
     // secret
@@ -113,6 +119,7 @@ public class CypherpunkAccountSetting implements AccountSetting {
         pref.edit()
                 .putString(KEY_ACCOUNT_ID, account.id())
                 .putString(KEY_ACCOUNT_TYPE, account.type().value())
+                .putBoolean(KEY_ACCOUNT_CONFIRMED, account.confirmed())
                 .apply();
     }
 
